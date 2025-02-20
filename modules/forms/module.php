@@ -130,6 +130,15 @@ class Module extends Module_Base {
 			true
 		);
 
+		wp_register_script(
+			'cool-form-material-handle-js',
+			CFL_PLUGIN_URL . 'assets/js/Material-js/material-field-handle.js',
+			// [ 'elementor-common', 'elementor-frontend-modules', 'elementor-frontend' ],
+			[ 'elementor-frontend' ],
+			CFL_VERSION,
+			true
+		);
+
 		wp_localize_script(
 			'Cool_FormKit-forms-fe',
 			'coolFormsData',

@@ -28,24 +28,33 @@ class Date extends Field_Base {
 
 
 	public function render( $item, $item_index, $form ) {
-		$form->add_render_attribute( 'input' . $item_index, 'class', 'elementor-field-textual cool-form-date-field' );
+		// Use the Material Design input class and add any additional classes.
+		$form->add_render_attribute( 'input' . $item_index, 'class', 'mdc-text-field__input cool-form-date-field' );
 		$form->add_render_attribute( 'input' . $item_index, 'pattern', '[0-9]{4}-[0-9]{2}-[0-9]{2}' );
 		if ( isset( $item['use_native_date'] ) && 'yes' === $item['use_native_date'] ) {
 			$form->add_render_attribute( 'input' . $item_index, 'class', 'cool-form-use-native' );
 		}
-
 		if ( ! empty( $item['min_date'] ) ) {
 			$form->add_render_attribute( 'input' . $item_index, 'min', esc_attr( $item['min_date'] ) );
 		}
-
 		if ( ! empty( $item['max_date'] ) ) {
 			$form->add_render_attribute( 'input' . $item_index, 'max', esc_attr( $item['max_date'] ) );
 		}
 		?>
-
-		<input <?php $form->print_render_attribute_string( 'input' . $item_index ); ?>>
+		<label class="cool-form-text mdc-text-field mdc-text-field--outlined">
+			<span class="mdc-notched-outline">
+				<span class="mdc-notched-outline__leading"></span>
+				<span class="mdc-notched-outline__notch">
+					<span class="mdc-floating-label" id="date-label-<?php echo esc_attr( $item_index ); ?>">
+						<?php echo esc_html( $item['field_label'] ); ?>
+					</span>
+				</span>
+				<span class="mdc-notched-outline__trailing"></span>
+			</span>
+			<input type="date" <?php $form->print_render_attribute_string( 'input' . $item_index ); ?> >
+		</label>
 		<?php
-	}
+	}	
 
 	public function update_controls( $widget ) {
 		$elementor = parent::elementor();

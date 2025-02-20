@@ -24,17 +24,35 @@ class Number extends Field_Base {
 	public function render( $item, $item_index, $form ) {
 
 
-		$form->add_render_attribute( 'input' . $item_index, 'class', 'elementor-field-textual' );
+		$form->add_render_attribute( 'input' . $item_index, 'class', 'mdc-text-field__input' );
 
-		if ( isset( $item['field_min'] ) ) {
-			$form->add_render_attribute( 'input' . $item_index, 'min', esc_attr( $item['field_min'] ) );
+		if ( isset( $item['num_field_min'] ) ) {
+			$form->add_render_attribute( 'input' . $item_index, 'min', esc_attr( $item['num_field_min'] ) );
 		}
-		if ( isset( $item['field_max'] ) ) {
-			$form->add_render_attribute( 'input' . $item_index, 'max', esc_attr( $item['field_max'] ) );
+		if ( isset( $item['num_field_max'] ) ) {
+			$form->add_render_attribute( 'input' . $item_index, 'max', esc_attr( $item['num_field_max'] ) );
 		}
 
 		?>
-			<input <?php $form->print_render_attribute_string( 'input' . $item_index ); ?> >
+			<!-- <input <?php // $form->print_render_attribute_string( 'input' . $item_index ); ?> > -->
+
+		<?php		
+		?>
+		<label class="cool-form-text mdc-text-field mdc-text-field--outlined">
+			<span class="mdc-notched-outline">
+				<span class="mdc-notched-outline__leading"></span>
+				<span class="mdc-notched-outline__notch">
+					<span class="mdc-floating-label" id="number-label-<?php echo esc_attr( $item_index ); ?>">
+						<?php echo esc_html( $item['field_label'] ); ?>
+					</span>
+				</span>
+				<span class="mdc-notched-outline__trailing"></span>
+			</span>
+			<input type="number" <?php $form->print_render_attribute_string( 'input' . $item_index ); ?> data-index="<?php echo $item_index ?>" />
+		</label>
+		<div class="mdc-text-field-helper-line">
+  			<div class="mdc-text-field-helper-text" id="my-helper-id" aria-hidden="true"></div>
+		</div>
 		<?php
 	}
 

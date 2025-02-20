@@ -34,8 +34,7 @@ class TimeFieldInputHandler extends elementorModules.frontend.handlers.Base {
                         flatpickr($input[0], {
                             enableTime: true,         
                             noCalendar: true,         
-                            dateFormat: "h:i K",        
-                            time_24hr: false,          
+                            dateFormat: "H:i",        
                         });
                     }
                 }

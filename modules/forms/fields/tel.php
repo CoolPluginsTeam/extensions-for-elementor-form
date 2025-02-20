@@ -19,14 +19,29 @@ class Tel extends Field_Base {
 	}
 
 	public function render( $item, $item_index, $form ) {
-		$form->add_render_attribute( 'input' . $item_index, 'class', 'elementor-field-textual' );
+		// Use the Material Design input class.
+		$form->add_render_attribute( 'input' . $item_index, 'class', 'mdc-text-field__input' );
 		$form->add_render_attribute( 'input' . $item_index, 'pattern', '[0-9()#&+\*\-\.=]+' );
 		$form->add_render_attribute( 'input' . $item_index, 'title', esc_html__( 'Only numbers and phone characters (#, -, *, etc) are accepted.', 'cool-formkit' ) );
 		?>
-		<input size="1" <?php $form->print_render_attribute_string( 'input' . $item_index ); ?>>
-
+		<label class="cool-form-text mdc-text-field mdc-text-field--outlined">
+			<span class="mdc-notched-outline">
+				<span class="mdc-notched-outline__leading"></span>
+				<span class="mdc-notched-outline__notch">
+					<span class="mdc-floating-label" id="tel-label-<?php echo esc_attr( $item_index ); ?>">
+						<?php echo esc_html( $item['field_label'] ); ?>
+					</span>
+				</span>
+				<span class="mdc-notched-outline__trailing"></span>
+			</span>
+			<input type="tel" size="1" <?php $form->print_render_attribute_string( 'input' . $item_index ); ?>>
+		</label>
+		<div class="mdc-text-field-helper-line">
+  			<div class="mdc-text-field-helper-text" id="my-helper-id" aria-hidden="true"></div>
+		</div>
 		<?php
 	}
+	
 
 	public function validation( $field, Classes\Form_Record $record, Ajax_Handler $ajax_handler ) {
 		if ( empty( $field['value'] ) ) {

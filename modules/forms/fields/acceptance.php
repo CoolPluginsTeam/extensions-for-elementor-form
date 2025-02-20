@@ -61,32 +61,40 @@ class Acceptance extends Field_Base {
 
 	public function render( $item, $item_index, $form ) {
 		$label = '';
-		$form->add_render_attribute( 'input' . $item_index, 'class', 'elementor-acceptance-field' );
+		// Use the MDC checkbox native control class.
+		$form->add_render_attribute( 'input' . $item_index, 'class', 'mdc-checkbox__native-control' );
 		$form->add_render_attribute( 'input' . $item_index, 'type', 'checkbox', true );
-
+	
+		// Build the label if acceptance text exists.
 		if ( ! empty( $item['acceptance_text'] ) ) {
-			$label = '<label for="' . $form->get_attribute_id( $item ) . '" class="cool-form__field-label">' . $item['acceptance_text'] . '</label>';
+			$label = '<label for="' . $form->get_attribute_id( $item ) . '">' . $item['acceptance_text'] . '</label>';
 		}
-
+	
 		if ( ! empty( $item['checked_by_default'] ) ) {
 			$form->add_render_attribute( 'input' . $item_index, 'checked', 'checked' );
 		}
-
 		?>
-		<div class="elementor-field-subgroup">
-			<span class="elementor-field-option">
+		<div class="mdc-form-field">
+			<div class="mdc-checkbox">
 				<input <?php $form->print_render_attribute_string( 'input' . $item_index ); ?>>
-				<?php
-				echo wp_kses( $label, [
-					'label' => [
-						'for' => true,
-						'class' => true,
-						'id' => true,
-						'style' => true,
-					],
-				] ); ?>
-			</span>
+				<div class="mdc-checkbox__background">
+					<svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+						<path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+					</svg>
+					<div class="mdc-checkbox__mixedmark"></div>
+				</div>
+			</div>
+			<?php
+			echo wp_kses( $label, [
+				'label' => [
+					'for'   => true,
+					'class' => true,
+					'id'    => true,
+					'style' => true,
+				],
+			] );
+			?>
 		</div>
 		<?php
-	}
+	}	
 }

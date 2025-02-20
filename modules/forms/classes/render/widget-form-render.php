@@ -92,61 +92,100 @@ class Widget_Form_Render {
 					<div <?php $this->widget->print_render_attribute_string( 'field-group' . $item_index ); ?>>
 						<?php
 						if ( $print_label && $item['field_label'] ) {
-							?>
-							<label <?php $this->widget->print_render_attribute_string( 'label' . $item_index ); ?>>
-								<?php
-								echo esc_html( $item['field_label'] ); ?>
-							</label>
-							<?php
+
+							switch ( $item['field_type'] ){
+								case 'textarea':
+									echo $this->widget->make_textarea_field_md( $item, $item_index, $this->settings );
+									break;
+								case 'text':
+								case 'email':
+								case 'url':
+								case 'password':
+								case 'hidden':
+								case 'search':
+									echo $this->widget->make_text_field_md( $item, $item_index, $this->settings );
+									break;
+								case 'select':
+									if ( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
+										echo $this->widget->make_select_field( $item, $item_index );
+									}else{
+										echo $this->widget->make_select_field_md( $item, $item_index );
+									}
+									break;
+								case 'radio':
+								case 'checkbox':
+									echo $this->widget->make_radio_checkbox_field_md( $item, $item_index, $item['field_type'] );
+									break;	
+								default:
+									$field_type = $item['field_type'];
+
+									/**
+									 * Hello+ form field render.
+									 *
+									 * Fires when a field is rendered in the frontend. This hook allows developers to
+									 * add functionality when from fields are rendered.
+									 *
+									 * The dynamic portion of the hook name, `$field_type`, refers to the field type.
+									 *
+									 * @param array $item The field value.
+									 * @param int $item_index The field index.
+									 * @param Cool_Form $this An instance of the form.
+									 *
+									 * @since 1.0.0
+									 *
+									 */
+
+									do_action( "cool_formkit/forms/render_field/{$field_type}", $item, $item_index, $this->widget );
+							}
 						}
 
 						switch ( $item['field_type'] ) :
 							case 'textarea':
-								echo wp_kses(
-									$this->widget->make_textarea_field( $item, $item_index, $this->settings ),
-									[
-										'textarea' => [
-											'cols' => true,
-											'rows' => true,
-											'name' => true,
-											'id' => true,
-											'class' => true,
-											'style' => true,
-											'placeholder' => true,
-											'maxlength' => true,
-											'required' => true,
-											'readonly' => true,
-											'disabled' => true,
-										],
-									]
-								);
+								// echo wp_kses(
+								// 	$this->widget->make_textarea_field( $item, $item_index, $this->settings ),
+								// 	[
+								// 		'textarea' => [
+								// 			'cols' => true,
+								// 			'rows' => true,
+								// 			'name' => true,
+								// 			'id' => true,
+								// 			'class' => true,
+								// 			'style' => true,
+								// 			'placeholder' => true,
+								// 			'maxlength' => true,
+								// 			'required' => true,
+								// 			'readonly' => true,
+								// 			'disabled' => true,
+								// 		],
+								// 	]
+								// );
 								break;
 
 							case 'select':
-								echo wp_kses( $this->widget->make_select_field( $item, $item_index ), [
-									'select' => [
-										'name' => true,
-										'id' => true,
-										'class' => true,
-										'style' => true,
-										'required' => true,
-										'disabled' => true,
-									],
-									'option' => [
-										'value' => true,
-										'selected' => true,
-									],
-								] );
+								// echo wp_kses( $this->widget->make_select_field( $item, $item_index ), [
+								// 	'select' => [
+								// 		'name' => true,
+								// 		'id' => true,
+								// 		'class' => true,
+								// 		'style' => true,
+								// 		'required' => true,
+								// 		'disabled' => true,
+								// 	],
+								// 	'option' => [
+								// 		'value' => true,
+								// 		'selected' => true,
+								// 	],
+								// ] );
 								break;
 							case 'radio':
 							case 'checkbox':
-								echo $this->widget->make_radio_checkbox_field( $item, $item_index, $item['field_type'] ); 
+								// echo $this->widget->make_radio_checkbox_field( $item, $item_index, $item['field_type'] ); 
 								break;
 							case 'text':
 							case 'email':
 								$this->widget->add_render_attribute( 'input' . $item_index, 'class', 'cool-form-field-textual' );
 								?>
-								<input size="1" <?php $this->widget->print_render_attribute_string( 'input' . $item_index ); ?>>
+								<!-- <input size="1" <?php //$this->widget->print_render_attribute_string( 'input' . $item_index ); ?>> -->
 								<?php
 								break;
 
@@ -168,7 +207,7 @@ class Widget_Form_Render {
 								 * @since 1.0.0
 								 *
 								 */
-								do_action( "cool_formkit/forms/render_field/{$field_type}", $item, $item_index, $this->widget );
+								// do_action( "cool_formkit/forms/render_field/{$field_type}", $item, $item_index, $this->widget );
 						endswitch;
 						?>
 					</div>

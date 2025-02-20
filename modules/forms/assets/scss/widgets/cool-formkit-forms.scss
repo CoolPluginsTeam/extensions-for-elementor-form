@@ -140,6 +140,10 @@
 		color: var(--cool-form-label-color);
 	}
 
+	.cool-form-text.mdc-text-field .mdc-floating-label {
+		color: var(--cool-form-label-color);
+	}
+
 	&__field:not(.cool-form__select),
 	&__field[type="text"],
 	&__field[type="email"],

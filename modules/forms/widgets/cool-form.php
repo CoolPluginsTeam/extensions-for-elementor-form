@@ -60,7 +60,7 @@ class Cool_Form extends Form_Base {
 	}
 
 	public function get_script_depends(): array {
-		return [ 'Cool_FormKit-forms-fe','cool-form-material-js' ];
+		return [ 'Cool_FormKit-forms-fe','cool-form-material-js','cool-form-material-handle-js' ];
 	}
 
 	protected function render(): void {
@@ -139,7 +139,127 @@ class Cool_Form extends Form_Base {
 
 						switch ( item.field_type ) {
 							case 'textarea':
-								inputField = '<textarea class="cool-form__field elementor-field-textual elementor-size-' + settings.input_size + ' ' + itemClasses + '" name="form_field_' + i + '" id="form_field_' + i + '" rows="' + item.rows + '" ' + required + ' ' + placeholder + '>' + item.field_value + '</textarea>';
+								inputField = '<label class="cool-form-text mdc-text-field mdc-text-field--outlined mdc-text-field--textarea">';
+									inputField += '<span class="mdc-notched-outline">';
+										inputField += '<span class="mdc-notched-outline__leading"></span>';
+										inputField += '<span class="mdc-notched-outline__notch">';
+											inputField += '<span class="mdc-floating-label" id="textarea-label-' + i + '">' + _.escape( item.field_label ) + '</span>';
+										inputField += '</span>';
+										inputField += '<span class="mdc-notched-outline__trailing"></span>';
+									inputField += '</span>';
+									inputField += '<span class="mdc-text-field__resizer">';
+										inputField += '<textarea class="mdc-text-field__input" name="form_field_' + i + '" id="form_field_' + i + '" rows="' + item.rows + '" ' + required + ' ' + placeholder + '>' + item.field_value + '</textarea>';
+									inputField += '</span>';
+								inputField += '</label>';
+								break;
+
+							case 'text':
+							case 'email':
+							case 'url':
+							case 'number':
+							case 'password':
+							case 'search':
+								inputField = '<label class="cool-form-text mdc-text-field mdc-text-field--outlined">';
+									inputField += '<span class="mdc-notched-outline">';
+										inputField += '<span class="mdc-notched-outline__leading"></span>';
+										inputField += '<span class="mdc-notched-outline__notch">';
+											inputField += '<span class="mdc-floating-label" id="text-label-' + i + '">' + _.escape( item.field_label ) + '</span>';
+										inputField += '</span>';
+										inputField += '<span class="mdc-notched-outline__trailing"></span>';
+									inputField += '</span>';
+									inputField += '<input type="' + item.field_type + '" class="mdc-text-field__input" name="form_field_' + i + '" id="form_field_' + i + '" value="' + item.field_value + '" ' + required + ' ' + placeholder + '>';
+								inputField += '</label>';
+								break;
+
+							case 'select':
+								if ( options.length ) {
+									inputField = '<div class="mdc-select mdc-select--outlined">';
+										inputField += '<div class="mdc-select__anchor" aria-labelledby="select-label-' + i + '">';
+											inputField += '<span class="mdc-notched-outline">';
+												inputField += '<span class="mdc-notched-outline__leading"></span>';
+												inputField += '<span class="mdc-notched-outline__notch">';
+													inputField += '<span class="mdc-floating-label" id="select-label-' + i + '">' + _.escape( item.field_label ) + '</span>';
+												inputField += '</span>';
+												inputField += '<span class="mdc-notched-outline__trailing"></span>';
+											inputField += '</span>';
+											inputField += '<span class="mdc-select__selected-text-container"><span class="mdc-select__selected-text"></span></span>';
+											inputField += '<span class="mdc-select__dropdown-icon">';
+												inputField += '<svg class="mdc-select__dropdown-icon-graphic" viewBox="7 10 10 5" focusable="false">';
+													inputField += '<polygon class="mdc-select__dropdown-icon-inactive" stroke="none" fill-rule="evenodd" points="7 10 12 15 17 10"></polygon>';
+													inputField += '<polygon class="mdc-select__dropdown-icon-active" stroke="none" fill-rule="evenodd" points="7 15 12 10 17 15"></polygon>';
+												inputField += '</svg>';
+											inputField += '</span>';
+										inputField += '</div>';
+										inputField += '<div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">';
+											inputField += '<ul class="mdc-list" role="listbox" aria-label="' + _.escape( item.field_label ) + '">';
+												for ( var x in options ) {
+													var option = options[x],
+														option_value = option,
+														option_label = option;
+													if ( option.indexOf( '|' ) > -1 ) {
+														var parts = option.split( '|' );
+														option_label = parts[0];
+														option_value = parts[1];
+													}
+													var selected = '';
+													if ( item.field_value && item.field_value.split( ',' ).indexOf( option_value ) > -1 ) {
+														selected = ' aria-selected="true" class="mdc-list-item--selected"';
+													}
+													inputField += '<li class="mdc-list-item" role="option" data-value="' + _.escape( option_value ) + '"' + selected + '>';
+														inputField += '<span class="mdc-list-item__ripple"></span>';
+														inputField += '<span class="mdc-list-item__text">' + _.escape( option_label ) + '</span>';
+													inputField += '</li>';
+												}
+											inputField += '</ul>';
+										inputField += '</div>';
+									inputField += '</div>';
+								}
+								break;
+
+							case 'radio':
+							case 'checkbox':
+								if ( options.length ) {
+									var multi = ( item.field_type === 'checkbox' && options.length > 1 ) ? '[]' : '';
+									inputField = '<div class="mdc-form-field ' + itemClasses + '">';
+									for ( var x in options ) {
+										var option = options[x],
+											option_value = option,
+											option_label = option;
+										if ( option.indexOf( '|' ) > -1 ) {
+											var parts = option.split( '|' );
+											option_label = parts[0];
+											option_value = parts[1];
+										}
+										var inputId = 'form_field_' + item.field_type + i + '-' + x;
+										inputField += '<div class="' + ( item.field_type === 'radio' ? 'mdc-radio' : 'mdc-checkbox' ) + '">';
+											inputField += '<input class="' + ( item.field_type === 'radio' ? 'mdc-radio__native-control' : 'mdc-checkbox__native-control' ) + '" type="' + item.field_type + '" id="' + inputId + '" name="form_field_' + i + multi + '" value="' + _.escape( option_value ) + '" ' + ( option_value === item.field_value ? 'checked' : '' ) + ' ' + required + '>';
+											if ( item.field_type === 'radio' ) {
+												inputField += '<div class="mdc-radio__background">';
+													inputField += '<div class="mdc-radio__outer-circle"></div>';
+													inputField += '<div class="mdc-radio__inner-circle"></div>';
+												inputField += '</div>';
+											} else {
+												inputField += '<div class="mdc-checkbox__background">';
+													inputField += '<svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">';
+														inputField += '<path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>';
+													inputField += '</svg>';
+													inputField += '<div class="mdc-checkbox__mixedmark"></div>';
+												inputField += '</div>';
+											}
+										inputField += '</div>';
+										inputField += '<label for="' + inputId + '">' + _.escape( option_label ) + '</label>';
+									}
+									inputField += '</div>';
+								}
+								break;
+
+							default:
+								inputField = elementor.hooks.applyFilters( 'cool_formkit/forms/content_template/field/' + item.field_type, '', item, i, settings );
+						}
+
+						switch ( item.field_type ) {
+							case 'textarea':
+								<!-- inputField = '<textarea class="cool-form__field elementor-field-textual elementor-size-' + settings.input_size + ' ' + itemClasses + '" name="form_field_' + i + '" id="form_field_' + i + '" rows="' + item.rows + '" ' + required + ' ' + placeholder + '>' + item.field_value + '</textarea>'; -->
 								break;
 
 							case 'select':
@@ -148,8 +268,8 @@ class Cool_Form extends Form_Base {
 									if ( item.allow_multiple && item.select_size ) {
 										size = ' size="' + item.select_size + '"';
 									}
-									inputField = '<div class="elementor-field elementor-select-wrapper ' + itemClasses + '">';
-									inputField += '<select class="cool-form__field elementor-field-textual elementor-size-' + settings.input_size + '" name="form_field_' + i + '" id="form_field_' + i + '" ' + required + multiple + size + ' >';
+									<!-- inputField = '<div class="elementor-field elementor-select-wrapper ' + itemClasses + '">'; -->
+									<!-- inputField += '<select class="cool-form__field elementor-field-textual elementor-size-' + settings.input_size + '" name="form_field_' + i + '" id="form_field_' + i + '" ' + required + multiple + size + ' >'; -->
 									for ( var x in options ) {
 										var option_value = options[ x ];
 										var option_label = options[ x ];
@@ -165,9 +285,9 @@ class Cool_Form extends Form_Base {
 										if ( item.field_value.split( ',' ) .indexOf( option_value ) ) {
 											view.addRenderAttribute( option_id, 'selected', 'selected' );
 										}
-										inputField += '<option ' + view.getRenderAttributeString( option_id ) + '>' + option_label + '</option>';
+										<!-- inputField += '<option ' + view.getRenderAttributeString( option_id ) + '>' + option_label + '</option>'; -->
 									}
-									inputField += '</select></div>';
+									<!-- inputField += '</select></div>'; -->
 								}
 								break;
 
@@ -180,7 +300,7 @@ class Cool_Form extends Form_Base {
 										multiple = '[]';
 									}
 
-									inputField = '<div class="elementor-field-subgroup ' + itemClasses + ' ' + _.escape( item.inline_list ) + '">';
+									<!-- inputField = '<div class="elementor-field-subgroup ' + itemClasses + ' ' + _.escape( item.inline_list ) + '">'; -->
 
 									for ( var x in options ) {
 										var option_value = options[ x ];
@@ -203,12 +323,12 @@ class Cool_Form extends Form_Base {
 											view.addRenderAttribute( option_id, 'checked', 'checked' );
 										}
 
-										inputField += '<span class="elementor-field-option"><input ' + view.getRenderAttributeString( option_id ) + ' ' + required + '> ';
-										inputField += '<label for="form_field_' + i + '-' + x + '">' + option_label + '</label></span>';
+										<!-- inputField += '<span class="elementor-field-option"><input ' + view.getRenderAttributeString( option_id ) + ' ' + required + '> '; -->
+										<!-- inputField += '<label for="form_field_' + i + '-' + x + '">' + option_label + '</label></span>'; -->
 
 									}
 
-									inputField += '</div>';
+									<!-- inputField += '</div>'; -->
 								}
 								break;
 
@@ -219,23 +339,29 @@ class Cool_Form extends Form_Base {
 							case 'number':
 							case 'search':
 								itemClasses = 'cool-form-field-textual ' + itemClasses;
-								inputField = '<input size="1" type="' + item.field_type + '" value="' + item.field_value + '" class="cool-form__field elementor-size-' + settings.input_size + ' ' + itemClasses + '" name="form_field_' + i + '" id="form_field_' + i + '" ' + required + ' ' + placeholder + ' >';
+								<!-- inputField = '<input size="1" type="' + item.field_type + '" value="' + item.field_value + '" class="cool-form__field elementor-size-' + settings.input_size + ' ' + itemClasses + '" name="form_field_' + i + '" id="form_field_' + i + '" ' + required + ' ' + placeholder + ' >'; -->
 								break;
 							default:
 								item.placeholder = _.escape( item.placeholder );
-								inputField = elementor.hooks.applyFilters( 'cool_formkit/forms/content_template/field/' + item.field_type, '', item, i, settings );
+								<!-- inputField = elementor.hooks.applyFilters( 'cool_formkit/forms/content_template/field/' + item.field_type, '', item, i, settings ); -->
 						}
+
+					#>
+						<div class="{{ fieldGroupClasses }}">
+							{{{ inputField }}}
+						</div>
+					<#
 
 						if ( inputField ) {
 							#>
-							<div class="{{ fieldGroupClasses }}">
+							<!-- <div class="{{ fieldGroupClasses }}">
 
 								<# if ( printLabel && item.field_label ) { #>
 									<label class="cool-form__field-label" for="form_field_{{ i }}" {{{ labelVisibility }}}>{{{ item.field_label }}}</label>
 								<# } #>
 
 								{{{ inputField }}}
-							</div>
+							</div> -->
 							<#
 						}
 					}

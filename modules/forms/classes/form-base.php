@@ -37,6 +37,168 @@ abstract class Form_Base extends Widget_Base {
 		];
 	}
 
+	public function make_textarea_field_md( $item, $item_index, $instance ): string {
+		ob_start();
+		?>
+		<label class="cool-form-text mdc-text-field mdc-text-field--outlined mdc-text-field--textarea">
+			<span class="mdc-notched-outline">
+				<span class="mdc-notched-outline__leading"></span>
+				<span class="mdc-notched-outline__notch">
+					<span class="mdc-floating-label" id="textarea-label-<?php echo esc_attr( $item_index ); ?>">
+						<?php echo esc_html( $item['field_label'] ); ?>
+					</span>
+				</span>
+				<span class="mdc-notched-outline__trailing"></span>
+			</span>
+			<span class="mdc-text-field__resizer">
+				<textarea
+					class="mdc-text-field__input"
+					id="<?php echo $this->get_attribute_id( $item ); ?>"
+					name="<?php echo $this->get_attribute_name( $item ); ?>"
+					rows="<?php echo esc_attr( $item['rows'] ); ?>"
+					<?php echo ( ! empty( $item['placeholder'] ) ) ? 'placeholder="' . esc_attr( $item['placeholder'] ) . '"' : ''; ?>
+					<?php echo ( ! empty( $item['required'] ) ) ? 'required' : ''; ?>
+				><?php echo esc_textarea( $item['field_value'] ?? '' ); ?></textarea>
+			</span>
+		</label>
+		<?php
+		return ob_get_clean();
+	}
+
+	public function make_text_field_md( $item, $item_index, $instance ): string {
+		ob_start();
+		?>
+		<label class="cool-form-text mdc-text-field mdc-text-field--outlined">
+			<span class="mdc-notched-outline">
+				<span class="mdc-notched-outline__leading"></span>
+				<span class="mdc-notched-outline__notch">
+					<span class="mdc-floating-label" id="text-label-<?php echo esc_attr( $item_index ); ?>">
+						<?php echo esc_html( $item['field_label'] ); ?>
+					</span>
+				</span>
+				<span class="mdc-notched-outline__trailing"></span>
+			</span>
+			<input 
+				type="<?php echo esc_attr( $item['field_type'] ); ?>"
+				class="mdc-text-field__input"
+				id="<?php echo $this->get_attribute_id( $item ); ?>"
+				name="<?php echo $this->get_attribute_name( $item ); ?>"
+				<?php echo ( ! empty( $item['placeholder'] ) ) ? 'placeholder="' . esc_attr( $item['placeholder'] ) . '"' : ''; ?>
+				<?php echo ( ! empty( $item['field_value'] ) ) ? 'value="' . esc_attr( $item['field_value'] ) . '"' : ''; ?>
+				<?php echo ( ! empty( $item['required'] ) ) ? 'required' : ''; ?>
+			>
+		</label>
+		<?php
+		return ob_get_clean();
+	}
+
+	public function make_select_field_md( $item, $i ): string {
+		?>
+		<div class="mdc-select mdc-select--outlined">
+			<div class="mdc-select__anchor" aria-labelledby="select-label-<?php echo esc_attr( $i ); ?>">
+				<span class="mdc-notched-outline">
+					<span class="mdc-notched-outline__leading"></span>
+					<span class="mdc-notched-outline__notch">
+						<span class="mdc-floating-label" id="select-label-<?php echo esc_attr( $i ); ?>">
+							<?php echo esc_html( $item['field_label'] ); ?>
+						</span>
+					</span>
+					<span class="mdc-notched-outline__trailing"></span>
+				</span>
+				<span class="mdc-select__selected-text-container">
+					<span class="mdc-select__selected-text"></span>
+				</span>
+				<span class="mdc-select__dropdown-icon">
+					<!-- You can insert your SVG icon or use MDC icon classes here -->
+					<svg class="mdc-select__dropdown-icon-graphic" viewBox="7 10 10 5" focusable="false">
+						<polygon class="mdc-select__dropdown-icon-inactive" stroke="none" fill-rule="evenodd" points="7 10 12 15 17 10"></polygon>
+						<polygon class="mdc-select__dropdown-icon-active" stroke="none" fill-rule="evenodd" points="7 15 12 10 17 15"></polygon>
+					</svg>
+				</span>
+			</div>
+			<div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">
+				<ul class="mdc-list" role="listbox" aria-label="<?php echo esc_attr( $item['field_label'] ); ?>">
+					<?php
+					$options = preg_split( "/\\r\\n|\\r|\\n/", $item['field_options'] );
+					if ( $options ) {
+						foreach ( $options as $key => $option ) {
+							$option_value = $option;
+							$option_label = $option;
+							if ( false !== strpos( $option, '|' ) ) {
+								list( $option_label, $option_value ) = explode( '|', $option );
+							}
+							$selected = '';
+							if ( ! empty( $item['field_value'] ) && in_array( $option_value, explode( ',', $item['field_value'] ), true ) ) {
+								$selected = 'aria-selected="true" class="mdc-list-item--selected"';
+							}
+							?>
+							<li class="mdc-list-item" role="option" data-value="<?php echo esc_attr( $option_value ); ?>" <?php echo $selected; ?>>
+								<span class="mdc-list-item__ripple"></span>
+								<span class="mdc-list-item__text"><?php echo esc_html( $option_label ); ?></span>
+							</li>
+						<?php }
+					} ?>
+				</ul>
+			</div>
+			<select name="form_fields[<?php echo $item['custom_id'] ?>]" id="form-field-<?php echo $item['custom_id'] ?>" style="display: none;">
+				<option value="">Select an option</option>
+				<option value="option1">Option 1</option>
+				<option value="option2">Option 2</option>
+			</select>
+		</div>
+		<?php
+		return ob_get_clean();
+	}
+
+	public function make_radio_checkbox_field_md( $item, $item_index, $type ): string {
+		ob_start();
+		$options = preg_split( "/\\r\\n|\\r|\\n/", $item['field_options'] );
+		?>
+		<div class="mdc-form-field <?php echo esc_attr( $item['css_classes'] ); ?>">
+			<?php
+			if ( $options ) {
+				foreach ( $options as $key => $option ) {
+					$option_value = $option;
+					$option_label = $option;
+					if ( false !== strpos( $option, '|' ) ) {
+						list( $option_label, $option_value ) = explode( '|', $option );
+					}
+					$input_id = $this->get_attribute_id( $item ) . '-' . $key;
+					?>
+					<div class="<?php echo ( 'radio' === $type ? 'mdc-radio' : 'mdc-checkbox' ); ?>">
+						<input
+							class="<?php echo ( 'radio' === $type ? 'mdc-radio__native-control' : 'mdc-checkbox__native-control' ); ?>"
+							type="<?php echo esc_attr( $type ); ?>"
+							id="<?php echo esc_attr( $input_id ); ?>"
+							name="<?php echo $this->get_attribute_name( $item ) . ( ( 'checkbox' === $type && count( $options ) > 1 ) ? '[]' : '' ); ?>"
+							value="<?php echo esc_attr( $option_value ); ?>"
+							<?php echo ( ! empty( $item['field_value'] ) && $option_value === $item['field_value'] ) ? 'checked' : ''; ?>
+							<?php echo ( ! empty( $item['required'] ) && 'radio' === $type ) ? 'required' : ''; ?>
+						>
+						<?php if ( 'checkbox' === $type ) : ?>
+							<div class="mdc-checkbox__background">
+								<svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+									<path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+								</svg>
+								<div class="mdc-checkbox__mixedmark"></div>
+							</div>
+						<?php else : ?>
+							<div class="mdc-radio__background">
+								<div class="mdc-radio__outer-circle"></div>
+								<div class="mdc-radio__inner-circle"></div>
+							</div>
+						<?php endif; ?>
+					</div>
+					<label for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $option_label ); ?></label>
+					<?php
+				}
+			}
+			?>
+		</div>
+		<?php
+		return ob_get_clean();
+	}
+	
 	public function make_textarea_field( $item, $item_index, $instance ): string {
 		$this->add_render_attribute( 'textarea' . $item_index, [
 			'class' => [

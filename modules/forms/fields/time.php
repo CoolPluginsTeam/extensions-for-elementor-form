@@ -73,14 +73,26 @@ class Time extends Field_Base {
 	}
 
 	public function render( $item, $item_index, $form ) {
-		$form->add_render_attribute( 'input' . $item_index, 'class', 'elementor-field-textual cool-form-time-field' );
+		// Use the Material Design input class and add any additional classes.
+		$form->add_render_attribute( 'input' . $item_index, 'class', 'mdc-text-field__input cool-form-time-field' );
 		if ( isset( $item['use_native_time'] ) && 'yes' === $item['use_native_time'] ) {
 			$form->add_render_attribute( 'input' . $item_index, 'class', 'cool-form-use-native' );
 		}
 		?>
-		<input <?php $form->print_render_attribute_string( 'input' . $item_index ); ?>>
+		<label class="cool-form-text mdc-text-field mdc-text-field--outlined">
+			<span class="mdc-notched-outline">
+				<span class="mdc-notched-outline__leading"></span>
+				<span class="mdc-notched-outline__notch">
+					<span class="mdc-floating-label" id="time-label-<?php echo esc_attr( $item_index ); ?>">
+						<?php echo esc_html( $item['field_label'] ); ?>
+					</span>
+				</span>
+				<span class="mdc-notched-outline__trailing"></span>
+			</span>
+			<input type="time" <?php $form->print_render_attribute_string( 'input' . $item_index ); ?> >
+		</label>
 		<?php
-	}
+	}	
 
 	public function validation( $field, Classes\Form_Record $record, Ajax_Handler $ajax_handler) {
 		if ( empty( $field['value'] ) ) {
