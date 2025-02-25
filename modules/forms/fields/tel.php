@@ -28,16 +28,21 @@ class Tel extends Field_Base {
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">
-					<span class="mdc-floating-label" id="tel-label-<?php echo esc_attr( $item_index ); ?>">
-						<?php echo esc_html( $item['field_label'] ); ?>
-					</span>
+					<?php if($item['field_label'] !== ''){?>
+						<span class="mdc-floating-label" id="tel-label-<?php echo esc_attr( $item_index ); ?>">
+							<?php echo esc_html( $item['field_label'] ); ?>
+						</span>
+					<?php
+					}
+					?>
 				</span>
 				<span class="mdc-notched-outline__trailing"></span>
 			</span>
 			<input type="tel" size="1" <?php $form->print_render_attribute_string( 'input' . $item_index ); ?>>
+			<i aria-hidden="true" class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing cool-tel-error-icon" style="display:none">error</i>
 		</label>
 		<div class="mdc-text-field-helper-line">
-  			<div class="mdc-text-field-helper-text" id="my-helper-id" aria-hidden="true"></div>
+  			<div class="mdc-text-field-helper-text" id="cool-tel-error" aria-hidden="true"></div>
 		</div>
 		<?php
 	}
@@ -48,7 +53,7 @@ class Tel extends Field_Base {
 			return;
 		}
 		if ( preg_match( '/^[0-9()#&+*-=.]+$/', $field['value'] ) !== 1 ) {
-			$ajax_handler->add_error( $field['id'], esc_html__( 'The field accepts only numbers and phone characters (#, -, *, etc).', 'cool-formkit' ) );
+			// $ajax_handler->add_error( $field['id'], esc_html__( 'The field accepts only numbers and phone characters (#, -, *, etc).', 'cool-formkit' ) );
 		}
 	}
 }

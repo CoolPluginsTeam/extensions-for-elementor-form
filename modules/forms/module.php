@@ -67,6 +67,13 @@ class Module extends Module_Base {
 			[ 'elementor-frontend' ],
 			CFL_VERSION
 		);
+
+		wp_register_style(
+			'cool-form-material-helper-css',
+			CFL_PLUGIN_URL . 'assets/css/Material-css/material-helper.css',
+			[ 'elementor-frontend' ],
+			CFL_VERSION
+		);
 	}
 
 	public static function find_element_recursive( $elements, $form_id ) {

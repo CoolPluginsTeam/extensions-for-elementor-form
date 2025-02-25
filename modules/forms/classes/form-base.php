@@ -44,9 +44,13 @@ abstract class Form_Base extends Widget_Base {
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">
-					<span class="mdc-floating-label" id="textarea-label-<?php echo esc_attr( $item_index ); ?>">
-						<?php echo esc_html( $item['field_label'] ); ?>
-					</span>
+					<?php if($item['field_label'] !== ''){?>
+						<span class="mdc-floating-label" id="textarea-label-<?php echo esc_attr( $item_index ); ?>">
+							<?php echo esc_html( $item['field_label'] ); ?>
+						</span>
+					<?php
+					}
+					?>
 				</span>
 				<span class="mdc-notched-outline__trailing"></span>
 			</span>
@@ -68,13 +72,17 @@ abstract class Form_Base extends Widget_Base {
 	public function make_text_field_md( $item, $item_index, $instance ): string {
 		ob_start();
 		?>
-		<label class="cool-form-text mdc-text-field mdc-text-field--outlined">
+		<label class="cool-form-text mdc-text-field mdc-text-field--outlined <?php echo ($item['field_label'] === '') ? 'mdc-text-field--no-label' : '' ?>">
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">
-					<span class="mdc-floating-label" id="text-label-<?php echo esc_attr( $item_index ); ?>">
-						<?php echo esc_html( $item['field_label'] ); ?>
-					</span>
+					<?php if($item['field_label'] !== ''){?>
+						<span class="mdc-floating-label" id="text-label-<?php echo esc_attr( $item_index ); ?>">
+							<?php echo esc_html( $item['field_label'] ); ?>
+						</span>
+					<?php
+					}
+					?>
 				</span>
 				<span class="mdc-notched-outline__trailing"></span>
 			</span>
@@ -99,9 +107,13 @@ abstract class Form_Base extends Widget_Base {
 				<span class="mdc-notched-outline">
 					<span class="mdc-notched-outline__leading"></span>
 					<span class="mdc-notched-outline__notch">
-						<span class="mdc-floating-label" id="select-label-<?php echo esc_attr( $i ); ?>">
-							<?php echo esc_html( $item['field_label'] ); ?>
-						</span>
+						<?php if($item['field_label'] !== ''){?>
+							<span class="mdc-floating-label" id="select-label-<?php echo esc_attr( $i ); ?>">
+								<?php echo esc_html( $item['field_label'] ); ?>
+							</span>
+						<?php
+						}
+						?>
 					</span>
 					<span class="mdc-notched-outline__trailing"></span>
 				</span>

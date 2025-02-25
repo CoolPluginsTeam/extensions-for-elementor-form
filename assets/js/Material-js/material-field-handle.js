@@ -6,36 +6,62 @@
         forms.each(function(formIndex) {
             const textFields = document.querySelectorAll('.cool-form-text');
             textFields.forEach(field => {
-                const mdcField = mdc.textField.MDCTextField.attachTo(field);
+                // const mdcField = mdc.textField.MDCTextField.attachTo(field);
+                const mdcField = mdc.textfield.MDCTextField.attachTo(field);
                 const mainInput = mdcField.input
                 if(mainInput.type == 'number'){
                     mainInput.addEventListener('input', function(e) {
+                        let inputVal = e.target.value
                         let inputMin = mainInput.min
                         let inputMax = mainInput.max
                         let helperText = mdcField.helperText.foundation.adapter
-                        if(e.target.value < Number(inputMin)){
+
+
+                        if(inputVal === ''){
                             mdcField.valid = false
-                            helperText.setContent(`Value must be greater than or equal to ${inputMin}`)
-                        }else if(e.target.value > Number(inputMax)){
-                            mdcField.valid = false
-                            helperText.setContent(`Value must be less than or equal to ${inputMax}`)
+                            mdcField.trailingIcon.root.style.display = 'initial'
+                            helperText.setContent(`Please enter a number value to the field`)
+                        }else{
+                            if(inputMin !== ""){
+                                if(inputVal < Number(inputMin)){
+                                    mdcField.valid = false
+                                    mdcField.trailingIcon.root.style.display = 'initial'
+                                    helperText.setContent(`Value must be greater than or equal to ${inputMin}`)
+                                }
+                            }
+                            if(inputMax !== ''){
+                                if(inputVal > Number(inputMax)){
+                                    mdcField.valid = false
+                                    mdcField.trailingIcon.root.style.display = 'initial'
+                                    helperText.setContent(`Value must be less than or equal to ${inputMax}`)
+                                }
+                            }
                         }
                     });
                 }else if(mainInput.type == 'tel'){
-                    let helperText = mdcField.helperText.foundation.adapter
-                    mainInput.addEventListener('input', function(e) {
+                    let helperTextAdapter = mdcField.helperText.foundation.adapter;
+
+                    const validateTel = (e) => {
                         const value = e.target.value;
                         const pattern = mainInput.pattern; 
                         const regex = new RegExp(pattern);
-                        
-                        if (!regex.test(value)) {
-                            mdcField.valid = false
-                            helperText.setContent(`The field accepts only numbers and phone characters (#, -, *, etc).`)
+
+                        if(value !== ''){
+                            if (!regex.test(value)) {
+                                mdcField.valid = false;
+                                mdcField.trailingIcon.root.style.display = 'initial'
+                                helperTextAdapter.setContent('The field accepts only numbers and phone characters (#, -, *, etc).');
+                            }else {
+                                mdcField.valid = true;
+                                helperTextAdapter.setContent('');
+                            }
                         }else{
-                            helperText.setContent('')
-                            mdcField.valid = true
+                            mdcField.trailingIcon.root.style.display = 'none'
                         }
-                    });
+                    };
+
+                    mainInput.addEventListener('input', validateTel);
+                    mainInput.addEventListener('blur', validateTel);
                 }
             });
 
@@ -57,6 +83,16 @@
                 });
             });
         });
+
+        forms.find('.cool-form-submit-button').click((e) => {
+            const $invalidField = forms.find('.mdc-text-field--invalid');
+            if ($invalidField.length) {
+                e.preventDefault();
+                $invalidField.find('.mdc-text-field__input').focus();
+                return false;
+            }
+        });
+        
     };
 
     // For frontend

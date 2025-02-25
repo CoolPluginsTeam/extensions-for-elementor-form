@@ -42,16 +42,21 @@ class Number extends Field_Base {
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">
-					<span class="mdc-floating-label" id="number-label-<?php echo esc_attr( $item_index ); ?>">
-						<?php echo esc_html( $item['field_label'] ); ?>
-					</span>
+					<?php if($item['field_label'] !== ''){?>
+						<span class="mdc-floating-label" id="number-label-<?php echo esc_attr( $item_index ); ?>">
+							<?php echo esc_html( $item['field_label'] ); ?>
+						</span>
+					<?php
+					}
+					?>
 				</span>
 				<span class="mdc-notched-outline__trailing"></span>
 			</span>
 			<input type="number" <?php $form->print_render_attribute_string( 'input' . $item_index ); ?> data-index="<?php echo $item_index ?>" />
+			<i aria-hidden="true" class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing cool-number-error-icon" style="display:none">error</i>
 		</label>
 		<div class="mdc-text-field-helper-line">
-  			<div class="mdc-text-field-helper-text" id="my-helper-id" aria-hidden="true"></div>
+  			<div class="mdc-text-field-helper-text" id="cool-number-error" aria-hidden="true"></div>
 		</div>
 		<?php
 	}
@@ -112,12 +117,12 @@ class Number extends Field_Base {
 
 				if ( ! empty( $field_data['num_field_max'] ) && $field_data['num_field_max'] < (int) $field['value'] ) {
 					/* translators: %s: The value of max field. */
-					$ajax_handler->add_error( $field['id'], sprintf( esc_html__( 'The field value must be less than or equal to %s.', 'elementor-pro' ), $field_data['num_field_max'] ) );
+					// $ajax_handler->add_error( $field['id'], sprintf( esc_html__( 'The field value must be less than or equal to %s.', 'elementor-pro' ), $field_data['num_field_max'] ) );
 				}
 		
 				if ( ! empty( $field_data['num_field_min'] ) && $field_data['num_field_min'] > (int) $field['value'] ) {
 					/* translators: %s: The value of min field. */
-					$ajax_handler->add_error( $field['id'], sprintf( esc_html__( 'The field value must be greater than or equal to %s.', 'elementor-pro' ), $field_data['num_field_min'] ) );
+					// $ajax_handler->add_error( $field['id'], sprintf( esc_html__( 'The field value must be greater than or equal to %s.', 'elementor-pro' ), $field_data['num_field_min'] ) );
 				}
 			}
 		}

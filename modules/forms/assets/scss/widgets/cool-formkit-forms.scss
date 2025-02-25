@@ -81,13 +81,100 @@
 		flex-direction: column;
 		gap: var(--cool-form-label-spacing);
 
-		&.is-field-required.is-mark-required .cool-form__field-label {
-			&::after {
+		&.is-field-required.is-mark-required {
+			.cool-form__field-label {
+			  &::after {
 				content: "*";
 				color: var(--cool-form-mark-color);
 				display: inline-block;
+			  }
+			}
+		  }
+		
+		  @mixin set-full-border-radius($radius) {
+			.mdc-notched-outline__leading,
+			.mdc-notched-outline__notch,
+			.mdc-notched-outline__trailing {
+			  border-radius: $radius;
+			}
+		  }
+		
+		  @mixin set-horizontal-border-radius($left, $right) {
+			.mdc-notched-outline__leading {
+			  border-top-left-radius: $left;
+			  border-bottom-left-radius: $left;
+			}
+			.mdc-notched-outline__trailing {
+			  border-top-right-radius: $right;
+			  border-bottom-right-radius: $right;
+			}
+		  }
+		
+		  .mdc-text-field{
+			background-color:var(--cool-form-field-bg-color);
+		  }
+
+		  // Shape modifiers
+		  &.has-shape-sharp {
+			.mdc-text-field, .mdc-select {
+			  .mdc-notched-outline {
+				@include set-full-border-radius($corners-shape-sharp);
+			  }
+			}
+		  }
+		
+		  &.has-shape-rounded {
+			.mdc-text-field, .mdc-select {
+				border-bottom-left-radius: $corners-shape-rounded;
+				border-top-left-radius: $corners-shape-rounded;
+				border-bottom-right-radius: $corners-shape-rounded;
+  				border-top-right-radius: $corners-shape-rounded;
+			  .mdc-notched-outline {
+				@include set-horizontal-border-radius($corners-shape-rounded, $corners-shape-rounded);
+			  }
+			}
+		  }
+		
+		  &.has-shape-round {
+			.mdc-text-field, .mdc-select {
+				border-bottom-left-radius: 14px;
+				border-top-left-radius: 14px;
+				border-bottom-right-radius: $corners-shape-round;
+  				border-top-right-radius: $corners-shape-round;
+			  .mdc-notched-outline {
+				@include set-horizontal-border-radius($corners-shape-round, $corners-shape-round);
+			  }
+			}
+		  }
+		
+		  &.has-shape-default {
+			.mdc-text-field, .mdc-select {
+			  .mdc-notched-outline {
+				@include set-horizontal-border-radius($corners-shape-default, $corners-shape-default);
+			  }
+			}
+		  }
+		
+		.mdc-text-field, .mdc-select {
+				.mdc-notched-outline {
+					.mdc-notched-outline__leading,
+					.mdc-notched-outline__notch,
+					.mdc-notched-outline__trailing {
+						border-width: var(--cool-form-field-border-width);
+					}
+				}
+			}
+
+		.mdc-text-field:not(.mdc-text-field--invalid) {
+			.mdc-notched-outline {
+				.mdc-notched-outline__leading,
+				.mdc-notched-outline__notch,
+				.mdc-notched-outline__trailing {
+					border-color: var(--cool-form-field-border-color);
+				}
 			}
 		}
+
 	}
 
 	&__field-group select{
@@ -95,11 +182,11 @@
 		color: var(--cool-form-field-text-color);		
 	}
 	
-	&__field-group.has-border select{
-		border-color: var(--cool-form-field-border-color);
-		border-style: solid;
-		border-width: var(--cool-form-field-border-width);		
-	}
+	// &__field-group.has-border select{
+	// 	border-color: var(--cool-form-field-border-color);
+	// 	border-style: solid;
+	// 	border-width: var(--cool-form-field-border-width);		
+	// }
 
 	&__field-group,
 	&__submit-group {
@@ -140,9 +227,35 @@
 		color: var(--cool-form-label-color);
 	}
 
-	.cool-form-text.mdc-text-field .mdc-floating-label {
+	.cool-form-text.mdc-text-field {
+		.mdc-floating-label {
 		color: var(--cool-form-label-color);
+		}
 	}
+	
+	.cool-form__field-group {
+		.mdc-form-field {
+			label {
+				color: var(--cool-form-label-color);
+			}
+		}		
+		.mdc-select {
+			.mdc-select__anchor {
+				.mdc-notched-outline {
+					.mdc-notched-outline__notch {
+						.mdc-floating-label {
+							color: var(--cool-form-label-color);
+						}
+					}
+				}
+			}
+		}
+	}
+	.mdc-text-field:not(.mdc-text-field--disabled){
+		.mdc-text-field__input{
+			color:var(--cool-form-field-text-color);
+		}
+	} 
 
 	&__field:not(.cool-form__select),
 	&__field[type="text"],
@@ -159,11 +272,11 @@
 			color: var(--cool-form-field-text-color);
 		}
 
-		.has-border & {
-			border-color: var(--cool-form-field-border-color);
-			border-style: solid;
-			border-width: var(--cool-form-field-border-width);
-		}
+		// .has-border & {
+		// 	border-color: var(--cool-form-field-border-color);
+		// 	border-style: solid;
+		// 	border-width: var(--cool-form-field-border-width);
+		// }
 
 		.has-shape-sharp & {
 			border-radius: $corners-shape-sharp;

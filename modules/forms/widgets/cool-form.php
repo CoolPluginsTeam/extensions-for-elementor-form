@@ -56,7 +56,7 @@ class Cool_Form extends Form_Base {
 	 * @return array Widget style dependencies.
 	 */
 	public function get_style_depends(): array {
-		return [ 'Cool_FormKit-forms','cool-form-material-css' ];
+		return [ 'Cool_FormKit-forms','cool-form-material-css','cool-form-material-helper-css' ];
 	}
 
 	public function get_script_depends(): array {
@@ -1225,13 +1225,13 @@ class Cool_Form extends Form_Base {
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
-				'name' => 'label_typography',
-				'selector' => '{{WRAPPER}} .cool-form__field-label',
-				'global' => [
+				'name'     => 'label_typography',
+				'selector' => '{{WRAPPER}} .cool-form__field-label, {{WRAPPER}} .cool-form-text.mdc-text-field .mdc-floating-label, {{WRAPPER}} .cool-form__field-group .mdc-form-field label, {{WRAPPER}} .cool-form__field-group .mdc-select .mdc-select__anchor .mdc-notched-outline .mdc-notched-outline__notch .mdc-floating-label',
+				'global'   => [
 					'default' => Global_Typography::TYPOGRAPHY_TEXT,
 				],
 			]
-		);
+		);		
 
 		$this->end_controls_section();
 	}
@@ -1280,12 +1280,12 @@ class Cool_Form extends Form_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'field_typography',
-				'selector' => '{{WRAPPER}} .cool-form__field, {{WRAPPER}} .cool-form__field::placeholder',
-				'global' => [
+				'selector' => '{{WRAPPER}} .cool-form .cool-form__wrapper .cool-form__field-group .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input, {{WRAPPER}} .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input::placeholder',
+				'global'   => [
 					'default' => Global_Typography::TYPOGRAPHY_TEXT,
 				],
 			]
-		);
+		);		
 
 		$this->add_control(
 			'field_background_color',
@@ -1332,7 +1332,7 @@ class Cool_Form extends Form_Base {
 					],
 				],
 				'default' => [
-					'size' => 1,
+					'size' => 4,
 					'unit' => 'px',
 				],
 				'selectors' => [

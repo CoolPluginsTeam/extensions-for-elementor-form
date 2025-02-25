@@ -91,7 +91,8 @@ class Widget_Form_Render {
 					?>
 					<div <?php $this->widget->print_render_attribute_string( 'field-group' . $item_index ); ?>>
 						<?php
-						if ( $print_label && $item['field_label'] ) {
+						// if ( $print_label && $item['field_label'] ) {
+						if ( $print_label ) {
 
 							switch ( $item['field_type'] ){
 								case 'textarea':
@@ -226,7 +227,7 @@ class Widget_Form_Render {
 		$button_width_tablet = $this->settings['button_width_tablet'];
 		$button_width_mobile = $this->settings['button_width_mobile'];
 		$button_hover_animation = $this->settings['button_hover_animation'];
-		$button_classnames = 'cool-form__button';
+		$button_classnames = 'cool-form__button cool-form-submit-button';
 		$button_border = $this->settings['button_border_switcher'];
 		$button_corner_shape = $this->settings['button_shape'];
 		$button_type = $this->settings['button_type'];

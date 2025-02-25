@@ -83,9 +83,13 @@ class Time extends Field_Base {
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">
-					<span class="mdc-floating-label" id="time-label-<?php echo esc_attr( $item_index ); ?>">
-						<?php echo esc_html( $item['field_label'] ); ?>
-					</span>
+					<?php if($item['field_label'] !== ''){?>
+						<span class="mdc-floating-label" id="time-label-<?php echo esc_attr( $item_index ); ?>">
+							<?php echo esc_html( $item['field_label'] ); ?>
+						</span>
+					<?php
+					}
+					?>
 				</span>
 				<span class="mdc-notched-outline__trailing"></span>
 			</span>
