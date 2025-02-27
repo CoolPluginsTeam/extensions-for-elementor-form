@@ -1,1 +1,907 @@
-(()=>{var e={525:e=>{e.exports=elementor.modules.controls.Repeater.extend({onBeforeRender(){this.$el.hide()},updateMap(e){const t=this,o={};t.collection.each((function(e){o[e.get("remote_id")]=e.get("local_id")})),t.collection.reset(),e.forEach((function(e){const n={remote_id:e.remote_id,remote_label:e.remote_label,remote_type:e.remote_type?e.remote_type:"",remote_required:!!e.remote_required&&e.remote_required,local_id:o[e.remote_id]?o[e.remote_id]:""};t.collection.add(n)})),t.render()},onRender(){elementor.modules.controls.Base.prototype.onRender.apply(this,arguments);const e=this;e.children.each((function(t){const o=t.children.last(),n={"":"- "+__("None","elementor")+" -"};let l=t.model.get("remote_label");t.model.get("remote_required")&&(l+='<span class="elementor-required">*</span>'),e.elementSettingsModel.get("form_fields").models.forEach((function(e,o){const l=t.model.get("remote_type");"text"!==l&&l!==e.get("field_type")||(n[e.get("custom_id")]=e.get("field_label")||"Field #"+(o+1))})),o.model.set("label",l),o.model.set("options",n),o.render(),t.$el.find(".elementor-repeater-row-tools").hide(),t.$el.find(".elementor-repeater-row-controls").removeClass("elementor-repeater-row-controls").find(".elementor-control").css({paddingBottom:0})})),e.$el.find(".elementor-button-wrapper").remove(),e.children.length&&e.$el.show()}})},962:e=>{e.exports=elementorModules.editor.utils.Module.extend({renderField(e,t,o,n){var l=_.escape(t.css_classes),i=t.required?" required":"",r=t.checked_by_default?' checked="checked"':"",s="";return t.acceptance_text&&(s='<label for="form_field_'+o+'" class="cool-form__field-label">'+_.escape(t.acceptance_text)+"</label>"),'<div class="mdc-form-field"><div class="mdc-checkbox"><input size="1" type="checkbox" '+r+' class="mdc-checkbox__native-control elementor-size-'+n.input_size+" "+l+'" name="form_field_'+o+'" id="form_field_'+o+'"'+i+' ><div class="mdc-checkbox__background"><svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24"><path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path></svg><div class="mdc-checkbox__mixedmark"></div></div></div>'+s+"</div>"},onInit(){elementor.hooks.addFilter("cool_formkit/forms/content_template/field/acceptance",this.renderField,10,4)}})},837:e=>{e.exports=elementorModules.editor.utils.Module.extend({renderField(e,t,o,n){var l=_.escape(t.css_classes),i=t.required?" required":"",r=t.min_date?' min="'+t.min_date+'"':"",s=t.max_date?' max="'+t.max_date+'"':"",d=t.placeholder?' placeholder="'+_.escape(t.placeholder)+'"':"";return"yes"===t.use_native_date&&(l+=" cool-form-use-native"),'<label class="cool-form-text mdc-text-field mdc-text-field--outlined"><span class="mdc-notched-outline"><span class="mdc-notched-outline__leading"></span><span class="mdc-notched-outline__notch"><span class="mdc-floating-label" id="date-label-'+o+'">'+_.escape(t.field_label)+'</span></span><span class="mdc-notched-outline__trailing"></span></span><input type="date" size="1"'+r+s+d+' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" class="mdc-text-field__input cool-form-date-field elementor-field elementor-size-'+n.input_size+" "+l+'" name="form_field_'+o+'" id="form_field_'+o+'"'+i+" ></label>"},onInit(){elementor.hooks.addFilter("cool_formkit/forms/content_template/field/date",this.renderField,10,4)}})},276:e=>{e.exports=elementorModules.editor.utils.Module.extend({renderField(e,t,o,n){var l=_.escape(t.css_classes),i=t.required?" required":"",r=t.placeholder?' placeholder="'+_.escape(t.placeholder)+'"':"";return'<label class="cool-form-text mdc-text-field mdc-text-field--outlined"><span class="mdc-notched-outline"><span class="mdc-notched-outline__leading"></span><span class="mdc-notched-outline__notch"><span class="mdc-floating-label" id="tel-label-'+o+'">'+_.escape(t.field_label)+'</span></span><span class="mdc-notched-outline__trailing"></span></span><input type="'+t.field_type+'" size="1"'+r+' pattern="[0-9()-]+" class="mdc-text-field__input cool-form__field elementor-field elementor-size-'+n.input_size+" "+l+'" name="form_field_'+o+'" id="form_field_'+o+'"'+i+" ></label>"},onInit(){elementor.hooks.addFilter("cool_formkit/forms/content_template/field/tel",this.renderField,10,4)}})},940:e=>{e.exports=elementorModules.editor.utils.Module.extend({renderField(e,t,o,n){var l=_.escape(t.css_classes),i=t.required?" required":"",r=t.placeholder?' placeholder="'+_.escape(t.placeholder)+'"':"";return"yes"===t.use_native_time&&(l+=" cool-form-use-native"),'<label class="cool-form-text mdc-text-field mdc-text-field--outlined"><span class="mdc-notched-outline"><span class="mdc-notched-outline__leading"></span><span class="mdc-notched-outline__notch"><span class="mdc-floating-label" id="time-label-'+o+'">'+_.escape(t.field_label)+'</span></span><span class="mdc-notched-outline__trailing"></span></span><input type="time" size="1"'+r+' class="mdc-text-field__input cool-form-time-field elementor-field elementor-size-'+n.input_size+" "+l+'" name="form_field_'+o+'" id="form_field_'+o+'"'+i+" ></label>"},onInit(){elementor.hooks.addFilter("cool_formkit/forms/content_template/field/time",this.renderField,10,4)}})},896:e=>{e.exports=function(){var e,t,o,n=function(){var t=e.children.findByModelCid(o.cid);t&&t.render()},l=function(){var e,l=t.get("settings").get("form_fields").where({field_type:"email"});l=_.reject(l,{field_label:""}),e=_.map(l,(function(e){return{id:e.get("custom_id"),label:sprintf("%s Field",e.get("field_label"))}})),o.set("options",{"":o.get("options")[""]}),_.each(e,(function(e){o.get("options")[e.id]=e.label})),n()},i=function(e){o.get("options")[""]=e.get("email_from"),n()},r=function(e){e.get("custom_id")&&"email"===e.get("field_type")&&l(),e.changed.email_from&&i(e)};elementor.hooks.addAction("panel/open_editor/widget/form-lite",(function(n,s){e=n.getCurrentPageView(),t=s,o=e.collection.findWhere({name:"email_reply_to"});var d=t.get("settings");d.on("change",r),i(d),l()}))}}},t={};function o(n){var l=t[n];if(void 0!==l)return l.exports;var i=t[n]={exports:{}};return e[n](i,i.exports,o),i.exports}o.n=e=>{var t=e&&e.__esModule?()=>e.default:()=>e;return o.d(t,{a:t}),t},o.d=(e,t)=>{for(var n in t)o.o(t,n)&&!o.o(e,n)&&Object.defineProperty(e,n,{enumerable:!0,get:t[n]})},o.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),o.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},(()=>{"use strict";var e={};o.r(e),o.d(e,{FormFieldsAddFirstStep:()=>l,FormFieldsSanitizeCustomId:()=>t,FormFieldsSetCustomId:()=>n,FormFieldsUpdateShortCode:()=>r,FormSanitizeId:()=>i});class t extends $e.modules.hookData.Dependency{ID_SANITIZE_FILTER=/[^\w]/g;getCommand(){return"document/elements/settings"}getId(){return"cool-forms-fields-sanitize-custom-ids"}getContainerType(){return"repeater"}getConditions(e){return void 0!==e.settings.custom_id}apply(e){const{containers:t=[e.container],settings:o}=e,{custom_id:n}=o;return!n.match(this.ID_SANITIZE_FILTER)||(t.forEach((e=>{const t=e.panel.getControlView("form_fields").children.findByModel(e.settings).children.find((e=>"custom_id"===e.model.get("name")));t.render(),t.$el.find("input").trigger("focus")})),!1)}}class n extends $e.modules.hookData.After{getCommand(){return"document/repeater/insert"}getId(){return"cool-forms-fields-set-custom-ids"}getContainerType(){return"widget"}getConditions(e){return"form_fields"===e.name}apply(e,t){const{containers:o=[e.container]}=e,n=$e.commands.isCurrentFirstTrace("document/repeater/duplicate");return o.forEach((e=>{const o=e.repeaters.form_fields.children.find((e=>!!e&&t.get("_id")===e.id));!n&&o.settings.get("custom_id")||$e.run("document/elements/settings",{container:o,settings:{custom_id:"field_"+o.id},options:{external:!0}})})),!0}}class l extends $e.modules.hookData.After{getCommand(){return"document/elements/settings"}getId(){return"cool-forms-fields-first-step"}getContainerType(){return"repeater"}getConditions(e){const{containers:t=[e.container]}=e;return"cool-form"===t[0].parent.parent.model.get("widgetType")&&"step"===e.settings.field_type}apply(e){const{containers:t=[e.container]}=e;return t.forEach((e=>{"step"!==e.parent.children[0].settings.get("field_type")&&$e.run("document/repeater/insert",{container:e.parent.parent,name:"form_fields",model:{field_type:"step"},options:{at:0,external:!0}})})),!0}}class i extends $e.modules.hookData.Dependency{ID_SANITIZE_FILTER=/[^\w]/g;getCommand(){return"document/elements/settings"}getId(){return"cool-forms-sanitize-ids"}getContainerType(){return"widget"}getConditions(e){return void 0!==e.settings.form_id}apply(e){const{container:t,settings:o}=e,{form_id:n}=o;if(n.match(this.ID_SANITIZE_FILTER)){const e=t.panel.getControlView("form_id");return e.render(),e.$el.find("input").trigger("focus"),!1}return!0}}class r extends $e.modules.hookUI.After{getCommand(){return"document/elements/settings"}getId(){return"cool-forms-forms-fields-update-shortcodes"}getContainerType(){return"repeater"}getConditions(e){return!(!$e.routes.isPartOf("panel/editor")||void 0===e.settings.custom_id)}apply(e){const{containers:t=[e.container]}=e;t.forEach((e=>{e.panel.getControlView("form_fields").children.find((t=>e.id===t.model.get("_id"))).children.find((e=>"shortcode"===e.model.get("name"))).render()}))}}class s extends $e.modules.ComponentBase{getNamespace(){return"cool-forms-lite"}defaultHooks(){return this.importHooks(e)}}var d=o(525),a=o.n(d);const c=class extends elementor.modules.controls.RepeaterRow{toggleFieldTypeControl(e){const t=this.collection.findWhere({name:"field_type"});this.children.findByModel(t).$el.toggle(e)}toggleStepField(e){this.$el.toggleClass("elementor-repeater-row--form-step",e)}toggleTools(e){this.ui.removeButton.add(this.ui.duplicateButton).toggle(e)}},m=class extends elementor.modules.controls.Repeater{className(){let e=super.className();return e+=" elementor-control-type-repeater",e}getChildView(){return c}initialize(...e){super.initialize(...e);const t=this.container.settings.get("form_fields");this.listenTo(t,"change",(e=>this.onFormFieldChange(e))).listenTo(t,"remove",(e=>this.onFormFieldRemove(e)))}getFirstChild(){return this.children.findByModel(this.collection.models[0])}lockFirstStep(){const e=this.getFirstChild();"step"===e.model.get("field_type")&&(1<this.collection.where({field_type:"step"}).length&&(e.toggleFieldTypeControl(!1),e.toggleTools(!1)),e.toggleSort(!1))}onFormFieldChange(e){const t=e.changed.field_type;if(!t||"step"!==t&&"step"!==e._previousAttributes.field_type)return;const o="step"===t;this.children.findByModel(e).toggleStepField(o),this.onStepFieldChanged(o)}onFormFieldRemove(e){"step"===e.get("field_type")&&this.onStepFieldChanged(!1)}onStepFieldChanged(e){if(e)return void this.lockFirstStep();const t=this.collection.where({field_type:"step"});if(t.length>1)return;const o=this.getFirstChild();if(1===t.length)return o.toggleTools(!0),void o.toggleFieldTypeControl(!0);o.toggleSort(!0)}onAddChild(e){super.onAddChild(e),"step"===e.model.get("field_type")&&(this.lockFirstStep(),e.toggleStepField(!0))}};class p extends elementorModules.editor.utils.Module{onElementorInit(){const e=o(896);this.replyToField=new e;const t=o(962),n=o(276),l=o(837),i=o(940);this.Fields={tel:new n("cool-form"),acceptance:new t("cool-form"),date:new l("cool-form"),time:new i("cool-form")},elementor.addControlView("Fields_map",a()),elementor.addControlView("form-fields-repeater",m),this.onElementorInitComponents()}onElementorInitComponents(){$e.components.register(new s({manager:this}))}}const f=new p;window.Cool_FormKitForms=f})()})();
+/******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./modules/forms/assets/js/editor/component.js":
+/*!*****************************************************!*\
+  !*** ./modules/forms/assets/js/editor/component.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Component)
+/* harmony export */ });
+/* harmony import */ var _hooks___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./hooks/ */ "./modules/forms/assets/js/editor/hooks/index.js");
+
+class Component extends $e.modules.ComponentBase {
+  getNamespace() {
+    return 'cool-forms-lite';
+  }
+  defaultHooks() {
+    return this.importHooks(_hooks___WEBPACK_IMPORTED_MODULE_0__);
+  }
+}
+
+/***/ }),
+
+/***/ "./modules/forms/assets/js/editor/fields-map-control.js":
+/*!**************************************************************!*\
+  !*** ./modules/forms/assets/js/editor/fields-map-control.js ***!
+  \**************************************************************/
+/***/ ((module) => {
+
+module.exports = elementor.modules.controls.Repeater.extend({
+  onBeforeRender() {
+    this.$el.hide();
+  },
+  updateMap(fields) {
+    const self = this,
+      savedMapObject = {};
+    self.collection.each(function (model) {
+      savedMapObject[model.get('remote_id')] = model.get('local_id');
+    });
+    self.collection.reset();
+    fields.forEach(function (field) {
+      const model = {
+        remote_id: field.remote_id,
+        remote_label: field.remote_label,
+        remote_type: field.remote_type ? field.remote_type : '',
+        remote_required: field.remote_required ? field.remote_required : false,
+        local_id: savedMapObject[field.remote_id] ? savedMapObject[field.remote_id] : ''
+      };
+      self.collection.add(model);
+    });
+    self.render();
+  },
+  onRender() {
+    elementor.modules.controls.Base.prototype.onRender.apply(this, arguments);
+    const self = this;
+    self.children.each(function (view) {
+      const localFieldsControl = view.children.last(),
+        options = {
+          '': '- ' + __('None', 'elementor') + ' -'
+        };
+      let label = view.model.get('remote_label');
+      if (view.model.get('remote_required')) {
+        label += '<span class="elementor-required">*</span>';
+      }
+      self.elementSettingsModel.get('form_fields').models.forEach(function (model, index) {
+        // If it's an email field, add only email fields from thr form
+        const remoteType = view.model.get('remote_type');
+        if ('text' !== remoteType && remoteType !== model.get('field_type')) {
+          return;
+        }
+        options[model.get('custom_id')] = model.get('field_label') || 'Field #' + (index + 1);
+      });
+      localFieldsControl.model.set('label', label);
+      localFieldsControl.model.set('options', options);
+      localFieldsControl.render();
+      view.$el.find('.elementor-repeater-row-tools').hide();
+      view.$el.find('.elementor-repeater-row-controls').removeClass('elementor-repeater-row-controls').find('.elementor-control').css({
+        paddingBottom: 0
+      });
+    });
+    self.$el.find('.elementor-button-wrapper').remove();
+    if (self.children.length) {
+      self.$el.show();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./modules/forms/assets/js/editor/fields-repeater-control.js":
+/*!*******************************************************************!*\
+  !*** ./modules/forms/assets/js/editor/fields-repeater-control.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _fields_repeater_row__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fields-repeater-row */ "./modules/forms/assets/js/editor/fields-repeater-row.js");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (class extends elementor.modules.controls.Repeater {
+  className() {
+    let classes = super.className();
+    classes += ' elementor-control-type-repeater';
+    return classes;
+  }
+  getChildView() {
+    return _fields_repeater_row__WEBPACK_IMPORTED_MODULE_0__["default"];
+  }
+  initialize(...args) {
+    super.initialize(...args);
+    const formFields = this.container.settings.get('form_fields');
+    this.listenTo(formFields, 'change', model => this.onFormFieldChange(model)).listenTo(formFields, 'remove', model => this.onFormFieldRemove(model));
+  }
+  getFirstChild() {
+    return this.children.findByModel(this.collection.models[0]);
+  }
+  lockFirstStep() {
+    const firstChild = this.getFirstChild();
+    if ('step' !== firstChild.model.get('field_type')) {
+      return;
+    }
+    const stepFields = this.collection.where({
+      field_type: 'step'
+    });
+    if (1 < stepFields.length) {
+      firstChild.toggleFieldTypeControl(false);
+      firstChild.toggleTools(false);
+    }
+    firstChild.toggleSort(false);
+  }
+  onFormFieldChange(model) {
+    const fieldType = model.changed.field_type;
+    if (!fieldType || 'step' !== fieldType && 'step' !== model._previousAttributes.field_type) {
+      return;
+    }
+    const isStep = 'step' === fieldType;
+    this.children.findByModel(model).toggleStepField(isStep);
+    this.onStepFieldChanged(isStep);
+  }
+  onFormFieldRemove(model) {
+    if ('step' === model.get('field_type')) {
+      this.onStepFieldChanged(false);
+    }
+  }
+  onStepFieldChanged(isStep) {
+    if (isStep) {
+      this.lockFirstStep();
+      return;
+    }
+    const stepFields = this.collection.where({
+      field_type: 'step'
+    });
+    if (stepFields.length > 1) {
+      return;
+    }
+    const firstChild = this.getFirstChild();
+    if (1 === stepFields.length) {
+      firstChild.toggleTools(true);
+      firstChild.toggleFieldTypeControl(true);
+      return;
+    }
+    firstChild.toggleSort(true);
+  }
+  onAddChild(childView) {
+    super.onAddChild(childView);
+    if ('step' === childView.model.get('field_type')) {
+      this.lockFirstStep();
+      childView.toggleStepField(true);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./modules/forms/assets/js/editor/fields-repeater-row.js":
+/*!***************************************************************!*\
+  !*** ./modules/forms/assets/js/editor/fields-repeater-row.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (class extends elementor.modules.controls.RepeaterRow {
+  toggleFieldTypeControl(show) {
+    const fieldTypeModel = this.collection.findWhere({
+        name: 'field_type'
+      }),
+      fieldTypeControl = this.children.findByModel(fieldTypeModel);
+    fieldTypeControl.$el.toggle(show);
+  }
+  toggleStepField(isStep) {
+    this.$el.toggleClass('elementor-repeater-row--form-step', isStep);
+  }
+  toggleTools(show) {
+    this.ui.removeButton.add(this.ui.duplicateButton).toggle(show);
+  }
+});
+
+/***/ }),
+
+/***/ "./modules/forms/assets/js/editor/fields/acceptance.js":
+/*!*************************************************************!*\
+  !*** ./modules/forms/assets/js/editor/fields/acceptance.js ***!
+  \*************************************************************/
+/***/ ((module) => {
+
+module.exports = elementorModules.editor.utils.Module.extend({
+  renderField(inputField, item, i, settings) {
+    var itemClasses = _.escape(item.css_classes),
+      required = item.required ? ' required' : '',
+      checked = item.checked_by_default ? ' checked="checked"' : '',
+      label = '';
+    if (item.acceptance_text) {
+      label = '<label for="form_field_' + i + '" class="cool-form__field-label">' + _.escape(item.acceptance_text) + '</label>';
+    }
+    return `
+		<div class="mdc-form-field">
+		  <div class="mdc-checkbox">
+			<input size="1" type="checkbox" ${checked}
+			  class="mdc-checkbox__native-control elementor-size-${settings.input_size} ${itemClasses}"
+			  name="form_field_${i}" id="form_field_${i}" ${required}>
+			<div class="mdc-checkbox__background">
+			  <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+				<path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
+			  </svg>
+			  <div class="mdc-checkbox__mixedmark"></div>
+			</div>
+		  </div>
+		  ${label}
+		</div>
+	  `;
+  },
+  onInit() {
+    elementor.hooks.addFilter('cool_formkit/forms/content_template/field/acceptance', this.renderField, 10, 4);
+  }
+});
+
+/***/ }),
+
+/***/ "./modules/forms/assets/js/editor/fields/date.js":
+/*!*******************************************************!*\
+  !*** ./modules/forms/assets/js/editor/fields/date.js ***!
+  \*******************************************************/
+/***/ ((module) => {
+
+module.exports = elementorModules.editor.utils.Module.extend({
+  renderField(inputField, item, i, settings) {
+    var itemClasses = _.escape(item.css_classes),
+      required = item.required ? ' required' : '',
+      min = item.min_date ? ' min="' + item.min_date + '"' : '',
+      max = item.max_date ? ' max="' + item.max_date + '"' : '',
+      placeholder = item.placeholder ? ' placeholder="' + _.escape(item.placeholder) + '"' : '';
+    if ('yes' === item.use_native_date) {
+      itemClasses += ' cool-form-use-native';
+    }
+    return `
+    <label class="cool-form-text mdc-text-field mdc-text-field--outlined">
+      <span class="mdc-notched-outline">
+        <span class="mdc-notched-outline__leading"></span>
+        <span class="mdc-notched-outline__notch">
+          ${item.field_label !== '' && settings.show_labels ? `<span class="mdc-floating-label" id="date-label-${i}">${_.escape(item.field_label)}</span>` : ''}
+        </span>
+        <span class="mdc-notched-outline__trailing"></span>
+      </span>
+      <input type="date" size="1" ${min} ${max} ${placeholder}
+        pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+        class="mdc-text-field__input cool-form-date-field elementor-field elementor-size-${settings.input_size} ${itemClasses}"
+        name="form_field_${i}" id="form_field_${i}" ${required} >
+    </label>
+  `;
+  },
+  onInit() {
+    elementor.hooks.addFilter('cool_formkit/forms/content_template/field/date', this.renderField, 10, 4);
+  }
+});
+
+/***/ }),
+
+/***/ "./modules/forms/assets/js/editor/fields/tel.js":
+/*!******************************************************!*\
+  !*** ./modules/forms/assets/js/editor/fields/tel.js ***!
+  \******************************************************/
+/***/ ((module) => {
+
+module.exports = elementorModules.editor.utils.Module.extend({
+  renderField(inputField, item, i, settings) {
+    var itemClasses = _.escape(item.css_classes),
+      required = item.required ? ' required' : '',
+      placeholder = item.placeholder ? ' placeholder="' + _.escape(item.placeholder) + '"' : '';
+
+    // You can adjust the pattern if needed. Here we use a sample pattern.
+    var pattern = ' pattern="[0-9()-]+"';
+    return `
+			<label class="cool-form-text mdc-text-field mdc-text-field--outlined">
+				<span class="mdc-notched-outline">
+					<span class="mdc-notched-outline__leading"></span>
+					<span class="mdc-notched-outline__notch">
+						${item.field_label !== '' && settings.show_labels ? `<span class="mdc-floating-label" id="tel-label-${i}">${_.escape(item.field_label)}</span>` : ''}
+					</span>
+					<span class="mdc-notched-outline__trailing"></span>
+				</span>
+				<input 
+					type="${item.field_type}" 
+					size="1" 
+					${placeholder} ${pattern}
+					class="mdc-text-field__input cool-form__field elementor-field elementor-size-${settings.input_size} ${itemClasses}"
+					name="form_field_${i}" 
+					id="form_field_${i}" 
+					${required}
+				>
+				<i aria-hidden="true" class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing cool-tel-error-icon" style="display:none">error</i>
+			</label>
+			<div class="mdc-text-field-helper-line">
+				<div class="mdc-text-field-helper-text" id="cool-tel-error" aria-hidden="true"></div>
+			</div>
+		`;
+  },
+  onInit() {
+    elementor.hooks.addFilter('cool_formkit/forms/content_template/field/tel', this.renderField, 10, 4);
+  }
+});
+
+/***/ }),
+
+/***/ "./modules/forms/assets/js/editor/fields/time.js":
+/*!*******************************************************!*\
+  !*** ./modules/forms/assets/js/editor/fields/time.js ***!
+  \*******************************************************/
+/***/ ((module) => {
+
+module.exports = elementorModules.editor.utils.Module.extend({
+  renderField(inputField, item, i, settings) {
+    var itemClasses = _.escape(item.css_classes),
+      required = item.required ? ' required' : '',
+      placeholder = item.placeholder ? ' placeholder="' + _.escape(item.placeholder) + '"' : '';
+    if ('yes' === item.use_native_time) {
+      itemClasses += ' cool-form-use-native';
+    }
+    return `
+    <label class="cool-form-text mdc-text-field mdc-text-field--outlined">
+      <span class="mdc-notched-outline">
+        <span class="mdc-notched-outline__leading"></span>
+        <span class="mdc-notched-outline__notch">
+          ${item.field_label !== '' && settings.show_labels ? `<span class="mdc-floating-label" id="time-label-${i}">${_.escape(item.field_label)}</span>` : ''}
+        </span>
+        <span class="mdc-notched-outline__trailing"></span>
+      </span>
+      <input type="time" size="1" ${placeholder}
+        class="mdc-text-field__input cool-form-time-field elementor-field elementor-size-${settings.input_size} ${itemClasses}"
+        name="form_field_${i}" id="form_field_${i}" ${required} >
+    </label>
+  `;
+  },
+  onInit() {
+    elementor.hooks.addFilter('cool_formkit/forms/content_template/field/time', this.renderField, 10, 4);
+  }
+});
+
+/***/ }),
+
+/***/ "./modules/forms/assets/js/editor/hooks/data/form-fields-sanitize-custom-id.js":
+/*!*************************************************************************************!*\
+  !*** ./modules/forms/assets/js/editor/hooks/data/form-fields-sanitize-custom-id.js ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FormFieldsSanitizeCustomId: () => (/* binding */ FormFieldsSanitizeCustomId),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+class FormFieldsSanitizeCustomId extends $e.modules.hookData.Dependency {
+  ID_SANITIZE_FILTER = /[^\w]/g;
+  getCommand() {
+    return 'document/elements/settings';
+  }
+  getId() {
+    return 'cool-forms-fields-sanitize-custom-ids';
+  }
+  getContainerType() {
+    return 'repeater';
+  }
+  getConditions(args) {
+    return undefined !== args.settings.custom_id;
+  }
+  apply(args) {
+    const {
+        containers = [args.container],
+        settings
+      } = args,
+      // `custom_id` is the control name.
+      {
+        custom_id: customId
+      } = settings;
+    if (customId.match(this.ID_SANITIZE_FILTER)) {
+      // Re-render with old settings.
+      containers.forEach(container => {
+        const panelView = container.panel.getControlView('form_fields'),
+          currentItemView = panelView.children.findByModel(container.settings),
+          idView = currentItemView.children.find(view => 'custom_id' === view.model.get('name'));
+        idView.render();
+        idView.$el.find('input').trigger('focus');
+      });
+
+      // Hook-Break.
+      return false;
+    }
+    return true;
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FormFieldsSanitizeCustomId);
+
+/***/ }),
+
+/***/ "./modules/forms/assets/js/editor/hooks/data/form-fields-set-custom-id.js":
+/*!********************************************************************************!*\
+  !*** ./modules/forms/assets/js/editor/hooks/data/form-fields-set-custom-id.js ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FormFieldsSetCustomId: () => (/* binding */ FormFieldsSetCustomId),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+class FormFieldsSetCustomId extends $e.modules.hookData.After {
+  getCommand() {
+    return 'document/repeater/insert';
+  }
+  getId() {
+    return 'cool-forms-fields-set-custom-ids';
+  }
+  getContainerType() {
+    return 'widget';
+  }
+  getConditions(args) {
+    return 'form_fields' === args.name;
+  }
+  apply(args, model) {
+    const {
+        containers = [args.container]
+      } = args,
+      isDuplicate = $e.commands.isCurrentFirstTrace('document/repeater/duplicate');
+    containers.forEach((/** Container */container) => {
+      const itemContainer = container.repeaters.form_fields.children.find(childrenContainer => {
+        // Sometimes, one of children is {Empty}.
+        if (childrenContainer) {
+          return model.get('_id') === childrenContainer.id;
+        }
+        return false;
+      });
+      if (!isDuplicate && itemContainer.settings.get('custom_id')) {
+        return;
+      }
+      $e.run('document/elements/settings', {
+        container: itemContainer,
+        settings: {
+          custom_id: 'field_' + itemContainer.id
+        },
+        options: {
+          external: true
+        }
+      });
+    });
+    return true;
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FormFieldsSetCustomId);
+
+/***/ }),
+
+/***/ "./modules/forms/assets/js/editor/hooks/data/form-fields-step.js":
+/*!***********************************************************************!*\
+  !*** ./modules/forms/assets/js/editor/hooks/data/form-fields-step.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FormFieldsAddFirstStep: () => (/* binding */ FormFieldsAddFirstStep),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+class FormFieldsAddFirstStep extends $e.modules.hookData.After {
+  getCommand() {
+    return 'document/elements/settings';
+  }
+  getId() {
+    return 'cool-forms-fields-first-step';
+  }
+  getContainerType() {
+    return 'repeater';
+  }
+  getConditions(args) {
+    const {
+      containers = [args.container]
+    } = args;
+    return 'cool-form' === containers[0].parent.parent.model.get('widgetType') && 'step' === args.settings.field_type;
+  }
+  apply(args) {
+    const {
+      containers = [args.container]
+    } = args;
+    containers.forEach((/** Container */container) => {
+      const firstItem = container.parent.children[0];
+      if ('step' === firstItem.settings.get('field_type')) {
+        return;
+      }
+      $e.run('document/repeater/insert', {
+        container: container.parent.parent,
+        // Widget
+        name: 'form_fields',
+        model: {
+          field_type: 'step'
+        },
+        options: {
+          at: 0,
+          external: true
+        }
+      });
+    });
+    return true;
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FormFieldsAddFirstStep);
+
+/***/ }),
+
+/***/ "./modules/forms/assets/js/editor/hooks/data/form-sanitize-id.js":
+/*!***********************************************************************!*\
+  !*** ./modules/forms/assets/js/editor/hooks/data/form-sanitize-id.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FormSanitizeId: () => (/* binding */ FormSanitizeId),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+class FormSanitizeId extends $e.modules.hookData.Dependency {
+  ID_SANITIZE_FILTER = /[^\w]/g;
+  getCommand() {
+    return 'document/elements/settings';
+  }
+  getId() {
+    return 'cool-forms-sanitize-ids';
+  }
+  getContainerType() {
+    return 'widget';
+  }
+  getConditions(args) {
+    return undefined !== args.settings.form_id;
+  }
+  apply(args) {
+    const {
+      container,
+      settings
+    } = args;
+    const {
+      form_id: formId
+    } = settings;
+
+    // Re-render with old settings.
+    if (formId.match(this.ID_SANITIZE_FILTER)) {
+      const formIdView = container.panel.getControlView('form_id');
+      formIdView.render();
+      formIdView.$el.find('input').trigger('focus');
+
+      // Hook-Break.
+      return false;
+    }
+    return true;
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FormSanitizeId);
+
+/***/ }),
+
+/***/ "./modules/forms/assets/js/editor/hooks/data/index.js":
+/*!************************************************************!*\
+  !*** ./modules/forms/assets/js/editor/hooks/data/index.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FormFieldsAddFirstStep: () => (/* reexport safe */ _form_fields_step__WEBPACK_IMPORTED_MODULE_2__.FormFieldsAddFirstStep),
+/* harmony export */   FormFieldsSanitizeCustomId: () => (/* reexport safe */ _form_fields_sanitize_custom_id__WEBPACK_IMPORTED_MODULE_0__.FormFieldsSanitizeCustomId),
+/* harmony export */   FormFieldsSetCustomId: () => (/* reexport safe */ _form_fields_set_custom_id__WEBPACK_IMPORTED_MODULE_1__.FormFieldsSetCustomId),
+/* harmony export */   FormSanitizeId: () => (/* reexport safe */ _form_sanitize_id__WEBPACK_IMPORTED_MODULE_3__.FormSanitizeId)
+/* harmony export */ });
+/* harmony import */ var _form_fields_sanitize_custom_id__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form-fields-sanitize-custom-id */ "./modules/forms/assets/js/editor/hooks/data/form-fields-sanitize-custom-id.js");
+/* harmony import */ var _form_fields_set_custom_id__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form-fields-set-custom-id */ "./modules/forms/assets/js/editor/hooks/data/form-fields-set-custom-id.js");
+/* harmony import */ var _form_fields_step__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./form-fields-step */ "./modules/forms/assets/js/editor/hooks/data/form-fields-step.js");
+/* harmony import */ var _form_sanitize_id__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./form-sanitize-id */ "./modules/forms/assets/js/editor/hooks/data/form-sanitize-id.js");
+
+
+
+
+
+/***/ }),
+
+/***/ "./modules/forms/assets/js/editor/hooks/index.js":
+/*!*******************************************************!*\
+  !*** ./modules/forms/assets/js/editor/hooks/index.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FormFieldsAddFirstStep: () => (/* reexport safe */ _data___WEBPACK_IMPORTED_MODULE_0__.FormFieldsAddFirstStep),
+/* harmony export */   FormFieldsSanitizeCustomId: () => (/* reexport safe */ _data___WEBPACK_IMPORTED_MODULE_0__.FormFieldsSanitizeCustomId),
+/* harmony export */   FormFieldsSetCustomId: () => (/* reexport safe */ _data___WEBPACK_IMPORTED_MODULE_0__.FormFieldsSetCustomId),
+/* harmony export */   FormFieldsUpdateShortCode: () => (/* reexport safe */ _ui___WEBPACK_IMPORTED_MODULE_1__.FormFieldsUpdateShortCode),
+/* harmony export */   FormSanitizeId: () => (/* reexport safe */ _data___WEBPACK_IMPORTED_MODULE_0__.FormSanitizeId)
+/* harmony export */ });
+/* harmony import */ var _data___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./data/ */ "./modules/forms/assets/js/editor/hooks/data/index.js");
+/* harmony import */ var _ui___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ui/ */ "./modules/forms/assets/js/editor/hooks/ui/index.js");
+
+
+
+/***/ }),
+
+/***/ "./modules/forms/assets/js/editor/hooks/ui/form-fields-update-shortcode.js":
+/*!*********************************************************************************!*\
+  !*** ./modules/forms/assets/js/editor/hooks/ui/form-fields-update-shortcode.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FormFieldsUpdateShortCode: () => (/* binding */ FormFieldsUpdateShortCode),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+class FormFieldsUpdateShortCode extends $e.modules.hookUI.After {
+  getCommand() {
+    return 'document/elements/settings';
+  }
+  getId() {
+    return 'cool-forms-forms-fields-update-shortcodes';
+  }
+  getContainerType() {
+    return 'repeater';
+  }
+  getConditions(args) {
+    if (!$e.routes.isPartOf('panel/editor') || undefined === args.settings.custom_id) {
+      return false;
+    }
+    return true;
+  }
+  apply(args) {
+    const {
+      containers = [args.container]
+    } = args;
+    containers.forEach((/** Container */container) => {
+      const panelView = container.panel.getControlView('form_fields'),
+        currentItemView = panelView.children.find(view => container.id === view.model.get('_id')),
+        shortcodeView = currentItemView.children.find(view => 'shortcode' === view.model.get('name'));
+      shortcodeView.render();
+    });
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FormFieldsUpdateShortCode);
+
+/***/ }),
+
+/***/ "./modules/forms/assets/js/editor/hooks/ui/index.js":
+/*!**********************************************************!*\
+  !*** ./modules/forms/assets/js/editor/hooks/ui/index.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FormFieldsUpdateShortCode: () => (/* reexport safe */ _form_fields_update_shortcode__WEBPACK_IMPORTED_MODULE_0__.FormFieldsUpdateShortCode)
+/* harmony export */ });
+/* harmony import */ var _form_fields_update_shortcode__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form-fields-update-shortcode */ "./modules/forms/assets/js/editor/hooks/ui/form-fields-update-shortcode.js");
+
+
+/***/ }),
+
+/***/ "./modules/forms/assets/js/editor/module.js":
+/*!**************************************************!*\
+  !*** ./modules/forms/assets/js/editor/module.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ FormsModule)
+/* harmony export */ });
+/* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./component */ "./modules/forms/assets/js/editor/component.js");
+/* harmony import */ var _fields_map_control__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fields-map-control */ "./modules/forms/assets/js/editor/fields-map-control.js");
+/* harmony import */ var _fields_map_control__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_fields_map_control__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _fields_repeater_control__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fields-repeater-control */ "./modules/forms/assets/js/editor/fields-repeater-control.js");
+
+
+
+class FormsModule extends elementorModules.editor.utils.Module {
+  onElementorInit() {
+    const ReplyToField = __webpack_require__(/*! ./reply-to-field */ "./modules/forms/assets/js/editor/reply-to-field.js");
+    this.replyToField = new ReplyToField();
+
+    // Form fields
+    const AcceptanceField = __webpack_require__(/*! ./fields/acceptance */ "./modules/forms/assets/js/editor/fields/acceptance.js"),
+      TelField = __webpack_require__(/*! ./fields/tel */ "./modules/forms/assets/js/editor/fields/tel.js"),
+      DateField = __webpack_require__(/*! ./fields/date */ "./modules/forms/assets/js/editor/fields/date.js"),
+      TimeField = __webpack_require__(/*! ./fields/time */ "./modules/forms/assets/js/editor/fields/time.js");
+    this.Fields = {
+      tel: new TelField('cool-form'),
+      acceptance: new AcceptanceField('cool-form'),
+      date: new DateField('cool-form'),
+      time: new TimeField('cool-form')
+    };
+    elementor.addControlView('Fields_map', (_fields_map_control__WEBPACK_IMPORTED_MODULE_1___default()));
+    elementor.addControlView('form-fields-repeater', _fields_repeater_control__WEBPACK_IMPORTED_MODULE_2__["default"]);
+    this.onElementorInitComponents();
+  }
+  onElementorInitComponents() {
+    $e.components.register(new _component__WEBPACK_IMPORTED_MODULE_0__["default"]({
+      manager: this
+    }));
+  }
+}
+
+/***/ }),
+
+/***/ "./modules/forms/assets/js/editor/reply-to-field.js":
+/*!**********************************************************!*\
+  !*** ./modules/forms/assets/js/editor/reply-to-field.js ***!
+  \**********************************************************/
+/***/ ((module) => {
+
+module.exports = function () {
+  var editor, editedModel, replyToControl;
+  var setReplyToControl = function () {
+    replyToControl = editor.collection.findWhere({
+      name: 'email_reply_to'
+    });
+  };
+  var getReplyToView = function () {
+    return editor.children.findByModelCid(replyToControl.cid);
+  };
+  var refreshReplyToElement = function () {
+    var replyToView = getReplyToView();
+    if (replyToView) {
+      replyToView.render();
+    }
+  };
+  var updateReplyToOptions = function () {
+    var settingsModel = editedModel.get('settings'),
+      emailModels = settingsModel.get('form_fields').where({
+        field_type: 'email'
+      }),
+      emailFields;
+    emailModels = _.reject(emailModels, {
+      field_label: ''
+    });
+    emailFields = _.map(emailModels, function (model) {
+      return {
+        id: model.get('custom_id'),
+        label: sprintf('%s Field', model.get('field_label'))
+      };
+    });
+    replyToControl.set('options', {
+      '': replyToControl.get('options')['']
+    });
+    _.each(emailFields, function (emailField) {
+      replyToControl.get('options')[emailField.id] = emailField.label;
+    });
+    refreshReplyToElement();
+  };
+  var updateDefaultReplyTo = function (settingsModel) {
+    replyToControl.get('options')[''] = settingsModel.get('email_from');
+    refreshReplyToElement();
+  };
+  var onFormFieldsChange = function (changedModel) {
+    // If it's repeater field
+    if (changedModel.get('custom_id')) {
+      if ('email' === changedModel.get('field_type')) {
+        updateReplyToOptions();
+      }
+    }
+    if (changedModel.changed.email_from) {
+      updateDefaultReplyTo(changedModel);
+    }
+  };
+  var onPanelShow = function (panel, model) {
+    editor = panel.getCurrentPageView();
+    editedModel = model;
+    setReplyToControl();
+    var settingsModel = editedModel.get('settings');
+    settingsModel.on('change', onFormFieldsChange);
+    updateDefaultReplyTo(settingsModel);
+    updateReplyToOptions();
+  };
+  var init = function () {
+    elementor.hooks.addAction('panel/open_editor/widget/form-lite', onPanelShow);
+  };
+  init();
+};
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+(() => {
+"use strict";
+/*!*******************************************!*\
+  !*** ./modules/forms/assets/js/editor.js ***!
+  \*******************************************/
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _editor_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./editor/module */ "./modules/forms/assets/js/editor/module.js");
+
+const Cool_FormKitForms = new _editor_module__WEBPACK_IMPORTED_MODULE_0__["default"]();
+window.Cool_FormKitForms = Cool_FormKitForms;
+})();
+
+/******/ })()
+;
+//# sourceMappingURL=Cool_FormKit-forms-editor.js.map

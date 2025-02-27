@@ -11,19 +11,24 @@ module.exports = elementorModules.editor.utils.Module.extend( {
         itemClasses += ' cool-form-use-native';
     }
 
-    return '<label class="cool-form-text mdc-text-field mdc-text-field--outlined">' +
-             '<span class="mdc-notched-outline">' +
-               '<span class="mdc-notched-outline__leading"></span>' +
-               '<span class="mdc-notched-outline__notch">' +
-                 '<span class="mdc-floating-label" id="date-label-' + i + '">' + _.escape(item.field_label) + '</span>' +
-               '</span>' +
-               '<span class="mdc-notched-outline__trailing"></span>' +
-             '</span>' +
-             '<input type="date" size="1"' + min + max + placeholder +
-                    ' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"' +
-                    ' class="mdc-text-field__input cool-form-date-field elementor-field elementor-size-' + settings.input_size + ' ' + itemClasses + '"' +
-                    ' name="form_field_' + i + '" id="form_field_' + i + '"' + required + ' >' +
-           '</label>';
+    return `
+    <label class="cool-form-text mdc-text-field mdc-text-field--outlined">
+      <span class="mdc-notched-outline">
+        <span class="mdc-notched-outline__leading"></span>
+        <span class="mdc-notched-outline__notch">
+          ${ ( item.field_label !== '' && settings.show_labels )
+            ? `<span class="mdc-floating-label" id="date-label-${i}">${_.escape(item.field_label)}</span>`
+            : '' }
+        </span>
+        <span class="mdc-notched-outline__trailing"></span>
+      </span>
+      <input type="date" size="1" ${min} ${max} ${placeholder}
+        pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+        class="mdc-text-field__input cool-form-date-field elementor-field elementor-size-${settings.input_size} ${itemClasses}"
+        name="form_field_${i}" id="form_field_${i}" ${required} >
+    </label>
+  `;
+  
 },
 
 

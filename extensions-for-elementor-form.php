@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Cool FormKit Lite
  * Plugin URI: https://coolplugins.net/
- * Description: This plugin empowers your Elementor Forms with advanced functionality that simplifies workflows, improves usability, and integrates seamlessly with tools like WhatsApp.
+ * Description: Supercharge your Elementor forms with advanced functionality that streamlines workflows, enhances usability, and integrates seamlessly with tools like WhatsApp. Build dynamic forms directly in Elementor Free—no additional plugins required.
  * Author: Cool Plugins
  * Author URI: https://coolplugins.net/
  * Text Domain: extensions-for-elementor-form

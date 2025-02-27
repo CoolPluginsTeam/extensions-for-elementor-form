@@ -82,7 +82,7 @@
 		gap: var(--cool-form-label-spacing);
 
 		&.is-field-required.is-mark-required {
-			.cool-form__field-label {
+			.cool-form__field-label,.mdc-floating-label--required {
 			  &::after {
 				content: "*";
 				color: var(--cool-form-mark-color);
@@ -161,6 +161,7 @@
 					.mdc-notched-outline__notch,
 					.mdc-notched-outline__trailing {
 						border-width: var(--cool-form-field-border-width);
+						border-color: var(--cool-form-field-border-color);
 					}
 				}
 			}
@@ -412,3 +413,10 @@
 		}
 	}
 }
+
+.cool-form-button-icon{
+	svg{
+		height:auto;
+		width:1em;
+	}
+} 

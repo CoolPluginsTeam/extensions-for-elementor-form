@@ -19,6 +19,8 @@ class Tel extends Field_Base {
 	}
 
 	public function render( $item, $item_index, $form ) {
+		$settings = $form->get_settings();
+
 		// Use the Material Design input class.
 		$form->add_render_attribute( 'input' . $item_index, 'class', 'mdc-text-field__input' );
 		$form->add_render_attribute( 'input' . $item_index, 'pattern', '[0-9()#&+\*\-\.=]+' );
@@ -28,7 +30,7 @@ class Tel extends Field_Base {
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">
-					<?php if($item['field_label'] !== ''){?>
+					<?php if($item['field_label'] !== '' && !empty($settings['show_labels'])){?>
 						<span class="mdc-floating-label" id="tel-label-<?php echo esc_attr( $item_index ); ?>">
 							<?php echo esc_html( $item['field_label'] ); ?>
 						</span>

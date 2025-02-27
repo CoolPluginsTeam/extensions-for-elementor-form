@@ -44,7 +44,7 @@ abstract class Form_Base extends Widget_Base {
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">
-					<?php if($item['field_label'] !== ''){?>
+					<?php if($item['field_label'] !== '' && !empty($instance['show_labels'])){?>
 						<span class="mdc-floating-label" id="textarea-label-<?php echo esc_attr( $item_index ); ?>">
 							<?php echo esc_html( $item['field_label'] ); ?>
 						</span>
@@ -65,18 +65,21 @@ abstract class Form_Base extends Widget_Base {
 				><?php echo esc_textarea( $item['field_value'] ?? '' ); ?></textarea>
 			</span>
 		</label>
+		<div class="mdc-text-field-helper-line">
+  			<div class="mdc-text-field-helper-text" id="cool-textarea-error" aria-hidden="true"></div>
+		</div>
 		<?php
 		return ob_get_clean();
 	}
 
 	public function make_text_field_md( $item, $item_index, $instance ): string {
-		ob_start();
+		ob_start();		
 		?>
 		<label class="cool-form-text mdc-text-field mdc-text-field--outlined <?php echo ($item['field_label'] === '') ? 'mdc-text-field--no-label' : '' ?>">
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">
-					<?php if($item['field_label'] !== ''){?>
+					<?php if($item['field_label'] !== '' && !empty($instance['show_labels'])){?>
 						<span class="mdc-floating-label" id="text-label-<?php echo esc_attr( $item_index ); ?>">
 							<?php echo esc_html( $item['field_label'] ); ?>
 						</span>
@@ -95,19 +98,24 @@ abstract class Form_Base extends Widget_Base {
 				<?php echo ( ! empty( $item['field_value'] ) ) ? 'value="' . esc_attr( $item['field_value'] ) . '"' : ''; ?>
 				<?php echo ( ! empty( $item['required'] ) ) ? 'required' : ''; ?>
 			>
+			<i aria-hidden="true" class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing cool-<?php echo esc_attr( $item['field_type'] ); ?>-error-icon" style="display:none">error</i>
 		</label>
+		<div class="mdc-text-field-helper-line">
+  			<div class="mdc-text-field-helper-text" id="cool-<?php echo esc_attr( $item['field_type'] ); ?>-error" aria-hidden="true"></div>
+		</div>
 		<?php
 		return ob_get_clean();
 	}
 
-	public function make_select_field_md( $item, $i ): string {
+	public function make_select_field_md( $item, $i ,$instance): string {
+		ob_start();		
 		?>
 		<div class="mdc-select mdc-select--outlined">
 			<div class="mdc-select__anchor" aria-labelledby="select-label-<?php echo esc_attr( $i ); ?>">
 				<span class="mdc-notched-outline">
 					<span class="mdc-notched-outline__leading"></span>
 					<span class="mdc-notched-outline__notch">
-						<?php if($item['field_label'] !== ''){?>
+						<?php if($item['field_label'] !== '' && !empty($instance['show_labels'])){?>
 							<span class="mdc-floating-label" id="select-label-<?php echo esc_attr( $i ); ?>">
 								<?php echo esc_html( $item['field_label'] ); ?>
 							</span>
@@ -158,6 +166,9 @@ abstract class Form_Base extends Widget_Base {
 				<option value="option2">Option 2</option>
 			</select>
 		</div>
+		<div class="mdc-select-helper-line">
+  			<div class="mdc-select-helper-text" id="cool-select-error" aria-hidden="true" ></div>
+		</div>
 		<?php
 		return ob_get_clean();
 	}
@@ -166,7 +177,7 @@ abstract class Form_Base extends Widget_Base {
 		ob_start();
 		$options = preg_split( "/\\r\\n|\\r|\\n/", $item['field_options'] );
 		?>
-		<div class="mdc-form-field <?php echo esc_attr( $item['css_classes'] ); ?>">
+		<div class="mdc-form-field <?php echo esc_attr( $item['css_classes'] ); ?> <?php echo esc_attr($item['inline_list'] === 'elementor-subgroup-inline') ? 'inline-items':'ontop-items'?>">
 			<?php
 			if ( $options ) {
 				foreach ( $options as $key => $option ) {
@@ -177,31 +188,33 @@ abstract class Form_Base extends Widget_Base {
 					}
 					$input_id = $this->get_attribute_id( $item ) . '-' . $key;
 					?>
-					<div class="<?php echo ( 'radio' === $type ? 'mdc-radio' : 'mdc-checkbox' ); ?>">
-						<input
-							class="<?php echo ( 'radio' === $type ? 'mdc-radio__native-control' : 'mdc-checkbox__native-control' ); ?>"
-							type="<?php echo esc_attr( $type ); ?>"
-							id="<?php echo esc_attr( $input_id ); ?>"
-							name="<?php echo $this->get_attribute_name( $item ) . ( ( 'checkbox' === $type && count( $options ) > 1 ) ? '[]' : '' ); ?>"
-							value="<?php echo esc_attr( $option_value ); ?>"
-							<?php echo ( ! empty( $item['field_value'] ) && $option_value === $item['field_value'] ) ? 'checked' : ''; ?>
-							<?php echo ( ! empty( $item['required'] ) && 'radio' === $type ) ? 'required' : ''; ?>
-						>
-						<?php if ( 'checkbox' === $type ) : ?>
-							<div class="mdc-checkbox__background">
-								<svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-									<path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-								</svg>
-								<div class="mdc-checkbox__mixedmark"></div>
-							</div>
-						<?php else : ?>
-							<div class="mdc-radio__background">
-								<div class="mdc-radio__outer-circle"></div>
-								<div class="mdc-radio__inner-circle"></div>
-							</div>
-						<?php endif; ?>
-					</div>
-					<label for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $option_label ); ?></label>
+					<span class="field-sub-options">
+						<div class="<?php echo ( 'radio' === $type ? 'mdc-radio' : 'mdc-checkbox' ); ?>">
+							<input
+								class="<?php echo ( 'radio' === $type ? 'mdc-radio__native-control' : 'mdc-checkbox__native-control' ); ?>"
+								type="<?php echo esc_attr( $type ); ?>"
+								id="<?php echo esc_attr( $input_id ); ?>"
+								name="<?php echo $this->get_attribute_name( $item ) . ( ( 'checkbox' === $type && count( $options ) > 1 ) ? '[]' : '' ); ?>"
+								value="<?php echo esc_attr( $option_value ); ?>"
+								<?php echo ( ! empty( $item['field_value'] ) && $option_value === $item['field_value'] ) ? 'checked' : ''; ?>
+								<?php echo ( ! empty( $item['required'] ) && 'radio' === $type ) ? 'required' : ''; ?>
+							>
+							<?php if ( 'checkbox' === $type ) : ?>
+								<div class="mdc-checkbox__background">
+									<svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+										<path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+									</svg>
+									<div class="mdc-checkbox__mixedmark"></div>
+								</div>
+							<?php else : ?>
+								<div class="mdc-radio__background">
+									<div class="mdc-radio__outer-circle"></div>
+									<div class="mdc-radio__inner-circle"></div>
+								</div>
+							<?php endif; ?>
+						</div>
+						<label for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $option_label ); ?></label>
+					</span>
 					<?php
 				}
 			}
@@ -237,7 +250,7 @@ abstract class Form_Base extends Widget_Base {
 		return '<textarea ' . $this->get_render_attribute_string( 'textarea' . $item_index ) . '>' . $value . '</textarea>';
 	}
 
-	public function make_select_field( $item, $i ) {
+	public function make_select_field( $item, $i ,$instance) {
 		$this->add_render_attribute(
 			[
 				'select-wrapper' . $i => [

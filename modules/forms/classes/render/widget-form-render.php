@@ -91,6 +91,14 @@ class Widget_Form_Render {
 					?>
 					<div <?php $this->widget->print_render_attribute_string( 'field-group' . $item_index ); ?>>
 						<?php
+						if($item['field_type'] === 'radio' || $item['field_type'] === 'checkbox' || $item['field_type'] === 'acceptance'){ 
+							?>
+								<label <?php $this->widget->print_render_attribute_string( 'label' . $item_index ); ?>>
+									<?php // PHPCS - the variable $item['field_label'] is safe.
+									echo $item['field_label']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								</label>
+							<?php
+						}
 						// if ( $print_label && $item['field_label'] ) {
 						if ( $print_label ) {
 
@@ -107,11 +115,11 @@ class Widget_Form_Render {
 									echo $this->widget->make_text_field_md( $item, $item_index, $this->settings );
 									break;
 								case 'select':
-									if ( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
-										echo $this->widget->make_select_field( $item, $item_index );
-									}else{
-										echo $this->widget->make_select_field_md( $item, $item_index );
-									}
+									// if ( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
+									// 	echo $this->widget->make_select_field( $item, $item_index,$this->settings );
+									// }else{
+										echo $this->widget->make_select_field_md( $item, $item_index ,$this->settings);
+									// }
 									break;
 								case 'radio':
 								case 'checkbox':
@@ -283,6 +291,7 @@ class Widget_Form_Render {
 		<div <?php $this->widget->print_render_attribute_string( 'submit-group' ); ?>>
 			<button <?php $this->widget->print_render_attribute_string( 'button' ); ?>>
 				<?php if ( ! empty( $button_icon ) || ! empty( $button_icon['value'] ) ) : ?>
+					<span class="cool-form-button-icon">
 					<?php
 					Icons_Manager::render_icon( $button_icon,
 						[
@@ -291,6 +300,7 @@ class Widget_Form_Render {
 						],
 					);
 					?>
+					</span>
 				<?php endif; ?>
 
 				<?php if ( ! empty( $button_text ) ) : ?>

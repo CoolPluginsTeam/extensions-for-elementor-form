@@ -9,32 +9,34 @@
                 // const mdcField = mdc.textField.MDCTextField.attachTo(field);
                 const mdcField = mdc.textfield.MDCTextField.attachTo(field);
                 const mainInput = mdcField.input
-                if(mainInput.type == 'number'){
+                if (mainInput.type === 'number') {
                     mainInput.addEventListener('input', function(e) {
-                        let inputVal = e.target.value
-                        let inputMin = mainInput.min
-                        let inputMax = mainInput.max
-                        let helperText = mdcField.helperText.foundation.adapter
-
-
-                        if(inputVal === ''){
-                            mdcField.valid = false
-                            mdcField.trailingIcon.root.style.display = 'initial'
-                            helperText.setContent(`Please enter a number value to the field`)
-                        }else{
-                            if(inputMin !== ""){
-                                if(inputVal < Number(inputMin)){
-                                    mdcField.valid = false
-                                    mdcField.trailingIcon.root.style.display = 'initial'
-                                    helperText.setContent(`Value must be greater than or equal to ${inputMin}`)
-                                }
+                        let inputVal = e.target.value;
+                        let inputMin = mainInput.min;
+                        let inputMax = mainInput.max;
+                        let helperText = mdcField.helperText.foundation.adapter;
+                
+                        if (inputVal === '') {
+                            mdcField.valid = false;
+                            mdcField.trailingIcon.root.style.display = 'initial';
+                            helperText.setContent('Please enter a number value to the field');
+                        } else {
+                            const numVal = Number(inputVal);
+                
+                            if (inputMin !== "" && numVal < Number(inputMin)) {
+                                mdcField.valid = false;
+                                mdcField.trailingIcon.root.style.display = 'initial';
+                                helperText.setContent(`Value must be greater than or equal to ${inputMin}`);
                             }
-                            if(inputMax !== ''){
-                                if(inputVal > Number(inputMax)){
-                                    mdcField.valid = false
-                                    mdcField.trailingIcon.root.style.display = 'initial'
-                                    helperText.setContent(`Value must be less than or equal to ${inputMax}`)
-                                }
+                            else if (inputMax !== "" && numVal > Number(inputMax)) {
+                                mdcField.valid = false;
+                                mdcField.trailingIcon.root.style.display = 'initial';
+                                helperText.setContent(`Value must be less than or equal to ${inputMax}`);
+                            }
+                            else {
+                                mdcField.valid = true;
+                                mdcField.trailingIcon.root.style.display = 'none';
+                                helperText.setContent('');
                             }
                         }
                     });
@@ -43,7 +45,7 @@
 
                     const validateTel = (e) => {
                         const value = e.target.value;
-                        const pattern = mainInput.pattern; 
+                        const pattern = '^' + mainInput.pattern + '$';
                         const regex = new RegExp(pattern);
 
                         if(value !== ''){
@@ -67,6 +69,9 @@
 
             document.querySelectorAll('.mdc-select').forEach(selectEl => {
                 const select = new mdc.select.MDCSelect(selectEl);
+                if (select.selectedIndex === -1) {
+                    select.selectedIndex = 0;
+                }
                 select.listen('MDCSelect:change', function() {
                     const hiddenSelect = selectEl.querySelector('select');
                     if (hiddenSelect) {
@@ -86,9 +91,70 @@
 
         forms.find('.cool-form-submit-button').click((e) => {
             const $invalidField = forms.find('.mdc-text-field--invalid');
-            if ($invalidField.length) {
+        
+            // Check each required field container for empty text inputs or select elements.
+            const $emptyRequired = forms.find('.is-field-required').filter(function() {
+                const $this = $(this);
+                let textEmpty = false, selectEmpty = false;
+                if ($this.find('.mdc-text-field__input').length) {
+                    textEmpty = $this.find('.mdc-text-field__input').first().val().trim() === "";
+
+                    if(textEmpty){
+                        var classes = $this.attr('class').split(/\s+/);
+                        var fieldTypeValue = '';
+                        classes.forEach(function(className) {
+                            var match = className.match(/^is-field-type-(.+)$/);
+                            if (match) {
+                                fieldTypeValue = match[1];
+                            }
+                        });
+                        $this.find(`#cool-${fieldTypeValue}-error`).text('This Field is required').css('color','#bb2a46');
+                        $this.find(`.cool-${fieldTypeValue}-error-icon`).css('display','initial');
+                    }else{
+                        $this.find(`#cool-${fieldTypeValue}-error`).text('');
+                        $this.find(`.cool-${fieldTypeValue}-error-icon`).css('display','none');
+                    }
+                }
+
+                if ($this.find('select').length) {
+                    let selectMainWrapper = $this.find('.mdc-select').first();
+                    selectEmpty = $this.find('select').first().val().trim() === "";
+                    if(selectEmpty){
+                        selectMainWrapper.addClass('mdc-select--invalid');
+                        $this.find('#cool-select-error').text('This Field is required').css('color','#bb2a46');
+                    }else{
+                        selectMainWrapper.removeClass('mdc-select--invalid');
+                        $this.find('#cool-select-error').text('');
+                    }
+                }
+                return textEmpty || selectEmpty;
+            });
+           
+            if ($invalidField.length || $emptyRequired.length) {
                 e.preventDefault();
-                $invalidField.find('.mdc-text-field__input').focus();
+                
+                let $target;
+                if ($invalidField.length) {
+                    $target = $invalidField.first().find('.mdc-text-field__input');
+                    $target.focus();
+                } else {
+                    if($emptyRequired.find('label').hasClass('cool-form-text')){
+                        $target = $emptyRequired.find('.mdc-text-field__input').first();
+
+                        $target.focus();
+                    } else if($emptyRequired.hasClass('is-field-type-select')){
+                        if($emptyRequired.find('select').val().trim() === ''){
+                            let selectMainWrapper = $emptyRequired.find('.mdc-select').first();
+                            $target = selectMainWrapper;
+                        }
+                    }
+                }
+                
+                if ($target && $target.length) {
+                    $('html, body').animate({
+                        scrollTop: $target.offset().top - 100 
+                    }, 100);
+                }
                 return false;
             }
         });

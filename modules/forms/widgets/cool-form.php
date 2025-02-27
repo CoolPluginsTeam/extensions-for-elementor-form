@@ -107,16 +107,16 @@ class Cool_Form extends Form_Base {
 							fieldGroupClasses = 'cool-form__field-group has-border elementor-column elementor-field-type-' + item.field_type,
 							printLabel = settings.show_labels && ! [ 'hidden', 'html', 'step' ].includes( item.field_type );
 
-						fieldGroupClasses += ' elementor-col-' + ( ( '' !== item.width ) ? item.width : '100' );
+						fieldGroupClasses += ' has-width-' + ( ( '' !== item.width ) ? item.width : '100' );
 
 						fieldGroupClasses += ' has-shape-' + settings.fields_shape
 
 						if ( item.width_tablet ) {
-							fieldGroupClasses += ' elementor-md-' + item.width_tablet;
+							fieldGroupClasses += ' has-width-md-' + item.width_tablet;
 						}
 
 						if ( item.width_mobile ) {
-							fieldGroupClasses += ' elementor-sm-' + item.width_mobile;
+							fieldGroupClasses += ' has-width-sm-' + item.width_mobile;
 						}
 
 						if ( item.required ) {
@@ -143,8 +143,10 @@ class Cool_Form extends Form_Base {
 									inputField += '<span class="mdc-notched-outline">';
 										inputField += '<span class="mdc-notched-outline__leading"></span>';
 										inputField += '<span class="mdc-notched-outline__notch">';
+										if ( item.field_label !== '' && settings.show_labels ) {
 											inputField += '<span class="mdc-floating-label" id="textarea-label-' + i + '">' + _.escape( item.field_label ) + '</span>';
-										inputField += '</span>';
+										}
+											inputField += '</span>';
 										inputField += '<span class="mdc-notched-outline__trailing"></span>';
 									inputField += '</span>';
 									inputField += '<span class="mdc-text-field__resizer">';
@@ -160,15 +162,21 @@ class Cool_Form extends Form_Base {
 							case 'password':
 							case 'search':
 								inputField = '<label class="cool-form-text mdc-text-field mdc-text-field--outlined">';
-									inputField += '<span class="mdc-notched-outline">';
-										inputField += '<span class="mdc-notched-outline__leading"></span>';
-										inputField += '<span class="mdc-notched-outline__notch">';
-											inputField += '<span class="mdc-floating-label" id="text-label-' + i + '">' + _.escape( item.field_label ) + '</span>';
-										inputField += '</span>';
-										inputField += '<span class="mdc-notched-outline__trailing"></span>';
-									inputField += '</span>';
-									inputField += '<input type="' + item.field_type + '" class="mdc-text-field__input" name="form_field_' + i + '" id="form_field_' + i + '" value="' + item.field_value + '" ' + required + ' ' + placeholder + '>';
+								inputField += '<span class="mdc-notched-outline">';
+								inputField += '<span class="mdc-notched-outline__leading"></span>';
+								inputField += '<span class="mdc-notched-outline__notch">';
+								if ( item.field_label !== '' && settings.show_labels ) {
+									inputField += '<span class="mdc-floating-label" id="text-label-' + i + '">' + _.escape( item.field_label ) + '</span>';
+								}
+								inputField += '</span>';
+								inputField += '<span class="mdc-notched-outline__trailing"></span>';
+								inputField += '</span>';
+								inputField += '<input type="' + item.field_type + '" class="mdc-text-field__input" name="form_field_' + i + '" id="form_field_' + i + '" value="' + item.field_value + '" ' + required + ' ' + placeholder + '>';
+									inputField += '<i aria-hidden="true" class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing cool-+ item.field_type +-error-icon" style="display:none">error</i>';
 								inputField += '</label>';
+									inputField += '<div class="mdc-text-field-helper-line">' +
+												'<div class="mdc-text-field-helper-text" id="cool-+ item.field_type +-error" aria-hidden="true"></div>' +
+												'</div>';
 								break;
 
 							case 'select':
@@ -178,7 +186,9 @@ class Cool_Form extends Form_Base {
 											inputField += '<span class="mdc-notched-outline">';
 												inputField += '<span class="mdc-notched-outline__leading"></span>';
 												inputField += '<span class="mdc-notched-outline__notch">';
+												if ( item.field_label !== '' && settings.show_labels ) {
 													inputField += '<span class="mdc-floating-label" id="select-label-' + i + '">' + _.escape( item.field_label ) + '</span>';
+												}
 												inputField += '</span>';
 												inputField += '<span class="mdc-notched-outline__trailing"></span>';
 											inputField += '</span>';
@@ -220,7 +230,7 @@ class Cool_Form extends Form_Base {
 							case 'checkbox':
 								if ( options.length ) {
 									var multi = ( item.field_type === 'checkbox' && options.length > 1 ) ? '[]' : '';
-									inputField = '<div class="mdc-form-field ' + itemClasses + '">';
+									inputField = '<div class="mdc-form-field ' + itemClasses + ' ' + ( item.inline_list === 'elementor-subgroup-inline' ? 'inline-items' : 'ontop-items' ) + '">';
 									for ( var x in options ) {
 										var option = options[x],
 											option_value = option,
@@ -231,6 +241,7 @@ class Cool_Form extends Form_Base {
 											option_value = parts[1];
 										}
 										var inputId = 'form_field_' + item.field_type + i + '-' + x;
+										inputField += '<span class="field-sub-options">';
 										inputField += '<div class="' + ( item.field_type === 'radio' ? 'mdc-radio' : 'mdc-checkbox' ) + '">';
 											inputField += '<input class="' + ( item.field_type === 'radio' ? 'mdc-radio__native-control' : 'mdc-checkbox__native-control' ) + '" type="' + item.field_type + '" id="' + inputId + '" name="form_field_' + i + multi + '" value="' + _.escape( option_value ) + '" ' + ( option_value === item.field_value ? 'checked' : '' ) + ' ' + required + '>';
 											if ( item.field_type === 'radio' ) {
@@ -248,6 +259,7 @@ class Cool_Form extends Form_Base {
 											}
 										inputField += '</div>';
 										inputField += '<label for="' + inputId + '">' + _.escape( option_label ) + '</label>';
+										inputField += '</span>';
 									}
 									inputField += '</div>';
 								}
@@ -347,6 +359,10 @@ class Cool_Form extends Form_Base {
 						}
 
 					#>
+						<# if ( printLabel && (item.field_type === "radio" || item.field_type === "checkbox" || item.field_type === "acceptance") ) { #>
+							<label class="cool-form__field-label" for="form_field_{{ i }}" {{{ labelVisibility }}}>{{{ item.field_label }}}</label>
+						<# } #>
+
 						<div class="{{ fieldGroupClasses }}">
 							{{{ inputField }}}
 						</div>
@@ -365,74 +381,69 @@ class Cool_Form extends Form_Base {
 							<#
 						}
 					}
-
-					view.addRenderAttribute(
-						'submit-group',
-						{
-							'class': [
-								'cool-form__submit-group',
-								'elementor-column',
-								'elementor-field-type-submit',
-								'e-form__buttons',
-								'elementor-col-' + ( ( '' !== settings.button_width ) ? settings.button_width : '100' )
-							]
-						}
-					);
-
+					
+					// Submit group attributes
+					view.addRenderAttribute( 'submit-group', {
+						class: [ 'cool-form__submit-group' ]
+					} );
+					if ( settings.button_width ) {
+						view.addRenderAttribute( 'submit-group', 'class', 'has-width-' + settings.button_width );
+					}
 					if ( settings.button_width_tablet ) {
-						view.addRenderAttribute( 'submit-group', 'class', 'elementor-md-' + settings.button_width_tablet );
+						view.addRenderAttribute( 'submit-group', 'class', 'has-width-md-' + settings.button_width_tablet );
 					}
-
 					if ( settings.button_width_mobile ) {
-						view.addRenderAttribute( 'submit-group', 'class', 'elementor-sm-' + settings.button_width_mobile );
+						view.addRenderAttribute( 'submit-group', 'class', 'has-width-sm-' + settings.button_width_mobile );
 					}
 
-					view.addRenderAttribute( 'button', 'type', 'submit' );
-					view.addRenderAttribute( 'button', 'class', 'cool-form__button is-type-button' );
-
-					if ( '' !== settings.button_css_id ) {
+					// Button attributes  note the same classes as in render_button()
+					var buttonClasses = 'cool-form__button cool-form-submit-button';
+					if ( settings.button_border_switcher === 'yes' ) {
+						buttonClasses += ' has-border';
+					}
+					if ( settings.button_shape ) {
+						buttonClasses += ' has-shape-' + settings.button_shape;
+					}
+					if ( settings.button_type ) {
+						buttonClasses += ' is-type-' + settings.button_type;
+					}
+					view.addRenderAttribute( 'button', {
+						class: buttonClasses,
+						type: 'submit'
+					} );
+					if ( settings.button_hover_animation ) {
+						view.addRenderAttribute( 'button', 'class', 'elementor-animation-' + settings.button_hover_animation );
+					}
+					if ( settings.button_css_id ) {
 						view.addRenderAttribute( 'button', 'id', settings.button_css_id );
 					}
 
-					if ( '' !== settings.button_size ) {
-						view.addRenderAttribute( 'button', 'class', 'elementor-size-' + settings.button_size );
-					}
+					// Button text attributes
+					view.addRenderAttribute( 'button-text', {
+						class: 'cool-form__button-text'
+					} );
 
-					if ( '' !== settings.button_type ) {
-						view.addRenderAttribute( 'button', 'class', 'elementor-button-' + settings.button_type );
-					}
-
-					if ( '' !== settings.button_hover_animation ) {
-						view.addRenderAttribute( 'button', 'class', 'elementor-animation-' + settings.button_hover_animation );
-					}
-
-					view.addRenderAttribute( 'button-content-wrapper', 'class', 'elementor-button-content-wrapper' );
-					view.addRenderAttribute( 'button-icon', 'class', 'elementor-button-icon' );
-					view.addRenderAttribute( 'button-text', 'class', 'elementor-button-text' );
-
-					const iconHTML = elementor.helpers.renderIcon( view, settings.selected_button_icon, { 'aria-hidden': true }, 'i' , 'object' );
-					const migrated = elementor.helpers.isIconMigrated( settings, 'selected_button_icon' );
-					#>
-					<div {{{ view.getRenderAttributeString( 'submit-group' ) }}}>
-						<button {{{ view.getRenderAttributeString( 'button' ) }}}>
-							<span {{{ view.getRenderAttributeString( 'button-content-wrapper' ) }}}>
-								<# if ( settings.button_icon || settings.selected_button_icon ) { #>
-									<span {{{ view.getRenderAttributeString( 'button-icon' ) }}}>
-										<# if ( iconHTML && iconHTML.rendered && ( ! settings.button_icon || migrated ) ) { #>
-											{{{ iconHTML.value }}}
-										<# } else { #>
-											<i class="{{ settings.button_icon }}" aria-hidden="true"></i>
-										<# } #>
-										<span class="elementor-screen-only"><?php echo esc_html__( 'Submit', 'elementor-pro' ); ?></span>
-									</span>
-								<# } #>
-
-								<# if ( settings.button_text ) { #>
-									<span {{{ view.getRenderAttributeString( 'button-text' ) }}}>{{{ settings.button_text }}}</span>
+					// Render the icon similarly to your render function
+					var iconHTML = elementor.helpers.renderIcon( view, settings.selected_button_icon, { 'aria-hidden': true }, 'i', 'object' );
+					var migrated = elementor.helpers.isIconMigrated( settings, 'selected_button_icon' );
+				#>
+				<div {{{ view.getRenderAttributeString( 'submit-group' ) }}}>
+					<button {{{ view.getRenderAttributeString( 'button' ) }}}>
+						<# if ( settings.button_icon || settings.selected_button_icon ) { #>
+							<span class="cool-form-button-icon">
+								<# if ( iconHTML && iconHTML.rendered && ( ! settings.button_icon || migrated ) ) { #>
+									{{{ iconHTML.value }}}
+								<# } else { #>
+									<i class="{{ settings.button_icon }}" aria-hidden="true"></i>
 								<# } #>
 							</span>
-						</button>
-					</div>
+						<# } #>
+						<# if ( settings.button_text ) { #>
+							<span {{{ view.getRenderAttributeString( 'button-text' ) }}}>{{{ settings.button_text }}}</span>
+						<# } #>
+					</button>
+				</div>
+
 			</div>
 		</form>
 		<?php
@@ -864,6 +875,7 @@ class Cool_Form extends Form_Base {
 					'100' => '100%',
 					'50' => '50%',
 					'33' => '33%',
+					'25' => '25%',
 				],
 				'default' => '100',
 				'frontend_available' => true,
@@ -1332,7 +1344,7 @@ class Cool_Form extends Form_Base {
 					],
 				],
 				'default' => [
-					'size' => 4,
+					'size' => 2,
 					'unit' => 'px',
 				],
 				'selectors' => [

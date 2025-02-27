@@ -29,6 +29,8 @@ class Date extends Field_Base {
 
 	public function render( $item, $item_index, $form ) {
 		// Use the Material Design input class and add any additional classes.
+		$settings = $form->get_settings();
+
 		$form->add_render_attribute( 'input' . $item_index, 'class', 'mdc-text-field__input cool-form-date-field' );
 		$form->add_render_attribute( 'input' . $item_index, 'pattern', '[0-9]{4}-[0-9]{2}-[0-9]{2}' );
 		if ( isset( $item['use_native_date'] ) && 'yes' === $item['use_native_date'] ) {
@@ -45,7 +47,7 @@ class Date extends Field_Base {
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">
-					<?php if($item['field_label'] !== ''){?>
+					<?php if($item['field_label'] !== '' && !empty($settings['show_labels'])){?>
 						<span class="mdc-floating-label" id="date-label-<?php echo esc_attr( $item_index ); ?>">
 							<?php echo esc_html( $item['field_label'] ); ?>
 						</span>
@@ -56,7 +58,11 @@ class Date extends Field_Base {
 				<span class="mdc-notched-outline__trailing"></span>
 			</span>
 			<input type="date" <?php $form->print_render_attribute_string( 'input' . $item_index ); ?> >
+			<i aria-hidden="true" class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing cool-date-error-icon" style="display:none">error</i>
 		</label>
+		<div class="mdc-text-field-helper-line">
+  			<div class="mdc-text-field-helper-text" id="cool-date-error" aria-hidden="true"></div>
+		</div>
 		<?php
 	}	
 

@@ -24,6 +24,8 @@ class Number extends Field_Base {
 	public function render( $item, $item_index, $form ) {
 
 
+		$settings = $form->get_settings();
+
 		$form->add_render_attribute( 'input' . $item_index, 'class', 'mdc-text-field__input' );
 
 		if ( isset( $item['num_field_min'] ) ) {
@@ -42,7 +44,7 @@ class Number extends Field_Base {
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">
-					<?php if($item['field_label'] !== ''){?>
+					<?php if($item['field_label'] !== '' && !empty($settings['show_labels'])){?>
 						<span class="mdc-floating-label" id="number-label-<?php echo esc_attr( $item_index ); ?>">
 							<?php echo esc_html( $item['field_label'] ); ?>
 						</span>
