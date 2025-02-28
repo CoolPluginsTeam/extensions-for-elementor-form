@@ -104,7 +104,7 @@ class Cool_Form extends Form_Base {
 							required = '',
 							inputField = '',
 							multiple = '',
-							fieldGroupClasses = 'cool-form__field-group has-border elementor-column elementor-field-type-' + item.field_type,
+							fieldGroupClasses = 'cool-form__field-group has-border elementor-column is-field-type-' + item.field_type,
 							printLabel = settings.show_labels && ! [ 'hidden', 'html', 'step' ].includes( item.field_type );
 
 						fieldGroupClasses += ' has-width-' + ( ( '' !== item.width ) ? item.width : '100' );
@@ -121,10 +121,10 @@ class Cool_Form extends Form_Base {
 
 						if ( item.required ) {
 							required = 'required';
-							fieldGroupClasses += ' elementor-field-required';
+							fieldGroupClasses += ' is-field-required';
 
 							if ( settings.mark_required ) {
-								fieldGroupClasses += ' elementor-mark-required';
+								fieldGroupClasses += ' is-mark-required';
 							}
 						}
 
@@ -134,12 +134,12 @@ class Cool_Form extends Form_Base {
 
 						if ( item.allow_multiple ) {
 							multiple = ' multiple';
-							fieldGroupClasses += ' elementor-field-type-' + item.field_type + '-multiple';
+							fieldGroupClasses += ' is-field-type-' + item.field_type + '-multiple';
 						}
 
 						switch ( item.field_type ) {
 							case 'textarea':
-								inputField = '<label class="cool-form-text mdc-text-field mdc-text-field--outlined mdc-text-field--textarea">';
+								inputField = '<label class="cool-form-text mdc-text-field mdc-text-field--outlined mdc-text-field--textarea '+ ((item.field_label === '' || !settings.show_labels) ? 'mdc-text-field--no-label' : '') +' ">';
 									inputField += '<span class="mdc-notched-outline">';
 										inputField += '<span class="mdc-notched-outline__leading"></span>';
 										inputField += '<span class="mdc-notched-outline__notch">';
@@ -150,7 +150,7 @@ class Cool_Form extends Form_Base {
 										inputField += '<span class="mdc-notched-outline__trailing"></span>';
 									inputField += '</span>';
 									inputField += '<span class="mdc-text-field__resizer">';
-										inputField += '<textarea class="mdc-text-field__input" name="form_field_' + i + '" id="form_field_' + i + '" rows="' + item.rows + '" ' + required + ' ' + placeholder + '>' + item.field_value + '</textarea>';
+										inputField += '<textarea class="mdc-text-field__input cool-form__field" name="form_field_' + i + '" id="form_field_' + i + '" rows="' + item.rows + '" ' + required + ' ' + placeholder + '>' + item.field_value + '</textarea>';
 									inputField += '</span>';
 								inputField += '</label>';
 								break;
@@ -161,7 +161,7 @@ class Cool_Form extends Form_Base {
 							case 'number':
 							case 'password':
 							case 'search':
-								inputField = '<label class="cool-form-text mdc-text-field mdc-text-field--outlined">';
+								inputField = '<label class="cool-form-text mdc-text-field mdc-text-field--outlined '+ ((item.field_label === '' || !settings.show_labels) ? 'mdc-text-field--no-label' : '') +' cool-field-size-'+settings.input_size+'">';
 								inputField += '<span class="mdc-notched-outline">';
 								inputField += '<span class="mdc-notched-outline__leading"></span>';
 								inputField += '<span class="mdc-notched-outline__notch">';
@@ -171,7 +171,7 @@ class Cool_Form extends Form_Base {
 								inputField += '</span>';
 								inputField += '<span class="mdc-notched-outline__trailing"></span>';
 								inputField += '</span>';
-								inputField += '<input type="' + item.field_type + '" class="mdc-text-field__input" name="form_field_' + i + '" id="form_field_' + i + '" value="' + item.field_value + '" ' + required + ' ' + placeholder + '>';
+								inputField += '<input type="' + item.field_type + '" class="mdc-text-field__input cool-form__field" name="form_field_' + i + '" id="form_field_' + i + '" value="' + item.field_value + '" ' + required + ' ' + placeholder + '>';
 									inputField += '<i aria-hidden="true" class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing cool-+ item.field_type +-error-icon" style="display:none">error</i>';
 								inputField += '</label>';
 									inputField += '<div class="mdc-text-field-helper-line">' +
@@ -181,8 +181,8 @@ class Cool_Form extends Form_Base {
 
 							case 'select':
 								if ( options.length ) {
-									inputField = '<div class="mdc-select mdc-select--outlined">';
-										inputField += '<div class="mdc-select__anchor" aria-labelledby="select-label-' + i + '">';
+									inputField = '<div class="mdc-select mdc-select--outlined cool-field-size-'+settings.input_size+'">';
+										inputField += '<div class="mdc-select__anchor cool-field-size-'+settings.input_size+'" aria-labelledby="select-label-' + i + '">';
 											inputField += '<span class="mdc-notched-outline">';
 												inputField += '<span class="mdc-notched-outline__leading"></span>';
 												inputField += '<span class="mdc-notched-outline__notch">';
@@ -1238,7 +1238,7 @@ class Cool_Form extends Form_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'label_typography',
-				'selector' => '{{WRAPPER}} .cool-form__field-label, {{WRAPPER}} .cool-form-text.mdc-text-field .mdc-floating-label, {{WRAPPER}} .cool-form__field-group .mdc-form-field label, {{WRAPPER}} .cool-form__field-group .mdc-select .mdc-select__anchor .mdc-notched-outline .mdc-notched-outline__notch .mdc-floating-label',
+				'selector' => '{{WRAPPER}} .cool-form__field-label, {{WRAPPER}} .cool-form-text.mdc-text-field .mdc-floating-label, {{WRAPPER}} .cool-form__field-group .mdc-select .mdc-select__anchor .mdc-notched-outline .mdc-notched-outline__notch .mdc-floating-label',
 				'global'   => [
 					'default' => Global_Typography::TYPOGRAPHY_TEXT,
 				],
@@ -1386,6 +1386,18 @@ class Cool_Form extends Form_Base {
 					'round' => 'Round',
 				],
 				'default' => 'default',
+			]
+		);
+
+		$this->add_control(
+			'round_warning_notice',
+			[
+				'type'            => Controls_Manager::RAW_HTML,
+				'raw'             => '<div>Warning: Make sure you have added labels for all your fields. Round shapes require field labels to maintain the design.</div>',
+				'content_classes' => 'elementor-panel-alert elementor-panel-alert-warning',
+				'condition'       => [
+					'fields_shape' => 'round',
+				],
 			]
 		);
 

@@ -9,7 +9,7 @@ module.exports = elementorModules.editor.utils.Module.extend( {
 		var pattern = ' pattern="[0-9()-]+"';
 	
 		return `
-			<label class="cool-form-text mdc-text-field mdc-text-field--outlined">
+			<label class="cool-form-text mdc-text-field mdc-text-field--outlined ${(item.field_label === '' || !settings.show_labels) ? 'mdc-text-field--no-label' : ''} cool-field-size-${settings.input_size}">
 				<span class="mdc-notched-outline">
 					<span class="mdc-notched-outline__leading"></span>
 					<span class="mdc-notched-outline__notch">

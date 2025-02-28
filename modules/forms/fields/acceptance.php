@@ -95,6 +95,9 @@ class Acceptance extends Field_Base {
 			] );
 			?>
 		</div>
+		<div class="mdc-text-field-helper-line">
+  			<div class="cool-acceptance-error" id="cool-acceptance-error" aria-hidden="true"></div>
+		</div>
 		<?php
 	}	
 }

@@ -99,6 +99,21 @@
 			}
 		  }
 		
+		  @mixin set-horizontal-border-radius-round($left, $right) {
+			.mdc-notched-outline__notch{
+				border-left-width:var(--cool-form-field-border-width);
+				border-left-style:solid;
+			}
+			.mdc-notched-outline__leading,.mdc-notched-outline__notch {
+			// .mdc-notched-outline__leading {
+			  border-top-left-radius: $left;
+			  border-bottom-left-radius: $left;
+			}
+			.mdc-notched-outline__trailing {
+			  border-top-right-radius: $right;
+			  border-bottom-right-radius: $right;
+			}
+		  }
 		  @mixin set-horizontal-border-radius($left, $right) {
 			.mdc-notched-outline__leading {
 			  border-top-left-radius: $left;
@@ -110,7 +125,7 @@
 			}
 		  }
 		
-		  .mdc-text-field{
+		  .mdc-text-field,.mdc-select{
 			background-color:var(--cool-form-field-bg-color);
 		  }
 
@@ -136,13 +151,18 @@
 		  }
 		
 		  &.has-shape-round {
+			.mdc-notched-outline__leading{
+				display: none;
+			}
 			.mdc-text-field, .mdc-select {
-				border-bottom-left-radius: 14px;
-				border-top-left-radius: 14px;
+				// border-bottom-left-radius: 14px;
+				// border-top-left-radius: 14px;
+				border-bottom-left-radius: $corners-shape-round;
+				border-top-left-radius: $corners-shape-round;
 				border-bottom-right-radius: $corners-shape-round;
   				border-top-right-radius: $corners-shape-round;
 			  .mdc-notched-outline {
-				@include set-horizontal-border-radius($corners-shape-round, $corners-shape-round);
+				@include set-horizontal-border-radius-round($corners-shape-round, $corners-shape-round);
 			  }
 			}
 		  }
@@ -241,6 +261,13 @@
 			}
 		}		
 		.mdc-select {
+			.mdc-select__menu{
+				ul{
+					li span.mdc-list-item__text{
+						color:var(--cool-form-label-color);
+					}
+				}
+			}
 			.mdc-select__anchor {
 				.mdc-notched-outline {
 					.mdc-notched-outline__notch {
@@ -257,6 +284,18 @@
 			color:var(--cool-form-field-text-color);
 		}
 	} 
+	.cool-field-size-xl{
+		min-height: 72px;
+	}
+	.cool-field-size-lg{
+		min-height: 59px;
+	}
+	.cool-field-size-md{
+		min-height: 47px;
+	}
+	.cool-field-size-xs{
+		min-height: 33px;
+	}
 
 	&__field:not(.cool-form__select),
 	&__field[type="text"],
@@ -321,7 +360,7 @@
 		}
 
 		&.has-border {
-			border-color: var();
+			border-color: var(--cool-form-button-border-color);
 			border-style: solid;
 			border-width: var(--cool-form-button-border-width);
 			border-radius: var(--cool-form-button-border-radius);

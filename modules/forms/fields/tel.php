@@ -26,7 +26,7 @@ class Tel extends Field_Base {
 		$form->add_render_attribute( 'input' . $item_index, 'pattern', '[0-9()#&+\*\-\.=]+' );
 		$form->add_render_attribute( 'input' . $item_index, 'title', esc_html__( 'Only numbers and phone characters (#, -, *, etc) are accepted.', 'cool-formkit' ) );
 		?>
-		<label class="cool-form-text mdc-text-field mdc-text-field--outlined">
+		<label class="cool-form-text mdc-text-field mdc-text-field--outlined <?php echo ($item['field_label'] === '' || empty($settings['show_labels'])) ? 'mdc-text-field--no-label' : '' ?> cool-field-size-<?php echo $settings['input_size'] ?>">
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">

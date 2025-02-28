@@ -40,7 +40,7 @@ abstract class Form_Base extends Widget_Base {
 	public function make_textarea_field_md( $item, $item_index, $instance ): string {
 		ob_start();
 		?>
-		<label class="cool-form-text mdc-text-field mdc-text-field--outlined mdc-text-field--textarea">
+		<label class="cool-form-text mdc-text-field mdc-text-field--outlined mdc-text-field--textarea <?php echo ($item['field_label'] === '' || empty($instance['show_labels'])) ? 'mdc-text-field--no-label' : '' ?>">
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">
@@ -56,7 +56,7 @@ abstract class Form_Base extends Widget_Base {
 			</span>
 			<span class="mdc-text-field__resizer">
 				<textarea
-					class="mdc-text-field__input"
+					class="mdc-text-field__input cool-form__field"
 					id="<?php echo $this->get_attribute_id( $item ); ?>"
 					name="<?php echo $this->get_attribute_name( $item ); ?>"
 					rows="<?php echo esc_attr( $item['rows'] ); ?>"
@@ -75,7 +75,7 @@ abstract class Form_Base extends Widget_Base {
 	public function make_text_field_md( $item, $item_index, $instance ): string {
 		ob_start();		
 		?>
-		<label class="cool-form-text mdc-text-field mdc-text-field--outlined <?php echo ($item['field_label'] === '') ? 'mdc-text-field--no-label' : '' ?>">
+		<label class="cool-form-text mdc-text-field mdc-text-field--outlined <?php echo ($item['field_label'] === '' || empty($instance['show_labels'])) ? 'mdc-text-field--no-label' : '' ?> cool-field-size-<?php echo $instance['input_size'] ?>">
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">
@@ -91,7 +91,7 @@ abstract class Form_Base extends Widget_Base {
 			</span>
 			<input 
 				type="<?php echo esc_attr( $item['field_type'] ); ?>"
-				class="mdc-text-field__input"
+				class="mdc-text-field__input cool-form__field cool-field-size-<?php echo $instance['input_size'] ?>"
 				id="<?php echo $this->get_attribute_id( $item ); ?>"
 				name="<?php echo $this->get_attribute_name( $item ); ?>"
 				<?php echo ( ! empty( $item['placeholder'] ) ) ? 'placeholder="' . esc_attr( $item['placeholder'] ) . '"' : ''; ?>
@@ -110,8 +110,8 @@ abstract class Form_Base extends Widget_Base {
 	public function make_select_field_md( $item, $i ,$instance): string {
 		ob_start();		
 		?>
-		<div class="mdc-select mdc-select--outlined">
-			<div class="mdc-select__anchor" aria-labelledby="select-label-<?php echo esc_attr( $i ); ?>">
+		<div class="mdc-select mdc-select--outlined cool-field-size-<?php echo $instance['input_size'] ?>">
+			<div class="mdc-select__anchor cool-field-size-<?php echo $instance['input_size'] ?>" aria-labelledby="select-label-<?php echo esc_attr( $i ); ?>">
 				<span class="mdc-notched-outline">
 					<span class="mdc-notched-outline__leading"></span>
 					<span class="mdc-notched-outline__notch">
