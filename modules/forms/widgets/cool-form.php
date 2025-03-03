@@ -587,44 +587,44 @@ class Cool_Form extends Form_Base {
 			]
 		);
 
-		$repeater->add_control(
-			'allow_multiple',
-			[
-				'label' => esc_html__( 'Multiple Selection', 'cool-formkit' ),
-				'type' => Controls_Manager::SWITCHER,
-				'return_value' => 'true',
-				'conditions' => [
-					'terms' => [
-						[
-							'name' => 'field_type',
-							'value' => 'select',
-						],
-					],
-				],
-			]
-		);
+		// $repeater->add_control(
+		// 	'allow_multiple',
+		// 	[
+		// 		'label' => esc_html__( 'Multiple Selection', 'cool-formkit' ),
+		// 		'type' => Controls_Manager::SWITCHER,
+		// 		'return_value' => 'true',
+		// 		'conditions' => [
+		// 			'terms' => [
+		// 				[
+		// 					'name' => 'field_type',
+		// 					'value' => 'select',
+		// 				],
+		// 			],
+		// 		],
+		// 	]
+		// );
 
-		$repeater->add_control(
-			'select_size',
-			[
-				'label' => esc_html__( 'Rows', 'cool-formkit' ),
-				'type' => Controls_Manager::NUMBER,
-				'min' => 2,
-				'step' => 1,
-				'conditions' => [
-					'terms' => [
-						[
-							'name' => 'field_type',
-							'value' => 'select',
-						],
-						[
-							'name' => 'allow_multiple',
-							'value' => 'true',
-						],
-					],
-				],
-			]
-		);
+		// $repeater->add_control(
+		// 	'select_size',
+		// 	[
+		// 		'label' => esc_html__( 'Rows', 'cool-formkit' ),
+		// 		'type' => Controls_Manager::NUMBER,
+		// 		'min' => 2,
+		// 		'step' => 1,
+		// 		'conditions' => [
+		// 			'terms' => [
+		// 				[
+		// 					'name' => 'field_type',
+		// 					'value' => 'select',
+		// 				],
+		// 				[
+		// 					'name' => 'allow_multiple',
+		// 					'value' => 'true',
+		// 				],
+		// 			],
+		// 		],
+		// 	]
+		// );
 
 		$repeater->add_control(
 			'inline_list',

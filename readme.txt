@@ -18,28 +18,28 @@ This addon allows you to build custom forms using a drag-and-drop interface, jus
 
 **Key Features**
 
-**Works with Elementor (Free):** Cool FormKit Lite is designed specifically for Elementor (Free) users, allowing them to create and customize forms without needing Elementor Pro.
+* **Works with Elementor (Free):** Cool FormKit Lite is designed specifically for Elementor (Free) users, allowing them to create and customize forms without needing Elementor Pro.
 
-**Elementor-based Design:** Based on Elementor, this form builder offers an Elementor-like intuitive drag-and-drop feature and allows you to preview the changes in real-time.
+* **Elementor-based Design:** Based on Elementor, this form builder offers an Elementor-like intuitive drag-and-drop feature and allows you to preview the changes in real-time.
 
-**Material Design Principles:** This addon is designed based on Google's Material Design principles to create visually appealing and user-friendly forms.
+* **Material Design Principles:** This addon is designed based on Google's Material Design principles to create visually appealing and user-friendly forms.
 
-**Input Fields:** Create versatile Elementor forms with 10+ input fields, including:
-* Text Field
-* Email Field
-* Telephone Field
-* Date & Time Fields
-* Select Field
-* Textarea Field
-* Checkbox & Radio Fields
-* Checkbox & Radio Fields
-* Acceptance Field
+* **Input Fields:** Create versatile Elementor forms with 10+ input fields, including:
+    * Text Field
+    * Email Field
+    * Telephone Field
+    * Date & Time Fields
+    * Select Field
+    * Textarea Field
+    * Checkbox & Radio Fields
+    * Checkbox & Radio Fields
+    * Acceptance Field
 
-**Send Confirmation Email:** Automatically send a confirmation email to users after they submit a form. This can be used to acknowledge their submission, confirm event registrations, or let them know that their inquiry has been received.
+* **Send Confirmation Email:** Automatically send a confirmation email to users after they submit a form. This can be used to acknowledge their submission, confirm event registrations, or let them know that their inquiry has been received.
 
-**Form Submission Redirect:** Automatically send users to a specific page after they successfully submit a form. This feature is useful for guiding users to a thank-you page, confirming their submission, or directing them to a special offer, additional resources, or another important page on your website. Simply enter the URL in the form settings, and users will be redirected there once they complete the form.
+* **Form Submission Redirect:** Automatically send users to a specific page after they successfully submit a form. This feature is useful for guiding users to a thank-you page, confirming their submission, or directing them to a special offer, additional resources, or another important page on your website. Simply enter the URL in the form settings, and users will be redirected there once they complete the form.
 
-**Mobile-Friendly and Responsive**
+* **Mobile-Friendly and Responsive**
 
 **How to Use Cool FormKit Lite?**
 * Install and activate the Cool FormKit Lite plugin.
@@ -51,6 +51,8 @@ This addon allows you to build custom forms using a drag-and-drop interface, jus
 **Coming Soon: Pack of Advanced Features!**
 
 We’re constantly working to improve Cool FormKit Lite. Soon, we’ll be adding advanced features like conditional logic, rating fields, range sliders, and more. These exciting updates will benefit both Elementor Free and Pro users. So, stay tuned for exciting updates to enhance your form-building experience.
+
+https://youtu.be/u1PYFXv01Rc
 
 📢 Get started today and elevate your Elementor Form experience!
 

@@ -65,6 +65,29 @@
 
                     mainInput.addEventListener('input', validateTel);
                     mainInput.addEventListener('blur', validateTel);
+                } else if ( mainInput.type === 'email' ) {
+                    let helperTextAdapter = mdcField.helperText.foundation.adapter;
+                    const validateEmail = (e) => {
+                        const value = e.target.value;
+                        // Basic email regex that checks for a pattern like "user@domain.tld"
+                        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+                        if ( value !== '' ) {
+                            if (!regex.test(value)) {
+                                mdcField.valid = false;
+                                mdcField.trailingIcon.root.style.display = 'initial';
+                                helperTextAdapter.setContent('Please enter a valid email address.');
+                            } else {
+                                mdcField.valid = true;
+                                mdcField.trailingIcon.root.style.display = 'none';
+                                helperTextAdapter.setContent('');
+                            }
+                        } else {
+                            mdcField.trailingIcon.root.style.display = 'none';
+                        }
+                    };
+                    mainInput.addEventListener('input', validateEmail);
+                    mainInput.addEventListener('blur', validateEmail);
                 }
             });
 
