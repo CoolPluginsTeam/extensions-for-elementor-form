@@ -89,18 +89,21 @@
 				display: inline-block;
 			  }
 			}
-		  }
+		}
 		
-		  @mixin set-full-border-radius($radius) {
+		@mixin set-full-border-radius($radius) {
 			.mdc-notched-outline__leading,
 			.mdc-notched-outline__notch,
 			.mdc-notched-outline__trailing {
 			  border-radius: $radius;
 			}
-		  }
+		}
 		
-		  @mixin set-horizontal-border-radius-round($left, $right) {
+		@mixin set-horizontal-border-radius-round($left, $right) {
 			.mdc-notched-outline__notch{
+				.mdc-floating-label{
+					left: 15px;
+				}
 				border-left-width:var(--cool-form-field-border-width);
 				border-left-style:solid;
 			}
@@ -113,8 +116,9 @@
 			  border-top-right-radius: $right;
 			  border-bottom-right-radius: $right;
 			}
-		  }
-		  @mixin set-horizontal-border-radius($left, $right) {
+		}
+
+		@mixin set-horizontal-border-radius($left, $right) {
 			.mdc-notched-outline__leading {
 			  border-top-left-radius: $left;
 			  border-bottom-left-radius: $left;
@@ -123,22 +127,22 @@
 			  border-top-right-radius: $right;
 			  border-bottom-right-radius: $right;
 			}
-		  }
+		}
 		
-		  .mdc-text-field,.mdc-select{
+		.mdc-text-field,.mdc-select{
 			background-color:var(--cool-form-field-bg-color);
-		  }
+		}
 
-		  // Shape modifiers
-		  &.has-shape-sharp {
+		// Shape modifiers
+		&.has-shape-sharp {
 			.mdc-text-field, .mdc-select {
 			  .mdc-notched-outline {
 				@include set-full-border-radius($corners-shape-sharp);
 			  }
 			}
-		  }
+		}
 		
-		  &.has-shape-rounded {
+		&.has-shape-rounded {
 			.mdc-text-field, .mdc-select {
 				border-bottom-left-radius: $corners-shape-rounded;
 				border-top-left-radius: $corners-shape-rounded;
@@ -148,9 +152,9 @@
 				@include set-horizontal-border-radius($corners-shape-rounded, $corners-shape-rounded);
 			  }
 			}
-		  }
+		}
 		
-		  &.has-shape-round {
+		&.has-shape-round {
 			.mdc-notched-outline__leading{
 				display: none;
 			}
@@ -165,15 +169,15 @@
 				@include set-horizontal-border-radius-round($corners-shape-round, $corners-shape-round);
 			  }
 			}
-		  }
+		}
 		
-		  &.has-shape-default {
+		&.has-shape-default {
 			.mdc-text-field, .mdc-select {
 			  .mdc-notched-outline {
 				@include set-horizontal-border-radius($corners-shape-default, $corners-shape-default);
 			  }
 			}
-		  }
+		}
 		
 		.mdc-text-field, .mdc-select {
 				.mdc-notched-outline {
@@ -303,7 +307,7 @@
 	&__field[type="tel"],
 	&__textarea,
 	&__select select {
-		background-color: var(--cool-form-field-bg-color);
+		background-color: var(--cool-form-field-bg-color) !important;
 		border: 0;
 		border-radius: 0;
 		color: var(--cool-form-field-text-color);
