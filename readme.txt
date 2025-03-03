@@ -3,7 +3,7 @@ Contributors: coolplugins, narinder-singh, satindersingh
 Tags: elementor, elementor form, register custom post type, whatsapp
 Requires at least: 6.2
 Tested up to: 6.7.1
-Stable tag: 2.4
+Stable tag: 2.4.0
 Requires PHP: 8.2
 License: GPL-2.0+
 URI:https://www.gnu.org/licenses/gpl-2.0.html
@@ -13,6 +13,8 @@ This plugin empowers your Elementor Forms with advanced functionality that simpl
 == Description ==
 
 Cool FormKit Lite is a powerful form builder addon for Elementor, designed to give Elementor(Free) users access to form-building capabilities that were previously only available to Elementor Pro users. 
+
+https://youtu.be/u1PYFXv01Rc
 
 This addon allows you to build custom forms using a drag-and-drop interface, just like Elementor. Create Contact Forms, Registration Forms, Survey Forms, and more without writing a single line of code.
 
@@ -51,8 +53,6 @@ This addon allows you to build custom forms using a drag-and-drop interface, jus
 **Coming Soon: Pack of Advanced Features!**
 
 We’re constantly working to improve Cool FormKit Lite. Soon, we’ll be adding advanced features like conditional logic, rating fields, range sliders, and more. These exciting updates will benefit both Elementor Free and Pro users. So, stay tuned for exciting updates to enhance your form-building experience.
-
-https://youtu.be/u1PYFXv01Rc
 
 📢 Get started today and elevate your Elementor Form experience!
 
@@ -97,7 +97,7 @@ Cool FormKit Lite follows Google’s Material Design guidelines to create user-f
 
 == Changelog ==
 
-= 2.4 =
+= 2.4.0 =
 * Added: Form builder for elementor.
 
 = 2.3 =
