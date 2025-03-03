@@ -26,6 +26,7 @@ class CFKEF_Submission_Posts {
      */
     public function __construct() {
         add_action( 'init', [ $this, 'register_post_type' ] );
+        add_action('init', [ $this, 'add_submission_meta_boxes' ]);
     }
 
     /**
@@ -92,9 +93,18 @@ class CFKEF_Submission_Posts {
     }
 
     /**
-     * Render submission posts page
-     */ 
-    public function render_submission_posts_page() {
-        echo '<h1>Submission Posts</h1>';
+     * Add submission meta boxes
+     */
+    public function add_submission_meta_boxes() {
+        if (get_post_type() === 'cfkef-submission') {
+            add_meta_box( 'cfkef-submission-meta-box', 'Submission Details', [ $this, 'render_submission_meta_box' ], 'cfkef-submission', 'normal', 'high' );
+        }
+    }
+
+    /**
+     * Render submission meta box
+     */
+    public function render_submission_meta_box() {
+        echo '<h1>Submission Details</h1>';
     }
 }
