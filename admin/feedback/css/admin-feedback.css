@@ -1,0 +1,188 @@
+/*
+|------------------------------------------
+|       Deactivation feedback form
+|------------------------------------------
+*/
+[id^="cool-plugins-feedback"].hide-feedback-popup{
+    opacity: 0;
+}
+.cp-feedback-wrapper {
+    font-family: Roboto,Arial,Helvetica,Verdana,sans-serif;
+    width: 50%;
+    min-width: 300px;
+    left: 25%;
+    position: fixed;
+    top: 15%;
+    max-height: 80vh;
+    z-index: 9999;
+    box-shadow: 0px 0px 10px -5px #000;
+    background: #fff;
+    color: #fff;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+/* ------------------------------- Title Area ------------------------------- */
+.cp-feedback-header {
+    padding: 20px;
+    min-height: 25px;
+    background-color: #0D1031;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.cp-feedback-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+.cp-feedback-title-link,
+.cp-feedback-title-link a {
+    color: #fff;
+    font-style: italic;
+}
+/* ---------------------------- Title Area - END ---------------------------- */
+
+
+/* -------------------------------- Preloader ------------------------------- */
+.cp-feedback-loader {
+    display: none;
+    width: 100%;
+    height: calc(100% - 65px);
+    background: #fff;
+    opacity: 0.7;
+    position: absolute;
+    text-align: center;
+}
+.cp-feedback-loader img {
+    top: calc(50% - 25px);
+    position: relative;
+    height: 50px;
+    width: 50px;
+}
+/* ----------------------------- Preloader - END ---------------------------- */
+
+
+/* ---------------------------------- Form ---------------------------------- */
+.cp-feedback-form-wrapper {
+    padding: 20px;
+    background: #fff;
+    color: #555;
+}
+.cp-feedback-form-title {
+    font-weight: 600;
+    margin-bottom: 20px;
+    font-size: 15px;
+    line-height: 20px;
+}
+.cp-feedback-input-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 13px;
+    line-height: 1.4em;
+    min-height: 25px;
+    border-bottom: 1px solid rgb(0 0 0 / 15%);
+    margin-bottom: 4px;
+    padding-bottom: 4px;
+    flex-flow: row wrap;
+}
+.cp-feedback-input-wrapper .cp-feedback-input:not(:checked)~.cp-feedback-text {
+    display: none;
+}
+.cp-feedback-input-wrapper input[type=radio] {
+    margin-top: 2px;
+    margin-right: 8px;
+}
+.cp-feedback-input-wrapper textarea {
+    margin: 10px 0 10px 20px;
+    width: 100%;
+    font-size: 13px;
+}
+.cp-feedback-terms {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    font-size: 13px;
+    line-height: 1.4em;
+    font-style: italic;
+    margin: 10px 0;
+}
+.cp-feedback-terms input[type=checkbox] {
+    margin-top: 2px;
+    margin-right: 8px;
+}
+.cp-feedback-input-wrapper label,
+.cp-feedback-terms label {
+    width: calc(100% - 33px);
+}
+p.cp-feedback-error {
+    color: red;
+    margin: 10px 0 0;
+    padding: 0;
+    font-size: 13px;
+    line-height: 1.2em;
+    width: 100%;
+}
+/* ------------------------------- Form - END ------------------------------- */
+
+/* --------------------------------- Buttons -------------------------------- */
+.cp-feedback-button-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+.cp-feedback-button {
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    cursor: pointer;
+    color: #a4afb7;
+}
+.cp-feedback-button.cp-submit {
+    background-color: #0D1031;
+    color: white;
+    padding: 8px;
+}
+.cp-feedback-button.cp-submit:hover {
+    background-color: #27C3F3;
+}
+.cp-feedback-button.cp-skip:hover {
+    color: black;
+}
+/* ------------------------------ Buttons - END ----------------------------- */
+
+
+/* ----------------------------- Overflow Scroll ---------------------------- */
+/* width */
+.cp-feedback-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+/* Track */
+.cp-feedback-wrapper::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+/* Handle */
+.cp-feedback-wrapper::-webkit-scrollbar-thumb {
+    background: #78dbf9; 
+}
+/* Handle on hover */
+.cp-feedback-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #27C3F3; 
+}
+/* -------------------------- Overflow Scroll - END ------------------------- */
+
+
+/* ------------------------------- Responsive ------------------------------- */
+@media only screen and (max-width: 600px) {
+    .cp-feedback-wrapper {
+        width: 300px;
+        left: calc((100% - 300px)/2);
+        top: 10%;
+    }
+}
+/* ---------------------------- Responsive - END ---------------------------- */

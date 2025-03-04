@@ -1,16 +1,17 @@
 {
-  "name": "eduardovillao/extensions-for-elementor-form",
-  "description": "WordPress Delivery plugin",
-  "type": "project",
-  "license": "GPL",
-  "authors": [
-      {
-          "name": "EduardoVillao"
-      }
-  ],
-  "minimum-stability": "stable",
-  "require-dev": {
-      "squizlabs/php_codesniffer": "^3.6",
-      "wp-coding-standards/wpcs": "^2.3"
-  }
+	"name": "elementor/cool-formkit",
+	"require": {
+		"squizlabs/php_codesniffer": "^3.10.2",
+		"dealerdirect/phpcodesniffer-composer-installer": "^v1.0.0",
+		"wp-coding-standards/wpcs": "^3.1.0"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	},
+	"scripts": {
+		"lint": "vendor/bin/phpcs --standard=./phpcs.xml --ignore=node_modules,vendor,build .",
+		"lint:fix": "vendor/bin/phpcbf --ignore=node_modules,vendor,build ."
+	}
 }

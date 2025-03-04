@@ -1,6 +1,6 @@
 <?php
 
-namespace EEF\Includes\Actions;
+namespace Cool_FormKit\Includes\Actions;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -32,9 +32,9 @@ class Register_Actions {
 		}
 
 		foreach ( $this->actions as $action ) {
-			include_once EEF_PLUGIN_PATH . $action['relative_path'] ?? '';
+			include_once CFL_PLUGIN_PATH . $action['relative_path'] ?? '';
 
-			$class_name = 'EEF\Includes\Actions\\' . $action['class_name'];
+			$class_name = 'Cool_FormKit\Includes\Actions\\' . $action['class_name'];
 			if ( class_exists( $class_name ) ) {
 				$form_actions_registrar->register( new $class_name() );
 			}
