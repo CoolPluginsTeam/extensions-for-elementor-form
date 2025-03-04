@@ -26,7 +26,7 @@ class CFKEF_Submission_Posts {
      */
     public function __construct() {
         add_action( 'init', [ $this, 'register_post_type' ] );
-        add_action('init', [ $this, 'add_submission_meta_boxes' ]);
+        add_action('add_meta_boxes', [ $this, 'add_submission_meta_boxes' ]);
     }
 
     /**
@@ -96,9 +96,11 @@ class CFKEF_Submission_Posts {
      * Add submission meta boxes
      */
     public function add_submission_meta_boxes() {
-        if (get_post_type() === 'cfkef-submission') {
+        // var_dump(get_the_ID());
+        // if (get_post_type() === 'cfkef-submission') {
             add_meta_box( 'cfkef-submission-meta-box', 'Submission Details', [ $this, 'render_submission_meta_box' ], 'cfkef-submission', 'normal', 'high' );
-        }
+            add_meta_box( 'cfkef-form-info-meta-box', 'Form Info', [ $this, 'render_form_info_meta_box' ], 'cfkef-submission', 'normal', 'high' );
+        // }
     }
 
     /**
@@ -106,5 +108,12 @@ class CFKEF_Submission_Posts {
      */
     public function render_submission_meta_box() {
         echo '<h1>Submission Details</h1>';
+    }
+
+    /**
+     * Render form info meta box
+     */
+    public function render_form_info_meta_box() {
+        echo '<h1>Form Info</h1>';
     }
 }
