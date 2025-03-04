@@ -68,6 +68,10 @@ We’re constantly working to improve Cool FormKit Lite. Soon, we’ll be adding
 * **Custom Success Message:** Create and display a custom message template after the form is successfully submitted.
 [👉 Video demo](https://www.youtube.com/watch?v=CMN32j4hGlA)
 
+== Screenshots ==
+1. Cool Formkit Lite preview.
+2. Cool Formkit Lite form.
+
 == Installation ==
 
 1. Download the plugin from WP directory.
