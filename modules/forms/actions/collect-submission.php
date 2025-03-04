@@ -3,11 +3,11 @@
 namespace Cool_FormKit\Modules\Forms\Actions;
 
 use Elementor\Controls_Manager;
-use Elementor\Core\Utils\Collection;
 use Cool_FormKit\Modules\Forms\Classes\Action_Base;
 use Cool_FormKit\Modules\Forms\Classes\Form_Record;
 use Cool_FormKit\Modules\Forms\Components\Ajax_Handler;
 use Cool_FormKit\Modules\Forms\Module;
+use Cool_FormKit\Collect_Submission\CFKEF_Save_Submission;
 
 if (! defined('ABSPATH')) {
     exit; // Exit if accessed directly.
@@ -120,25 +120,9 @@ class Collect_Submission extends Action_Base
      */
     public function run($record, $ajax_handler)
     {
-        $meta_keys = array_merge(['page_url', 'page_title'], $record->get_form_settings('collect_submission_meta_data'));
-        $meta = $record->get_form_meta($meta_keys);
-        
-        $actions_count = (new Collection($record->get_form_settings('submit_actions')))
-        ->filter(function ($value) {
-            return $value !== $this->get_name();
-        })
-        ->count();
-        
-        $post_id = $record->get_form_settings('form_post_id');
-        $element_id = $ajax_handler->get_current_form()['id'];
-        $form_name = $record->get_form_settings('form_name');
+        require_once CFL_PLUGIN_PATH . 'includes/collect-submission/class-cfkef-save-submission.php';
+        $save_submission = new CFKEF_Save_Submission();
 
-        wp_insert_post([
-            'post_type' => 'cfkef-submission',
-            'post_title' => $form_name,
-            'post_content' => json_encode($meta),
-            'post_status' => 'publish',
-            
-        ]);
+        do_action('cfkef/form/submission', $record, $ajax_handler, $this);
     }
 }
