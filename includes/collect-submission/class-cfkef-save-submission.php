@@ -33,6 +33,8 @@ class CFKEF_Save_Submission {
         $form_name = $record->get_form_settings('form_name');
         $form_fields = $record->get_field( null );
 
+        $meta['form_name'] = $form_name;
+
         $submission_number = $this->auto_increment_submission_number();
         
         $post_data = [
@@ -43,11 +45,14 @@ class CFKEF_Save_Submission {
 
         $post_id = wp_insert_post($post_data);
 
-        // Update the form entries in post meta
-        update_post_meta($post_id, '_cfkef_form_entries', $actions_count);
+        // Update the form action count in post meta
+        update_post_meta($post_id, '_cfkef_form_action_count', $actions_count);
 
-        // Update the form post id in post meta
-        update_post_meta($post_id, '_cfkef_form_post_id', $post_id);
+        // Update the form entry id in post meta
+        update_post_meta($post_id, '_cfkef_form_entry_id', $submission_number);
+
+        // Update the form name in post meta
+        update_post_meta($post_id, '_cfkef_form_name', $form_name);
 
         // Update the element id in post meta
         update_post_meta($post_id, '_cfkef_element_id', $element_id);
@@ -55,17 +60,16 @@ class CFKEF_Save_Submission {
         // Update the form meta in post meta
         update_post_meta($post_id, '_cfkef_form_meta', $meta);
 
-        // Update the form data in post meta
-        update_post_meta($post_id, '_cfkef_form_data', $form_data);
+        // Update last entry key option
+        update_option($this->last_entry_key, $submission_number);
 
         $form_data = [];
+
         foreach($form_fields as $key => $field) {
             if(!empty($field['value'])) {
-                $form_data[$key] = ['value' => $field['value'], 'type' => $field['type']];
+                $form_data[$key] = ['value' => $field['value'], 'type' => $field['type'], 'title' => $field['title']];
             }
         }
-
-        var_dump($form_data);
 
         update_post_meta($post_id, '_cfkef_form_data', $form_data);
     }
