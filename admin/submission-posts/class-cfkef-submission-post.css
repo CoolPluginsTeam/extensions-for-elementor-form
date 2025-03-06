@@ -1,0 +1,41 @@
+.cfkef-field-wrapper {
+  margin: 20px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.cfkef-field-wrapper .cfkef-data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cfkef-field-wrapper .cfkef-data-table thead {
+  background-color: #f1f1f1;
+}
+
+.cfkef-field-wrapper .cfkef-data-table thead th {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #ccc;
+  font-weight: bold;
+}
+
+.cfkef-field-wrapper .cfkef-data-table tbody tr.cfkef-data-table-key {
+  background-color: #dae7ff;
+}
+
+.cfkef-field-wrapper .cfkef-data-table tbody tr.cfkef-data-table-key td {
+  font-weight: 700;
+  padding: .5rem;
+}
+
+.cfkef-field-wrapper .cfkef-data-table tbody tr.cfkef-data-table-value {
+  background-color: #f9f9f9;
+}
+
+.cfkef-field-wrapper .cfkef-data-table tbody tr.cfkef-data-table-value td {
+  word-break: break-all;
+  padding: .5rem .5rem .5rem 1.5rem;
+}
+/*# sourceMappingURL=class-cfkef-submission-post.css.map */

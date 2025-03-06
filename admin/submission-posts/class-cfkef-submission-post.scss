@@ -1,0 +1,46 @@
+ // Improved CSS based on the provided HTML structure
+.cfkef-field-wrapper {
+    margin: 20px 0;
+    // padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+
+    .cfkef-data-table {
+        width: 100%;
+        border-collapse: collapse;
+
+        thead {
+            background-color: #f1f1f1;
+
+            th {
+                padding: 12px; // Increased padding for better spacing
+                text-align: left;
+                border-bottom: 2px solid #ccc;
+                font-weight: bold; // Added bold font for headers
+            }
+        }
+
+        tbody {
+            tr {
+                &.cfkef-data-table-key{
+                    background-color: #dae7ff;
+
+                    td{
+                        font-weight: 700;
+                        padding: .5rem;
+                    }
+                }
+
+                &.cfkef-data-table-value{
+                    background-color: #f9f9f9;
+
+                    td{
+                        word-break: break-all;
+                        padding: .5rem .5rem .5rem 1.5rem;
+                    }
+                }
+            }
+        }
+    }
+}
