@@ -80,6 +80,8 @@ class CFKEF_Loader {
         $this->plugin_name = 'extensions-for-elementor-form';
         $this->version = CFL_VERSION;
 
+        $this->load_submission_posts();
+        
         if ( ! is_plugin_active( 'elementor-pro/elementor-pro.php' ) ) {
             return false;
 		}
@@ -89,7 +91,6 @@ class CFKEF_Loader {
 
         $this->load_dependencies();
         $this->include_addons();
-        $this->load_submission_posts();
     }
 
     /**
