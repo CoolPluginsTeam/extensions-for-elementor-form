@@ -26,7 +26,7 @@ class Cool_Form extends Form_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Cool Form Kit Form', 'cool-formkit' );
+		return esc_html__( 'Cool Form', 'cool-formkit' );
 	}
 
 	public function get_icon() {
