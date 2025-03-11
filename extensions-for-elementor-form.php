@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: Cool FormKit Lite
  * Plugin URI: https://coolplugins.net/
@@ -15,105 +16,203 @@
  */
 
 namespace Cool_FormKit;
+
 use Cool_FormKit\Includes\Module_Base;
 use Cool_FormKit\Includes\CFKEF_Loader;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	header( 'Status: 403 Forbidden' );
-	header( 'HTTP/1.1 403 Forbidden' );
+if (! defined('ABSPATH')) {
+	header('Status: 403 Forbidden');
+	header('HTTP/1.1 403 Forbidden');
 	exit();
 }
 
-define('CFL_VERSION','2.4.0');
-define('PHP_MINIMUM_VERSION','7.4');
-define('WP_MINIMUM_VERSION','5.5');
-define( 'CFL_PLUGIN_MAIN_FILE', __FILE__ );
-define( 'CFL_PLUGIN_PATH', plugin_dir_path( CFL_PLUGIN_MAIN_FILE ) );
-define( 'CFL_PLUGIN_URL', plugin_dir_url( CFL_PLUGIN_MAIN_FILE ) );
-define( 'CFL_ASSETS_PATH', CFL_PLUGIN_PATH . 'build/' );
-define( 'CFL_ASSETS_URL', CFL_PLUGIN_URL . '/build/' );
-define( 'CFL_SCRIPTS_PATH', CFL_ASSETS_PATH . 'js/' );
-define( 'CFL_SCRIPTS_URL', CFL_ASSETS_URL . 'js/' );
-define( 'CFL_STYLE_PATH', CFL_ASSETS_PATH . 'css/' );
-define( 'CFL_STYLE_URL', CFL_ASSETS_URL . 'css/' );
-define( 'CFL_IMAGES_PATH', CFL_ASSETS_PATH . 'images/' );
-define( 'CFL_IMAGES_URL', CFL_ASSETS_URL . 'images/' );
-define( 'CFL__MIN_ELEMENTOR_VERSION', '3.26.4' );
+define('CFL_VERSION', '2.4.0');
+define('PHP_MINIMUM_VERSION', '7.4');
+define('WP_MINIMUM_VERSION', '5.5');
+define('CFL_PLUGIN_MAIN_FILE', __FILE__);
+define('CFL_PLUGIN_PATH', plugin_dir_path(CFL_PLUGIN_MAIN_FILE));
+define('CFL_PLUGIN_URL', plugin_dir_url(CFL_PLUGIN_MAIN_FILE));
+define('CFL_ASSETS_PATH', CFL_PLUGIN_PATH . 'build/');
+define('CFL_ASSETS_URL', CFL_PLUGIN_URL . '/build/');
+define('CFL_SCRIPTS_PATH', CFL_ASSETS_PATH . 'js/');
+define('CFL_SCRIPTS_URL', CFL_ASSETS_URL . 'js/');
+define('CFL_STYLE_PATH', CFL_ASSETS_PATH . 'css/');
+define('CFL_STYLE_URL', CFL_ASSETS_URL . 'css/');
+define('CFL_IMAGES_PATH', CFL_ASSETS_PATH . 'images/');
+define('CFL_IMAGES_URL', CFL_ASSETS_URL . 'images/');
+define('CFL__MIN_ELEMENTOR_VERSION', '3.26.4');
 
 
-if ( ! function_exists( 'is_plugin_active' ) ) {
-    include_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+if (! function_exists('is_plugin_active')) {
+	include_once ABSPATH . 'wp-admin/includes/plugin.php';
 }
 
-class Cool_Formkit_Lite_For_Elementor_Form {
+class Cool_Formkit_Lite_For_Elementor_Form
+{
 
 	/**
-     * Plugin instance.
-    */
-    public static $instance = null;
+	 * Plugin instance.
+	 */
+	public static $instance = null;
 
 	/**
 	 * Constructor.
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		static $autoloader_registered = false;
 
-		if ($this->check_requirements() ) {
-			if ( ! $autoloader_registered ) {
-				$autoloader_registered = spl_autoload_register( [ $this, 'autoload' ] );
+		if ($this->check_requirements()) {
+			if (! $autoloader_registered) {
+				$autoloader_registered = spl_autoload_register([$this, 'autoload']);
 			}
 
 			$this->initialize_modules();
-			
+
 			$this->initialize_plugin();
 
 			// add_action( 'activated_plugin', array( $this, 'EEF_plugin_redirection' ) );
-			add_action('wp_enqueue_scripts', array($this,'my_enqueue_scripts'));
+			add_action('wp_enqueue_scripts', array($this, 'my_enqueue_scripts'));
+
+			add_action('elementor/element/cool-form/section_form_fields/before_section_end', array($this, 'update_controls'), 10, 2);
+
+			add_action('elementor/editor/before_enqueue_styles', array($this, 'editor_assets'));
+
+			add_action( 'wp_ajax_cfef_elementor_review_notice', array( $this, 'cfef_elementor_review_notice' ) );
+
+
+
+
+			// add_action( 'init', function (){
+			// 	var_dump("ravi");
+			// });
+
 
 		}
 	}
 
-	public function my_enqueue_scripts(){
-		wp_register_script( 'handle-date-pickr', CFL_PLUGIN_URL . 'assets/js/flatpickr/handle-date-pickr.js', array('elementor-frontend','jquery'), CFL_VERSION, true );
+	public function editor_assets()
+	{
+		wp_register_script('cfef_logic_editor', CFL_PLUGIN_URL . 'assets/js/cfef_editor.min.js', array('jquery'), CFL_VERSION, true);
+		wp_enqueue_style('cfef_logic_editor', CFL_PLUGIN_URL . 'assets/css/cfef_editor.css', null, CFL_VERSION);
+		wp_enqueue_script('cfef_logic_editor');
+	}
 
-		wp_register_script( 'handle-time-pickr', CFL_PLUGIN_URL . 'assets/js/flatpickr/handle-time-pickr.js', array('elementor-frontend','jquery'), CFL_VERSION, true );
+	public function update_controls($widget)
+	{
+
+		// var_dump("bro");
+
+		$elementor = \Elementor\Plugin::instance();
+		$control_data = $elementor->controls_manager->get_control_from_stack($widget->get_unique_name(), 'form_fields');
+
+		// Ensure $control_data is initialized if it doesn't exist
+		// Check if the review notice option has been dismissed
+		if (! get_option('ccfef_review_notice_dismiss')) {
+			// Create nonce for security
+			$review_nonce = wp_create_nonce('ccfef_elementor_review');
+			$url          = admin_url('admin-ajax.php');
+
+			// HTML for the review notice
+
+			
+
+			$html = '<div class="cfef_elementor_review_wrapper">';
+			$html .= '<div class="cfef_elementor_review_msg">'
+				. __('Hope this addon solved your problem!', 'cfef') . '<br>'
+				. '<a href="https://wordpress.org/plugins/extensions-for-elementor-form/#new-post" target="_blank">'
+				. __('Share the love with a', 'cfef') . ' ⭐⭐⭐⭐⭐ ' . __('rating.', 'cfef') . '</a>'
+				. '<br><br></div>';
+
+			$html .= '<div class="cfef_elementor_review_buttons">';
+
+			// Close Notice Button  
+			$html .= '<div id="cfef_elementor_review_dismiss" data-url="' . esc_url($url) . '" data-nonce="' . esc_attr($review_nonce) . '">'
+				. __('Close Notice X', 'cfef') . '</div>';
+
+			// Submit Review Button  
+			$html .= '<div class="cfef_elementor_demo_btn">'
+				. '<a href="https://wordpress.org/support/plugin/extensions-for-elementor-form/" target="_blank">'
+				. __('Submit Review', 'cfef') . '</a></div>';
+
+			$html .= '</div>'; // Close buttons wrapper  
+			$html .= '</div>'; // Close main wrapper 
+
+			// Add review notice field control
+			$field_controls['ccfef_review_notice'] = array(
+				'name'            => 'ccfef_review_notice',
+				'type'            => \Elementor\Controls_Manager::RAW_HTML,
+				'raw'             => $html,
+				'content_classes' => 'cfef_elementor_review_notice',
+				'tab'             => 'content',
+				'condition'       => array(
+					// 'field_type'               => 'tel',
+					// 'ccfef-country-code-field' => 'yes',
+				),
+				'inner_tab'       => 'form_fields_content_tab',
+				'tabs_wrapper'    => 'form_fields_tabs',
+			);
+		}
+
+		// Merge new field controls with existing ones
+		if (isset($control_data['fields'])) {
+			$control_data['fields'] = array_merge($control_data['fields'], $field_controls);
+		} else {
+			$control_data['fields'] = $field_controls; // Initialize if not set
+		}
+
+		// Update widget controls
+		$widget->update_control('form_fields', $control_data);
+	}
+
+
+	public function my_enqueue_scripts()
+	{
+		wp_register_script('handle-date-pickr', CFL_PLUGIN_URL . 'assets/js/flatpickr/handle-date-pickr.js', array('elementor-frontend', 'jquery'), CFL_VERSION, true);
+
+		wp_register_script('handle-time-pickr', CFL_PLUGIN_URL . 'assets/js/flatpickr/handle-time-pickr.js', array('elementor-frontend', 'jquery'), CFL_VERSION, true);
 	}
 	/**
-     * Singleton instance.
-     *
-     * @return self
-     */
-    public static function instance() {
-        if ( null === self::$instance ) {
-            self::$instance = new self();
-        }
+	 * Singleton instance.
+	 *
+	 * @return self
+	 */
+	public static function instance()
+	{
+		if (null === self::$instance) {
+			self::$instance = new self();
+		}
 
-        return self::$instance;
-    }
+		return self::$instance;
+	}
 	/**
 	 * Add hooks for plugin initialization.
 	 */
-	public function initialize_plugin() {
+	public function initialize_plugin()
+	{
 		// Include main plugin class.
 		require_once CFL_PLUGIN_PATH . '/includes/class-plugin.php';
+
 		CFKEF_Loader::get_instance();
-		
-		if ( is_admin() ) {
+
+		if (is_admin()) {
 			require_once CFL_PLUGIN_PATH . 'admin/feedback/admin-feedback-form.php';
 		}
 		// add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'EEF_plugin_dashboard_link' ) );
 
 	}
 
-	public function EEF_plugin_redirection($plugin){
-		if ( ! is_plugin_active( 'elementor-pro/elementor-pro.php' ) ) {
+	public function EEF_plugin_redirection($plugin)
+	{
+		if (! is_plugin_active('elementor-pro/elementor-pro.php')) {
 			return false;
 		}
-		if (  is_plugin_active( 'cool-formkit-for-elementor-forms/cool-formkit-for-elementor-forms.php' ) ) {
+		if (is_plugin_active('cool-formkit-for-elementor-forms/cool-formkit-for-elementor-forms.php')) {
 			return false;
 		}
-		if ( $plugin == plugin_basename( __FILE__ ) ) {
-			exit( wp_redirect( admin_url( 'admin.php?page=cool-formkit' ) ) );
+		if ($plugin == plugin_basename(__FILE__)) {
+			exit(wp_redirect(admin_url('admin.php?page=cool-formkit')));
 		}
 	}
 	/**
@@ -121,22 +220,23 @@ class Cool_Formkit_Lite_For_Elementor_Form {
 	 *
 	 * @return bool
 	 */
-	public function check_requirements() {
-		if ( ! version_compare( PHP_VERSION, PHP_MINIMUM_VERSION, '>=' ) ) {
-			add_action( 'admin_notices', [ $this, 'admin_notice_php_version_fail' ] );
+	public function check_requirements()
+	{
+		if (! version_compare(PHP_VERSION, PHP_MINIMUM_VERSION, '>=')) {
+			add_action('admin_notices', [$this, 'admin_notice_php_version_fail']);
 			return false;
 		}
 
-		if ( ! version_compare( get_bloginfo( 'version' ), WP_MINIMUM_VERSION, '>=' ) ) {
-			add_action( 'admin_notices', [ $this, 'admin_notice_wp_version_fail' ] );
+		if (! version_compare(get_bloginfo('version'), WP_MINIMUM_VERSION, '>=')) {
+			add_action('admin_notices', [$this, 'admin_notice_wp_version_fail']);
 			return false;
 		}
 
-		if ( is_plugin_active( 'cool-formkit-for-elementor-forms/cool-formkit-for-elementor-forms.php' ) ) {
+		if (is_plugin_active('cool-formkit-for-elementor-forms/cool-formkit-for-elementor-forms.php')) {
 			return false;
 		}
 
-		if ( ! is_plugin_active( 'elementor/elementor.php' ) ) {
+		if (! is_plugin_active('elementor/elementor.php')) {
 			add_action('admin_notices', array($this, 'admin_notice_missing_main_plugin'));
 			return false;
 		}
@@ -145,126 +245,147 @@ class Cool_Formkit_Lite_For_Elementor_Form {
 		return true;
 	}
 
-	public function EEF_plugin_dashboard_link($links){
-		$settings_link = '<a href="' . admin_url( 'admin.php?page=cool-formkit' ) . '">Settings</a>';
-		array_unshift( $links, $settings_link );
+	public function EEF_plugin_dashboard_link($links)
+	{
+		$settings_link = '<a href="' . admin_url('admin.php?page=cool-formkit') . '">Settings</a>';
+		array_unshift($links, $settings_link);
 		return $links;
 	}
 	/**
 	 * Show notice to enable elementor pro
 	 */
-	public function admin_notice_missing_main_plugin() {
+	public function admin_notice_missing_main_plugin()
+	{
 		$message = sprintf(
 			// translators: %1$s replace with Conditional Fields for Elementor Form & %2$s replace with Elementor Pro.
 			esc_html__(
 				'%1$s requires %2$s to be installed and activated.',
 				'extensions-for-elementor-form'
 			),
-			esc_html__( 'Cool Formkit Lite', 'extensions-for-elementor-form' ),
-			esc_html__( 'Elementor', 'extensions-for-elementor-form' ),
-			); 
-			printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', esc_html( $message ) );
-			deactivate_plugins( plugin_basename( __FILE__ ) );
+			esc_html__('Cool Formkit Lite', 'extensions-for-elementor-form'),
+			esc_html__('Elementor', 'extensions-for-elementor-form'),
+		);
+		printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', esc_html($message));
+		deactivate_plugins(plugin_basename(__FILE__));
 	}
 
 	/**
 	 * Display admin notice for PHP version failure.
 	 */
-	public function admin_notice_php_version_fail() {
+	public function admin_notice_php_version_fail()
+	{
 		$message = sprintf(
-			esc_html__( '%1$s requires PHP version %2$s or greater.', 'extensions-for-elementor-form' ),
+			esc_html__('%1$s requires PHP version %2$s or greater.', 'extensions-for-elementor-form'),
 			'<strong>Cool Formkit Lite</strong>',
 			PHP_MINIMUM_VERSION
 		);
 
-		echo wp_kses_post( sprintf( '<div class="notice notice-error"><p>%1$s</p></div>', $message ) );
+		echo wp_kses_post(sprintf('<div class="notice notice-error"><p>%1$s</p></div>', $message));
 	}
 
 	/**
 	 * Display admin notice for WordPress version failure.
 	 */
-	public function admin_notice_wp_version_fail() {
+	public function admin_notice_wp_version_fail()
+	{
 		$message = sprintf(
-			esc_html__( '%1$s requires WordPress version %2$s or greater.', 'extensions-for-elementor-form' ),
+			esc_html__('%1$s requires WordPress version %2$s or greater.', 'extensions-for-elementor-form'),
 			'<strong>Cool Formkit Lite</strong>',
 			WP_MINIMUM_VERSION
 		);
 
-		echo wp_kses_post( sprintf( '<div class="notice notice-error"><p>%1$s</p></div>', $message ) );
+		echo wp_kses_post(sprintf('<div class="notice notice-error"><p>%1$s</p></div>', $message));
 	}
 
-	private function initialize_modules() {
+	private function initialize_modules()
+	{
 		$modules_list = [
 			'Forms',  // Add additional module names as needed.
 		];
-	
-		foreach ( $modules_list as $module_name ) {
+
+		foreach ($modules_list as $module_name) {
 			// Convert the module name to match the folder structure.
 			// "Forms" becomes "Forms", but our autoloader expects lower-case folder names.
 			// Therefore, if your file is in "modules/forms/module.php", adjust accordingly:
-			$module_folder = strtolower( $module_name );
+			$module_folder = strtolower($module_name);
 			$class_name = __NAMESPACE__ . '\\Modules\\' . $module_name . '\\Module';
-			
-			if ( class_exists( $class_name ) && $class_name::is_active() ) {
+
+			if (class_exists($class_name) && $class_name::is_active()) {
 				// Initialize the module by calling its singleton instance.
 				$class_name::instance();
 			} else {
 				// Optional: Log or debug if the module class isn't found.
-				error_log( 'Module class not found or not active: ' . $class_name );
+				error_log('Module class not found or not active: ' . $class_name);
 			}
 		}
 	}
 
-	public function autoload( $class_name ) {
-		if ( 0 !== strpos( $class_name, __NAMESPACE__ ) ) {
+	public function autoload($class_name)
+	{
+		if (0 !== strpos($class_name, __NAMESPACE__)) {
 			return;
 		}
 
-		$has_class_alias = isset( $this->classes_aliases[ $class_name ] );
+		$has_class_alias = isset($this->classes_aliases[$class_name]);
 
 		// Backward Compatibility: Save old class name for set an alias after the new class is loaded
-		if ( $has_class_alias ) {
-			$class_alias_name = $this->classes_aliases[ $class_name ];
+		if ($has_class_alias) {
+			$class_alias_name = $this->classes_aliases[$class_name];
 			$class_to_load = $class_alias_name;
 		} else {
 			$class_to_load = $class_name;
 		}
 
-		if ( ! class_exists( $class_to_load ) ) {
+		if (! class_exists($class_to_load)) {
 			$filename = strtolower(
 				preg_replace(
-					[ '/^' . __NAMESPACE__ . '\\\/', '/([a-z])([A-Z])/', '/_/', '/\\\/' ],
-					[ '', '$1-$2', '-', DIRECTORY_SEPARATOR ],
+					['/^' . __NAMESPACE__ . '\\\/', '/([a-z])([A-Z])/', '/_/', '/\\\/'],
+					['', '$1-$2', '-', DIRECTORY_SEPARATOR],
 					$class_to_load
 				)
 			);
 
 
-			$filename = trailingslashit( CFL_PLUGIN_PATH ) . $filename . '.php';
+			$filename = trailingslashit(CFL_PLUGIN_PATH) . $filename . '.php';
 
 
-			if ( is_readable( $filename ) ) {
+			if (is_readable($filename)) {
 				include $filename;
 			}
 		}
 
-		if ( $has_class_alias ) {
-			class_alias( $class_alias_name, $class_name );
+		if ($has_class_alias) {
+			class_alias($class_alias_name, $class_name);
 		}
 	}
 
-	public static function eef_activate(){
-		update_option( 'eef-v', CFL_VERSION );
-		update_option( 'eef-type', 'FREE' );
-		update_option( 'eef-installDate', gmdate( 'Y-m-d h:i:s' ) );
+	public static function eef_activate()
+	{
+		update_option('eef-v', CFL_VERSION);
+		update_option('eef-type', 'FREE');
+		update_option('eef-installDate', gmdate('Y-m-d h:i:s'));
 	}
 
-	public static function eef_deactivate(){
+	public function cfef_elementor_review_notice() {
+
+		var_dump("bro");
+
+		if ( ! check_ajax_referer( 'ccfef_elementor_review', 'nonce', false ) ) {
+			wp_send_json_error( __( 'Invalid security token sent.', 'cfef' ) );
+			wp_die( '0', 400 );
+		}
+
+		if ( isset( $_POST['cfef_notice_dismiss'] ) && 'true' === sanitize_text_field($_POST['cfef_notice_dismiss']) ) {
+			update_option( 'ccfef_review_notice_dismiss', 'yes' );
+		}
+		exit;
 	}
+
+	public static function eef_deactivate() {}
 }
 
 // Initialize the plugin.
 Cool_Formkit_Lite_For_Elementor_Form::instance();
 
-register_activation_hook( __FILE__, array( 'Cool_FormKit\Cool_Formkit_Lite_For_Elementor_Form', 'eef_activate' ) );
-register_deactivation_hook( __FILE__, array( 'Cool_FormKit\Cool_Formkit_Lite_For_Elementor_Form', 'eef_deactivate' ) );
+register_activation_hook(__FILE__, array('Cool_FormKit\Cool_Formkit_Lite_For_Elementor_Form', 'eef_activate'));
+register_deactivation_hook(__FILE__, array('Cool_FormKit\Cool_Formkit_Lite_For_Elementor_Form', 'eef_deactivate'));
