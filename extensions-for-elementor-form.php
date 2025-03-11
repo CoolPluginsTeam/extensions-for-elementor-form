@@ -79,7 +79,8 @@ class Cool_Formkit_Lite_For_Elementor_Form
 
 			add_action('elementor/editor/before_enqueue_styles', array($this, 'editor_assets'));
 
-			add_action( 'wp_ajax_cfef_elementor_review_notice', array( $this, 'cfef_elementor_review_notice' ) );
+			add_action( 'wp_ajax_cfef_elementor_review_notice', array( $this, 'cfef_elementor_review_notice' ));
+			
 
 
 
@@ -88,6 +89,8 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			// 	var_dump("ravi");
 			// });
 
+			
+
 
 		}
 	}
@@ -95,7 +98,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	public function editor_assets()
 	{
 		wp_register_script('cfef_logic_editor', CFL_PLUGIN_URL . 'assets/js/cfef_editor.min.js', array('jquery'), CFL_VERSION, true);
-		wp_enqueue_style('cfef_logic_editor', CFL_PLUGIN_URL . 'assets/css/cfef_editor.css', null, CFL_VERSION);
+		wp_enqueue_style('cfef_logic_editor', CFL_PLUGIN_URL . 'assets/css/cfef_editor.min.css', null, CFL_VERSION);
 		wp_enqueue_script('cfef_logic_editor');
 	}
 
@@ -106,6 +109,20 @@ class Cool_Formkit_Lite_For_Elementor_Form
 
 		$elementor = \Elementor\Plugin::instance();
 		$control_data = $elementor->controls_manager->get_control_from_stack($widget->get_unique_name(), 'form_fields');
+
+		// $field_controls = array(
+		// 	'form_fields_conditions_tab' =>
+		// 		array(
+		// 			'type'         => 'tab',
+		// 			'tab'          => 'content',
+		// 			'label'        => esc_html__( 'Conditions', 'cfef' ),
+		// 			'tabs_wrapper' => 'form_fields_tabs',
+		// 			'name'         => 'form_fields_conditions_tab',
+		// 			'condition'    => array(
+		// 				'field_type' => array( 'text', 'email', 'textarea', 'number', 'select', 'radio', 'checkbox', 'tel', 'url', 'date', 'time', 'html', 'upload', 'recaptcha', 'recaptcha_v3', 'password', 'acceptance', 'step' ),
+		// 			),
+		// 		),
+		// );
 
 		// Ensure $control_data is initialized if it doesn't exist
 		// Check if the review notice option has been dismissed
@@ -118,26 +135,11 @@ class Cool_Formkit_Lite_For_Elementor_Form
 
 			
 
-			$html = '<div class="cfef_elementor_review_wrapper">';
-			$html .= '<div class="cfef_elementor_review_msg">'
-				. __('Hope this addon solved your problem!', 'cfef') . '<br>'
-				. '<a href="https://wordpress.org/plugins/extensions-for-elementor-form/#new-post" target="_blank">'
-				. __('Share the love with a', 'cfef') . ' ⭐⭐⭐⭐⭐ ' . __('rating.', 'cfef') . '</a>'
-				. '<br><br></div>';
-
-			$html .= '<div class="cfef_elementor_review_buttons">';
-
-			// Close Notice Button  
-			$html .= '<div id="cfef_elementor_review_dismiss" data-url="' . esc_url($url) . '" data-nonce="' . esc_attr($review_nonce) . '">'
-				. __('Close Notice X', 'cfef') . '</div>';
-
-			// Submit Review Button  
-			$html .= '<div class="cfef_elementor_demo_btn">'
-				. '<a href="https://wordpress.org/support/plugin/extensions-for-elementor-form/" target="_blank">'
-				. __('Submit Review', 'cfef') . '</a></div>';
-
-			$html .= '</div>'; // Close buttons wrapper  
-			$html .= '</div>'; // Close main wrapper 
+			$html         = '<div class="cfef_elementor_review_wrapper">';
+				$html        .= '<div id="cfef_elementor_review_dismiss" data-url="' . esc_url( $url ) . '" data-nonce="' . esc_attr( $review_nonce ) . '">Close Notice X</div>
+								<div class="cfef_elementor_review_msg">' . __( 'Hope this addon solved your problem!', 'cfef' ) . '<br><a href="https://wordpress.org/plugins/extensions-for-elementor-form/reviews/#new-post" target="_blank"">Share the love with a ⭐⭐⭐⭐⭐ rating.</a><br><br></div>
+								<div class="cfef_elementor_demo_btn"><a href="https://wordpress.org/support/plugin/extensions-for-elementor-form/reviews/#new-post" target="_blank">Submit Review</a></div>
+								</div>'; // Close main wrapper 
 
 			// Add review notice field control
 			$field_controls['ccfef_review_notice'] = array(
