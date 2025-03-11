@@ -52,7 +52,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 {
 
 	/**
-	 * Plugin instance
+	 * Plugin instance.
 	 */
 	public static $instance = null;
 
@@ -73,10 +73,99 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			$this->initialize_plugin();
 
 			// add_action( 'activated_plugin', array( $this, 'EEF_plugin_redirection' ) );
-			add_action('wp_enqueue_scripts', array($this, 'my_enqueue_scripts'));			
+			add_action('wp_enqueue_scripts', array($this, 'my_enqueue_scripts'));
+
+			add_action('elementor/element/cool-form/section_form_fields/before_section_end', array($this, 'update_controls'), 10, 2);
+
+			add_action('elementor/editor/before_enqueue_styles', array($this, 'editor_assets'));
+
+			add_action( 'wp_ajax_cfef_elementor_review_notice', array( $this, 'cfef_elementor_review_notice' ));
+			
+
+
+
+
+			// add_action( 'init', function (){
+			// 	var_dump("ravi");
+			// });
+
+			
 
 
 		}
+	}
+
+	public function editor_assets()
+	{
+		wp_register_script('cfef_logic_editor', CFL_PLUGIN_URL . 'assets/js/cfef_editor.min.js', array('jquery'), CFL_VERSION, true);
+		wp_enqueue_style('cfef_logic_editor', CFL_PLUGIN_URL . 'assets/css/cfef_editor.min.css', null, CFL_VERSION);
+		wp_enqueue_script('cfef_logic_editor');
+	}
+
+	public function update_controls($widget)
+	{
+
+		// var_dump("bro");
+
+		$elementor = \Elementor\Plugin::instance();
+		$control_data = $elementor->controls_manager->get_control_from_stack($widget->get_unique_name(), 'form_fields');
+
+		// $field_controls = array(
+		// 	'form_fields_conditions_tab' =>
+		// 		array(
+		// 			'type'         => 'tab',
+		// 			'tab'          => 'content',
+		// 			'label'        => esc_html__( 'Conditions', 'cfef' ),
+		// 			'tabs_wrapper' => 'form_fields_tabs',
+		// 			'name'         => 'form_fields_conditions_tab',
+		// 			'condition'    => array(
+		// 				'field_type' => array( 'text', 'email', 'textarea', 'number', 'select', 'radio', 'checkbox', 'tel', 'url', 'date', 'time', 'html', 'upload', 'recaptcha', 'recaptcha_v3', 'password', 'acceptance', 'step' ),
+		// 			),
+		// 		),
+		// );
+
+		// Ensure $control_data is initialized if it doesn't exist
+		// Check if the review notice option has been dismissed
+		if (! get_option('ccfef_review_notice_dismiss')) {
+			// Create nonce for security
+			$review_nonce = wp_create_nonce('ccfef_elementor_review');
+			$url          = admin_url('admin-ajax.php');
+
+			// HTML for the review notice
+
+			
+
+			$html         = '<div class="cfef_elementor_review_wrapper">';
+				$html        .= '<div id="cfef_elementor_review_dismiss" data-url="' . esc_url( $url ) . '" data-nonce="' . esc_attr( $review_nonce ) . '">Close Notice X</div>
+								<div class="cfef_elementor_review_msg">' . __( 'Hope this addon solved your problem!', 'cfef' ) . '<br><a href="https://wordpress.org/plugins/extensions-for-elementor-form/reviews/#new-post" target="_blank"">Share the love with a ⭐⭐⭐⭐⭐ rating.</a><br><br></div>
+								<div class="cfef_elementor_demo_btn"><a href="https://wordpress.org/support/plugin/extensions-for-elementor-form/reviews/#new-post" target="_blank">Submit Review</a></div>
+								</div>'; // Close main wrapper 
+
+			// Add review notice field control
+			$field_controls['ccfef_review_notice'] = array(
+				'name'            => 'ccfef_review_notice',
+				'type'            => \Elementor\Controls_Manager::RAW_HTML,
+				'raw'             => $html,
+				'content_classes' => 'cfef_elementor_review_notice',
+				'tab'             => 'content',
+				'condition'       => array(
+					// 'field_type'               => 'tel',
+					// 'ccfef-country-code-field' => 'yes',
+				),
+				'inner_tab'       => 'form_fields_content_tab',
+				'tabs_wrapper'    => 'form_fields_tabs',
+			);
+		}
+
+		// Merge new field controls with existing ones
+		if (isset($control_data['fields'])) {
+			$control_data['fields'] = array_merge($control_data['fields'], $field_controls);
+		} else {
+			$control_data['fields'] = $field_controls; // Initialize if not set
+		}
+
+		// Update widget controls
+		$widget->update_control('form_fields', $control_data);
 	}
 
 
@@ -106,10 +195,8 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	{
 		// Include main plugin class.
 		require_once CFL_PLUGIN_PATH . '/includes/class-plugin.php';
+
 		CFKEF_Loader::get_instance();
-		
-		require_once CFL_PLUGIN_PATH . '/includes/review-notice.php';
-		new Review_notice();
 
 		if (is_admin()) {
 			require_once CFL_PLUGIN_PATH . 'admin/feedback/admin-feedback-form.php';
@@ -281,6 +368,20 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		update_option('eef-installDate', gmdate('Y-m-d h:i:s'));
 	}
 
+	public function cfef_elementor_review_notice() {
+
+		var_dump("bro");
+
+		if ( ! check_ajax_referer( 'ccfef_elementor_review', 'nonce', false ) ) {
+			wp_send_json_error( __( 'Invalid security token sent.', 'cfef' ) );
+			wp_die( '0', 400 );
+		}
+
+		if ( isset( $_POST['cfef_notice_dismiss'] ) && 'true' === sanitize_text_field($_POST['cfef_notice_dismiss']) ) {
+			update_option( 'ccfef_review_notice_dismiss', 'yes' );
+		}
+		exit;
+	}
 
 	public static function eef_deactivate() {}
 }
