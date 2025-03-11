@@ -7,11 +7,11 @@
         
         jQuery(document).on('click','.elementor-control-form_fields_conditions_tab',(event)=>{
             const mainWrp=jQuery(event.currentTarget).closest('.elementor-repeater-row-controls.editable');
-            const addBtn=mainWrp.find('.elementor-control-cfef_repeater_data .elementor-repeater-add');
+            const addBtn=mainWrp.find('.elementor-control-cfl_repeater_data .elementor-repeater-add');
             jQuery(addBtn).text('+ Add Conditions');
-            const logicMeet = mainWrp.find('.elementor-control-cfef_logic_meet .elementor-control-content .elementor-control-field .elementor-control-input-wrapper select option')[1];
-            const logicMode = mainWrp.find('.elementor-control-cfef_logic_mode .elementor-control-content .elementor-control-field .elementor-control-input-wrapper .elementor-choices input');
-            const showHideFieldLableText = mainWrp.find('.elementor-control-cfef_repeater_data .elementor-control-content label span')
+            const logicMeet = mainWrp.find('.elementor-control-cfl_logic_meet .elementor-control-content .elementor-control-field .elementor-control-input-wrapper select option')[1];
+            const logicMode = mainWrp.find('.elementor-control-cfl_logic_mode .elementor-control-content .elementor-control-field .elementor-control-input-wrapper .elementor-choices input');
+            const showHideFieldLableText = mainWrp.find('.elementor-control-cfl_repeater_data .elementor-control-content label span')
             function updateLabel() {
                 for (let i = 0; i < logicMode.length; i++) {
                     if (logicMode[i].checked) {
@@ -36,12 +36,12 @@
                 logicMeet.style.backgroundColor = '#00000015';
             }
 
-            const controlsWrp=mainWrp.find('.elementor-control-cfef_logic_field_id')?.closest('.elementor-repeater-row-controls');
+            const controlsWrp=mainWrp.find('.elementor-control-cfl_logic_field_id')?.closest('.elementor-repeater-row-controls');
 
             controlsWrp?.addClass('editable');
         });
-        jQuery(document).on('mouseenter', '.elementor-repeater-row-controls.editable .elementor-control-cfef_repeater_data .elementor-repeater-fields-wrapper', function() {
-            const optionsFields = jQuery('.elementor-repeater-row-controls.editable .elementor-control-cfef_repeater_data .elementor-repeater-fields-wrapper .elementor-repeater-fields .elementor-repeater-row-controls .elementor-control-cfef_logic_field_is .elementor-control-content .elementor-control-field .elementor-control-input-wrapper select option');
+        jQuery(document).on('mouseenter', '.elementor-repeater-row-controls.editable .elementor-control-cfl_repeater_data .elementor-repeater-fields-wrapper', function() {
+            const optionsFields = jQuery('.elementor-repeater-row-controls.editable .elementor-control-cfl_repeater_data .elementor-repeater-fields-wrapper .elementor-repeater-fields .elementor-repeater-row-controls .elementor-control-cfl_logic_field_is .elementor-control-content .elementor-control-field .elementor-control-input-wrapper select option');
             for(let i = 0;i < optionsFields.length;i++){
                 if (optionsFields[i].value !== "==" && optionsFields[i].value !== "!=" && optionsFields[i].value !== ">" && optionsFields[i].value !== "<" && !optionsFields[i].innerHTML.includes('(PRO)')) {
                     optionsFields[i].innerHTML += ' (PRO)';
@@ -52,16 +52,16 @@
         });
 
 
-        $("body").on("click",'.elementor-control-tag-area[data-setting="cfef_logic_field_id"]',function(event){
+        $("body").on("click",'.elementor-control-tag-area[data-setting="cfl_logic_field_id"]',function(event){
             if( $(this).data("isChecked") != "ok" ) {
-              $(this).after('<div class="elementor-control-dynamic-switcher elementor-control-unit-1 cfef-add-tag" data-tooltip="add Tags" original-title=""><i class="eicon-database" aria-hidden="true"></i><span class="elementor-screen-only">Dynamic Tags</span></div>');
+              $(this).after('<div class="elementor-control-dynamic-switcher elementor-control-unit-1 cfl-add-tag" data-tooltip="add Tags" original-title=""><i class="eicon-database" aria-hidden="true"></i><span class="elementor-screen-only">Dynamic Tags</span></div>');
               $(this).data("isChecked","ok");
             }
         }) 
 
         // create list of id's of form fields for dynamic tags
-        $("body").on("click",".cfef-add-tag",function(event){
-           var idList ='<ul class="cfef-dynamic-tag">';
+        $("body").on("click",".cfl-add-tag",function(event){
+           var idList ='<ul class="cfl-dynamic-tag">';
            var formWrapper = $(this).closest(".elementor-repeater-fields-wrapper").parents(".elementor-repeater-fields-wrapper");
            $(".elementor-form-field-shortcode",formWrapper).each(function() {
             const regexPattren = /\".*?\"/gm;
@@ -86,7 +86,7 @@
         
         $(document).mouseup(function(event) 
         {
-            var container = $(".cfef-dynamic-tag");
+            var container = $(".cfl-dynamic-tag");
         
             if (!container.is(event.target) && container.has(event.target).length === 0) 
             {
@@ -95,7 +95,7 @@
         });
 
             // function to copy the id of the selected option from dynamic tag
-            $("body").on("click", ".cfef-dynamic-tag li", function (event) {
+            $("body").on("click", ".cfl-dynamic-tag li", function (event) {
                 var selectedValue = $(this).data("field-id");
                 $(this).parent().siblings().val(selectedValue);                
                 $(this).parent().siblings().trigger('input');
@@ -103,13 +103,13 @@
                     $('#elementor-panel-saver-button-publish')[0].classList.remove('elementor-disabled');
                 }
                 setTimeout(function () {
-                    $(".cfef-dynamic-tag").remove();
+                    $(".cfl-dynamic-tag").remove();
                 }, 500);
         });
 
         // Elementor Review Notice Start
-        jQuery(document).on('click','#cfef_elementor_review_dismiss',(event)=>{
-            jQuery(".cfef_elementor_review_notice").hide();
+        jQuery(document).on('click','#cfl_elementor_review_dismiss',(event)=>{
+            jQuery(".cfl_elementor_review_notice").hide();
             const btn=jQuery(event.target);
             const nonce=btn.data('nonce');
             const url=btn.data('url');
@@ -119,8 +119,8 @@
                 // eslint-disable-next-line no-undef
                 url: url, // Set this using wp_localize_script
                 data: {
-                    action: 'cfef_elementor_review_notice',
-                    cfef_notice_dismiss: true,
+                    action: 'cfl_elementor_review_notice',
+                    cfl_notice_dismiss: true,
                     nonce: nonce
                 },
                 success: (response) => {
