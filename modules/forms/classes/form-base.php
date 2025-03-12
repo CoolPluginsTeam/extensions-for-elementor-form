@@ -408,9 +408,6 @@ abstract class Form_Base extends Widget_Base {
 
 		$this->add_render_attribute( 'field-group' . $i, 'class', 'has-width-' . $item['width'] );
 
-		// if ( $item['allow_multiple'] ) {
-		// 	$this->add_render_attribute( 'field-group' . $i, 'class', 'elementor-field-type-' . $item['field_type'] . '-multiple' );
-		// }
 
 		if ( ! empty( $item['width_tablet'] ) ) {
 			$this->add_render_attribute( 'field-group' . $i, 'class', 'has-width-md-' . $item['width_tablet'] );
