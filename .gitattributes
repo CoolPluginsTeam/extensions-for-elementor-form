@@ -40,5 +40,6 @@ node_modules/           export-ignore
 *.sql                   export-ignore
 *.tar.gz                export-ignore
 *.zip                   export-ignore
+*.scss                  export-ignore
 /src/                   export-ignore
 postcss.config.js       export-ignore
