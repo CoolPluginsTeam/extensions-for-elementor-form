@@ -7,19 +7,19 @@ use Cool_FormKit\Modules\Forms\Classes\Action_Base;
 use Cool_FormKit\Modules\Forms\Classes\Form_Record;
 use Cool_FormKit\Modules\Forms\Components\Ajax_Handler;
 use Cool_FormKit\Modules\Forms\Module;
-use Cool_FormKit\Collect_Submission\CFKEF_Save_Submission;
+use Cool_FormKit\Collect_Entries\CFKEF_Save_Entries;
 
 if (! defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
 /**
- * Collect Submission Action
+ * Collect Entries Action
  * 
- * This action collects the submission and stores it in a variable.
+ * This action collects the entries and stores it in a variable.
  * You can use this variable in the next action or in the same form.
  */
-class Collect_Submission extends Action_Base
+class Collect_Entries extends Action_Base
 {
 
     /**
@@ -29,7 +29,7 @@ class Collect_Submission extends Action_Base
      */
     public function get_name(): string
     {
-        return 'cool_collect_submission';
+        return 'cool_collect_entries';
     }
 
     /**
@@ -39,7 +39,7 @@ class Collect_Submission extends Action_Base
      */
     public function get_label(): string
     {
-        return esc_html__('Collect Submission', 'cool-formkit');
+        return esc_html__('Collect Entries', 'cool-formkit');
     }
 
     /**
@@ -50,7 +50,7 @@ class Collect_Submission extends Action_Base
     public function register_settings_section($widget)
     {
         $widget->start_controls_section(
-            'section_collect_submission',
+            'section_collect_entries',
             [
                 'label' => $this->get_label(),
                 'tab' => Controls_Manager::TAB_CONTENT,
@@ -61,21 +61,21 @@ class Collect_Submission extends Action_Base
         );
 
         $widget->add_control(
-            'collect_submission_field_message',
+            'collect_entries_field_message',
             [
                 'type' => Controls_Manager::ALERT,
                 'alert_type' => 'info',
                 'content' => sprintf(
-                    esc_html__('This action will collect the submission and store it in a variable. You can use this variable in the next action or in the same form.', 'cool-formkit'),
+                    esc_html__('This action will collect the entries and store it in a variable. You can use this variable in the next action or in the same form.', 'cool-formkit'),
                     sprintf('<a href="%s" target="_blank">%s</a>', get_admin_url() . 'admin.php?page=cool-formkit-settings', esc_html__('Learn More', 'cool-formkit')),
                 ),
             ]
         );
 
         $widget->add_control(
-            'collect_submission_field',
+            'collect_entries_field',
             [
-                'label' => esc_html__('Collect Submission Field', 'cool-formkit'),
+                'label' => esc_html__('Collect Entries Field', 'cool-formkit'),
                 'type' => Controls_Manager::SELECT,
                 'options' => [
                     'all' => esc_html__('All', 'cool-formkit'),
@@ -85,9 +85,9 @@ class Collect_Submission extends Action_Base
         );
 
         $widget->add_control(
-            'collect_submission_meta_data',
+            'collect_entries_meta_data',
             [
-                'label' => esc_html__('Collect Submission Meta Data', 'cool-formkit'),
+                'label' => esc_html__('Collect Entries Meta Data', 'cool-formkit'),
                 'type' => Controls_Manager::SELECT2,
                 'options' => [
                     'remote_ip' => esc_html__('User IP', 'cool-formkit'),
@@ -120,9 +120,9 @@ class Collect_Submission extends Action_Base
      */
     public function run($record, $ajax_handler)
     {
-        require_once CFL_PLUGIN_PATH . 'includes/collect-submission/class-cfkef-save-submission.php';
-        $save_submission = new CFKEF_Save_Submission();
+        require_once CFL_PLUGIN_PATH . 'includes/collect-entries/class-cfkef-save-entries.php';
+        $save_entries = new CFKEF_Save_Entries();
 
-        do_action('cfkef/form/submission', $record, $ajax_handler, $this);
+        do_action('cfkef/form/entries', $record, $ajax_handler, $this);
     }
 }

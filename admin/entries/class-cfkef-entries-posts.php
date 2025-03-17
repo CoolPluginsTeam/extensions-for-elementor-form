@@ -1,18 +1,20 @@
 <?php
 
-namespace Cool_FormKit\Admin\Submission_Posts;
+namespace Cool_FormKit\Admin\Entries;
 
 /**
- * Submission Posts
+ * Entries Posts
  */     
-class CFKEF_Submission_Posts {
+class CFKEF_Entries_Posts {
 
     private static $instance = null;
+
+    public static $post_type = 'cfkef-entries';
 
     /**
      * Get instance
      * 
-     * @return CFKEF_Submission_Posts
+     * @return CFKEF_Entries_Posts
      */
     public static function get_instance() {
         if ( null === self::$instance ) {
@@ -34,7 +36,7 @@ class CFKEF_Submission_Posts {
      * Enqueue admin scripts
      */
     public function enqueue_admin_scripts() {
-        wp_enqueue_style('cfkef-submission-posts', CFL_PLUGIN_URL . 'admin/submission-posts/class-cfkef-submission-post.css', [], CFL_VERSION);
+        wp_enqueue_style('cfkef-entries-posts', CFL_PLUGIN_URL . 'admin/submission-posts/class-cfkef-entries-post.css', [], CFL_VERSION);
     }
 
     /**
@@ -43,14 +45,14 @@ class CFKEF_Submission_Posts {
     public function register_post_type() {
         
         $labels = array(
-            'name'                  => esc_html_x( 'Submissions', 'Post Type General Name', 'cool-formkit' ),
-            'singular_name'         => esc_html_x( 'Submission', 'Post Type Singular Name', 'cool-formkit' ),
-            'menu_name'             => esc_html__( 'Submission', 'cool-formkit' ),
-            'name_admin_bar'        => esc_html__( 'Submission', 'cool-formkit' ),
-            'archives'              => esc_html__( 'Submission Archives', 'cool-formkit' ),
-            'attributes'            => esc_html__( 'Submission Attributes', 'cool-formkit' ),
+            'name'                  => esc_html_x( 'Entries', 'Post Type General Name', 'cool-formkit' ),
+            'singular_name'         => esc_html_x( 'Entrie', 'Post Type Singular Name', 'cool-formkit' ),
+            'menu_name'             => esc_html__( 'Entrie', 'cool-formkit' ),
+            'name_admin_bar'        => esc_html__( 'Entrie', 'cool-formkit' ),
+            'archives'              => esc_html__( 'Entrie Archives', 'cool-formkit' ),
+            'attributes'            => esc_html__( 'Entrie Attributes', 'cool-formkit' ),
             'parent_item_colon'     => esc_html__( 'Parent Item:', 'cool-formkit' ),
-            'all_items'             => esc_html__( 'Submissions', 'cool-formkit' ),
+            'all_items'             => esc_html__( 'Entries', 'cool-formkit' ),
             'add_new_item'          => esc_html__( 'Add New Item', 'cool-formkit' ),
             'add_new'               => esc_html__( 'Add New', 'cool-formkit' ),
             'new_item'              => esc_html__( 'New Item', 'cool-formkit' ),
@@ -73,7 +75,7 @@ class CFKEF_Submission_Posts {
         );
 
         $args = array(
-            'label'                 => esc_html__( 'Form Submissions', 'cool-formkit' ),
+            'label'                 => esc_html__( 'Form Entries', 'cool-formkit' ),
             'description'           => esc_html__( 'cool-formkit-entry', 'cool-formkit' ),
             'labels'                => $labels,
             'supports'              => ['title'],
@@ -81,10 +83,8 @@ class CFKEF_Submission_Posts {
             'map_meta_cap'          => true,
             'hierarchical'          => false,
             'public'                => false,
-            'show_ui'               => true,
-            // 'show_in_menu'          => "cool-formkit-menu",
-            'menu_icon'             => 'dashicons-format-aside',
-            'menu_position'         => 5,
+            'show_ui'               => true, // Hide from dashboard
+            'show_in_menu'          => false,
             'show_in_admin_bar'     => false,
             'show_in_nav_menus'     => false,
             'can_export'            => true,
@@ -93,23 +93,19 @@ class CFKEF_Submission_Posts {
             'rewrite'               => false,
             'query_var'             => true,
             'exclude_from_search'   => true,
-            'capability_type'       => 'page',
             'show_in_rest'          => true,
-            // 'rest_base'             => $this->get_name(),
         );
 
-        register_post_type( 'cfkef-submission', $args );
+        register_post_type( self::$post_type, $args );
+        
     }
 
     /**
      * Add submission meta boxes
      */
     public function add_submission_meta_boxes() {
-        // var_dump(get_the_ID());
-        // if (get_post_type() === 'cfkef-submission') {
-            add_meta_box( 'cfkef-submission-meta-box', 'Submission Details', [ $this, 'render_submission_meta_box' ], 'cfkef-submission', 'normal', 'high' );
-            add_meta_box( 'cfkef-form-info-meta-box', 'Form Info', [ $this, 'render_form_info_meta_box' ], 'cfkef-submission', 'side', 'high' );
-        // }
+        add_meta_box( 'cfkef-entries-meta-box', 'Entrie Details', [ $this, 'render_submission_meta_box' ], self::$post_type, 'normal', 'high' );
+        add_meta_box( 'cfkef-form-info-meta-box', 'Form Info', [ $this, 'render_form_info_meta_box' ], self::$post_type, 'side', 'high' );
     }
 
     /**
@@ -139,12 +135,9 @@ class CFKEF_Submission_Posts {
         $post_id= isset($meta['page_url']['value']) ? url_to_postid(isset($meta['page_url']['value'])) : '';
 
         $data=[
-            'Page Title' => array('value' => isset($meta['page_title']['value']) ? $meta['page_title']['value'] : ''),
-            'Page Url' => array('value' => isset($meta['page_url']['value']) ? $meta['page_url']['value'] : ''),
-            // 'Page Url' => array('value' => $post_id),
-            'Entry No.' => array('value' => $submission_number),
             'Form Name' => array('value' => $form_name),
-            'Element ID' => array('value' => $element_id),
+            'Entry No.' => array('value' => $submission_number),
+            'Page Url' => array('value' => isset($meta['page_url']['value']) ? $meta['page_url']['value'] : ''),
         ];
 
         $this->render_field_html("cfkef-form-info", $data);

@@ -14,7 +14,7 @@ class Form_Actions_Registrar extends Registrar {
 	const FEATURE_NAME_CLASS_NAME_MAP = [
 		'email' => 'Email',
 		'redirect' => 'Redirect',
-		'collect-submission' => 'Collect_Submission',
+		'collect-entries' => 'Collect_Entries',
 	];
 
 	/**

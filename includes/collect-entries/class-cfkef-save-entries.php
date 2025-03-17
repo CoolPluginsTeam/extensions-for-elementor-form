@@ -1,30 +1,30 @@
 <?php
 
-namespace Cool_FormKit\Collect_Submission;
+namespace Cool_FormKit\Collect_Entries;
 
 use Cool_FormKit\Includes\Utils;
 use Elementor\Core\Utils\Collection;
 use Cool_FormKit\Modules\Forms\Classes\Form_Record;
 use Cool_FormKit\Modules\Forms\Components\Ajax_Handler;
 
-class CFKEF_Save_Submission {
+class CFKEF_Save_Entries {
 
     private $last_entry_key = 'cfkef_last_entry_serial_no';
     private $entry_key = 'cfkef_entry_serial_no';
     private $id = 0;
 
     public function __construct() {
-        add_action('cfkef/form/submission', [ $this, 'save_submission' ], 10, 3);
+        add_action('cfkef/form/entries', [ $this, 'save_entries' ], 10, 3);
     }
 
-    public function save_submission($record, $ajax_handler, $collect_submission) {
-        $meta_keys = array_merge(['page_url', 'page_title'], $record->get_form_settings('collect_submission_meta_data'));
+    public function save_entries($record, $ajax_handler, $collect_entries) {
+        $meta_keys = array_merge(['page_url', 'page_title'], $record->get_form_settings('collect_entries_meta_data'));
         $meta = $record->get_form_meta($meta_keys);
         $form_fields = $record->get_form_settings( 'form_fields' );;
         
         $actions_count = (new Collection($record->get_form_settings('submit_actions')))
-        ->filter(function ($value) use ($collect_submission) {
-            return $value !== $collect_submission->get_name();
+        ->filter(function ($value) use ($collect_entries) {
+            return $value !== $collect_entries->get_name();
         })
         ->count();
         
@@ -33,13 +33,17 @@ class CFKEF_Save_Submission {
         $form_name = $record->get_form_settings('form_name');
         $form_fields = $record->get_field( null );
 
+        // echo '<pre>';
+        // var_dump($form_fields);
+        // echo '</pre>';
+        // die();
         $meta['form_name'] = $form_name;
 
-        $submission_number = $this->auto_increment_submission_number();
+        $entries_number = $this->auto_increment_entries_number();
         
         $post_data = [
-            'post_type' => 'cfkef-submission',
-            'post_title' => esc_html($form_name) . ' #' . absint($submission_number),
+            'post_type' => 'cfkef-entries',
+            'post_title' => esc_html($form_name) . ' #' . absint($entries_number),
             'post_status' => 'publish'
         ];
 
@@ -49,7 +53,7 @@ class CFKEF_Save_Submission {
         update_post_meta($post_id, '_cfkef_form_action_count', $actions_count);
 
         // Update the form entry id in post meta
-        update_post_meta($post_id, '_cfkef_form_entry_id', $submission_number);
+        update_post_meta($post_id, '_cfkef_form_entry_id', $entries_number);
 
         // Update the form name in post meta
         update_post_meta($post_id, '_cfkef_form_name', $form_name);
@@ -61,7 +65,7 @@ class CFKEF_Save_Submission {
         update_post_meta($post_id, '_cfkef_form_meta', $meta);
 
         // Update last entry key option
-        update_option($this->last_entry_key, $submission_number);
+        update_option($this->last_entry_key, $entries_number);
 
         $form_data = [];
 
@@ -75,11 +79,11 @@ class CFKEF_Save_Submission {
     }
 
     /**
-     * Auto increment submission number
+     * Auto increment entries number
      * 
      * @return int
      */
-    private function auto_increment_submission_number() {
+    private function auto_increment_entries_number() {
 
         // If the last entry key is empty, then get all the post ids
         if (empty(get_option($this->last_entry_key))) {
@@ -90,7 +94,7 @@ class CFKEF_Save_Submission {
                 'posts_per_page'  => -1,
                 'orderby' => 'ID',
                 'order' => 'ASC',
-                'post_type' => 'cfkef-submission'
+                'post_type' => 'cfkef-entries'
             ));
         
             // If there are any post ids, then get the last post id and last entry serial no
