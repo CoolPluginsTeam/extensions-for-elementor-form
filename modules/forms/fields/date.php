@@ -57,7 +57,8 @@ class Date extends Field_Base {
 				</span>
 				<span class="mdc-notched-outline__trailing"></span>
 			</span>
-			<input type="date" <?php $form->print_render_attribute_string( 'input' . $item_index ); ?> >
+			<input type="date" <?php $form->print_render_attribute_string( 'input' . $item_index ); ?> value="<?php echo isset($item['field_value']) ? esc_attr($item['field_value']) : ''; ?>">
+
 			<i aria-hidden="true" class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing cool-date-error-icon" style="display:none">error</i>
 		</label>
 		<div class="mdc-text-field-helper-line">
