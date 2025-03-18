@@ -36,7 +36,7 @@ class CFKEF_Dashboard {
                 'slug' => 'cool-formkit',
             ),
             'cfkef-entries' => array(
-                'title' => 'Entries',
+                'title' => '↳ Entries',
                 'position' => 46,
                 'slug' => 'edit.php?post_type=cfkef-entries', // Retained the original slug with post-new.php?post_type=
                 'callback' => false,

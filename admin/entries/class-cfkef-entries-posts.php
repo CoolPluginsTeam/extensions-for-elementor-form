@@ -36,7 +36,7 @@ class CFKEF_Entries_Posts {
      * Enqueue admin scripts
      */
     public function enqueue_admin_scripts() {
-        wp_enqueue_style('cfkef-entries-posts', CFL_PLUGIN_URL . 'admin/submission-posts/class-cfkef-entries-post.css', [], CFL_VERSION);
+        wp_enqueue_style('cfkef-entries-posts', CFL_PLUGIN_URL . 'admin/assets/css/cfkef-entries-post.css', [], CFL_VERSION);
     }
 
     /**
@@ -114,7 +114,7 @@ class CFKEF_Entries_Posts {
     public function render_submission_meta_box() {
         $form_data = get_post_meta(get_the_ID(), '_cfkef_form_data', true);
         
-        $this->render_field_html("cfkef-form-data", $form_data);
+        $this->render_field_html("cfkef-entries-form-data", $form_data);
     }
 
     /**
@@ -144,8 +144,8 @@ class CFKEF_Entries_Posts {
     }
 
     private function render_field_html($type, $data) {
-        echo '<div id="' . esc_attr($type) . '" class="cfkef-field-wrapper">';
-        echo '<table class="cfkef-data-table">';
+        echo '<div id="' . esc_attr($type) . '" class="cfkef-entries-field-wrapper">';
+        echo '<table class="cfkef-entries-data-table">';
         echo '<tbody>';
         
         foreach ($data as $key => $value) {
@@ -153,10 +153,10 @@ class CFKEF_Entries_Posts {
                 continue;
             }
             $label = $value['title'] ?? $key;
-            echo '<tr class="cfkef-data-table-key">';
+            echo '<tr class="cfkef-entries-data-table-key">';
             echo '<td>' . esc_html($label) . '</td>';
             echo '</tr>';
-            echo '<tr class="cfkef-data-table-value">';
+            echo '<tr class="cfkef-entries-data-table-value">';
             echo '<td>' . esc_html($value['value']) . '</td>';
             echo '</tr>';
         }
