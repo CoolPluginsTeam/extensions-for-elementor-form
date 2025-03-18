@@ -4,8 +4,10 @@ Contributors: coolplugins, narinder-singh, satindersingh
 Tags: form builder, elementor form, elementor, contact form, custom form
 Requires at least: 6.2
 Tested up to: 6.7.2
-Stable tag: 2.4.0
+Stable tag: 2.4.1
 Requires PHP: 8.2
+Elementor tested up to: 3.28.0
+Elementor Pro tested up to: 3.28.0
 License: GPL 3.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -138,6 +140,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
    - Save and publish the page to display the form on your site.
 
 == Changelog ==
+
+=  Version 2.4.1 | 18/03/2025 =
+
+ * **Tested upto:** Elementor Version 3.28.0
+ * **Tested upto:**  Elementor Pro Version 3.28.0
+
 **📢 Important Update: Drag & Drop Form Builder + Elementor Free Support!**  
 
 **Version 2.4.0** introduces a **drag-and-drop form builder** for Elementor, making form creation effortless for users of Elementor Free. This update also enhances compatibility, improves code efficiency, and includes a branding change to **Cool FormKit Lite - Elementor Form Builder**. Upgrade now for a seamless experience!
