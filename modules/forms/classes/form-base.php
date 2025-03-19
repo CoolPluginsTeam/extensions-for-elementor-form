@@ -161,9 +161,25 @@ abstract class Form_Base extends Widget_Base {
 				</ul>
 			</div>
 			<select name="form_fields[<?php echo $item['custom_id'] ?>]" id="form-field-<?php echo $item['custom_id'] ?>" style="display: none;">
-				<option value="">Select an option</option>
-				<option value="option1">Option 1</option>
-				<option value="option2">Option 2</option>
+				<?php
+				if($options){
+					$default_option = isset($item['field_value']) ? $item['field_value'] : '';
+					foreach ( $options as $key => $option ) {
+						$option_value = $option;
+						$option_label = $option;
+						$selected = '';
+						if ( false !== strpos( $option, '|' ) ) {
+							list( $option_label, $option_value ) = explode( '|', $option );
+						}
+						if($default_option === $option_value){
+							$selected = 'selected';
+						}
+						?>
+						<option value="<?php echo esc_attr( $option_value ); ?>" <?php echo $selected; ?>><?php echo esc_html( $option_label ); ?></option>
+						<?php
+					}
+				}
+				?>
 			</select>
 		</div>
 		<div class="mdc-select-helper-line">
