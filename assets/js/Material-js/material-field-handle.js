@@ -3,6 +3,7 @@
     const addHandler = ($element) => {
         const forms = $element.find('.cool-form');
 
+        // attach form fields with basic validation
         forms.each(function(formIndex) {
             const textFields = document.querySelectorAll('.cool-form-text');
             textFields.forEach(field => {
@@ -64,13 +65,45 @@
 
                     mainInput.addEventListener('input', validateTel);
                     mainInput.addEventListener('blur', validateTel);
+                } else if ( mainInput.type === 'email' ) {
+                    let helperTextAdapter = mdcField.helperText.foundation.adapter;
+                    const validateEmail = (e) => {
+                        const value = e.target.value;
+                        // Basic email regex that checks for a pattern like "user@domain.tld"
+                        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+                        if ( value !== '' ) {
+                            if (!regex.test(value)) {
+                                mdcField.valid = false;
+                                mdcField.trailingIcon.root.style.display = 'initial';
+                                helperTextAdapter.setContent('Please enter a valid email address.');
+                            } else {
+                                mdcField.valid = true;
+                                mdcField.trailingIcon.root.style.display = 'none';
+                                helperTextAdapter.setContent('');
+                            }
+                        } else {
+                            mdcField.trailingIcon.root.style.display = 'none';
+                        }
+                    };
+                    mainInput.addEventListener('input', validateEmail);
+                    mainInput.addEventListener('blur', validateEmail);
                 }
             });
 
+            // append select field value to hiddedn select tag for correct submission
             document.querySelectorAll('.mdc-select').forEach(selectEl => {
                 const select = new mdc.select.MDCSelect(selectEl);
                 if (select.selectedIndex === -1) {
                     select.selectedIndex = 0;
+                    const hiddenSelect = selectEl.querySelector('select');
+                    if (hiddenSelect) {
+                        hiddenSelect.innerHTML = '';
+                        const newOption = document.createElement('option');
+                        newOption.value = select.value; 
+                        newOption.textContent = select.selectedText.textContent;
+                        hiddenSelect.appendChild(newOption);
+                    }
                 }
                 select.listen('MDCSelect:change', function() {
                     const hiddenSelect = selectEl.querySelector('select');
@@ -89,25 +122,32 @@
             });
         });
 
+        // handle form submission with required fields validation
         forms.find('.cool-form-submit-button').click((e) => {
             const $invalidField = forms.find('.mdc-text-field--invalid');
         
             // Check each required field container for empty text inputs or select elements.
             const $emptyRequired = forms.find('.is-field-required').filter(function() {
+                
                 const $this = $(this);
-                let textEmpty = false, selectEmpty = false;
+
+                
+                let textEmpty = false, selectEmpty = false,acceptanceEmpty = false;
+
+                // check for all text form fields
                 if ($this.find('.mdc-text-field__input').length) {
                     textEmpty = $this.find('.mdc-text-field__input').first().val().trim() === "";
 
+                    var classes = $this.attr('class').split(/\s+/);
+                    var fieldTypeValue = '';
+                    classes.forEach(function(className) {
+                        var match = className.match(/^is-field-type-(.+)$/);
+                        if (match) {
+                            fieldTypeValue = match[1];
+                        }
+                    });
+
                     if(textEmpty){
-                        var classes = $this.attr('class').split(/\s+/);
-                        var fieldTypeValue = '';
-                        classes.forEach(function(className) {
-                            var match = className.match(/^is-field-type-(.+)$/);
-                            if (match) {
-                                fieldTypeValue = match[1];
-                            }
-                        });
                         $this.find(`#cool-${fieldTypeValue}-error`).text('This Field is required').css('color','#bb2a46');
                         $this.find(`.cool-${fieldTypeValue}-error-icon`).css('display','initial');
                     }else{
@@ -116,6 +156,7 @@
                     }
                 }
 
+                // check for select form field
                 if ($this.find('select').length) {
                     let selectMainWrapper = $this.find('.mdc-select').first();
                     selectEmpty = $this.find('select').first().val().trim() === "";
@@ -127,9 +168,22 @@
                         $this.find('#cool-select-error').text('');
                     }
                 }
-                return textEmpty || selectEmpty;
+
+                // check for acceptance form field
+                if($this.find('.mdc-checkbox').length > 0){
+                    acceptanceEmpty = !$this.find('.mdc-checkbox').find('input')[0].checked 
+                    if(acceptanceEmpty){
+                        $this.find(`#cool-acceptance-error`).text('This Field is required').css('color','#bb2a46')
+                    }else{
+                        $this.find(`#cool-acceptance-error`).text('')
+                    }
+                }                
+
+                return textEmpty || selectEmpty || acceptanceEmpty;
             });
+            
            
+            // add focus effect if field has any type of error
             if ($invalidField.length || $emptyRequired.length) {
                 e.preventDefault();
                 
@@ -142,6 +196,8 @@
                         $target = $emptyRequired.find('.mdc-text-field__input').first();
 
                         $target.focus();
+                    } else if($emptyRequired.hasClass('is-field-type-acceptance')){
+                        $target = $emptyRequired;
                     } else if($emptyRequired.hasClass('is-field-type-select')){
                         if($emptyRequired.find('select').val().trim() === ''){
                             let selectMainWrapper = $emptyRequired.find('.mdc-select').first();

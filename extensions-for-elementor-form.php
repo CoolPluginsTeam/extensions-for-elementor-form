@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name: Cool FormKit Lite
+ * Plugin Name: Cool FormKit Lite - Elementor Form Builder
  * Plugin URI: https://coolplugins.net/
  * Description: Supercharge your Elementor forms with advanced functionality that streamlines workflows, enhances usability, and integrates seamlessly with tools like WhatsApp. Build dynamic forms directly in Elementor Free—no additional plugins required.
  * Author: Cool Plugins
  * Author URI: https://coolplugins.net/
  * Text Domain: extensions-for-elementor-form
- * Version: 2.3
+ * Version: 2.4.0
  * Requires at least: 6.2
  * Requires PHP: 6.2
  * License: GPL-2.0+
@@ -16,7 +16,7 @@
 
 namespace Cool_FormKit;
 use Cool_FormKit\Includes\Module_Base;
-use Cool_FormKit\Includes\CFKEF_Loader;
+use Cool_FormKit\Includes\CFL_Loader;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	header( 'Status: 403 Forbidden' );
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit();
 }
 
-define('CFL_VERSION','2.3');
+define('CFL_VERSION','2.4.0');
 define('PHP_MINIMUM_VERSION','7.4');
 define('WP_MINIMUM_VERSION','5.5');
 define( 'CFL_PLUGIN_MAIN_FILE', __FILE__ );
@@ -96,7 +96,7 @@ class Cool_Formkit_Lite_For_Elementor_Form {
 	public function initialize_plugin() {
 		// Include main plugin class.
 		require_once CFL_PLUGIN_PATH . '/includes/class-plugin.php';
-		CFKEF_Loader::get_instance();
+		CFL_Loader::get_instance();
 		
 		if ( is_admin() ) {
 			require_once CFL_PLUGIN_PATH . 'admin/feedback/admin-feedback-form.php';

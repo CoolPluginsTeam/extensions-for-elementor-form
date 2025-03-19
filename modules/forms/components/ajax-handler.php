@@ -80,19 +80,8 @@ class Ajax_Handler {
 			$form = Module::find_element_recursive( $document->get_elements_data(), (string) $form_id );
 		}
 
-		/*if ( ! empty( $form['templateID'] ) ) {
-			$template = Utils::elementor()->documents->get( $form['templateID'] );
-			
-			if ( ! $template ) {
-				return false;
-				}
-				
-				$template_id = $template->get_id();
-				$form = $template->get_elements_data()[0];
-				} */
-			
-			if ( empty( $form ) ) {
-				$this
+		if ( empty( $form ) ) {
+			$this
 				->add_error_message( self::get_default_message( self::INVALID_FORM, [] ) )
 				->send();
 			}

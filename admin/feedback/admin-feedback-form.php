@@ -4,7 +4,7 @@ namespace Cool_FormKit\feedback;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; }
 
-class cfef_feedback {
+class cfl_feedback {
 
 		private $plugin_url     = CFL_PLUGIN_URL;
 		private $plugin_version = CFL_VERSION;
@@ -178,4 +178,4 @@ class cfef_feedback {
 
 	}
 }
-new cfef_feedback();
+new cfl_feedback();

@@ -49,7 +49,7 @@ class Form_Record {
 			}
 
 			/**
-			 * Hello+ form field validation.
+			 * Cool form field validation.
 			 *
 			 * Fires when a single form field is being validated. This hook allows developers
 			 * to validate individual field types.
@@ -66,7 +66,7 @@ class Form_Record {
 		}
 
 		/**
-		 * Hello+ form validation.
+		 * Cool form validation.
 		 *
 		 * Fires when form fields are being validated. This hook allows developers
 		 * to validate all form fields.
@@ -90,7 +90,7 @@ class Form_Record {
 			$field_type = $field['type'];
 
 			/**
-			 * Hello+ form field process.
+			 * Cool form field process.
 			 *
 			 * Fires when a single form field is being processed. This hook allows developers
 			 * to process individual field types.
@@ -107,7 +107,7 @@ class Form_Record {
 		}
 
 		/**
-		 * Hello+ form process.
+		 * Cool form process.
 		 *
 		 * Fires when form fields are being processed. This hook allows developers
 		 * to process all form fields.

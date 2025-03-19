@@ -39,8 +39,8 @@ if (!defined('ABSPATH')) {
  * @package    Cool_FormKit
  * @subpackage Cool_FormKit/includes
  */
-if(!class_exists('CFKEF_Loader')) { 
-class CFKEF_Loader {
+if(!class_exists('CFL_Loader')) { 
+class CFL_Loader {
 
     /**
      * The unique identifier of this plugin.
@@ -65,7 +65,7 @@ class CFKEF_Loader {
      *
      * @since    1.0.0
      * @access   private
-     * @var      CFKEF_Loader    $instance    The loader instance.
+     * @var      CFL_Loader    $instance    The loader instance.
      */
     private static $instance = null;
 
@@ -99,7 +99,7 @@ class CFKEF_Loader {
      * Get the instance of this class.
      *
      * @since    1.0.0
-     * @return   CFKEF_Loader    The instance of this class.
+     * @return   CFL_Loader    The instance of this class.
      */
     public static function get_instance() {
         if (null == self::$instance) {
@@ -148,7 +148,7 @@ class CFKEF_Loader {
      * Include the following files that make up the plugin:
      *
      * - CFKEF_i18n. Defines internationalization functionality.
-     * - CFKEF_Admin. Defines all hooks for the admin area.
+     * - CFL_Admin. Defines all hooks for the admin area.
      * - CFKEF_Public. Defines all hooks for the public side of the site.
      *
      * @since    1.0.0
@@ -156,7 +156,7 @@ class CFKEF_Loader {
      */
     private function load_dependencies() {
         require_once CFL_PLUGIN_PATH . 'admin/class-cfkef-admin.php';
-        $plugin_admin = CFKEF_Admin::get_instance($this->get_plugin_name(), $this->get_version());
+        $plugin_admin = CFL_Admin::get_instance($this->get_plugin_name(), $this->get_version());
     }
 
     private function admin_menu_dashboard() {

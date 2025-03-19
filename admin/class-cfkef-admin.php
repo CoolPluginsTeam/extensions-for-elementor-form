@@ -22,15 +22,15 @@ if (!defined('ABSPATH')) {
  * @package    Cool_FormKit
  * @subpackage Cool_FormKit/admin
  */
-if(!class_exists('CFKEF_Admin')) { 
-class CFKEF_Admin {
+if(!class_exists('CFL_Admin')) { 
+class CFL_Admin {
 
     /**
      * The instance of this class.
      *
      * @since    1.0.0
      * @access   private
-     * @var      CFKEF_Admin    $instance    The instance of this class.
+     * @var      CFL_Admin    $instance    The instance of this class.
      */
     private static $instance = null;
 
@@ -73,7 +73,7 @@ class CFKEF_Admin {
      * @since    1.0.0
      * @param    string    $plugin_name       The name of this plugin.
      * @param    string    $version    The version of this plugin.
-     * @return   CFKEF_Admin    The instance of this class.
+     * @return   CFL_Admin    The instance of this class.
      */
     public static function get_instance($plugin_name, $version) {
         if (null == self::$instance) {

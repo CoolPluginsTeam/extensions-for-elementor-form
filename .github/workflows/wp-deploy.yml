@@ -2,13 +2,17 @@ name: Deploy to WordPress.org
 on:
   push:
     tags:
-    - "*"
+    - "v*"
 jobs:
   tag:
-    name: New version
+    name: New tag
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+    - name: Install SVN ( Subversion )
+      run: |
+        sudo apt-get update
+        sudo apt-get install subversion
     - name: WordPress Plugin Deploy
       uses: 10up/action-wordpress-plugin-deploy@stable
       env:
