@@ -35,6 +35,7 @@ class Form_Fields_Registrar extends Registrar {
 		$this->register( new Fields\Number() );
 		$this->register( new Fields\Date() );
 		$this->register( new Fields\Time() );
+
 		// $this->register( new Fields\Step() );
 
 		/**

@@ -37,6 +37,34 @@ class Utils {
 		return false;
 	}
 
+	private static function sanitize_file_name( $file ) {
+		$file['name'] = sanitize_file_name( $file['name'] );
+
+		return $file;
+	}
+
+	private static function sanitize_multi_upload( $fields ) {
+		return array_map( function( $field ) {
+			return array_map( [ __CLASS__, 'sanitize_file_name' ], $field );
+		}, $fields );
+	}
+
+
+	public static function _unstable_get_super_global_value( $super_global, $key ) {
+		if ( ! isset( $super_global[ $key ] ) ) {
+			return null;
+		}
+
+		if ( $_FILES === $super_global ) {
+			return isset( $super_global[ $key ]['name'] ) ?
+				static::sanitize_file_name( $super_global[ $key ] ) :
+				static::sanitize_multi_upload( $super_global[ $key ] );
+		}
+
+		return wp_kses_post_deep( wp_unslash( $super_global[ $key ] ) );
+	}
+
+
 	public static function has_hello_biz(): bool {
 		if ( self::are_we_on_elementor_domains() ) {
 			return true;

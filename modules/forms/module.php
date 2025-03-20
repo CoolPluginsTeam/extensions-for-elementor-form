@@ -9,6 +9,9 @@ use Cool_FormKit\Modules\Forms\Controls\Fields_Map;
 use Cool_FormKit\Modules\Forms\Controls\Fields_Repeater;
 use Cool_FormKit\Modules\Forms\Registrars\Form_Actions_Registrar;
 use Cool_FormKit\Modules\Forms\Registrars\Form_Fields_Registrar;
+use Cool_FormKit\Modules\Forms\Classes\Recaptcha_Handler;
+use Cool_FormKit\Widgets\CREATE_COUNTRY_FIELD;
+
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -24,6 +27,40 @@ class Module extends Module_Base {
 	 * @var Form_Fields_Registrar
 	 */
 	public $fields_registrar;
+
+
+	const OPTION_NAME_SITE_KEY = 'elementor_pro_recaptcha_site_key';
+
+	const OPTION_NAME_SECRET_KEY = 'elementor_pro_recaptcha_secret_key';
+
+	const OPTION_NAME_RECAPTCHA_THRESHOLD = 'elementor_pro_recaptcha_threshold';
+
+	const V2_CHECKBOX = 'v2_checkbox';
+
+	protected static function get_recaptcha_name()
+	{
+		return 'recaptcha';
+	}
+
+	public static function get_site_key()
+	{
+		return get_option(self::OPTION_NAME_SITE_KEY);
+	}
+
+	public static function get_secret_key()
+	{
+		return get_option(self::OPTION_NAME_SECRET_KEY);
+	}
+
+	public static function get_recaptcha_type()
+	{
+		return self::V2_CHECKBOX;
+	}
+
+	public static function is_enabled()
+	{
+		return static::get_site_key() && static::get_secret_key();
+	}
 
 
 	public static function get_name(): string {
@@ -109,13 +146,21 @@ class Module extends Module_Base {
 		);
 	}
 	public function enqueue_editor_scripts() {
-		wp_enqueue_script(
+		wp_register_script(
 			'Cool_FormKit-forms-editor',
-			CFL_SCRIPTS_URL . 'Cool_FormKit-forms-editor.js',
+			CFL_SCRIPTS_URL . 'Cool_FormKit-forms-editor.min.js',
 			[ 'elementor-editor', 'wp-i18n' ],
 			CFL_VERSION,
 			true
 		);
+
+		wp_localize_script('Cool_FormKit-forms-editor', 'coolFormKitRecaptcha', [
+			'enabled'   => static::is_enabled(),
+			'site_key'  => static::get_site_key(),
+			'type'      => static::get_recaptcha_type(),
+		]);
+
+		wp_enqueue_script('Cool_FormKit-forms-editor', true);
 	}
 
 	public function register_scripts() {
@@ -166,11 +211,12 @@ class Module extends Module_Base {
 	protected function register_hooks(): void {
 		parent::register_hooks();
 
-		add_action( 'elementor/frontend/after_register_scripts', [ $this, 'register_scripts' ] );
+		add_action( 'elementor/frontend/after_enqueue_scripts', [ $this, 'register_scripts' ] );
 		add_action( 'elementor/frontend/after_register_styles', [ $this, 'register_styles' ] );
 		add_action( 'elementor/controls/register', [ $this, 'register_controls' ] );
 		add_action( 'elementor/editor/after_enqueue_scripts', [ $this, 'enqueue_editor_scripts' ] );
 		add_action( 'elementor/editor/after_enqueue_styles', [$this,'enqueue_editor_styles'],999);
+		
 	}
 
 	/**
@@ -179,9 +225,18 @@ class Module extends Module_Base {
 	public function __construct() {
 		parent::__construct();
 
+		if (class_exists(Recaptcha_Handler::class)) {
+
+			$this->add_component( 'recaptcha', new Classes\Recaptcha_Handler() );
+
+
+        }
+
+		
 		// Initialize registrars.
 		$this->actions_registrar = new Form_Actions_Registrar();
 		$this->fields_registrar = new Form_Fields_Registrar();
 		 new Ajax_Handler();
+		 new CREATE_COUNTRY_FIELD();
 	}
 }

@@ -138,6 +138,7 @@ class Cool_Form extends Form_Base {
 						}
 
 						switch ( item.field_type ) {
+
 							case 'textarea':
 								inputField = '<label class="cool-form-text mdc-text-field mdc-text-field--outlined mdc-text-field--textarea '+ ((item.field_label === '' || !settings.show_labels) ? 'mdc-text-field--no-label' : '') +' ">';
 									inputField += '<span class="mdc-notched-outline">';
@@ -662,6 +663,59 @@ class Cool_Form extends Form_Base {
 				'default' => '100',
 				'tablet_default' => '100',
 				'mobile_default' => '100',
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'field_type',
+							'operator' => '!in',
+							'value' => [
+								'recaptcha',
+							],
+						],
+					],
+				],
+			]
+		);
+
+
+		$repeater->add_control(
+			'recaptcha_size', [
+				'label' => esc_html__( 'Size', 'cool-formkit' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'normal',
+				'options' => [
+					'normal' => esc_html__( 'Normal', 'cool-formkit' ),
+					'compact' => esc_html__( 'Compact', 'cool-formkit' ),
+				],
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'field_type',
+							'value' => 'recaptcha',
+						],
+					],
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'recaptcha_style',
+			[
+				'label' => esc_html__( 'Style', 'cool-formkit' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'light',
+				'options' => [
+					'light' => esc_html__( 'Light', 'cool-formkit' ),
+					'dark' => esc_html__( 'Dark', 'cool-formkit' ),
+				],
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'field_type',
+							'value' => 'recaptcha',
+						],
+					],
+				],
 			]
 		);
 

@@ -1,6 +1,7 @@
 module.exports = elementorModules.editor.utils.Module.extend( {
 
 	renderField( inputField, item, i, settings ) {
+
 		var itemClasses = _.escape(item.css_classes),
 			required = (item.required) ? ' required' : '',
 			placeholder = (item.placeholder) ? ' placeholder="' + _.escape(item.placeholder) + '"' : '';
