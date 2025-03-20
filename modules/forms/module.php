@@ -229,7 +229,6 @@ class Module extends Module_Base {
 
 			$this->add_component( 'recaptcha', new Classes\Recaptcha_Handler() );
 
-
         }
 
 		
