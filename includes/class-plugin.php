@@ -156,7 +156,7 @@ class CFL_Loader {
      */
     private function load_dependencies() {
         require_once CFL_PLUGIN_PATH . 'admin/class-cfkef-admin.php';
-        $plugin_admin = CFL_Admin::get_instance($this->get_plugin_name(), $this->get_version());
+        $plugin_admin = CFKEF_Admin::get_instance($this->get_plugin_name(), $this->get_version());
     }
 
     private function admin_menu_dashboard() {
