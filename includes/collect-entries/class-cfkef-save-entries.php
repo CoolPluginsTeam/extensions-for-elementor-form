@@ -66,6 +66,9 @@ class CFKEF_Save_Entries {
 
         // Update last entry key option
         update_option($this->last_entry_key, $entries_number);
+        
+        // Update the entry view status in post meta
+        update_post_meta($post_id, '_cfkef_entry_view_status', 'false');
 
         $form_data = [];
 
