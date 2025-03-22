@@ -92,7 +92,8 @@ class CFKEF_List_Table extends WP_List_Table {
     public function get_columns() {
         return [
             'cb' => '<input type="checkbox" />',
-            'form_name' => 'Form Name',
+            'user_email' => 'Main',
+            'form_url' => 'Form',
             'page_title' => 'Page Title',
             'id' => 'ID',
             'submission_date' => 'Submission Date',
@@ -103,11 +104,28 @@ class CFKEF_List_Table extends WP_List_Table {
         return sprintf('<input type="checkbox" name="entry_id[]" value="%s" />', $item->ID);
     }
 
-    public function column_form_name($item) {
-        $title= $item->post_title;
+    public function column_user_email($item) {
+        $email = get_post_meta($item->ID, '_cfkef_user_email', true);
         $edit_url = admin_url('post.php?post='.intval($item->ID).'&action=edit');
 
-        return sprintf('<a href="%s">%s</a>', $edit_url, $title);
+        if(!isset($email) || !$email || empty($email)){
+            $email = 'undefined';
+        }
+
+        return sprintf('<a href="%s">%s</a>', $edit_url, $email);
+    }
+
+    public function column_form_url($item) {
+        $meta_details = get_post_meta($item->ID, '_cfkef_form_meta', true);
+        $form_name = isset($meta_details['form_name']) ? $meta_details['form_name'] : '';
+        $form_post_id = get_post_meta($item->ID, '_cfkef_form_post_id', true);
+        $page_editor_url = admin_url('post.php?post='.intval($form_post_id).'&action=elementor');
+
+        if($form_post_id && !empty($form_post_id)){
+            return sprintf('<a href="%s" target="_blank">%s</a>', $page_editor_url, $form_name);
+        }
+
+        return $form_name;
     }
 
     public function column_id($item) {
@@ -119,17 +137,13 @@ class CFKEF_List_Table extends WP_List_Table {
         return $item->post_date;
     }
 
-    public function column_status($item) {
-        return $item->post_status;
-    }
-
     public function column_page_title($item) {
         $meta_details = get_post_meta($item->ID, '_cfkef_form_meta', true);
         $value= isset($meta_details['page_title']['value']) ? $meta_details['page_title']['value'] : '';
         $page_url= isset($meta_details['page_url']['value']) ? $meta_details['page_url']['value'] : '';
 
         if(!empty($value)){
-            return sprintf('<a href="%s">%s</a>', $page_url, $value);
+            return sprintf('<a href="%s" target="_blank">%s</a>', $page_url, $value);
         }
 
         return $value;

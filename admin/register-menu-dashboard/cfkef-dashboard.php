@@ -4,19 +4,62 @@ namespace Cool_FormKit\Admin\Register_Menu_Dashboard;
 
 class CFKEF_Dashboard
 {
+    /**
+     * The parent slug for the menu page.
+     *
+     * @var string
+     */
     private $parent_slug = 'elementor';
+
+    /**
+     * The capability required to access the menu page.
+     *
+     * @var string
+     */
     private $capability = 'manage_options';
+    
+    /**
+     * The plugin name.
+     *
+     * @var string
+     */
+    private $plugin_name;
+    
+    /**
+     * The version of the plugin.
+     *
+     * @var string
+     */
+    private $version;
+
+    /**
+     * The allowed pages.
+     *
+     * @var array
+     */
     private static $allowed_pages = array(
         'cool-formkit',
         'cfkef-entries',
     );
 
+    /**
+     * The instance of the class.
+     *
+     * @var object
+     */
     private static $instance = null;
 
-    public static function get_instance()
+    /**
+     * Get the instance of the class.
+     *
+     * @param string $plugin_name The name of the plugin.
+     * @param string $version The version of the plugin.
+     * @return object The instance of the class.
+     */
+    public static function get_instance($plugin_name, $version)
     {
         if (null === self::$instance) {
-            self::$instance = new self();
+            self::$instance = new self($plugin_name, $version);
         }
         return self::$instance;
     }
@@ -26,8 +69,10 @@ class CFKEF_Dashboard
      * 
      * @param callable $dashboard_callback The callback function for the dashboard page.
      */
-    public function __construct()
+    public function __construct($plugin_name, $version)
     {
+        $this->plugin_name = $plugin_name;
+        $this->version = $version;
         $dashboard_pages = array(
             'cool-formkit' => array(
                 'title' => 'Cool FormKit Lite',
@@ -52,8 +97,17 @@ class CFKEF_Dashboard
 
         add_action('elementor/admin-top-bar/is-active', [$this, 'hide_elementor_top_bar']);
         add_action('admin_print_scripts', [$this, 'hide_unrelated_notices']);
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_styles'));
     }
 
+    /**
+     * Add a menu page.
+     *
+     * @param string $slug The slug of the menu page.
+     * @param string $title The title of the menu page.
+     * @param callable $callback The callback function for the menu page.
+     * @param int $position The position of the menu page.
+     */
     public function add_menu_page($slug, $title, $callback, $position = 99)
     {
         add_action('admin_menu', function () use ($slug, $title, $callback, $position) {
@@ -69,6 +123,11 @@ class CFKEF_Dashboard
         }, 999);
     }
 
+    /**
+     * Get the allowed pages.
+     *
+     * @return array The allowed pages.
+     */
     public static function get_allowed_pages()
     {
         $allowed_pages = self::$allowed_pages;
@@ -78,12 +137,24 @@ class CFKEF_Dashboard
         return $allowed_pages;
     }
 
+    /**
+     * Check if the current screen is the given slug.
+     *
+     * @param string $slug The slug to check.
+     * @return bool True if the current screen is the given slug, false otherwise.
+     */ 
     public static function current_screen($slug)
     {
         $slug = sanitize_text_field($slug);
         return self::cfkef_current_page($slug);
     }
 
+    /**
+     * Check if the current page is the given slug.
+     *
+     * @param string $slug The slug to check.
+     * @return bool True if the current page is the given slug, false otherwise.
+     */
     private static function cfkef_current_page($slug)
     {
         $current_page = isset($_REQUEST['page']) ? esc_html($_REQUEST['page']) : (isset($_REQUEST['post_type']) ? esc_html($_REQUEST['post_type']) : '');
@@ -94,11 +165,83 @@ class CFKEF_Dashboard
         return false;
     }
 
+    /**
+     * Render the page.
+     */
     public function render_page()
     {
+        echo '<div class="cfkef-wrapper">
+        <div class="cfkef-header">
+            <div class="cfkef-header-logo">
+                <img src="'.esc_url(CFL_PLUGIN_URL . 'assets/images/cool-formkit-logo.png').' ?>" alt="Cool FormKit Logo">
+            </div>
+            <div class="cfkef-header-buttons">
+                <p>Upgrade your Elementor form with advanced fields and features.</p>
+                <a href="https://docs.coolplugins.net/docs/cool-formkit/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=doc&utm_content=setting-page-header" class="button" target="_blank">'.esc_html__('Check Docs', 'cool-formkit').'</a>
+                <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=setting-page-header" class="button button-secondary" target="_blank">'.esc_html__('View Form Demos', 'cool-formkit').'</a>
+            </div>
+        </div>';
+
+        $this->render_tabs();
+
+        echo '<div class="cfkef-content">';
+
         do_action('cfkef_render_menu_pages', $this);
+        
+        echo '</div></div>';
     }
 
+    public function render_tabs(){
+        $tabs = $this->cfkef_get_tabs();
+        
+        echo '<div class="cfkef-dashboard-tabs">';
+        foreach ($tabs as $tab) {
+            $active_class = self::current_screen($tab['slug']) ? ' active' : '';
+
+            echo '<div class="cfkef-dashboard-tab-wrapper' . esc_attr($active_class) . '">';
+            echo '<a href="' . esc_url(admin_url('admin.php?page=' . $tab['slug'])) . '" class="cfkef-dashboard-tab">' . esc_html($tab['title']) . '</a>';
+            echo '</div>';
+        }
+        echo '</div>';
+    }
+
+    public function cfkef_get_tabs(){
+        $default_tabs = array(
+            array(
+                'title' => 'Dashboard',
+                'position' => 1,
+                'slug' => 'cool-formkit',
+            ),
+        );
+
+        $tabs = apply_filters('cfkef_dashboard_tabs', $default_tabs);
+        // Set the index of tabs based on their position
+        usort($tabs, function($a, $b) {
+            return $a['position'] <=> $b['position'];
+        });
+
+        return $tabs;
+    }
+
+    /**
+     * Enqueue admin styles and scripts.
+     *
+     * @since    1.0.0
+     */
+    public function enqueue_admin_styles() {
+        if (isset($_GET['page']) && self::current_screen($_GET['page'])) {
+            wp_enqueue_style('cfkef-admin-style', CFL_PLUGIN_URL . 'assets/css/admin-style.css', array(), $this->version, 'all');
+            wp_enqueue_style('dashicons');
+            wp_enqueue_script('cfkef-admin-script', CFL_PLUGIN_URL . 'assets/js/admin-script.js', array('jquery'), $this->version, true);
+        }
+    }
+
+    /**
+     * Hide the Elementor top bar.
+     *
+     * @param bool $is_active Whether the Elementor top bar is active.
+     * @return bool Whether the Elementor top bar is active.
+     */ 
     public function hide_elementor_top_bar($is_active)
     {
         foreach (self::$allowed_pages as $page) {
@@ -190,6 +333,9 @@ class CFKEF_Dashboard
         add_action( 'admin_notices', [ $this, 'display_admin_notices' ], PHP_INT_MAX );
     }
 
+    /**
+     * Display admin notices.
+     */
     public function display_admin_notices() {
         do_action('cfkef_admin_notices');
     }

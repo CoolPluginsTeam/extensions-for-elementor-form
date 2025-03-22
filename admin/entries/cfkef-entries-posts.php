@@ -36,11 +36,25 @@ class CFKEF_Entries_Posts {
         add_action('admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ]);
         add_action('cfkef_render_menu_pages', [ $this, 'output_entries_list' ]);
         add_action( 'admin_head', [$this, 'add_screen_option'] );
+        add_filter('cfkef_dashboard_tabs', [ $this, 'add_dashboard_tab' ]);
 
         $bulk_actions = new CFKEF_Post_Bulk_Actions();
         $bulk_actions->init();
 
         remove_action( 'admin_head', 'wp_admin_bar_help_menu' );
+    }
+
+    /**
+     * Add dashboard tab
+     */
+    public function add_dashboard_tab($tabs) {
+        $tabs[] = array(
+            'title' => 'Entries',
+            'position' => 2,
+            'slug' => 'cfkef-entries',
+        );
+
+        return $tabs;
     }
 
     /**

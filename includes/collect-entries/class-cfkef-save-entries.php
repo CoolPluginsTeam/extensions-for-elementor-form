@@ -28,7 +28,7 @@ class CFKEF_Save_Entries {
         })
         ->count();
         
-        $post_id = $record->get_form_settings('form_post_id');
+        $form_post_id = $record->get_form_settings('form_post_id');
         $element_id = $ajax_handler->get_current_form()['id'];
         $form_name = $record->get_form_settings('form_name');
         $form_fields = $record->get_field( null );
@@ -64,6 +64,9 @@ class CFKEF_Save_Entries {
         // Update the form meta in post meta
         update_post_meta($post_id, '_cfkef_form_meta', $meta);
 
+        // Update form post id in post meta
+        update_post_meta($post_id, '_cfkef_form_post_id', $form_post_id);
+
         // Update last entry key option
         update_option($this->last_entry_key, $entries_number);
         
@@ -71,14 +74,21 @@ class CFKEF_Save_Entries {
         update_post_meta($post_id, '_cfkef_entry_view_status', 'false');
 
         $form_data = [];
+        $user_email='';
 
         foreach($form_fields as $key => $field) {
             if(!empty($field['value'])) {
+
+                if(empty($user_email) && $field['type'] == 'email') {
+                    $user_email = $field['value'];
+                }
+
                 $form_data[$key] = ['value' => $field['value'], 'type' => $field['type'], 'title' => $field['title']];
             }
         }
 
         update_post_meta($post_id, '_cfkef_form_data', $form_data);
+        update_post_meta($post_id, '_cfkef_user_email', $user_email);
     }
 
     /**

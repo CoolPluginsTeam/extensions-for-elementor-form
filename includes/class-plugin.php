@@ -160,7 +160,7 @@ class CFL_Loader {
 
     private function admin_menu_dashboard() {
         if(class_exists(CFKEF_Dashboard::class)){
-            $menu_pages = CFKEF_Dashboard::get_instance();
+            $menu_pages = CFKEF_Dashboard::get_instance($this->get_plugin_name(), $this->get_version());
         }
 
         if(class_exists(CFKEF_Entries_Posts::class)){
