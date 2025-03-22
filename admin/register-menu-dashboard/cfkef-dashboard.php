@@ -158,11 +158,21 @@ class CFKEF_Dashboard
     private static function cfkef_current_page($slug)
     {
         $current_page = isset($_REQUEST['page']) ? esc_html($_REQUEST['page']) : (isset($_REQUEST['post_type']) ? esc_html($_REQUEST['post_type']) : '');
-        if (in_array($current_page, self::get_allowed_pages())) {
-            return $current_page === $slug;
+        $status=false;
+
+        if (in_array($current_page, self::get_allowed_pages()) || $current_page === $slug) {
+            $status=true;
         }
 
-        return false;
+        if(function_exists('get_current_screen') && in_array($slug, self::get_allowed_pages())){
+            $screen = get_current_screen();
+
+            if($screen && property_exists($screen, 'id') && $screen->id && $screen->id === $slug){
+                $status=true;
+            }
+        }
+
+        return $status;
     }
 
     /**

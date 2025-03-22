@@ -167,6 +167,7 @@ class CFKEF_Entries_Posts {
      */
     public function add_submission_meta_boxes() {
         remove_meta_box('submitdiv', self::$post_type, 'side');
+        remove_meta_box('slugdiv', self::$post_type, 'normal');
     
         add_meta_box( 'cfkef-entries-meta-box', 'Entrie Details', [ $this, 'render_submission_meta_box' ], self::$post_type, 'normal', 'high' );
         add_meta_box( 'cfkef-form-info-meta-box', 'Form Info', [ $this, 'render_form_info_meta_box' ], self::$post_type, 'side', 'high' );

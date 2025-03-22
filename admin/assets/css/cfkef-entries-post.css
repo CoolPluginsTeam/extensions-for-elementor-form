@@ -1,3 +1,7 @@
+body.post-type-cfkef-entries #post-body-content {
+  display: none;
+}
+
 .cfkef-entries-field-wrapper {
   margin: 10px 0;
   border: 1px solid #ddd;
