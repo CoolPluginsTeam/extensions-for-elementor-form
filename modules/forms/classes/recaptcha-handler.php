@@ -124,6 +124,7 @@ class Recaptcha_Handler
 		// PHPCS - response protected by recaptcha secret
 		$recaptcha_response = Utils::_unstable_get_super_global_value($_POST, 'g-recaptcha-response'); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
+
 		if (empty($recaptcha_response)) {
 			$ajax_handler->add_error($field['id'], esc_html__('The Captcha field cannot be blank.', 'cool-formkit'));
 
@@ -227,6 +228,7 @@ class Recaptcha_Handler
 				'data-sitekey' => static::get_site_key(),
 				'data-theme' => esc_attr($theme),
 				'data-size' => esc_attr($size),
+				'data-recaptcha-version' => static::get_recaptcha_type()
 			]);
 
 			$recaptcha_html .= '<div ' . $widget->get_render_attribute_string($recaptcha_name . $item_index) . '></div>';
@@ -275,7 +277,7 @@ class Recaptcha_Handler
 	public function my_plugin_register_frontend_scripts()
 	{
 
-		wp_register_script('cool-formkit-recaptcha-api', 'https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit', [], null, true);
+		wp_register_script('cool-formkit-recaptcha-api', 'https://www.google.com/recaptcha/api.js?onload=recaptchaLoaded&render='.static::get_site_key(), [], null, true);
 
 		// Register custom JS file
 		wp_register_script(

@@ -670,6 +670,7 @@ class Cool_Form extends Form_Base {
 							'operator' => '!in',
 							'value' => [
 								'recaptcha',
+								'recaptcha_v3'
 							],
 						],
 					],
@@ -713,6 +714,28 @@ class Cool_Form extends Form_Base {
 						[
 							'name' => 'field_type',
 							'value' => 'recaptcha',
+						],
+					],
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'recaptcha_badge', [
+				'label' => esc_html__( 'Badge', 'cool-formkit' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'bottomright',
+				'options' => [
+					'bottomright' => esc_html__( 'Bottom Right', 'cool-formkit' ),
+					'bottomleft' => esc_html__( 'Bottom Left', 'cool-formkit' ),
+					'inline' => esc_html__( 'Inline', 'cool-formkit' ),
+				],
+				'description' => esc_html__( 'To view the validation badge, switch to preview mode', 'cool-formkit' ),
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'field_type',
+							'value' => 'recaptcha_v3',
 						],
 					],
 				],

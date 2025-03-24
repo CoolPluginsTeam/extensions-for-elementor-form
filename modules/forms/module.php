@@ -10,6 +10,7 @@ use Cool_FormKit\Modules\Forms\Controls\Fields_Repeater;
 use Cool_FormKit\Modules\Forms\Registrars\Form_Actions_Registrar;
 use Cool_FormKit\Modules\Forms\Registrars\Form_Fields_Registrar;
 use Cool_FormKit\Modules\Forms\Classes\Recaptcha_Handler;
+use Cool_FormKit\Modules\Forms\Classes\Recaptcha_V3_Handler;
 use Cool_FormKit\Widgets\CREATE_COUNTRY_FIELD;
 
 
@@ -35,7 +36,12 @@ class Module extends Module_Base {
 
 	const OPTION_NAME_RECAPTCHA_THRESHOLD = 'elementor_pro_recaptcha_threshold';
 
+	const  OPTION_NAME_V3_SITE_KEY = "elementor_pro_recaptcha_v3_site_key";
+
 	const V2_CHECKBOX = 'v2_checkbox';
+
+    const V3 = 'v3';
+
 
 	protected static function get_recaptcha_name()
 	{
@@ -47,6 +53,11 @@ class Module extends Module_Base {
 		return get_option(self::OPTION_NAME_SITE_KEY);
 	}
 
+	public static function get_site_key_v3()
+	{
+		return get_option(self::OPTION_NAME_V3_SITE_KEY);
+	}
+
 	public static function get_secret_key()
 	{
 		return get_option(self::OPTION_NAME_SECRET_KEY);
@@ -56,6 +67,11 @@ class Module extends Module_Base {
 	{
 		return self::V2_CHECKBOX;
 	}
+
+	public static function get_recaptcha_type_v3()
+    {
+        return self::V3;
+    }
 
 	public static function is_enabled()
 	{
@@ -156,8 +172,11 @@ class Module extends Module_Base {
 
 		wp_localize_script('Cool_FormKit-forms-editor', 'coolFormKitRecaptcha', [
 			'enabled'   => static::is_enabled(),
-			'site_key'  => static::get_site_key(),
-			'type'      => static::get_recaptcha_type(),
+			'site_key_v2'  => static::get_site_key(),
+			'site_key_v3'  => static::get_site_key_v3(),
+			'type_v2'      => static::get_recaptcha_type(),
+			'type_v3'      => static::get_recaptcha_type_v3(),
+
 		]);
 
 		wp_enqueue_script('Cool_FormKit-forms-editor', true);
@@ -227,7 +246,13 @@ class Module extends Module_Base {
 
 		if (class_exists(Recaptcha_Handler::class)) {
 
-			$this->add_component( 'recaptcha', new Classes\Recaptcha_Handler() );
+			$this->add_component( 'recaptcha', instance: new Classes\Recaptcha_Handler() );
+
+        }
+
+		if (class_exists(Recaptcha_V3_Handler::class)) {
+
+			$this->add_component( 'recaptcha_v3', instance: new Classes\Recaptcha_V3_Handler() );
 
         }
 

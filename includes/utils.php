@@ -51,6 +51,8 @@ class Utils {
 
 
 	public static function _unstable_get_super_global_value( $super_global, $key ) {
+
+
 		if ( ! isset( $super_global[ $key ] ) ) {
 			return null;
 		}
