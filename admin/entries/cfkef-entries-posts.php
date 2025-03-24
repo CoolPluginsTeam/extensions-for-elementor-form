@@ -81,7 +81,7 @@ class CFKEF_Entries_Posts {
             'add_new_item'          => esc_html__( 'Add New Item', 'cool-formkit' ),
             'add_new'               => esc_html__( 'Add New', 'cool-formkit' ),
             'new_item'              => esc_html__( 'New Item', 'cool-formkit' ),
-            'edit_item'             => esc_html__( 'Edit Item', 'cool-formkit' ),
+            'edit_item'             => esc_html__( 'View Entry', 'cool-formkit' ),
             'update_item'           => esc_html__( 'Update Item', 'cool-formkit' ),
             'view_item'             => esc_html__( 'View Item', 'cool-formkit' ),
             'view_items'            => esc_html__( 'View Items', 'cool-formkit' ),
@@ -168,8 +168,8 @@ class CFKEF_Entries_Posts {
     public function add_submission_meta_boxes() {
         remove_meta_box('submitdiv', self::$post_type, 'side');
         remove_meta_box('slugdiv', self::$post_type, 'normal');
-    
-        add_meta_box( 'cfkef-entries-meta-box', 'Entrie Details', [ $this, 'render_submission_meta_box' ], self::$post_type, 'normal', 'high' );
+        
+        add_meta_box( 'cfkef-entries-meta-box', 'Entry Details', [ $this, 'render_submission_meta_box' ], self::$post_type, 'normal', 'high' );
         add_meta_box( 'cfkef-form-info-meta-box', 'Form Info', [ $this, 'render_form_info_meta_box' ], self::$post_type, 'side', 'high' );
     }
 

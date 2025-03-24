@@ -92,7 +92,7 @@ class CFKEF_List_Table extends WP_List_Table {
     public function get_columns() {
         return [
             'cb' => '<input type="checkbox" />',
-            'user_email' => 'Main',
+            'user_email' => 'Email',
             'form_url' => 'Form',
             'page_title' => 'Page Title',
             'id' => 'ID',
@@ -109,7 +109,7 @@ class CFKEF_List_Table extends WP_List_Table {
         $edit_url = admin_url('post.php?post='.intval($item->ID).'&action=edit');
 
         if(!isset($email) || !$email || empty($email)){
-            $email = 'undefined';
+            $email = 'N/A';
         }
 
         return sprintf('<a href="%s">%s</a>', $edit_url, $email);
@@ -299,6 +299,19 @@ class CFKEF_List_Table extends WP_List_Table {
         $query .= $wpdb->prepare(" ORDER BY {$args['orderby']} {$args['order']} LIMIT %d OFFSET %d", $args['posts_per_page'], ($args['paged'] - 1) * $args['posts_per_page']);
 
         $this->items = $wpdb->get_results($query);
+
+        $total_posts=wp_count_posts($this->post_type);
+        $post_count=0;
+
+        foreach($args['post_status'] as $status){
+            $post_count+=$total_posts->$status;
+        }
+
+        $this->set_pagination_args([
+            'total_items' => $post_count,
+            'per_page'    => $this->get_items_per_page( $this->get_per_page_option_name() , 20 ),
+            'total_pages' => (int) ceil( $post_count / $this->get_items_per_page( $this->get_per_page_option_name() , 20 ) ),
+        ]);
     }
 
     protected function extra_tablenav($which) {
@@ -322,7 +335,7 @@ class CFKEF_List_Table extends WP_List_Table {
         // If there are some forms just call the parent method.
         if ( $this->has_items() ) {
             parent::display_tablenav( $which );
-
+            
             return;
         }
     

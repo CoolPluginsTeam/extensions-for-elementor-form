@@ -197,6 +197,9 @@ input:checked + .cfkef-slider:before {
     margin: 2px 20px 20px 0;
 }
 
+.cfkef-wrapper .cfkef-entries-list-wrapper .button {
+    padding: 0 10px;
+}
 .cfkef-wrapper .button {
     padding: 10px 14px;
     background-color: #f16564;

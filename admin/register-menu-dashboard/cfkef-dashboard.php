@@ -77,7 +77,7 @@ class CFKEF_Dashboard
             'cool-formkit' => array(
                 'title' => 'Cool FormKit Lite',
                 'position' => 45,
-                'slug' => 'cool-formkit',
+                'slug' => 'cfkef-entries',
             ),
             'cfkef-entries' => array(
                 'title' => '↳ Entries',
@@ -192,7 +192,7 @@ class CFKEF_Dashboard
             </div>
         </div>';
 
-        $this->render_tabs();
+        // $this->render_tabs();
 
         echo '<div class="cfkef-content">';
 
