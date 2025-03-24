@@ -186,9 +186,8 @@ class CFKEF_Dashboard
                 <img src="'.esc_url(CFL_PLUGIN_URL . 'assets/images/cool-formkit-logo.png').' ?>" alt="Cool FormKit Logo">
             </div>
             <div class="cfkef-header-buttons">
-                <p>Upgrade your Elementor form with advanced fields and features.</p>
-                <a href="https://docs.coolplugins.net/docs/cool-formkit/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=doc&utm_content=setting-page-header" class="button" target="_blank">'.esc_html__('Check Docs', 'cool-formkit').'</a>
-                <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=setting-page-header" class="button button-secondary" target="_blank">'.esc_html__('View Form Demos', 'cool-formkit').'</a>
+                <p>Cool FormKit Lite – Elementor Form Builder.</p>
+                <a href="https://www.youtube.com/watch?v=u1PYFXv01Rc" class="button" target="_blank">'.esc_html__('Video Demo', 'cool-formkit').'</a>
             </div>
         </div>';
 
