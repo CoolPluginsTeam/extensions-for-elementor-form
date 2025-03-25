@@ -289,11 +289,6 @@ class CFKEF_Dashboard
                 ],
             ];
 
-            // Extra deny callbacks (will be removed for each hook tag defined in $rules).
-            $common_deny_callbacks = [
-                'wpformsdb_admin_notice', // 'Database for WPForms' plugin.
-            ];
-
             $notice_types = array_keys($rules);
 
             foreach ($notice_types as $notice_type) {
@@ -328,11 +323,6 @@ class CFKEF_Dashboard
                                 unset($wp_filter[$notice_type]->callbacks[$priority][$name]);
                             }
                             continue;
-                        }
-
-                        // Remove non-WPForms callbacks from `$common_deny_callbacks` denylist.
-                        if (in_array($cb, $common_deny_callbacks, true)) {
-                            unset($wp_filter[$notice_type]->callbacks[$priority][$name]);
                         }
                     }
                 }

@@ -118,6 +118,10 @@ class CFKEF_Post_Bulk_Actions {
 		if($this->action === 'empty_trash'){
 			$this->ids = [0];
 		}
+
+		if(isset($_GET['action2']) && '-1' !== $_GET['action2'] && (!isset($_GET['bulk_action']) || 'Apply' !== $_GET['bulk_action']) ){
+			return;
+		}
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		if ( empty( $this->ids ) || empty( $this->action ) ) {
