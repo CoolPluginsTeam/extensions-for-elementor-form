@@ -147,12 +147,12 @@ abstract class Form_Base extends Widget_Base {
 							if ( false !== strpos( $option, '|' ) ) {
 								list( $option_label, $option_value ) = explode( '|', $option );
 							}
-							$selected = '';
+							$selected = array('class' => '', 'selected' => '');
 							if ( ! empty( $item['field_value'] ) && in_array( $option_value, explode( ',', $item['field_value'] ), true ) ) {
-								$selected = 'aria-selected="true" class="mdc-list-item--selected"';
+								$selected = array('class' => 'mdc-list-item--selected', 'selected' => 'aria-selected="true"');
 							}
 							?>
-							<li class="mdc-list-item" role="option" data-value="<?php echo esc_attr( $option_value ); ?>" <?php echo $selected; ?>>
+							<li class="mdc-list-item <?php echo $selected['class']; ?>" role="option" data-value="<?php echo esc_attr( $option_value ); ?>" <?php echo $selected['selected']; ?>>
 								<span class="mdc-list-item__ripple"></span>
 								<span class="mdc-list-item__text"><?php echo esc_html( $option_label ); ?></span>
 							</li>
