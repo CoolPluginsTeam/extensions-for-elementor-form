@@ -108,10 +108,12 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		require_once CFL_PLUGIN_PATH . '/includes/class-plugin.php';
 		CFKEF_Loader::get_instance();
 		
-		require_once CFL_PLUGIN_PATH . '/includes/review-notice.php';
-		new Review_notice();
-
+		
 		if (is_admin()) {
+
+			require_once CFL_PLUGIN_PATH . '/admin/review-notice.php';
+			new Review_notice();
+
 			require_once CFL_PLUGIN_PATH . 'admin/feedback/admin-feedback-form.php';
 		}
 		// add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'EEF_plugin_dashboard_link' ) );
