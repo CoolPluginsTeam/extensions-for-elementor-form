@@ -33,10 +33,6 @@ class CFKEF_Save_Entries {
         $form_name = $record->get_form_settings('form_name');
         $form_fields = $record->get_field( null );
 
-        // echo '<pre>';
-        // var_dump($form_fields);
-        // echo '</pre>';
-        // die();
         $meta['form_name'] = $form_name;
 
         $entries_number = $this->auto_increment_entries_number();
@@ -83,7 +79,9 @@ class CFKEF_Save_Entries {
                     $user_email = $field['value'];
                 }
 
-                $form_data[$key] = ['value' => $field['value'], 'type' => $field['type'], 'title' => $field['title']];
+                $title=empty($field['title']) ? $key : $field['title'];
+
+                $form_data[$key] = ['value' => $field['value'], 'type' => $field['type'], 'title' => $title];
             }
         }
 
