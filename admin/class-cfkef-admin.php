@@ -62,7 +62,6 @@ class CFKEF_Admin {
     private function __construct($plugin_name, $version) {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
-        // add_action('admin_menu', array($this, 'add_plugin_admin_menu'),999);
         add_action('admin_init', array($this, 'register_form_elements_settings'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_styles'));
     }
@@ -80,60 +79,6 @@ class CFKEF_Admin {
             self::$instance = new self($plugin_name, $version);
         }
         return self::$instance;
-    }
-
-    /**
-     * Add a menu item under Settings.
-     *
-     * @since    1.0.0
-     */
-    public function add_plugin_admin_menu() {
-        add_submenu_page(
-            'elementor',
-            __('Cool FormKit', 'cool-formkit'),
-            __('Cool FormKit', 'cool-formkit'),
-            'manage_options',
-            'cool-formkit',
-            array($this, 'display_plugin_admin_page')
-        );
-    }
-    /**
-     * Display the plugin admin page with tabs.
-     *
-     * @since    1.0.0
-     */
-    public function display_plugin_admin_page() {
-        $tab = isset($_GET['tab']) ? $_GET['tab'] : 'form-elements';
-        ?>
-        <div class="cfkef-wrapper">
-            <div class="cfkef-header">
-                <div class="cfkef-header-logo">
-                    <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/cool-formkit-logo.png'); ?>" alt="Cool FormKit Logo">
-                </div>
-                <div class="cfkef-header-buttons">
-                    <p>Upgrade your Elementor form with advanced fields and features.</p>
-                    <a href="https://docs.coolplugins.net/docs/cool-formkit/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=doc&utm_content=setting-page-header" class="button" target="_blank"><?php esc_html_e('Check Docs', 'cool-formkit'); ?></a>
-                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=setting-page-header" class="button button-secondary" target="_blank"><?php esc_html_e('View Form Demos', 'cool-formkit'); ?></a>
-                </div>
-            </div>
-            <h2 class="nav-tab-wrapper">
-                <a href="?page=cool-formkit&tab=form-elements" class="nav-tab <?php echo $tab == 'form-elements' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Form Elements', 'cool-formkit'); ?></a>
-                <a href="?page=cool-formkit&tab=settings" class="nav-tab <?php echo $tab == 'settings' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Settings', 'cool-formkit'); ?></a>
-            </h2>
-            <div class="tab-content">
-                <?php
-                switch ($tab) {
-                    case 'form-elements':
-                        include_once 'views/form-elements.php';
-                        break;
-                    case 'settings':
-                        include_once 'views/settings.php';
-                        break;
-                }
-                ?>
-            </div>
-        </div>
-        <?php
     }
 
     /**

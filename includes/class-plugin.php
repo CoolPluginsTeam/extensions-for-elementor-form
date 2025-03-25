@@ -5,9 +5,8 @@ namespace Cool_FormKit\Includes;
 use Cool_FormKit\Includes\Custom_Success_Message;
 use Cool_FormKit\Includes\Actions\Register_Actions;
 use Cool_Formkit\admin\CFKEF_Admin;
-use Cool_Formkit\Admin\Submission_Posts\CFKEF_Submission_Posts;
-use Cool_Formkit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
-use Cool_Formkit\Admin\Entries\CFKEF_Entries_Posts;
+use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
+use Cool_FormKit\Admin\Entries\CFKEF_Entries_Posts;
 
 /**
  * The file that defines the core plugin class
@@ -160,12 +159,13 @@ class CFL_Loader {
     }
 
     private function admin_menu_dashboard() {
-        require_once CFL_PLUGIN_PATH . 'admin/register-menu-dashboard/class-cfket-dashboard.php';
-        $menu_pages = CFKEF_Dashboard::get_instance();
+        if(class_exists(CFKEF_Dashboard::class)){
+            $menu_pages = CFKEF_Dashboard::get_instance($this->get_plugin_name(), $this->get_version());
+        }
 
-        // Entries post
-        require_once CFL_PLUGIN_PATH . 'admin/entries/class-cfkef-entries-posts.php';
-        $entries_posts = CFKEF_Entries_Posts::get_instance();
+        if(class_exists(CFKEF_Entries_Posts::class)){
+            $entries_posts = CFKEF_Entries_Posts::get_instance();
+        }
     }
     
     /**

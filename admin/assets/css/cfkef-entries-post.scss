@@ -1,5 +1,37 @@
  // Improved CSS based on the provided HTML structure
-.cfkef-entries-field-wrapper {
+ body.post-type-cfkef-entries{
+    #post-body-content{
+        display: none;
+    }
+ }
+
+.cfkef-wrapper{
+    #cfkef-entries-list-wrapper{
+        .button{
+            padding: 0 10px;
+            &[value="Empty Trash"]{
+                margin-left: 10px;
+            }
+        }
+
+        @media screen and (max-width: 782px){
+            input#cfkef-entries-search{
+                float: none;
+                width: 100%;
+                margin-bottom: 10px;
+                vertical-align: middle;
+            }
+
+            select#filter-by-date,
+            input#cfkef-entries-date-filter{
+                display: none;
+            }
+        }
+    }
+}
+
+
+ .cfkef-entries-field-wrapper {
     margin: 10px 0;
     border: 1px solid #ddd;
     background-color: #f9f9f9;
@@ -74,3 +106,5 @@
         }
     }
 }
+
+

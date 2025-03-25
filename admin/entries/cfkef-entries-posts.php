@@ -2,6 +2,10 @@
 
 namespace Cool_FormKit\Admin\Entries;
 
+use Cool_FormKit\Admin\Entries\CFKEF_List_Table;
+use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
+use Cool_FormKit\Admin\Entries\CFKEF_Post_Bulk_Actions;
+
 /**
  * Entries Posts
  */     
@@ -30,6 +34,27 @@ class CFKEF_Entries_Posts {
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action('add_meta_boxes', [ $this, 'add_submission_meta_boxes' ]);
         add_action('admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ]);
+        add_action('cfkef_render_menu_pages', [ $this, 'output_entries_list' ]);
+        add_action( 'admin_head', [$this, 'add_screen_option'] );
+        add_filter('cfkef_dashboard_tabs', [ $this, 'add_dashboard_tab' ]);
+
+        $bulk_actions = new CFKEF_Post_Bulk_Actions();
+        $bulk_actions->init();
+
+        remove_action( 'admin_head', 'wp_admin_bar_help_menu' );
+    }
+
+    /**
+     * Add dashboard tab
+     */
+    public function add_dashboard_tab($tabs) {
+        $tabs[] = array(
+            'title' => 'Entries',
+            'position' => 2,
+            'slug' => 'cfkef-entries',
+        );
+
+        return $tabs;
     }
 
     /**
@@ -56,7 +81,7 @@ class CFKEF_Entries_Posts {
             'add_new_item'          => esc_html__( 'Add New Item', 'cool-formkit' ),
             'add_new'               => esc_html__( 'Add New', 'cool-formkit' ),
             'new_item'              => esc_html__( 'New Item', 'cool-formkit' ),
-            'edit_item'             => esc_html__( 'Edit Item', 'cool-formkit' ),
+            'edit_item'             => esc_html__( 'View Entry', 'cool-formkit' ),
             'update_item'           => esc_html__( 'Update Item', 'cool-formkit' ),
             'view_item'             => esc_html__( 'View Item', 'cool-formkit' ),
             'view_items'            => esc_html__( 'View Items', 'cool-formkit' ),
@@ -78,7 +103,7 @@ class CFKEF_Entries_Posts {
             'label'                 => esc_html__( 'Form Entries', 'cool-formkit' ),
             'description'           => esc_html__( 'cool-formkit-entry', 'cool-formkit' ),
             'labels'                => $labels,
-            'supports'              => ['title'],
+            'supports'              => false,
             'capabilities'          => ['create_posts' => 'do_not_allow'],
             'map_meta_cap'          => true,
             'hierarchical'          => false,
@@ -100,11 +125,51 @@ class CFKEF_Entries_Posts {
         
     }
 
+    public static function get_view() {
+        return isset($_GET['view']) && in_array($_GET['view'], ['all', 'trash']) ? sanitize_text_field($_GET['view']) : 'all';
+    }
+
+    public function output_entries_list(CFKEF_Dashboard $dashboard) {
+        if($dashboard->current_screen(self::$post_type)){
+            echo "<div class='wrap'>";
+            echo "<h1 class='wp-heading-inline cfkef-entries-list-title'>" . esc_html__( 'Entries', 'cool-formkit' ) . "</h1>";
+            echo "<div id='cfkef-entries-list-wrapper'>";
+            $list_table = CFKEF_List_Table::get_instance(self::$post_type);
+            $list_table->prepare_items();
+            $list_table->views();
+            // echo '<form method="get">';
+            echo '<form method="get" action="'.esc_url( admin_url( 'admin.php?page=cfkef-entries' ) ).'">';
+            echo '<input type="hidden" name="page" value="'.self::$post_type.'">';
+            echo '<input type="hidden" name="view" value="'.self::get_view().'">';
+            $list_table->search_box( esc_html__( 'Search Forms', 'wpforms-lite' ), 'cfkef-entries-search' );
+            $list_table->display();
+            echo "</form>";
+            echo "</div>";
+            echo "</div>";
+        }
+    }
+
+    public function add_screen_option() {
+        if(CFKEF_Dashboard::current_screen(self::$post_type)){
+            $args = array(
+                'label'   => 'Items per page',
+                'default' => 20,
+                'option'  => 'edit_'.self::$post_type.'_per_page',
+            );
+            
+            add_screen_option( 'per_page', $args );
+        }
+    }
+    
+
     /**
      * Add submission meta boxes
      */
     public function add_submission_meta_boxes() {
-        add_meta_box( 'cfkef-entries-meta-box', 'Entrie Details', [ $this, 'render_submission_meta_box' ], self::$post_type, 'normal', 'high' );
+        remove_meta_box('submitdiv', self::$post_type, 'side');
+        remove_meta_box('slugdiv', self::$post_type, 'normal');
+        
+        add_meta_box( 'cfkef-entries-meta-box', 'Entry Details', [ $this, 'render_submission_meta_box' ], self::$post_type, 'normal', 'high' );
         add_meta_box( 'cfkef-form-info-meta-box', 'Form Info', [ $this, 'render_form_info_meta_box' ], self::$post_type, 'side', 'high' );
     }
 
