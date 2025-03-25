@@ -85,7 +85,6 @@ class cfef_feedback {
 		// 	$plugin_buy_button = '<li><a href="' . $this->buy_link . '" target="_blank" class="buy-pro-btn button button-secondary" title="Buy Pro">Buy Pro</a></li>';
 		// }
 
-		var_dump($this->plugin_slug . '_dismiss_notice');
 
 		$html = '
 		<div data-ajax-url="' . admin_url( 'admin-ajax.php' ) . '" data-ajax-callback="' . $this->plugin_slug . '_dismiss_notice" class="' . $this->plugin_slug . '-review-notice-wrapper notice">
