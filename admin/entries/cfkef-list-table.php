@@ -121,6 +121,8 @@ class CFKEF_List_Table extends WP_List_Table {
         $form_post_id = get_post_meta($item->ID, '_cfkef_form_post_id', true);
         $page_editor_url = admin_url('post.php?post='.intval($form_post_id).'&action=elementor');
 
+        $form_name = empty($form_name) ? 'N/A' : $form_name;
+
         if($form_post_id && !empty($form_post_id)){
             return sprintf('<a href="%s" target="_blank">%s</a>', $page_editor_url, $form_name);
         }
