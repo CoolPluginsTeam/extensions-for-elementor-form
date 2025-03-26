@@ -146,7 +146,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * **Added:** **Collect Entries** Action after submit a form.
 * **Added:** **Dashboard & Entries** page to view and manage form entries.
 * **Added:** Review Notice in the dashboard and form editor.
-* **Fixed:** The default value not sent in the select field.
+* **Fixed:** Default value not sent in the select field.
 * **Improved:** Security improvements.
 
 =  Version 2.4.1 | 18/03/2025 =
