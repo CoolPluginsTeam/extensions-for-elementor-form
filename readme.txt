@@ -145,7 +145,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 =  Version 2.4.2 | 26/03/2025 =
 * **Added:** **Collect Entries** Action after submit a form.
 * **Added:** **Dashboard & Entries** page to view and manage form entries.
-* **Added:** Review Notice feature in the dashboard and form editor.
+* **Added:** Review Notice in the dashboard and form editor.
 * **Fixed:** The default value not sent in the select field.
 * **Improved:** Security improvements.
 
