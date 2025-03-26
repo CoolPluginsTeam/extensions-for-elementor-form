@@ -111,12 +111,6 @@ class Review_notice
 
 	function cfl_create_notice_content()
 	{
-		// $plugin_buy_button = '';
-		// if ( $this->buy_link != '' ) {
-		// 	$plugin_buy_button = '<li><a href="' . $this->buy_link . '" target="_blank" class="buy-pro-btn button button-secondary" title="Buy Pro">Buy Pro</a></li>';
-		// }
-
-
 		$html = '
 		<div data-ajax-url="' . admin_url('admin-ajax.php') . '" data-nonce="' . wp_create_nonce('cfl_elementor_review') . '" data-ajax-callback="' . $this->plugin_slug . '_dismiss_notice" class="' . $this->plugin_slug . '-review-notice-wrapper notice">
 			<div class="logo_container">
@@ -128,7 +122,6 @@ class Review_notice
 					<li><a href="' . esc_url($this->review_link) . '" class="rate-it-btn button button-primary" target="_blank" title="Submit A Review...">Rate Now! ★★★★★</a></li>
 					<li><a href="javascript:void(0);" class="already-rated-btn button button-secondary ' . $this->plugin_slug . '_dismiss_notice" title="Already Rated - Close This Notice!">Already Rated</a></li>
 					<li><a href="javascript:void(0);" class="already-rated-btn button button-secondary ' . $this->plugin_slug . '_dismiss_notice" title="Not Interested - Close This Notice!">Not Interested</a></li>
-					' . $plugin_buy_button . '
 				</ul>
 			</div>
 		</div>

@@ -151,6 +151,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		}
 
 		if (is_plugin_active('cool-formkit-for-elementor-forms/cool-formkit-for-elementor-forms.php')) {
+			add_action('admin_notices', array($this, 'cool_formkit_active_notice'));
 			return false;
 		}
 
@@ -185,6 +186,14 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		);
 		printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', esc_html($message));
 		deactivate_plugins(plugin_basename(__FILE__));
+	}
+
+	public function cool_formkit_active_notice()
+	{
+		$message = sprintf(
+			esc_html__('Cool Formkit Lite for Elementor Free now you are using Elementor Pro so please deactivate Cool Formkit Lite and use Cool Formkit instead.', 'extensions-for-elementor-form'),
+		);
+		printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', esc_html($message));
 	}
 
 	/**
