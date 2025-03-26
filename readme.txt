@@ -4,7 +4,7 @@ Contributors: coolplugins, narinder-singh, satindersingh
 Tags: form builder, elementor form, elementor, contact form, custom form
 Requires at least: 6.2
 Tested up to: 6.7.2
-Stable tag: 2.4.1
+Stable tag: 2.4.2
 Requires PHP: 8.2
 Elementor tested up to: 3.28.0
 Elementor Pro tested up to: 3.28.0
@@ -68,6 +68,7 @@ We’re actively improving Cool FormKit Lite. Future updates will include condit
 == Screenshots ==
 1. Cool FormKit Lite preview.
 2. Cool FormKit Lite form.
+3. Cool Formkit Entries.
 
 == Frequently Asked Questions ==
 
@@ -140,6 +141,13 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
    - Save and publish the page to display the form on your site.
 
 == Changelog ==
+
+=  Version 2.4.2 | 26/03/2025 =
+* **Added:** **Collect Entries** Action after submit a form.
+* **Added:** **Dashboard & Entries** page to view and manage form entries.
+* **Added:** Review Notice in the dashboard and form editor.
+* **Fixed:** Default value not sent in the select field.
+* **Improved:** Security improvements.
 
 =  Version 2.4.1 | 18/03/2025 =
 
