@@ -57,6 +57,8 @@ class Ajax_Handler {
 	public function ajax_send_form() {
 		check_ajax_referer( self::NONCE_ACTION, 'nonce' );
 
+		$post_data = $_POST;
+
 		// $post_id that holds the form settings.
 		$post_id = filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
 		$queried_id = filter_input( INPUT_POST, 'queried_id', FILTER_SANITIZE_NUMBER_INT );
@@ -104,14 +106,7 @@ class Ajax_Handler {
 			}
 			
 			// the fields are not fixed so they will be validated afterwards
-			$form_fields = filter_input(
-				INPUT_POST,
-				'form_fields',
-				FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-				FILTER_REQUIRE_ARRAY
-			);
-			
-			$record = new Form_Record( $form_fields, $form );
+			$record = new Form_Record( $post_data['form_fields'], $form );
 			
 			if ( ! $record->validate( $this ) ) {
 				$this
