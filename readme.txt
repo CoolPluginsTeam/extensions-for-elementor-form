@@ -68,6 +68,7 @@ We’re actively improving Cool FormKit Lite. Future updates will include condit
 == Screenshots ==
 1. Cool FormKit Lite preview.
 2. Cool FormKit Lite form.
+3. Cool Formkit Entries.
 
 == Frequently Asked Questions ==
 
