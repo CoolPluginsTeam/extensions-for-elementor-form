@@ -73,7 +73,7 @@ class CFKEF_Save_Entries {
         $user_email='';
 
         foreach($form_fields as $key => $field) {
-            if(!empty($field['value'])) {
+            if(!empty($field['value']) || !empty($field['raw_value'])) {
 
                 if(empty($user_email) && $field['type'] == 'email') {
                     $user_email = $field['value'];

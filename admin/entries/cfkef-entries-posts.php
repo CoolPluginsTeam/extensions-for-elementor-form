@@ -214,9 +214,6 @@ class CFKEF_Entries_Posts {
         echo '<tbody>';
         
         foreach ($data as $key => $value) {
-            if(empty($value['value'])) {
-                continue;
-            }
             $label = $value['title'] ?? $key;
             echo '<tr class="cfkef-entries-data-table-key">';
             echo '<td>' . esc_html($label) . '</td>';
