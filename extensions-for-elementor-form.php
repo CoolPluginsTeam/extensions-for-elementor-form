@@ -7,7 +7,7 @@
  * Author: Cool Plugins
  * Author URI: https://coolplugins.net/
  * Text Domain: extensions-for-elementor-form
- * Version: 2.4.1
+ * Version: 2.4.2
  * Requires at least: 6.2
  * Requires PHP: 6.2
  * License: GPL-2.0+
@@ -28,7 +28,7 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 
-define('CFL_VERSION','2.4.1');
+define('CFL_VERSION','2.4.2');
 define('PHP_MINIMUM_VERSION','7.4');
 define('WP_MINIMUM_VERSION','5.5');
 define( 'CFL_PLUGIN_MAIN_FILE', __FILE__ );
