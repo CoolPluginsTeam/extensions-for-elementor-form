@@ -45,6 +45,11 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
         return self::V3;
     }
 
+    public static function get_threshold(){
+
+        return get_option(self::OPTION_NAME_RECAPTCHA_THRESHOLD);
+    }
+
     public static function is_enabled()
     {
         return static::get_site_key() && static::get_secret_key();
@@ -119,6 +124,8 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
 
     public function render_field($item, $item_index, $widget)
     {
+
+
         $recaptcha_html = '<div class="elementor-field" id="form-field-' . esc_attr($item['custom_id']) . '" >';
 
         if (static::is_enabled()) {
@@ -222,7 +229,13 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
         }
     
         // Check reCAPTCHA score (for v3)
-        if (isset($response_data['score']) && $response_data['score'] < 0.5) {
+
+        if(!static::get_threshold())
+            $thres_hold = '0.5';
+        else
+            $thres_hold = static::get_threshold();
+
+        if (isset($response_data['score']) && $response_data['score'] < $thres_hold) {
             $ajax_handler->add_error($field['id'], esc_html__('Suspicious activity detected. Please try again.', 'cool-formkit'));
             return;
         }
