@@ -224,7 +224,7 @@ class Recaptcha_Handler
 
 			// Add attributes dynamically
 			$widget->add_render_attribute($recaptcha_name . $item_index, [
-				'class' => 'g-recaptcha',
+				'class' => 'coolform-recaptcha',
 				'data-sitekey' => static::get_site_key(),
 				'data-theme' => esc_attr($theme),
 				'data-size' => esc_attr($size),
@@ -277,12 +277,12 @@ class Recaptcha_Handler
 	public function my_plugin_register_frontend_scripts()
 	{
 
-		wp_register_script('cool-formkit-recaptcha-api', 'https://www.google.com/recaptcha/api.js?onload=recaptchaLoaded&render='.static::get_site_key(), [], null, true);
+		wp_register_script('cool-formkit-recaptcha-api', 'https://www.google.com/recaptcha/api.js?onload=recaptchaLoaded&render=explicit', [], null, true);
 
 		// Register custom JS file
 		wp_register_script(
 			'cool-formkit-recaptcha-handler',
-			CFL_PLUGIN_URL . 'assets/js/recaptcha-handler.min.js',
+			CFL_PLUGIN_URL . 'assets/js/frontend-scripts.min.js',
 			['jquery', 'elementor-frontend'],
 			'1.0.0',
 			true

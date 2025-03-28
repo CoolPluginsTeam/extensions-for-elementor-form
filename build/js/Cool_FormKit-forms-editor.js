@@ -108,6 +108,7 @@
             getDataSettings(item) {
                 const config = coolFormKitRecaptcha;
                 const srcURL = 'https://www.google.com/recaptcha/api.js?onload=recaptchaLoaded&render=explicit';
+
                 
                 if (!config.enabled) {
                     console.log('reCAPTCHA is not enabled');
@@ -121,18 +122,11 @@
                   recaptchaData = 'data-sitekey="' + config.site_key_v2 + '" data-type="' + config.type_v2 + '"';
                   recaptchaData += ' data-theme="' + item.recaptcha_style + '"';
                   recaptchaData += ' data-size="' + item.recaptcha_size + '"';
-                }else if(item.field_type == "recaptcha_v3"){
-                  recaptchaData = 'data-sitekey="' + config.site_key_v3 + '" data-type="' + config.type_v3 + '"';
-                  recaptchaData += ' data-action="Form"';
-                  recaptchaData += ' data-badge="' + item.recaptcha_badge + '"';
-                  recaptchaData += ' data-size="invisible"';
                 }
-
-            
             
                 this.enqueueRecaptchaJs(srcURL, config.type);
             
-                return '<div class="g-recaptcha" ' + recaptchaData + '></div>';
+                return '<div class="coolform-recaptcha" ' + recaptchaData + '></div>';
             },
             
             filterItem(item) {
@@ -145,9 +139,65 @@
             onInit() {
                 elementor.hooks.addFilter('cool_formkit/forms/content_template/item', this.filterItem);
                 elementor.hooks.addFilter("cool_formkit/forms/content_template/field/recaptcha", this.renderField, 10, 4);
-                elementor.hooks.addFilter('cool_formkit/forms/content_template/field/recaptcha_v3', this.renderField, 10, 4);
             }
         });
+      },
+
+      520: (e) => {
+
+        e.exports = elementorModules.editor.utils.Module.extend({
+
+          enqueueRecaptchaJs(url, type) {
+              if (!elementorFrontend.elements.$body.find('[src="' + url + '"]').length) {
+                  elementorFrontend.elements.$body.append('<scr' + 'ipt src="' + url + '" id="recaptcha-' + type + '"></scri' + 'pt>');
+              }
+          },
+          
+          renderField(inputField, item) {
+
+              inputField += '<div class="elementor-field ' + item.field_type + '">';
+              inputField += this.getDataSettings(item);
+              inputField += '</div>';
+              return inputField;
+          },
+          
+          getDataSettings(item) {
+              const config = coolFormKitRecaptcha;
+              const srcURL = 'https://www.google.com/recaptcha/api.js?onload=recaptchaLoaded&render=explicit';
+              
+              if (!config.enabled3) {
+                  console.log('reCAPTCHA is not enabled');
+                  return '<div class="elementor-alert elementor-alert-info"> To use reCAPTCHA V3, you need to add the API Key and complete the setup process in Dashboard > Elementor > Settings > Integrations > reCAPTCHA V3.', 'cool-formkit </div>';
+              }
+
+              let recaptchaData;
+              
+              if(item.field_type == "recaptcha_v3"){
+                recaptchaData = 'data-sitekey="' + config.site_key_v3 + '" data-type="' + config.type_v3 + '"';
+                recaptchaData += ' data-action="Form"';
+                recaptchaData += ' data-badge="' + item.recaptcha_badge + '"';
+                recaptchaData += ' data-size="invisible"';
+              }
+          
+          
+              this.enqueueRecaptchaJs(srcURL, config.type);
+          
+              return '<div class="coolform-recaptcha" ' + recaptchaData + '></div>';
+          },
+          
+          filterItem(item) {
+              if ('recaptcha' === item.field_type) {
+                  item.field_label = false;
+              }
+              return item;
+          },
+          
+          onInit() {
+              elementor.hooks.addFilter('cool_formkit/forms/content_template/item', this.filterItem);
+              elementor.hooks.addFilter('cool_formkit/forms/content_template/field/recaptcha_v3', this.renderField, 10, 4);
+          }
+      });
+
       },
 
       837: (e) => {
@@ -575,12 +625,14 @@
             n = o(276),
             l = o(837),
             r = o(1762),
+            v = o(520),
             i = o(940);
           (this.Fields = {
             tel: new n("cool-form"),
             acceptance: new t("cool-form"),
             date: new l("cool-form"),
             recaptcha: new r("cool-form"),
+            recaptcha3: new v("cool-form"),
             time: new i("cool-form"),
           }),
             elementor.addControlView("Fields_map", a()),

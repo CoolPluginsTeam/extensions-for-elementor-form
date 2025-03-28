@@ -38,6 +38,9 @@ class Module extends Module_Base {
 
 	const  OPTION_NAME_V3_SITE_KEY = "elementor_pro_recaptcha_v3_site_key";
 
+    const OPTION_NAME_V3_SECRET_KEY = 'elementor_pro_recaptcha_v3_secret_key';
+
+
 	const V2_CHECKBOX = 'v2_checkbox';
 
     const V3 = 'v3';
@@ -73,9 +76,25 @@ class Module extends Module_Base {
         return self::V3;
     }
 
+	public static function get_site_key3()
+    {
+        return get_option(self::OPTION_NAME_V3_SITE_KEY);
+    }
+
+    public static function get_secret_key3()
+    {
+        return get_option(self::OPTION_NAME_V3_SECRET_KEY);
+    }
+
+
 	public static function is_enabled()
 	{
 		return static::get_site_key() && static::get_secret_key();
+	}
+
+	public static function is_enabled3()
+	{
+		return static::get_site_key3() && static::get_secret_key3();
 	}
 
 
@@ -172,6 +191,7 @@ class Module extends Module_Base {
 
 		wp_localize_script('Cool_FormKit-forms-editor', 'coolFormKitRecaptcha', [
 			'enabled'   => static::is_enabled(),
+			'enabled3' => static::is_enabled3(),
 			'site_key_v2'  => static::get_site_key(),
 			'site_key_v3'  => static::get_site_key_v3(),
 			'type_v2'      => static::get_recaptcha_type(),
