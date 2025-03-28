@@ -147,12 +147,12 @@ abstract class Form_Base extends Widget_Base {
 							if ( false !== strpos( $option, '|' ) ) {
 								list( $option_label, $option_value ) = explode( '|', $option );
 							}
-							$selected = '';
+							$selected = array('class' => '', 'selected' => '');
 							if ( ! empty( $item['field_value'] ) && in_array( $option_value, explode( ',', $item['field_value'] ), true ) ) {
-								$selected = 'aria-selected="true" class="mdc-list-item--selected"';
+								$selected = array('class' => 'mdc-list-item--selected', 'selected' => 'aria-selected="true"');
 							}
 							?>
-							<li class="mdc-list-item" role="option" data-value="<?php echo esc_attr( $option_value ); ?>" <?php echo $selected; ?>>
+							<li class="mdc-list-item <?php echo $selected['class']; ?>" role="option" data-value="<?php echo esc_attr( $option_value ); ?>" <?php echo $selected['selected']; ?>>
 								<span class="mdc-list-item__ripple"></span>
 								<span class="mdc-list-item__text"><?php echo esc_html( $option_label ); ?></span>
 							</li>
@@ -161,9 +161,25 @@ abstract class Form_Base extends Widget_Base {
 				</ul>
 			</div>
 			<select name="form_fields[<?php echo $item['custom_id'] ?>]" id="form-field-<?php echo $item['custom_id'] ?>" style="display: none;">
-				<option value="">Select an option</option>
-				<option value="option1">Option 1</option>
-				<option value="option2">Option 2</option>
+				<?php
+				if($options){
+					$default_option = isset($item['field_value']) ? $item['field_value'] : '';
+					foreach ( $options as $key => $option ) {
+						$option_value = $option;
+						$option_label = $option;
+						$selected = '';
+						if ( false !== strpos( $option, '|' ) ) {
+							list( $option_label, $option_value ) = explode( '|', $option );
+						}
+						if($default_option === $option_value){
+							$selected = 'selected';
+						}
+						?>
+						<option value="<?php echo esc_attr( $option_value ); ?>" <?php echo $selected; ?>><?php echo esc_html( $option_label ); ?></option>
+						<?php
+					}
+				}
+				?>
 			</select>
 		</div>
 		<div class="mdc-select-helper-line">
@@ -408,9 +424,6 @@ abstract class Form_Base extends Widget_Base {
 
 		$this->add_render_attribute( 'field-group' . $i, 'class', 'has-width-' . $item['width'] );
 
-		// if ( $item['allow_multiple'] ) {
-		// 	$this->add_render_attribute( 'field-group' . $i, 'class', 'elementor-field-type-' . $item['field_type'] . '-multiple' );
-		// }
 
 		if ( ! empty( $item['width_tablet'] ) ) {
 			$this->add_render_attribute( 'field-group' . $i, 'class', 'has-width-md-' . $item['width_tablet'] );
