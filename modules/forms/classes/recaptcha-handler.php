@@ -279,26 +279,10 @@ class Recaptcha_Handler
 
 		wp_register_script('cool-formkit-recaptcha-api', 'https://www.google.com/recaptcha/api.js?onload=recaptchaLoaded&render=explicit', [], null, true);
 
-		// Register custom JS file
-		wp_register_script(
-			'cool-formkit-recaptcha-handler',
-			CFL_PLUGIN_URL . 'assets/js/frontend-scripts.min.js',
-			['jquery', 'elementor-frontend'],
-			'1.0.0',
-			true
-		);
-
-		// Localize script
-		wp_localize_script('cool-formkit-recaptcha-handler', 'coolFormKitRecaptcha', [
-			'enabled'   => static::is_enabled(),
-			'site_key'  => static::get_site_key(),
-			'type'      => static::get_recaptcha_type(),
-		]);
 	}
 
 	public function my_plugin_enqueue_frontend_scripts(){
 		wp_enqueue_script('cool-formkit-recaptcha-api', true);
-		wp_enqueue_script('cool-formkit-recaptcha-handler', true);
 	}
 
 

@@ -96,6 +96,36 @@ class CFKEF_Loader {
      * @since    1.0.0
      * @return   CFKEF_Loader    The instance of this class.
      */
+
+     const OPTION_NAME_SITE_KEY = 'elementor_pro_recaptcha_site_key';
+
+     const OPTION_NAME_SECRET_KEY = 'elementor_pro_recaptcha_secret_key';
+ 
+     const OPTION_NAME_RECAPTCHA_THRESHOLD = 'elementor_pro_recaptcha_threshold';
+ 
+     const V2_CHECKBOX = 'v2_checkbox';
+
+    public static function get_site_key()
+	{
+		return get_option(self::OPTION_NAME_SITE_KEY);
+	}
+
+    public static function get_secret_key()
+	{
+		return get_option(self::OPTION_NAME_SECRET_KEY);
+	}
+
+    public static function is_enabled()
+	{
+		return static::get_site_key() && static::get_secret_key();
+	}
+
+    public static function get_recaptcha_type()
+	{
+		return self::V2_CHECKBOX;
+	}
+
+
     public static function get_instance() {
         if (null == self::$instance) {
             self::$instance = new self();
@@ -161,14 +191,33 @@ class CFKEF_Loader {
 		do_action( 'extensions_for_elementor_form_init' );
 
 		add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'register_editor_scripts') );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frondend_scripts' ) );
+		add_action( 'elementor/frontend/after_register_scripts', array( $this, 'register_frondend_scripts' ) );
+		add_action( 'elementor/frontend/after_enqueue_scripts', array( $this, 'enqueue_frondend_scripts' ) );
+
 	}
 
 	/**
 	 * Enqueue front end styles/scripts
 	 */
+
+     public function register_frondend_scripts() : void {
+
+        wp_register_script(
+			'eef-frontend-script',
+			CFL_PLUGIN_URL . 'assets/js/frontend-scripts.min.js',
+			['jquery', 'elementor-frontend'],
+			CFL_VERSION,
+			true
+		);
+
+        wp_localize_script('eef-frontend-script', 'coolFormKitRecaptcha', [
+			'enabled'   => static::is_enabled(),
+			'site_key'  => static::get_site_key(),
+			'type'      => static::get_recaptcha_type(),
+		]);
+	}
 	public function enqueue_frondend_scripts() : void {
-		wp_enqueue_script( 'eef-frontend-script', CFL_PLUGIN_URL . 'assets/js/frontend-scripts.min.js', array( 'jquery' ), CFL_VERSION );
+        wp_enqueue_script( 'eef-frontend-script', true);
 		wp_enqueue_style( 'eef-frontend-style',  CFL_PLUGIN_URL . 'assets/css/style.min.css', array(), CFL_VERSION );
 	}
 

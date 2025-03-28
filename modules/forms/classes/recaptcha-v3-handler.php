@@ -9,7 +9,7 @@ use Cool_FormKit\Includes\Utils;
 
 
 if (! defined('ABSPATH')) {
-    exit; // Exit if accessed directly
+    exit; // Exit if accessed directly             
 }
 
 /**
@@ -185,7 +185,7 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
         }
     
         // Get reCAPTCHA secret key
-        $recaptcha_secret = static::get_secret_key();
+        $recaptcha_secret = static::get_secret_key(); 
         if (empty($recaptcha_secret)) {
             $ajax_handler->add_error($field['id'], esc_html__('Missing reCAPTCHA secret key.', 'cool-formkit'));
             return;
