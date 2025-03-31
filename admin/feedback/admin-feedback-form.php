@@ -1,22 +1,16 @@
 <?php
 namespace Cool_FormKit\feedback;
 
-use DateTime;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; }
 
-class cfl_feedback {
+class cfef_feedback {
 
 		private $plugin_url     = CFL_PLUGIN_URL;
 		private $plugin_version = CFL_VERSION;
 		private $plugin_name    = 'Cool Formkit Lite';
-
 		private $plugin_slug    = 'eef';
-
-
-
-		
+		// private $feedback_url   = 'http://feedback.coolplugins.net/wp-json/coolplugins-feedback/v1/feedback';
 
 	/*
 	|-----------------------------------------------------------------|
@@ -28,8 +22,8 @@ class cfl_feedback {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_feedback_scripts' ) );
 		add_action( 'admin_head', array( $this, 'show_deactivate_feedback_popup' ) );
 		add_action( 'wp_ajax_' . $this->plugin_slug . '_submit_deactivation_response', array( $this, 'submit_deactivation_response' ) );
-
 	}
+
 	/*
 	|-----------------------------------------------------------------|
 	|   Enqueue all scripts and styles to required page only          |
@@ -184,4 +178,4 @@ class cfl_feedback {
 
 	}
 }
-new cfl_feedback();
+new cfef_feedback();

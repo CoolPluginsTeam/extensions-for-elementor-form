@@ -5,8 +5,6 @@ namespace Cool_FormKit\Includes;
 use Cool_FormKit\Includes\Custom_Success_Message;
 use Cool_FormKit\Includes\Actions\Register_Actions;
 use Cool_Formkit\admin\CFKEF_Admin;
-use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
-use Cool_FormKit\Admin\Entries\CFKEF_Entries_Posts;
 
 /**
  * The file that defines the core plugin class
@@ -38,8 +36,8 @@ if (!defined('ABSPATH')) {
  * @package    Cool_FormKit
  * @subpackage Cool_FormKit/includes
  */
-if(!class_exists('CFL_Loader')) { 
-class CFL_Loader {
+if(!class_exists('CFKEF_Loader')) { 
+class CFKEF_Loader {
 
     /**
      * The unique identifier of this plugin.
@@ -64,7 +62,7 @@ class CFL_Loader {
      *
      * @since    1.0.0
      * @access   private
-     * @var      CFL_Loader    $instance    The loader instance.
+     * @var      CFKEF_Loader    $instance    The loader instance.
      */
     private static $instance = null;
 
@@ -81,8 +79,6 @@ class CFL_Loader {
         $this->plugin_name = 'extensions-for-elementor-form';
         $this->version = CFL_VERSION;
 
-        $this->admin_menu_dashboard();
-        
         if ( ! is_plugin_active( 'elementor-pro/elementor-pro.php' ) ) {
             return false;
 		}
@@ -98,7 +94,7 @@ class CFL_Loader {
      * Get the instance of this class.
      *
      * @since    1.0.0
-     * @return   CFL_Loader    The instance of this class.
+     * @return   CFKEF_Loader    The instance of this class.
      */
 
      const OPTION_NAME_SITE_KEY = 'elementor_pro_recaptcha_site_key';
@@ -177,7 +173,7 @@ class CFL_Loader {
      * Include the following files that make up the plugin:
      *
      * - CFKEF_i18n. Defines internationalization functionality.
-     * - CFL_Admin. Defines all hooks for the admin area.
+     * - CFKEF_Admin. Defines all hooks for the admin area.
      * - CFKEF_Public. Defines all hooks for the public side of the site.
      *
      * @since    1.0.0
@@ -186,16 +182,6 @@ class CFL_Loader {
     private function load_dependencies() {
         require_once CFL_PLUGIN_PATH . 'admin/class-cfkef-admin.php';
         $plugin_admin = CFKEF_Admin::get_instance($this->get_plugin_name(), $this->get_version());
-    }
-
-    private function admin_menu_dashboard() {
-        if(class_exists(CFKEF_Dashboard::class)){
-            $menu_pages = CFKEF_Dashboard::get_instance($this->get_plugin_name(), $this->get_version());
-        }
-
-        if(class_exists(CFKEF_Entries_Posts::class)){
-            $entries_posts = CFKEF_Entries_Posts::get_instance();
-        }
     }
     
     /**

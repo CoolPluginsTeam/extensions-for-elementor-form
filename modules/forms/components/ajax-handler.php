@@ -57,8 +57,6 @@ class Ajax_Handler {
 	public function ajax_send_form() {
 		check_ajax_referer( self::NONCE_ACTION, 'nonce' );
 
-		$post_data = $_POST;
-
 		// $post_id that holds the form settings.
 		$post_id = filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
 		$queried_id = filter_input( INPUT_POST, 'queried_id', FILTER_SANITIZE_NUMBER_INT );
@@ -82,79 +80,94 @@ class Ajax_Handler {
 			$form = Module::find_element_recursive( $document->get_elements_data(), (string) $form_id );
 		}
 
+		/*if ( ! empty( $form['templateID'] ) ) {
+			$template = Utils::elementor()->documents->get( $form['templateID'] );
+
+			if ( ! $template ) {
+				return false;
+			}
+
+			$template_id = $template->get_id();
+			$form = $template->get_elements_data()[0];
+		} */
+
 		if ( empty( $form ) ) {
 			$this
 				->add_error_message( self::get_default_message( self::INVALID_FORM, [] ) )
 				->send();
-			}
-			
-			// restore default values
-			$widget = $elementor->elements_manager->create_element_instance( $form );
-			$form['settings'] = $widget->get_settings_for_display();
-			$form['settings']['id'] = $form_id;
-			$form['settings']['form_post_id'] = $template_id ? $template_id : $post_id;
-			
-			// TODO: Should be removed if there is an ability to edit "global widgets"
-			$form['settings']['edit_post_id'] = $post_id;
-			
-			$this->current_form = $form;
-			
-			if ( empty( $form['settings']['form_fields'] ) ) {
-				$this
+		}
+
+		// restore default values
+		$widget = $elementor->elements_manager->create_element_instance( $form );
+		$form['settings'] = $widget->get_settings_for_display();
+		$form['settings']['id'] = $form_id;
+		$form['settings']['form_post_id'] = $template_id ? $template_id : $post_id;
+
+		// TODO: Should be removed if there is an ability to edit "global widgets"
+		$form['settings']['edit_post_id'] = $post_id;
+
+		$this->current_form = $form;
+
+		if ( empty( $form['settings']['form_fields'] ) ) {
+			$this
 				->add_error_message( self::get_default_message( self::INVALID_FORM, $form['settings'] ) )
 				->send();
-			}
-			
-			// the fields are not fixed so they will be validated afterwards
-			$record = new Form_Record( $post_data['form_fields'], $form );
-			
-			if ( ! $record->validate( $this ) ) {
-				$this
+		}
+
+		// the fields are not fixed so they will be validated afterwards
+		$form_fields = filter_input(
+			INPUT_POST,
+			'form_fields',
+			FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			FILTER_REQUIRE_ARRAY
+		);
+
+		$record = new Form_Record( $form_fields, $form );
+
+		if ( ! $record->validate( $this ) ) {
+			$this
 				->add_error( $record->get( 'errors' ) )
 				->add_error_message( self::get_default_message( self::ERROR, $form['settings'] ) )
 				->send();
-			}
-			
-			$record->process_fields( $this );
-			//check for process errors
-			if ( ! empty( $this->errors ) ) {
-				$this->send();
-			}
-			
-			$module = Module::instance();
-			
-			$actions = $module->actions_registrar->get();
-			$errors = array_merge( $this->messages['error'], $this->messages['admin_error'] );
-			
-			foreach ( $actions as $action ) {
-				if ( ! in_array( $action->get_name(), $form['settings']['submit_actions'], true ) ) {
-					continue;
-				}
-				
-				$exception = null;
-				
-				try {
-					$action->run( $record, $this );
-					
-					$this->handle_bc_errors( $errors );
-				} catch ( \Exception $e ) {
+		}
+
+		$record->process_fields( $this );
+		//check for process errors
+		if ( ! empty( $this->errors ) ) {
+			$this->send();
+		}
+
+		$module = Module::instance();
+
+		$actions = $module->actions_registrar->get();
+		$errors = array_merge( $this->messages['error'], $this->messages['admin_error'] );
+
+		foreach ( $actions as $action ) {
+
+			$exception = null;
+
+			try {
+				$action->run( $record, $this );
+
+				$this->handle_bc_errors( $errors );
+			} catch ( \Exception $e ) {
 				$exception = $e;
 
 				// Add an admin error.
 				if ( ! in_array( $exception->getMessage(), $this->messages['admin_error'], true ) ) {
 					$this->add_admin_error_message( "{$action->get_label()} {$exception->getMessage()}" );
 				}
-				
+
 				// Add a user error.
 				$this->add_error_message( $this->get_default_message( self::ERROR, $this->current_form['settings'] ) );
 			}
-			
+
 			$errors = array_merge( $this->messages['error'], $this->messages['admin_error'] );
 		}
-		
+
 		$this->send();
 	}
-	
+
 	public function add_success_message( $message ) {
 		$this->messages['success'][] = $message;
 
