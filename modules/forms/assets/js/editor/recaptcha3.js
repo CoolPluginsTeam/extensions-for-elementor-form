@@ -17,7 +17,7 @@ module.exports = elementorModules.editor.utils.Module.extend( {
         const srcURL = 'https://www.google.com/recaptcha/api.js?onload=recaptchaLoaded&render=explicit';
         if (!config.enabled) {
           console.log('reCAPTCHA is not enabled');
-          return '<div class="elementor-alert elementor-alert-info"> To use reCAPTCHA V3, you need to add the API Key and complete the setup process in Dashboard > Elementor > Settings > Integrations > reCAPTCHA V3.', 'cool-formkit </div>';
+          return '<div class="elementor-alert elementor-alert-info"> To use reCAPTCHA V3, you need to add the API Key and complete the setup process in Dashboard > Elementor > Settings > Integrations > reCAPTCHA V3.</div>';
         }
         let recaptchaData;
         if (item.field_type == "recaptcha_v3") {
