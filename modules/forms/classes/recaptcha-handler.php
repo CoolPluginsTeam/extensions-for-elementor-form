@@ -211,7 +211,7 @@ class Recaptcha_Handler
 	 */
 	public function render_field($item, $item_index, $widget)
 	{
-		$recaptcha_html = '<div class="elementor-field" id="form-field-' . $item['custom_id'] . '" >';
+		$recaptcha_html = '<div class="cool-form-field" id="form-field-' . $item['custom_id'] . '" >';
 
 		if (static::is_enabled()) {
 			$this->enqueue_scripts();
@@ -224,7 +224,7 @@ class Recaptcha_Handler
 
 			// Add attributes dynamically
 			$widget->add_render_attribute($recaptcha_name . $item_index, [
-				'class' => 'coolform-recaptcha',
+				'class' => 'cool-form-recaptcha',
 				'data-sitekey' => static::get_site_key(),
 				'data-theme' => esc_attr($theme),
 				'data-size' => esc_attr($size),
@@ -279,10 +279,43 @@ class Recaptcha_Handler
 
 		wp_register_script('cool-formkit-recaptcha-api', 'https://www.google.com/recaptcha/api.js?onload=recaptchaLoaded&render=explicit', [], null, true);
 
+		wp_register_script(
+				'cool-formkit-recaptcha-handler',
+				CFL_PLUGIN_URL . 'assets/js/recaptcha-handler.min.js',
+				['jquery', 'elementor-frontend'],
+				CFL_VERSION,
+				true
+			);
+	
+		wp_localize_script('cool-formkit-recaptcha-handler', 'coolFormKitRecaptcha', [
+				'enabled'   => static::is_enabled(),
+				'site_key'  => static::get_site_key(),
+				'type'      => static::get_recaptcha_type(),
+			]);
+
 	}
 
 	public function my_plugin_enqueue_frontend_scripts(){
 		wp_enqueue_script('cool-formkit-recaptcha-api', true);
+		wp_enqueue_script('cool-formkit-recaptcha-handler', true);
+
+	}
+
+	public function localize_settings($settings){
+
+		$settings = array_replace_recursive( $settings, [
+			'forms' => [
+				static::get_recaptcha_name() => [
+					'enabled' => static::is_enabled(),
+					'type' => static::get_recaptcha_type(),
+					'site_key' => static::get_site_key(),
+					'setup_message' => static::get_setup_message(),
+				],
+			],
+		] );
+
+		return $settings;
+		
 	}
 
 
@@ -292,6 +325,8 @@ class Recaptcha_Handler
 		add_filter('cool_formkit/forms/field_types', [$this, 'add_field_type']);
 		add_action('cool_formkit/forms/render_field/' . static::get_recaptcha_name(), [$this, 'render_field'], 10, 3);
 		add_filter('cool_formkit/forms/render/item', [$this, 'filter_field_item']);
+
+		add_filter('elementor/editor/localize_settings', [$this, 'localize_settings'] );
 
 
 		if (static::is_enabled()) {

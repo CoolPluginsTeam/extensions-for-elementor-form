@@ -362,6 +362,7 @@ class Cool_Form extends Form_Base {
 		$this->add_style_box_section();
 	}
 
+
 	protected function add_content_form_fields_section(): void {
 		$repeater = new Repeater();
 

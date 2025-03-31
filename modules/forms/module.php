@@ -30,74 +30,6 @@ class Module extends Module_Base {
 	public $fields_registrar;
 
 
-	const OPTION_NAME_SITE_KEY = 'elementor_pro_recaptcha_site_key';
-
-	const OPTION_NAME_SECRET_KEY = 'elementor_pro_recaptcha_secret_key';
-
-	const OPTION_NAME_RECAPTCHA_THRESHOLD = 'elementor_pro_recaptcha_threshold';
-
-	const  OPTION_NAME_V3_SITE_KEY = "elementor_pro_recaptcha_v3_site_key";
-
-    const OPTION_NAME_V3_SECRET_KEY = 'elementor_pro_recaptcha_v3_secret_key';
-
-
-	const V2_CHECKBOX = 'v2_checkbox';
-
-    const V3 = 'v3';
-
-
-	protected static function get_recaptcha_name()
-	{
-		return 'recaptcha';
-	}
-
-	public static function get_site_key()
-	{
-		return get_option(self::OPTION_NAME_SITE_KEY);
-	}
-
-	public static function get_site_key_v3()
-	{
-		return get_option(self::OPTION_NAME_V3_SITE_KEY);
-	}
-
-	public static function get_secret_key()
-	{
-		return get_option(self::OPTION_NAME_SECRET_KEY);
-	}
-
-	public static function get_recaptcha_type()
-	{
-		return self::V2_CHECKBOX;
-	}
-
-	public static function get_recaptcha_type_v3()
-    {
-        return self::V3;
-    }
-
-	public static function get_site_key3()
-    {
-        return get_option(self::OPTION_NAME_V3_SITE_KEY);
-    }
-
-    public static function get_secret_key3()
-    {
-        return get_option(self::OPTION_NAME_V3_SECRET_KEY);
-    }
-
-
-	public static function is_enabled()
-	{
-		return static::get_site_key() && static::get_secret_key();
-	}
-
-	public static function is_enabled3()
-	{
-		return static::get_site_key3() && static::get_secret_key3();
-	}
-
-
 	public static function get_name(): string {
 		return 'cool-forms';
 	}
@@ -188,16 +120,6 @@ class Module extends Module_Base {
 			CFL_VERSION,
 			true
 		);
-
-		wp_localize_script('Cool_FormKit-forms-editor', 'coolFormKitRecaptcha', [
-			'enabled'   => static::is_enabled(),
-			'enabled3' => static::is_enabled3(),
-			'site_key_v2'  => static::get_site_key(),
-			'site_key_v3'  => static::get_site_key_v3(),
-			'type_v2'      => static::get_recaptcha_type(),
-			'type_v3'      => static::get_recaptcha_type_v3(),
-
-		]);
 
 		wp_enqueue_script('Cool_FormKit-forms-editor', true);
 	}

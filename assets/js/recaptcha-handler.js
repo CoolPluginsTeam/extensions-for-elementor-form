@@ -1,0 +1,78 @@
+class ReCaptchaHandler extends elementorModules.frontend.handlers.Base {
+    getDefaultSettings() {
+      return {
+        selectors: {
+          recaptcha: ".cool-form-recaptcha",
+          submit: 'button[type="submit"]',
+          recaptchaResponse: '[name="g-recaptcha-response"]',
+        },
+      };
+    }
+    getDefaultElements() {
+      const { selectors: e } = this.getDefaultSettings(),
+        t = { $recaptcha: this.$element.find(e.recaptcha) };
+      return (
+        (t.$form = t.$recaptcha.parents("form")),
+        (t.$submit = t.$form.find(e.submit)),
+        t
+      );
+    }
+    bindEvents() {
+      this.onRecaptchaApiReady();
+    }
+    isActive(e) {
+      const { selectors: t } = this.getDefaultSettings();
+      return e.$element.find(t.recaptcha).length;
+    }
+    addRecaptcha() {
+      const e = this.elements.$recaptcha.data(),
+        t = "v3" !== e.recaptchaVersion,
+        a = [];
+      a.forEach((e) => window.grecaptcha.reset(e));
+      const s = window.grecaptcha.render(this.elements.$recaptcha[0], e);
+      this.elements.$form.on("reset error", () => {
+        window.grecaptcha.reset(s);
+      }),
+        t
+          ? this.elements.$recaptcha.data("widgetId", s)
+          : (a.push(s),
+            this.elements.$submit.on("click", (e) => this.onV3FormSubmit(e, s)));
+    }
+    onV3FormSubmit(e, t) {
+      e.preventDefault(),
+        window.grecaptcha.ready(() => {
+          const e = this.elements.$form;
+          grecaptcha
+            .execute(t, { action: this.elements.$recaptcha.data("action") })
+            .then((t) => {
+              this.elements.$recaptchaResponse
+                ? this.elements.$recaptchaResponse.val(t)
+                : ((this.elements.$recaptchaResponse = jQuery("<input>", {
+                    type: "hidden",
+                    value: t,
+                    name: "g-recaptcha-response",
+                  })),
+                  e.append(this.elements.$recaptchaResponse));
+              const a =
+                !e[0].reportValidity || "function" != typeof e[0].reportValidity;
+              (a || e[0].reportValidity()) && e.trigger("submit");
+            });
+        });
+    }
+    onRecaptchaApiReady() {
+      window.grecaptcha && window.grecaptcha.render
+        ? this.addRecaptcha()
+        : setTimeout(() => this.onRecaptchaApiReady(), 350);
+    }
+  }
+  jQuery(window).on("elementor/frontend/init", () => {
+    const e = (e) => {
+      elementorFrontend.elementsHandler.addHandler(ReCaptchaHandler, {
+        $element: e,
+      });
+    };
+    elementorFrontend.hooks.addAction(
+      "frontend/element_ready/cool-form.default",
+      e
+    );
+  });

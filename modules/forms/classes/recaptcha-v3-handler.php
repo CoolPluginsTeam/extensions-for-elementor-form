@@ -4,7 +4,6 @@ namespace Cool_FormKit\Modules\Forms\Classes;
 
 
 use Elementor\Settings;
-use Elementor\Widget_Base;
 use Cool_FormKit\Includes\Utils;
 
 
@@ -126,7 +125,7 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
     {
 
 
-        $recaptcha_html = '<div class="elementor-field" id="form-field-' . esc_attr($item['custom_id']) . '" >';
+        $recaptcha_html = '<div class="cool-form-field" id="form-field-' . esc_attr($item['custom_id']) . '" >';
 
         if (static::is_enabled()) {
             $this->enqueue_scripts();
@@ -135,7 +134,7 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
             $badge = isset($item["recaptcha_badge"]) ? esc_attr($item["recaptcha_badge"]) : 'inline';
 
             $widget->add_render_attribute($recaptcha_name . $item_index, [
-                'class' => 'coolform-recaptcha',
+                'class' => 'cool-form-recaptcha',
                 'data-sitekey' => static::get_site_key(),
                 'data-action' => self::V3_DEFAULT_ACTION,
                 'data-badge' => $badge,
