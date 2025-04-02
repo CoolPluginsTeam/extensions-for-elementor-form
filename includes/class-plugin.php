@@ -7,6 +7,8 @@ use Cool_FormKit\Includes\Actions\Register_Actions;
 use Cool_Formkit\admin\CFKEF_Admin;
 use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
 use Cool_FormKit\Admin\Entries\CFKEF_Entries_Posts;
+use Cool_FormKit\Admin\Recaptcha\Recaptcha_settings;
+
 
 /**
  * The file that defines the core plugin class
@@ -165,6 +167,11 @@ class CFL_Loader {
 
         if(class_exists(CFKEF_Entries_Posts::class)){
             $entries_posts = CFKEF_Entries_Posts::get_instance();
+        }
+
+
+        if(class_exists(Recaptcha_settings::class)){
+            $entries_posts = Recaptcha_settings::get_instance();
         }
     }
     
