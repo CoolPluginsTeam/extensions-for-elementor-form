@@ -379,4 +379,24 @@ input:checked + .cfkef-slider:before {
     font-family: Inter, Roboto, Helvetica, Arial, sans-serif;
 }
 
+<<<<<<< HEAD
+/* Screen Meta */
+.elementor_page_cfkef-entries #screen-meta {
+    margin-top: -21px !important;
+}
+.elementor_page_cfkef-entries #screen-meta[style="display: none;"] ~ #screen-meta-links,
+.elementor_page_cfkef-entries #screen-meta:not([style]) ~ #screen-meta-links {
+    margin-top: -21px !important;
+}
+
+
+button#recaptcha-submit{
+    padding: 10px 15px;
+    background-color: #f16564;
+    color: white;
+    border: 1px solid #d2504f;
+}
+
+=======
+>>>>>>> origin/recaptcha_v3
 

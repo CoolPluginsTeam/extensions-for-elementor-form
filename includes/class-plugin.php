@@ -5,6 +5,13 @@ namespace Cool_FormKit\Includes;
 use Cool_FormKit\Includes\Custom_Success_Message;
 use Cool_FormKit\Includes\Actions\Register_Actions;
 use Cool_Formkit\admin\CFKEF_Admin;
+<<<<<<< HEAD
+use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
+use Cool_FormKit\Admin\Entries\CFKEF_Entries_Posts;
+use Cool_FormKit\Admin\Recaptcha\Recaptcha_settings;
+
+=======
+>>>>>>> origin/recaptcha_v3
 
 /**
  * The file that defines the core plugin class
@@ -155,6 +162,24 @@ class CFKEF_Loader {
         require_once CFL_PLUGIN_PATH . 'admin/class-cfkef-admin.php';
         $plugin_admin = CFKEF_Admin::get_instance($this->get_plugin_name(), $this->get_version());
     }
+<<<<<<< HEAD
+
+    private function admin_menu_dashboard() {
+        if(class_exists(CFKEF_Dashboard::class)){
+            $menu_pages = CFKEF_Dashboard::get_instance($this->get_plugin_name(), $this->get_version());
+        }
+
+        if(class_exists(CFKEF_Entries_Posts::class)){
+            $entries_posts = CFKEF_Entries_Posts::get_instance();
+        }
+
+
+        if(class_exists(Recaptcha_settings::class)){
+            $entries_posts = Recaptcha_settings::get_instance();
+        }
+    }
+=======
+>>>>>>> origin/recaptcha_v3
     
     /**
 	 * Init plugin
