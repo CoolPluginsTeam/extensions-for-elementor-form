@@ -17,9 +17,9 @@ if (! defined('ABSPATH')) {
 class Recaptcha_V3_Handler extends Recaptcha_Handler
 {
 
-    const OPTION_NAME_V3_SITE_KEY = 'elementor_pro_recaptcha_v3_site_key';
-    const OPTION_NAME_V3_SECRET_KEY = 'elementor_pro_recaptcha_v3_secret_key';
-    const OPTION_NAME_RECAPTCHA_THRESHOLD = 'elementor_pro_recaptcha_v3_threshold';
+    const OPTION_NAME_V3_SITE_KEY = 'cfl_site_key_v3';
+    const OPTION_NAME_V3_SECRET_KEY = 'cfl_secret_key_v3';
+    const OPTION_NAME_RECAPTCHA_THRESHOLD = 'cfl_thresshold_v3';
     const V3 = 'v3';
     const V3_DEFAULT_THRESHOLD = 0.5;
     const V3_DEFAULT_ACTION = 'Form';

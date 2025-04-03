@@ -115,7 +115,7 @@ class Module extends Module_Base {
 	public function enqueue_editor_scripts() {
 		wp_register_script(
 			'Cool_FormKit-forms-editor',
-			CFL_SCRIPTS_URL . 'Cool_FormKit-forms-editor.min.js',
+			CFL_SCRIPTS_URL . 'Cool_FormKit-forms-editor.js',
 			[ 'elementor-editor', 'wp-i18n' ],
 			CFL_VERSION,
 			true

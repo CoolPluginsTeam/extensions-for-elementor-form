@@ -18,11 +18,10 @@ if (! defined('ABSPATH')) {
 class Recaptcha_Handler
 {
 
-	const OPTION_NAME_SITE_KEY = 'elementor_pro_recaptcha_site_key';
+	const OPTION_NAME_SITE_KEY = 'cfl_site_key_v2';
 
-	const OPTION_NAME_SECRET_KEY = 'elementor_pro_recaptcha_secret_key';
+	const OPTION_NAME_SECRET_KEY = 'cfl_secret_key_v2';
 
-	const OPTION_NAME_RECAPTCHA_THRESHOLD = 'elementor_pro_recaptcha_threshold';
 
 	const V2_CHECKBOX = 'v2_checkbox';
 
@@ -335,7 +334,7 @@ class Recaptcha_Handler
 		}
 
 		if (is_admin()) {
-			add_action('elementor/admin/after_create_settings/' . Settings::PAGE_ID, [$this, 'register_admin_fields']);
+			// add_action('elementor/admin/after_create_settings/' . Settings::PAGE_ID, [$this, 'register_admin_fields']);
 		}
 
 
