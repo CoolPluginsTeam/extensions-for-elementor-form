@@ -53,7 +53,7 @@ export default elementorModules.frontend.handlers.Base.extend( {
 
 		this.elements.$submitButton
 			.attr( 'disabled', 'disabled' )
-			.find( 'span.cool-form-button-icon' )
+			.find( '> span' )
 			.prepend( '<span class="elementor-button-text elementor-form-spinner"><i class="fa fa-spinner fa-spin"></i>&nbsp;</span>' );
 	},
 

@@ -5,8 +5,14 @@ import FieldsRepeaterControl from './fields-repeater-control';
 export default class FormsModule extends elementorModules.editor.utils.Module {
 	onElementorInit() {
 		const ReplyToField = require( './reply-to-field' );
+		const Recaptcha = require('./recaptcha');
+		const Recaptcha3 = require('./recaptcha3');
 
+		
 		this.replyToField = new ReplyToField();
+		this.recaptcha = new Recaptcha();
+		this.recaptcha3 = new Recaptcha3();
+
 
 		// Form fields
 		const AcceptanceField = require( './fields/acceptance' ),
@@ -15,7 +21,7 @@ export default class FormsModule extends elementorModules.editor.utils.Module {
 
 		this.Fields = {
 			tel: new TelField( 'cool-form' ),
-			acceptance: new AcceptanceField( 'cool-form' ),
+			acceptance: new AcceptanceField( 'cool-form'),
 			date: new DateField( 'cool-form' ),
 			time: new TimeField( 'cool-form' ),
 		};

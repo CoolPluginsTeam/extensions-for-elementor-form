@@ -20,6 +20,7 @@ class Tel extends Field_Base {
 
 	public function render( $item, $item_index, $form ) {
 		$settings = $form->get_settings();
+		
 
 		// Use the Material Design input class.
 		$form->add_render_attribute( 'input' . $item_index, 'class', 'mdc-text-field__input' );

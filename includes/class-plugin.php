@@ -5,10 +5,13 @@ namespace Cool_FormKit\Includes;
 use Cool_FormKit\Includes\Custom_Success_Message;
 use Cool_FormKit\Includes\Actions\Register_Actions;
 use Cool_Formkit\admin\CFKEF_Admin;
+<<<<<<< HEAD
 use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
 use Cool_FormKit\Admin\Entries\CFKEF_Entries_Posts;
 use Cool_FormKit\Admin\Recaptcha\Recaptcha_settings;
 
+=======
+>>>>>>> origin/recaptcha_v3
 
 /**
  * The file that defines the core plugin class
@@ -40,8 +43,8 @@ if (!defined('ABSPATH')) {
  * @package    Cool_FormKit
  * @subpackage Cool_FormKit/includes
  */
-if(!class_exists('CFL_Loader')) { 
-class CFL_Loader {
+if(!class_exists('CFKEF_Loader')) { 
+class CFKEF_Loader {
 
     /**
      * The unique identifier of this plugin.
@@ -66,7 +69,7 @@ class CFL_Loader {
      *
      * @since    1.0.0
      * @access   private
-     * @var      CFL_Loader    $instance    The loader instance.
+     * @var      CFKEF_Loader    $instance    The loader instance.
      */
     private static $instance = null;
 
@@ -83,8 +86,6 @@ class CFL_Loader {
         $this->plugin_name = 'extensions-for-elementor-form';
         $this->version = CFL_VERSION;
 
-        $this->admin_menu_dashboard();
-        
         if ( ! is_plugin_active( 'elementor-pro/elementor-pro.php' ) ) {
             return false;
 		}
@@ -100,8 +101,10 @@ class CFL_Loader {
      * Get the instance of this class.
      *
      * @since    1.0.0
-     * @return   CFL_Loader    The instance of this class.
+     * @return   CFKEF_Loader    The instance of this class.
      */
+
+
     public static function get_instance() {
         if (null == self::$instance) {
             self::$instance = new self();
@@ -149,7 +152,7 @@ class CFL_Loader {
      * Include the following files that make up the plugin:
      *
      * - CFKEF_i18n. Defines internationalization functionality.
-     * - CFL_Admin. Defines all hooks for the admin area.
+     * - CFKEF_Admin. Defines all hooks for the admin area.
      * - CFKEF_Public. Defines all hooks for the public side of the site.
      *
      * @since    1.0.0
@@ -159,6 +162,7 @@ class CFL_Loader {
         require_once CFL_PLUGIN_PATH . 'admin/class-cfkef-admin.php';
         $plugin_admin = CFKEF_Admin::get_instance($this->get_plugin_name(), $this->get_version());
     }
+<<<<<<< HEAD
 
     private function admin_menu_dashboard() {
         if(class_exists(CFKEF_Dashboard::class)){
@@ -174,6 +178,8 @@ class CFL_Loader {
             $entries_posts = Recaptcha_settings::get_instance();
         }
     }
+=======
+>>>>>>> origin/recaptcha_v3
     
     /**
 	 * Init plugin
@@ -183,13 +189,15 @@ class CFL_Loader {
 
 		add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'register_editor_scripts') );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frondend_scripts' ) );
+
 	}
 
 	/**
 	 * Enqueue front end styles/scripts
 	 */
+
+     
 	public function enqueue_frondend_scripts() : void {
-		wp_enqueue_script( 'eef-frontend-script', CFL_PLUGIN_URL . 'assets/js/frontend-scripts.min.js', array( 'jquery' ), CFL_VERSION );
 		wp_enqueue_style( 'eef-frontend-style',  CFL_PLUGIN_URL . 'assets/css/style.min.css', array(), CFL_VERSION );
 	}
 
@@ -199,7 +207,7 @@ class CFL_Loader {
 	 * @since 2.0
 	 */
 	function register_editor_scripts() : void {
-		wp_register_script( 'eef-editor-scripts', CFL_PLUGIN_URL . 'assets/js/admin/editor-scripts.min.js', array(), CFL_VERSION );
+		wp_enqueue_script( 'eef-frontend-script', CFL_PLUGIN_URL . 'assets/js/frontend-scripts.min.js', array( 'jquery' ), CFL_VERSION );
 		wp_enqueue_script( 'eef-editor-scripts' );
 	}
     /**

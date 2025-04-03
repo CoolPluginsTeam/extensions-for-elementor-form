@@ -18,11 +18,10 @@ class Number extends Field_Base {
 	}
 
 	public function get_name() {
-		return esc_html__( 'Number', 'elementor-pro' );
+		return esc_html__( 'Number', 'cool-formkit' );
 	}
 
 	public function render( $item, $item_index, $form ) {
-
 
 		$settings = $form->get_settings();
 
@@ -36,6 +35,7 @@ class Number extends Field_Base {
 		}
 
 		?>
+			<!-- <input <?php // $form->print_render_attribute_string( 'input' . $item_index ); ?> > -->
 
 		<?php		
 		?>
@@ -79,7 +79,7 @@ class Number extends Field_Base {
 		$field_controls = [
 			'num_field_min' => [
 				'name' => 'num_field_min',
-				'label' => esc_html__( 'Min. Value', 'elementor-pro' ),
+				'label' => esc_html__( 'Min. Value', 'cool-formkit' ),
 				'type' => Controls_Manager::NUMBER,
 				'condition' => [
 					'field_type' => $this->get_type(),
@@ -90,7 +90,7 @@ class Number extends Field_Base {
 			],
 			'num_field_max' => [
 				'name' => 'num_field_max',
-				'label' => esc_html__( 'Max. Value', 'elementor-pro' ),
+				'label' => esc_html__( 'Max. Value', 'cool-formkit' ),
 				'type' => Controls_Manager::NUMBER,
 				'condition' => [
 					'field_type' => $this->get_type(),
@@ -116,8 +116,28 @@ class Number extends Field_Base {
 		foreach ($form_fields as $field_data) {
 			if (isset($field_data['custom_id']) && $field_data['custom_id'] === $search_id) {
 
+				if ( ! empty( $field_data['num_field_max'] ) && $field_data['num_field_max'] < (int) $field['value'] ) {
+					/* translators: %s: The value of max field. */
+					// $ajax_handler->add_error( $field['id'], sprintf( esc_html__( 'The field value must be less than or equal to %s.', 'cool-formkit' ), $field_data['num_field_max'] ) );
+				}
+		
+				if ( ! empty( $field_data['num_field_min'] ) && $field_data['num_field_min'] > (int) $field['value'] ) {
+					/* translators: %s: The value of min field. */
+					// $ajax_handler->add_error( $field['id'], sprintf( esc_html__( 'The field value must be greater than or equal to %s.', 'cool-formkit' ), $field_data['num_field_min'] ) );
+				}
 			}
 		}
+
+
+		// if ( ! empty( $field['num_field_max'] ) && $field['num_field_max'] < (int) $field['value'] ) {
+		// 	/* translators: %s: The value of max field. */
+		// 	$ajax_handler->add_error( $field['id'], sprintf( esc_html__( 'The field value must be less than or equal to %s.', 'cool-formkit' ), $field['num_field_max'] ) );
+		// }
+
+		// if ( ! empty( $field['num_field_min'] ) && $field['num_field_min'] > (int) $field['value'] ) {
+		// 	/* translators: %s: The value of min field. */
+		// 	$ajax_handler->add_error( $field['id'], sprintf( esc_html__( 'The field value must be greater than or equal to %s.', 'cool-formkit' ), $field['num_field_min'] ) );
+		// }
 	}
 
 	public function sanitize_field( $value, $field ) {

@@ -26,7 +26,7 @@ class Cool_Form extends Form_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Cool Form', 'cool-formkit' );
+		return esc_html__( 'Cool Form Kit Form', 'cool-formkit' );
 	}
 
 	public function get_icon() {
@@ -138,6 +138,7 @@ class Cool_Form extends Form_Base {
 						}
 
 						switch ( item.field_type ) {
+
 							case 'textarea':
 								inputField = '<label class="cool-form-text mdc-text-field mdc-text-field--outlined mdc-text-field--textarea '+ ((item.field_label === '' || !settings.show_labels) ? 'mdc-text-field--no-label' : '') +' ">';
 									inputField += '<span class="mdc-notched-outline">';
@@ -269,6 +270,95 @@ class Cool_Form extends Form_Base {
 								inputField = elementor.hooks.applyFilters( 'cool_formkit/forms/content_template/field/' + item.field_type, '', item, i, settings );
 						}
 
+						switch ( item.field_type ) {
+							case 'textarea':
+								<!-- inputField = '<textarea class="cool-form__field elementor-field-textual elementor-size-' + settings.input_size + ' ' + itemClasses + '" name="form_field_' + i + '" id="form_field_' + i + '" rows="' + item.rows + '" ' + required + ' ' + placeholder + '>' + item.field_value + '</textarea>'; -->
+								break;
+
+							case 'select':
+								if ( options ) {
+									var size = '';
+									if ( item.allow_multiple && item.select_size ) {
+										size = ' size="' + item.select_size + '"';
+									}
+									<!-- inputField = '<div class="elementor-field elementor-select-wrapper ' + itemClasses + '">'; -->
+									<!-- inputField += '<select class="cool-form__field elementor-field-textual elementor-size-' + settings.input_size + '" name="form_field_' + i + '" id="form_field_' + i + '" ' + required + multiple + size + ' >'; -->
+									for ( var x in options ) {
+										var option_value = options[ x ];
+										var option_label = options[ x ];
+										var option_id = 'form_field_option' + i + x;
+
+										if ( options[ x ].indexOf( '|' ) > -1 ) {
+											var label_value = options[ x ].split( '|' );
+											option_label = label_value[0];
+											option_value = label_value[1];
+										}
+
+										view.addRenderAttribute( option_id, 'value', option_value );
+										if ( item.field_value.split( ',' ) .indexOf( option_value ) ) {
+											view.addRenderAttribute( option_id, 'selected', 'selected' );
+										}
+										<!-- inputField += '<option ' + view.getRenderAttributeString( option_id ) + '>' + option_label + '</option>'; -->
+									}
+									<!-- inputField += '</select></div>'; -->
+								}
+								break;
+
+							case 'radio':
+							case 'checkbox':
+								if ( options ) {
+									var multiple = '';
+
+									if ( 'checkbox' === item.field_type && options.length > 1 ) {
+										multiple = '[]';
+									}
+
+									<!-- inputField = '<div class="elementor-field-subgroup ' + itemClasses + ' ' + _.escape( item.inline_list ) + '">'; -->
+
+									for ( var x in options ) {
+										var option_value = options[ x ];
+										var option_label = options[ x ];
+										var option_id = 'form_field_' + item.field_type + i + x;
+										if ( options[x].indexOf( '|' ) > -1 ) {
+											var label_value = options[x].split( '|' );
+											option_label = label_value[0];
+											option_value = label_value[1];
+										}
+
+										view.addRenderAttribute( option_id, {
+											value: option_value,
+											type: item.field_type,
+											id: 'form_field_' + i + '-' + x,
+											name: 'form_field_' + i + multiple
+										} );
+
+										if ( option_value ===  item.field_value ) {
+											view.addRenderAttribute( option_id, 'checked', 'checked' );
+										}
+
+										<!-- inputField += '<span class="elementor-field-option"><input ' + view.getRenderAttributeString( option_id ) + ' ' + required + '> '; -->
+										<!-- inputField += '<label for="form_field_' + i + '-' + x + '">' + option_label + '</label></span>'; -->
+
+									}
+
+									<!-- inputField += '</div>'; -->
+								}
+								break;
+
+							case 'text':
+							case 'email':
+							case 'url':
+							case 'password':
+							case 'number':
+							case 'search':
+								itemClasses = 'cool-form-field-textual ' + itemClasses;
+								<!-- inputField = '<input size="1" type="' + item.field_type + '" value="' + item.field_value + '" class="cool-form__field elementor-size-' + settings.input_size + ' ' + itemClasses + '" name="form_field_' + i + '" id="form_field_' + i + '" ' + required + ' ' + placeholder + ' >'; -->
+								break;
+							default:
+								item.placeholder = _.escape( item.placeholder );
+								<!-- inputField = elementor.hooks.applyFilters( 'cool_formkit/forms/content_template/field/' + item.field_type, '', item, i, settings ); -->
+						}
+
 					#>
 						<# if ( printLabel && (item.field_type === "radio" || item.field_type === "checkbox" || item.field_type === "acceptance") ) { #>
 							<label class="cool-form__field-label" for="form_field_{{ i }}" {{{ labelVisibility }}}>{{{ item.field_label }}}</label>
@@ -279,6 +369,18 @@ class Cool_Form extends Form_Base {
 						</div>
 					<#
 
+						if ( inputField ) {
+							#>
+							<!-- <div class="{{ fieldGroupClasses }}">
+
+								<# if ( printLabel && item.field_label ) { #>
+									<label class="cool-form__field-label" for="form_field_{{ i }}" {{{ labelVisibility }}}>{{{ item.field_label }}}</label>
+								<# } #>
+
+								{{{ inputField }}}
+							</div> -->
+							<#
+						}
 					}
 					
 					// Submit group attributes
@@ -360,6 +462,7 @@ class Cool_Form extends Form_Base {
 		$this->add_style_messages_section();
 		$this->add_style_box_section();
 	}
+
 
 	protected function add_content_form_fields_section(): void {
 		$repeater = new Repeater();
@@ -486,6 +589,44 @@ class Cool_Form extends Form_Base {
 			]
 		);
 
+		// $repeater->add_control(
+		// 	'allow_multiple',
+		// 	[
+		// 		'label' => esc_html__( 'Multiple Selection', 'cool-formkit' ),
+		// 		'type' => Controls_Manager::SWITCHER,
+		// 		'return_value' => 'true',
+		// 		'conditions' => [
+		// 			'terms' => [
+		// 				[
+		// 					'name' => 'field_type',
+		// 					'value' => 'select',
+		// 				],
+		// 			],
+		// 		],
+		// 	]
+		// );
+
+		// $repeater->add_control(
+		// 	'select_size',
+		// 	[
+		// 		'label' => esc_html__( 'Rows', 'cool-formkit' ),
+		// 		'type' => Controls_Manager::NUMBER,
+		// 		'min' => 2,
+		// 		'step' => 1,
+		// 		'conditions' => [
+		// 			'terms' => [
+		// 				[
+		// 					'name' => 'field_type',
+		// 					'value' => 'select',
+		// 				],
+		// 				[
+		// 					'name' => 'allow_multiple',
+		// 					'value' => 'true',
+		// 				],
+		// 			],
+		// 		],
+		// 	]
+		// );
 
 		$repeater->add_control(
 			'inline_list',
@@ -523,6 +664,82 @@ class Cool_Form extends Form_Base {
 				'default' => '100',
 				'tablet_default' => '100',
 				'mobile_default' => '100',
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'field_type',
+							'operator' => '!in',
+							'value' => [
+								'recaptcha',
+								'recaptcha_v3'
+							],
+						],
+					],
+				],
+			]
+		);
+
+
+		$repeater->add_control(
+			'recaptcha_size', [
+				'label' => esc_html__( 'Size', 'cool-formkit' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'normal',
+				'options' => [
+					'normal' => esc_html__( 'Normal', 'cool-formkit' ),
+					'compact' => esc_html__( 'Compact', 'cool-formkit' ),
+				],
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'field_type',
+							'value' => 'recaptcha',
+						],
+					],
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'recaptcha_style',
+			[
+				'label' => esc_html__( 'Style', 'cool-formkit' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'light',
+				'options' => [
+					'light' => esc_html__( 'Light', 'cool-formkit' ),
+					'dark' => esc_html__( 'Dark', 'cool-formkit' ),
+				],
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'field_type',
+							'value' => 'recaptcha',
+						],
+					],
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'recaptcha_badge', [
+				'label' => esc_html__( 'Badge', 'cool-formkit' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'bottomright',
+				'options' => [
+					'bottomright' => esc_html__( 'Bottom Right', 'cool-formkit' ),
+					'bottomleft' => esc_html__( 'Bottom Left', 'cool-formkit' ),
+					'inline' => esc_html__( 'Inline', 'cool-formkit' ),
+				],
+				'description' => esc_html__( 'To view the validation badge, switch to preview mode', 'cool-formkit' ),
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'field_type',
+							'value' => 'recaptcha_v3',
+						],
+					],
+				],
 			]
 		);
 
