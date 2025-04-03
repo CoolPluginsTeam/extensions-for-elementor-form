@@ -40,10 +40,10 @@ class Recaptcha_settings{
             return $text; // Return as is if it's too short
      }
 
-     public function output_entries_list(CFKEF_Dashboard $dashboard) {
+     public function recaptcha_setting_html_output(CFKEF_Dashboard $dashboard) {
 
 
-        if($dashboard->current_screen('cool-formkit', 'recaptcha-settings')){
+        if($dashboard->current_screen('cool-formkit')){
             ?>
 
                 <div class="cfkef-settings-box">
@@ -116,17 +116,16 @@ class Recaptcha_settings{
     public function enqueue_admin_scripts(){
 
 
-        if (isset($_GET['page']) && $_GET['page'] === 'cool-formkit') {
+
+        if (isset($_GET['page']) && $_GET['page'] === 'cool-formkit' ) {
 
     
-            wp_register_script('cfkef-admin-script', CFL_PLUGIN_URL . 'assets/js/admin-script.js', array('jquery'), $this->version, true);
-    
+            
             wp_localize_script('cfkef-admin-script', 'ajax_object', array(
                 'ajax_url' => admin_url('admin-ajax.php'),
                 'nonce'    => wp_create_nonce('cfl_recaptcha_ajax_nonce')
             ));
     
-            wp_enqueue_script('cfkef-admin-script', true);
         }
 
     }
@@ -184,7 +183,7 @@ class Recaptcha_settings{
     public function __construct() {
 
         add_action('admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ]);
-        add_action('cfkef_render_menu_pages', [ $this, 'output_entries_list' ]);
+        add_action('cfkef_render_menu_pages', [ $this, 'recaptcha_setting_html_output' ]);
         add_action('wp_ajax_cfl_recaptcha_ajax_action', [ $this, 'recaptcha_ajax_function' ]);
         add_filter('cfkef_dashboard_tabs', [ $this, 'add_dashboard_tab' ]);
        

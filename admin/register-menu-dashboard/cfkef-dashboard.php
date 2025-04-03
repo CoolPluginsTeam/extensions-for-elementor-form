@@ -219,7 +219,7 @@ class CFKEF_Dashboard
             $page_name=isset($slugs[0]) ? $slugs[0] : 'cool-formkit';
             $tab_name=isset($slugs[1]) ? $slugs[1] : null;
             
-            $active_class = self::current_screen($page_name, $tab_name) ? ' active' : '';
+            $active_class = self::current_screen($page_name) ? ' active' : '';
 
             echo '<div class="cfkef-dashboard-tab-wrapper' . esc_attr($active_class) . '">';
             echo '<a href="' . esc_url(admin_url('admin.php?page=' . $tab['slug'])) . '" class="cfkef-dashboard-tab">' . esc_html($tab['title']) . '</a>';
