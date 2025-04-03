@@ -43,7 +43,7 @@ class Recaptcha_settings{
      public function recaptcha_setting_html_output(CFKEF_Dashboard $dashboard) {
 
 
-        if($dashboard->current_screen('cool-formkit')){
+        if($dashboard->current_screen('cool-formkit', 'recaptcha-settings')){
             ?>
 
                 <div class="cfkef-settings-box">
@@ -134,7 +134,7 @@ class Recaptcha_settings{
     public function add_dashboard_tab($tabs) {
         $tabs[] = array(
             'title' => 'Settings',
-            'position' => 1,
+            'position' => 2,
             'slug' => 'cool-formkit&tab=recaptcha-settings',
         );
 
