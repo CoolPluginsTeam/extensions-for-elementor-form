@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 jQuery(document).ready(function($) {
-    $('#submit').on('click', function() {
+    $('#recaptcha-submit').on('click', function() {
 
         let site_key_v2 = $("#site_key_v2").val();
 
@@ -27,6 +27,9 @@ jQuery(document).ready(function($) {
         let site_key_v3 = $("#site_key_v3").val();
 
         let secret_key_v3 = $("#secret_key_v3").val();
+
+        let thresshold_v3 = $("#thresshold_v3").val();
+
 
         // if(site_key_v2 == "" || secret_key_v2 == ""){
         //     alert("site key or secret key cannot be empty");
@@ -38,12 +41,13 @@ jQuery(document).ready(function($) {
                 url: ajax_object.ajax_url,
                 type: 'POST',
                 data: {
-                    action: 'my_ajax_action',
+                    action: 'cfl_recaptcha_ajax_action',
                     nonce: ajax_object.nonce,
                     site_key_v2: site_key_v2,
                     secret_key_v2: secret_key_v2,
                     site_key_v3: site_key_v3,
                     secret_key_v3: secret_key_v3,
+                    thresshold_v3: thresshold_v3,
                 },
                 success: function(response) {
                     if (response.success) {

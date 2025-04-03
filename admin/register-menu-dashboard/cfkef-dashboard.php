@@ -217,7 +217,7 @@ class CFKEF_Dashboard
     public function cfkef_get_tabs(){
         $default_tabs = array(
             array(
-                'title' => 'settings',
+                'title' => 'Settings',
                 'position' => 1,
                 'slug' => 'cool-formkit',
             ),

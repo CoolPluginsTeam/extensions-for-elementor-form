@@ -444,4 +444,11 @@ input:checked + .cfkef-slider:before {
 }
 
 
+button#recaptcha-submit{
+    padding: 10px 15px;
+    background-color: #f16564;
+    color: white;
+    border: 1px solid #d2504f;
+}
+
 
