@@ -1,3 +1,4 @@
+
 class ReCaptchaHandler extends elementorModules.frontend.handlers.Base {
     getDefaultSettings() {
       return {
@@ -18,6 +19,7 @@ class ReCaptchaHandler extends elementorModules.frontend.handlers.Base {
       );
     }
     bindEvents() {
+
       this.onRecaptchaApiReady();
     }
     isActive(e) {
@@ -25,18 +27,100 @@ class ReCaptchaHandler extends elementorModules.frontend.handlers.Base {
       return e.$element.find(t.recaptcha).length;
     }
     addRecaptcha() {
+
+
       const e = this.elements.$recaptcha.data(),
         t = "v3" !== e.recaptchaVersion,
         a = [];
       a.forEach((e) => window.grecaptcha.reset(e));
       const s = window.grecaptcha.render(this.elements.$recaptcha[0], e);
+
       this.elements.$form.on("reset error", () => {
         window.grecaptcha.reset(s);
+        if(e.size == 'compact'){
+
+          let ele = document.querySelector(".cool-form-recaptcha div");
+  
+          ele.style.width = "310px";
+        }
+
+        else if((e.recaptchaVersion == 'v3' && e.badge == "inline") || (e.type == 'v3' && e.badge == "inline")){
+
+          let ele = document.querySelector(".cool-form-recaptcha div");
+  
+          ele.style.width = "300px";
+          ele.style.boxShadow = "none";
+  
+  
+        }
+  
+        else if((e.recaptchaVersion == 'v3' && e.badge == "bottomleft") || (e.type == 'v3' && e.badge == "bottomleft")){
+  
+          let ele = document.querySelector(".cool-form-recaptcha div");
+  
+          ele.style.left = "0px";
+          ele.style.width = "300px";
+          ele.style.boxShadow = "none";
+  
+  
+        }
+  
+        else if((e.recaptchaVersion == 'v3' && e.badge == "bottomright") || (e.type == 'v3' && e.badge == "bottomright")){
+  
+          let ele = document.querySelector(".cool-form-recaptcha div");
+  
+          ele.style.right = "0px";
+          // ele.style.width = "300px";
+          ele.style.boxShadow = "none";
+  
+        }
       }),
         t
           ? this.elements.$recaptcha.data("widgetId", s)
           : (a.push(s),
             this.elements.$submit.on("click", (e) => this.onV3FormSubmit(e, s)));
+
+
+      if(e.size == 'compact'){
+
+        let ele = document.querySelector(".cool-form-recaptcha div");
+
+        ele.style.width = "310px";
+      }
+
+      else if((e.recaptchaVersion == 'v3' && e.badge == "inline") || (e.type == 'v3' && e.badge == "inline")){
+
+        let ele = document.querySelector(".cool-form-recaptcha div");
+
+        ele.style.width = "300px";
+        ele.style.boxShadow = "none";
+
+
+      }
+
+      else if((e.recaptchaVersion == 'v3' && e.badge == "bottomleft") || (e.type == 'v3' && e.badge == "bottomleft")){
+
+        let ele = document.querySelector(".cool-form-recaptcha div");
+
+        ele.style.left = "0px";
+        ele.style.width = "300px";
+        ele.style.boxShadow = "none";
+
+
+      }
+
+      else if((e.recaptchaVersion == 'v3' && e.badge == "bottomright") || (e.type == 'v3' && e.badge == "bottomright")){
+
+        let ele = document.querySelector(".cool-form-recaptcha div");
+
+        ele.style.right = "0px";
+        // ele.style.width = "300px";
+        ele.style.boxShadow = "none";
+
+      }
+
+
+      
     }
     onV3FormSubmit(e, t) {
       e.preventDefault(),
@@ -45,6 +129,8 @@ class ReCaptchaHandler extends elementorModules.frontend.handlers.Base {
           grecaptcha
             .execute(t, { action: this.elements.$recaptcha.data("action") })
             .then((t) => {
+
+
               this.elements.$recaptchaResponse
                 ? this.elements.$recaptchaResponse.val(t)
                 : ((this.elements.$recaptchaResponse = jQuery("<input>", {
@@ -60,6 +146,7 @@ class ReCaptchaHandler extends elementorModules.frontend.handlers.Base {
         });
     }
     onRecaptchaApiReady() {
+      
       window.grecaptcha && window.grecaptcha.render
         ? this.addRecaptcha()
         : setTimeout(() => this.onRecaptchaApiReady(), 350);
