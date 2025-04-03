@@ -183,19 +183,23 @@ input:checked + .cfkef-slider:before {
     font-family: Inter, Roboto, Helvetica, Arial, sans-serif;
 }
 
-.elementor_page_cool-formkit #wpbody #wpbody-content {
+:where(.elementor_page_cool-formkit, .elementor_page_cfkef-entries) #wpbody #wpbody-content {
     margin-top: 80px !important;
     margin-block-start: 80px !important;
 }
-.elementor_page_cool-formkit .e-admin-top-bar--active,
-.elementor_page_cool-formkit #e-admin-top-bar-root,
-.elementor_page_cool-formkit #wpfooter {
+
+:where(.elementor_page_cool-formkit, .elementor_page_cfkef-entries) .e-admin-top-bar--active,
+:where(.elementor_page_cool-formkit, .elementor_page_cfkef-entries) #e-admin-top-bar-root,
+:where(.elementor_page_cool-formkit, .elementor_page_cfkef-entries) #wpfooter {
     display: none !important;
 }
-.elementor_page_cool-formkit .notice {
+:where(.elementor_page_cool-formkit, .elementor_page_cfkef-entries) .notice {
     margin: 2px 20px 20px 0;
 }
 
+.cfkef-wrapper .cfkef-entries-list-wrapper .button {
+    padding: 0 10px;
+}
 .cfkef-wrapper .button {
     padding: 10px 14px;
     background-color: #f16564;
@@ -270,6 +274,57 @@ input:checked + .cfkef-slider:before {
     display: flex;
     gap: 15px;
 }
+
+/* Dashboard tab styles */
+.cfkef-dashboard-tabs {
+    display: flex;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 20px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.cfkef-dashboard-tab-wrapper {
+    margin: 0;
+}
+
+.cfkef-dashboard-tab {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #f7f7f7;
+    color: #333;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    transition: background 0.3s, color 0.3s;
+    font-weight: 500;
+}
+
+.cfkef-dashboard-tab:hover {
+    background: #e2e2e2;
+    color: #111;
+}
+
+.cfkef-dashboard-tab-wrapper.active .cfkef-dashboard-tab {
+    background: #fff;
+    border-color: #ccc;
+    font-weight: bold;
+    color: #000;
+    position: relative;
+}
+
+.cfkef-dashboard-tab-wrapper.active .cfkef-dashboard-tab:after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #fff;
+    position: absolute;
+    bottom: -1.5px;
+    left: 0;
+}
+/* End Dashboard tab styles */
 
 /* Sidebar Styles */
 .cfkef-main-content {
@@ -379,7 +434,6 @@ input:checked + .cfkef-slider:before {
     font-family: Inter, Roboto, Helvetica, Arial, sans-serif;
 }
 
-<<<<<<< HEAD
 /* Screen Meta */
 .elementor_page_cfkef-entries #screen-meta {
     margin-top: -21px !important;
@@ -389,7 +443,6 @@ input:checked + .cfkef-slider:before {
     margin-top: -21px !important;
 }
 
-
 button#recaptcha-submit{
     padding: 10px 15px;
     background-color: #f16564;
@@ -397,6 +450,4 @@ button#recaptcha-submit{
     border: 1px solid #d2504f;
 }
 
-=======
->>>>>>> origin/recaptcha_v3
 

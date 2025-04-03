@@ -14,7 +14,10 @@ module.exports = elementorModules.editor.utils.Module.extend( {
         inputField += '</div>';
         return inputField;
       },
-      getDataSettings(item) {    
+      getDataSettings(item) {
+    
+        console.log(elementor.config.forms.recaptcha_v3);
+    
         const config = elementor.config.forms.recaptcha;
         const srcURL = 'https://www.google.com/recaptcha/api.js?onload=recaptchaLoaded&render=explicit';
         if (!config.enabled) {
