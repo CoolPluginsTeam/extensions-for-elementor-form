@@ -43,8 +43,7 @@ class Recaptcha_settings{
      public function output_entries_list(CFKEF_Dashboard $dashboard) {
 
 
-        if($dashboard->current_screen('cool-formkit')){
-
+        if($dashboard->current_screen('cool-formkit', 'recaptcha-settings')){
             ?>
 
                 <div class="cfkef-settings-box">
@@ -135,8 +134,8 @@ class Recaptcha_settings{
 
     public function add_dashboard_tab($tabs) {
         $tabs[] = array(
-            'title' => 'Recaptcha_settings',
-            'position' => 2,
+            'title' => 'Settings',
+            'position' => 1,
             'slug' => 'cool-formkit&tab=recaptcha-settings',
         );
 
@@ -187,7 +186,7 @@ class Recaptcha_settings{
         add_action('admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ]);
         add_action('cfkef_render_menu_pages', [ $this, 'output_entries_list' ]);
         add_action('wp_ajax_cfl_recaptcha_ajax_action', [ $this, 'recaptcha_ajax_function' ]);
-        // add_filter('cfkef_dashboard_tabs', [ $this, 'add_dashboard_tab' ]);
+        add_filter('cfkef_dashboard_tabs', [ $this, 'add_dashboard_tab' ]);
        
     }
 
