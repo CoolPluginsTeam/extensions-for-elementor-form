@@ -187,6 +187,10 @@ class Recaptcha_settings{
 
         if(isset($_POST['threshold_v3'])){
 
+            if($_POST['threshold_v3'] == ""){
+                $_POST['threshold_v3'] = 0.5;
+            }
+
             if (preg_match($pattern, $_POST['threshold_v3'])) {
                 echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__('Invalid Input.', 'cool-formkit') . '</p></div>';
 
