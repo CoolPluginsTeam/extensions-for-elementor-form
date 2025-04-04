@@ -151,7 +151,7 @@ class Recaptcha_settings{
         if(isset($_POST['site_key_v2'])){
 
             if (preg_match($pattern, $_POST['site_key_v2'])) {
-                $response = array('message' => 'Unwanted Input value');
+                $response = array('message' => 'Invalid Input');
     
                 // Send response
                 wp_send_json_success($response);
@@ -163,7 +163,7 @@ class Recaptcha_settings{
         if(isset($_POST['secret_key_v2'])){
 
             if (preg_match($pattern, $_POST['secret_key_v2'])) {
-                $response = array('message' => 'Unwanted Input value');
+                $response = array('message' => 'Invalid Input');
     
                 // Send response
                 wp_send_json_success($response);
@@ -175,7 +175,7 @@ class Recaptcha_settings{
         if(isset($_POST['site_key_v3'])){
 
             if (preg_match($pattern, $_POST['site_key_v3'])) {
-                $response = array('message' => 'Unwanted Input value');
+                $response = array('message' => 'Invalid Input');
     
                 // Send response
                 wp_send_json_success($response);
@@ -187,7 +187,7 @@ class Recaptcha_settings{
         if(isset($_POST['secret_key_v3'])){
 
             if (preg_match($pattern, $_POST['secret_key_v3'])) {
-                $response = array('message' => 'Unwanted Input value');
+                $response = array('message' => 'Invalid Input');
     
                 // Send response
                 wp_send_json_success($response);
@@ -199,14 +199,24 @@ class Recaptcha_settings{
         if(isset($_POST['threshold_v3'])){
 
             if (preg_match($pattern, $_POST['threshold_v3'])) {
-                $response = array('message' => 'Unwanted Input value');
-    
+                $response = array('message' => 'Invalid Input');
+                // Send response
+                wp_send_json_success($response);
+
+                return;
+            }
+
+
+            if(!preg_match('/^\d*\.?\d+$/', $_POST['threshold_v3'])){
+                $response = array('message' => 'Invalid Input');
                 // Send response
                 wp_send_json_success($response);
 
                 return;
             }
         }
+
+
 
 
         $site_key_v2  = isset($_POST['site_key_v2']) ? sanitize_text_field($_POST['site_key_v2']) : '';
