@@ -115,7 +115,6 @@ class Recaptcha_settings{
                         <button id="recaptcha-submit" type="submit" name="save">Save Changes</button>
                     </div>
 
-
                     </form>
 
                 </div>
@@ -237,7 +236,6 @@ class Recaptcha_settings{
 
     }
 
-    
     }
 
 
