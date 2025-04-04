@@ -52,7 +52,7 @@ class Recaptcha_Handler
 
 	public static function get_setup_message()
 	{
-		return esc_html__('To use reCAPTCHA, you need to add the API Key and complete the setup process in Dashboard > Elementor > Settings > Integrations > reCAPTCHA.', 'cool-formkit');
+		return esc_html__('To use reCAPTCHA, you need to add the API Key and complete the setup process in Dashboard > Elementor Cool FormKit Lite > Settings > reCAPTCHA', 'cool-formkit');
 	}
 
 	public function register_admin_fields(Settings $settings)

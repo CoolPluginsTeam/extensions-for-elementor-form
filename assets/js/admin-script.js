@@ -28,7 +28,8 @@ jQuery(document).ready(function($) {
 
         let secret_key_v3 = $("#secret_key_v3").val();
 
-        let thresshold_v3 = $("#thresshold_v3").val();
+        let threshold_v3 = $("#threshold_v3").val();
+
 
 
         // if(site_key_v2 == "" || secret_key_v2 == ""){
@@ -47,7 +48,7 @@ jQuery(document).ready(function($) {
                     secret_key_v2: secret_key_v2,
                     site_key_v3: site_key_v3,
                     secret_key_v3: secret_key_v3,
-                    thresshold_v3: thresshold_v3,
+                    threshold_v3: threshold_v3,
                 },
                 success: function(response) {
                     if (response.success) {

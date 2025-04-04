@@ -47,7 +47,7 @@ class Recaptcha_settings{
             ?>
 
                 <div class="cfkef-settings-box">
-                    <h3><?php esc_html_e('Recaptcha v2', 'cool-formkit'); ?></h3>
+                    <h3><?php esc_html_e('reCAPTCHA', 'cool-formkit'); ?></h3>
 
                     <table class="form-table cool-formkit-table">
                             
@@ -56,7 +56,7 @@ class Recaptcha_settings{
                                     <label for="site_key_v2" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?></label>
                                 </th>
                                 <td class="cool-formkit-table-td">
-                                    <input type="text" id="site_key_v2" class="regular-text cool-formkit-input" value="<?php echo static::replace_with_star( get_option('cfl_site_key_v2') ); ?>"/>
+                                    <input type="text" id="site_key_v2" class="regular-text cool-formkit-input" value="<?php echo get_option('cfl_site_key_v2'); ?>"/>
                                 </td>
                             </tr>
                             <tr>
@@ -64,13 +64,13 @@ class Recaptcha_settings{
                                     <label for="secret_key_v2" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?></label>
                                 </th>
                                 <td class="cool-formkit-table-td">
-                                    <input type="text" id="secret_key_v2" class="regular-text cool-formkit-input" value="<?php echo static::replace_with_star( get_option('cfl_secret_key_v2') ); ?>"/>
+                                    <input type="text" id="secret_key_v2" class="regular-text cool-formkit-input" value="<?php echo get_option('cfl_secret_key_v2'); ?>"/>
                                 </td>
                             </tr>
                             
                     </table>
 
-                    <h3 class="cool-formkit-description"><?php esc_html_e('Recaptcha v3', 'cool-formkit'); ?></h3>
+                    <h3 class="cool-formkit-description"><?php esc_html_e('reCAPTCHA V3', 'cool-formkit'); ?></h3>
 
                     <table class="form-table cool-formkit-table">
                             
@@ -79,7 +79,7 @@ class Recaptcha_settings{
                                     <label for="site_key_v3" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?></label>
                                 </th>
                                 <td class="cool-formkit-table-td">
-                                    <input type="text" id="site_key_v3" class="regular-text cool-formkit-input" value="<?php echo static::replace_with_star( get_option('cfl_site_key_v3') ); ?>"/>
+                                    <input type="text" id="site_key_v3" class="regular-text cool-formkit-input" value="<?php echo get_option('cfl_site_key_v3'); ?>"/>
                                 </td>
                             </tr>
                             <tr>
@@ -87,16 +87,16 @@ class Recaptcha_settings{
                                     <label for="secret_key_v3" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?></label>
                                 </th>
                                 <td class="cool-formkit-table-td">
-                                    <input type="text" id="secret_key_v3" class="regular-text cool-formkit-input" value="<?php echo static::replace_with_star( get_option('cfl_secret_key_v3') ); ?>"/>
+                                    <input type="text" id="secret_key_v3" class="regular-text cool-formkit-input" value="<?php echo get_option('cfl_secret_key_v3'); ?>"/>
                                 </td>
                             </tr>
 
                             <tr>
                                 <th scope="row" class="cool-formkit-table-th">
-                                    <label for="thresshold_v3" class="cool-formkit-label"><?php esc_html_e('Thresshold', 'cool-formkit'); ?></label>
+                                    <label for="threshold_v3" class="cool-formkit-label"><?php esc_html_e('Score Threshold', 'cool-formkit'); ?></label>
                                 </th>
                                 <td class="cool-formkit-table-td">
-                                    <input type="number" id="thresshold_v3" class="regular-text cool-formkit-input" value="<?php echo get_option('cfl_thresshold_v3')?>" step="0.1"/>
+                                    <input type="number" id="threshold_v3" class="regular-text cool-formkit-input" value="<?php echo get_option('cfl_threshold_v3')?>" min="0" max="1"  step="0.1"/>
                                     <p class="description cool-formkit-description"><?php esc_html_e('Score threshold should be a value between 0 and 1, default: 0.5', 'cool-formkit'); ?></p>
                                 </td>
                             </tr>
@@ -146,19 +146,84 @@ class Recaptcha_settings{
         // Security check
         check_ajax_referer('cfl_recaptcha_ajax_nonce', 'nonce');
 
+        $pattern = "/(<script|<\/script>|onerror=|onload=|eval\(|javascript:|SELECT |INSERT |DELETE |DROP |UPDATE |UNION )/i";
+
+        if(isset($_POST['site_key_v2'])){
+
+            if (preg_match($pattern, $_POST['site_key_v2'])) {
+                $response = array('message' => 'Unwanted Input value');
+    
+                // Send response
+                wp_send_json_success($response);
+
+                return;
+            }
+        }
+
+        if(isset($_POST['secret_key_v2'])){
+
+            if (preg_match($pattern, $_POST['secret_key_v2'])) {
+                $response = array('message' => 'Unwanted Input value');
+    
+                // Send response
+                wp_send_json_success($response);
+
+                return;
+            }
+        }
+
+        if(isset($_POST['site_key_v3'])){
+
+            if (preg_match($pattern, $_POST['site_key_v3'])) {
+                $response = array('message' => 'Unwanted Input value');
+    
+                // Send response
+                wp_send_json_success($response);
+
+                return;
+            }
+        }
+
+        if(isset($_POST['secret_key_v3'])){
+
+            if (preg_match($pattern, $_POST['secret_key_v3'])) {
+                $response = array('message' => 'Unwanted Input value');
+    
+                // Send response
+                wp_send_json_success($response);
+
+                return;
+            }
+        }
+
+        if(isset($_POST['threshold_v3'])){
+
+            if (preg_match($pattern, $_POST['threshold_v3'])) {
+                $response = array('message' => 'Unwanted Input value');
+    
+                // Send response
+                wp_send_json_success($response);
+
+                return;
+            }
+        }
+
+
         $site_key_v2  = isset($_POST['site_key_v2']) ? sanitize_text_field($_POST['site_key_v2']) : '';
         $secret_key_v2 = isset($_POST['secret_key_v2']) ? sanitize_text_field($_POST['secret_key_v2']) : '';
 
         $site_key_v3  = isset($_POST['site_key_v3']) ? sanitize_text_field($_POST['site_key_v3']) : '';
         $secret_key_v3 = isset($_POST['secret_key_v3']) ? sanitize_text_field($_POST['secret_key_v3']) : '';
 
-        $thresshold_v3 = isset($_POST['thresshold_v3']) ? $_POST['thresshold_v3'] : '';
+        $threshold_v3 = isset($_POST['threshold_v3']) ?  sanitize_text_field($_POST['threshold_v3']) : '';
 
-        if($thresshold_v3 > 1){
-            $thresshold_v3 = 1;
-        }else if($thresshold_v3 < 0){
-            $thresshold_v3 = 0;
+
+        if($threshold_v3 > 1){
+            $threshold_v3 = 1;
+        }else if($threshold_v3 < 0){
+            $threshold_v3 = 0;
         }
+        
 
 
         update_option( "cfl_site_key_v2",  $site_key_v2);
@@ -170,7 +235,7 @@ class Recaptcha_settings{
 
         update_option( "cfl_secret_key_v3",  $secret_key_v3);
 
-        update_option( "cfl_thresshold_v3",  $thresshold_v3);
+        update_option( "cfl_threshold_v3",  $threshold_v3);
 
         // Process request
         $response = array('message' => 'Data Updated!!!');

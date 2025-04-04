@@ -19,7 +19,7 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
 
     const OPTION_NAME_V3_SITE_KEY = 'cfl_site_key_v3';
     const OPTION_NAME_V3_SECRET_KEY = 'cfl_secret_key_v3';
-    const OPTION_NAME_RECAPTCHA_THRESHOLD = 'cfl_thresshold_v3';
+    const OPTION_NAME_RECAPTCHA_THRESHOLD = 'cfl_threshold_v3';
     const V3 = 'v3';
     const V3_DEFAULT_THRESHOLD = 0.5;
     const V3_DEFAULT_ACTION = 'Form';
@@ -74,7 +74,7 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
 
     public static function get_setup_message()
     {
-        return esc_html__('To use reCAPTCHA V3, you need to add the API Key and complete the setup process in Dashboard > Elementor > Settings > Integrations > reCAPTCHA V3.', 'cool-formkit');
+        return esc_html__('To use reCAPTCHA V3, you need to add the API Key and complete the setup process in Dashboard > Elementor > Cool FormKit Lite > Settings > reCAPTCHA V3.', 'cool-formkit');
     }
 
 
@@ -229,11 +229,13 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
     
         // Check reCAPTCHA score (for v3)
 
+        
         if(!static::get_threshold())
             $thres_hold = '0.5';
         else
-            $thres_hold = static::get_threshold();
+            $thres_hold = (float) static::get_threshold();
 
+        
         if (isset($response_data['score']) && $response_data['score'] < $thres_hold) {
             $ajax_handler->add_error($field['id'], esc_html__('Suspicious activity detected. Please try again.', 'cool-formkit'));
             return;
