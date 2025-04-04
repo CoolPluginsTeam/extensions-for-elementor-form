@@ -109,6 +109,8 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		require_once CFL_PLUGIN_PATH . '/includes/class-plugin.php';
 		CFL_Loader::get_instance();
 		
+		require_once CFL_PLUGIN_PATH . 'widgets/cfl-addon-loader.php';
+		Cfl_Addon_Loader::get_instance();
 		
 		if (is_admin()) {
 
