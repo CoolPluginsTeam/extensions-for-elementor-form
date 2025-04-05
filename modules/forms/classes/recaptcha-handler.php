@@ -55,35 +55,6 @@ class Recaptcha_Handler
 		return esc_html__('To use reCAPTCHA, you need to add the API Key and complete the setup process in Dashboard > Elementor > Cool FormKit Lite > Settings > reCAPTCHA', 'cool-formkit');
 	}
 
-	public function register_admin_fields(Settings $settings)
-	{
-		$settings->add_section(Settings::TAB_INTEGRATIONS, static::get_recaptcha_name(), [
-			'label' => esc_html__('reCAPTCHA', 'cool-formkit'),
-			'callback' => function () {
-				echo sprintf(
-					/* translators: 1: Link opening tag, 2: Link closing tag. */
-					esc_html__('%1$sreCAPTCHA%2$s is a free service by Google that protects your website from spam and abuse. It does this while letting your valid users pass through with ease.', 'cool-formkit'),
-					'<a href="https://www.google.com/recaptcha/" target="_blank">',
-					'</a>'
-				);
-			},
-			'fields' => [
-				'pro_recaptcha_site_key' => [
-					'label' => esc_html__('Site Key', 'cool-formkit'),
-					'field_args' => [
-						'type' => 'text',
-					],
-				],
-				'pro_recaptcha_secret_key' => [
-					'label' => esc_html__('Secret Key', 'cool-formkit'),
-					'field_args' => [
-						'type' => 'text',
-					],
-				],
-			],
-		]);
-	}
-
 	protected static function get_script_render_param()
 	{
 		return 'explicit';
@@ -332,11 +303,6 @@ class Recaptcha_Handler
 			add_action('cool_formkit/forms/validation', [$this, 'validation'], 10, 2);
 			add_action('elementor/preview/enqueue_scripts', [$this, 'enqueue_scripts']);
 		}
-
-		if (is_admin()) {
-			// add_action('elementor/admin/after_create_settings/' . Settings::PAGE_ID, [$this, 'register_admin_fields']);
-		}
-
 
 		if (!static::is_enabled()) {
 			return; // Do not load scripts if reCAPTCHA is not enabled
