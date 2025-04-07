@@ -4,8 +4,6 @@
 namespace Cool_FormKit\Modules\Forms\Classes;
 
 
-use Elementor\Settings;
-use Elementor\Widget_Base;
 use Cool_FormKit\Includes\Utils;
 
 if (! defined('ABSPATH')) {

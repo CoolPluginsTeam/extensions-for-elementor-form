@@ -21,7 +21,7 @@ class Recaptcha_settings{
             self::$instance = new self();
         }
         return self::$instance;
-    }       
+    }
 
     /**
      * Constructor
