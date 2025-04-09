@@ -112,20 +112,11 @@ class CFL_COUNTRY_CODE_FIELD {
 		wp_register_script( 'ccfef-country-code-library-script', CFL_PLUGIN_URL . 'assets/addons/intl-tel-input/js/intlTelInput.js', array(), CFL_VERSION, true );
 		// wp_register_script( 'ccfef-country-code-script', CFL_PLUGIN_URL . 'assets/addons/js/country-code-script.min.js', array( 'elementor-frontend', 'jquery', 'ccfef-country-code-library-script' ), CFL_VERSION, true );
 		wp_register_script( 'ccfef-country-code-script', CFL_PLUGIN_URL . 'assets/addons/js/country-code-script.js', array( 'elementor-frontend', 'jquery', 'ccfef-country-code-library-script' ), CFL_VERSION, true );
-		wp_register_script( 'ccfef-country-code-script-hello', CFL_PLUGIN_URL . 'assets/addons/js/country-code-script-hello.min.js', array( 'elementor-frontend', 'jquery', 'ccfef-country-code-library-script' ), CFL_VERSION, true );
 		wp_register_style( 'ccfef-country-code-library-style', CFL_PLUGIN_URL . 'assets/addons/intl-tel-input/css/intlTelInput.min.css', array(), CFL_VERSION, 'all' );
 		wp_register_style( 'ccfef-country-code-style', CFL_PLUGIN_URL . 'assets/addons/css/country-code-style.min.css', array(), CFL_VERSION, 'all' );
 
 		wp_localize_script(
 			'ccfef-country-code-script',
-			'CCFEFCustomData',
-			array(
-				'pluginDir' => CFL_PLUGIN_URL,
-				'errorMap'  => $error_map, 
-			)	
-		);
-		wp_localize_script(
-			'ccfef-country-code-script-hello',
 			'CCFEFCustomData',
 			array(
 				'pluginDir' => CFL_PLUGIN_URL,
@@ -148,7 +139,6 @@ class CFL_COUNTRY_CODE_FIELD {
 	public function frontend_assets() {
 		wp_enqueue_script( 'ccfef-country-code-library-script');
 		wp_enqueue_script( 'ccfef-country-code-script');
-		wp_enqueue_script( 'ccfef-country-code-script-hello');
 		wp_enqueue_style( 'ccfef-country-code-library-style');
 		wp_enqueue_style( 'ccfef-country-code-style');	    
 	}

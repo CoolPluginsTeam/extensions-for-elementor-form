@@ -308,10 +308,70 @@ class CCFEF extends elementorModules.frontend.handlers.Base {
 
             telFIeld.removeAttribute('pattern');
             this.iti[formId + widgetId] = iti;
+            this.setInitialCountry(iti, excludeCountries, uniqueId, telFIeld );
         }
     }
     
     
+    /**
+     * Sets the initial selected country in the dropdown.
+     * @param {Object} itiInstance - The intl-tel-input instance.
+     * @param {string} autoDetectCountry - Auto-detect country setting.
+     * @param {string} defaultCountry - Default country code.
+     * @param {string} apiKey - API key for geo-location services.
+     * @param {Array} excludeCountries - List of countries to exclude.
+     */
+    setInitialCountry(itiInstance, excludeCountries, uniqueId, telField) {       
+        const defaultCountry = this.defaultCountry[uniqueId] || "";
+        const defaultCountries = ['in', 'us', 'gb', 'ru', 'fr', 'de', 'br', 'cn', 'jp', 'it'];
+        const itiCountriesList = itiInstance.countries.map(data => data.iso2);
+        const inputElement = itiInstance.telInput;
+  
+        if (jQuery(telField).closest('.elementor-field-type-country').hasClass('elementor-field-required') &&
+            jQuery(telField).closest('.elementor-field-type-country').hasClass('cfef-hidden')) {
+            if (defaultCountry === "") {
+                itiInstance.setCountry("us");
+                jQuery(telField).val("United States");    
+                jQuery(telField).focus()  
+                jQuery(telField).trigger('change');
+            } else {
+                itiInstance.setCountry(defaultCountry);
+                jQuery(telField).val(defaultCountry);
+                jQuery(telField).focus()    
+                jQuery(telField).trigger('change');
+            }
+        } 
+     
+        const setCountry = (countryCode) => {
+            if (itiCountriesList.length <= 0) {
+                return;
+            }
+            const normalizedCountryCode = isNaN(countryCode) && countryCode ? countryCode.toLowerCase() : '';
+            if (normalizedCountryCode && itiCountriesList.includes(normalizedCountryCode)) {
+                itiInstance.setCountry(normalizedCountryCode);
+            } else if (defaultCountry && itiCountriesList.includes(defaultCountry)) {
+                itiInstance.setCountry(defaultCountry);
+         
+            } else {
+                const availableCountries = defaultCountries.filter(country =>
+                    !excludeCountries.includes(country) && itiCountriesList.includes(country)
+                );
+              
+                const fallbackCountry = availableCountries.length > 0 ? availableCountries[0] : itiCountriesList[0];
+                itiInstance.setCountry(fallbackCountry);
+            }
+  
+            const selectedCountry = itiInstance.getSelectedCountryData();
+         
+            if (selectedCountry.hasOwnProperty('iso2')) {
+                // inputElement.value = selectedCountry.name;
+            }
+        };
+  
+        if (defaultCountry) {
+            setCountry(defaultCountry);
+        }      
+    }
     /**
      * Method to update country code.
      * @param {Element} element - The input element.
