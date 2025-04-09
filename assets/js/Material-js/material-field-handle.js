@@ -44,6 +44,15 @@
                 }else if(mainInput.type == 'tel'){
                     let helperTextAdapter = mdcField.helperText.foundation.adapter;
 
+                    setTimeout(()=>{
+                        if(jQuery(mainInput.parentNode).hasClass('iti')){
+                            return
+                        }else{  
+                            mainInput.addEventListener('input', validateTel);
+                            mainInput.addEventListener('blur', validateTel);
+                        }
+                    },100)
+                    
                     const validateTel = (e) => {
                         const value = e.target.value;
                         const pattern = '^' + mainInput.pattern + '$';
@@ -62,9 +71,6 @@
                             mdcField.trailingIcon.root.style.display = 'none'
                         }
                     };
-
-                    mainInput.addEventListener('input', validateTel);
-                    mainInput.addEventListener('blur', validateTel);
                 } else if ( mainInput.type === 'email' ) {
                     let helperTextAdapter = mdcField.helperText.foundation.adapter;
                     const validateEmail = (e) => {
