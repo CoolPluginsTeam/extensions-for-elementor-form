@@ -231,7 +231,7 @@ class Cool_Form extends Form_Base {
 							case 'checkbox':
 								if ( options.length ) {
 									var multi = ( item.field_type === 'checkbox' && options.length > 1 ) ? '[]' : '';
-									inputField = '<div class="mdc-form-field ' + itemClasses + ' ' + ( item.inline_list === 'elementor-subgroup-inline' ? 'inline-items' : 'ontop-items' ) + '">';
+									inputField = '<div class="mdc-form-field ' + itemClasses + ' ' + ( item.inline_list === 'elementor-subgroup-inline' ? 'ontop-items' : 'inline-items' ) + '">';
 									for ( var x in options ) {
 										var option = options[x],
 											option_value = option,

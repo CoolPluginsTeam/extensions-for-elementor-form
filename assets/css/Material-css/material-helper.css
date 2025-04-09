@@ -27,8 +27,6 @@
     color:var(--mdc-theme-on-surface, #000);
     border-radius:4px;
     border-radius:var(--mdc-shape-medium, 4px);
-    transform-origin-left:top left;
-    transform-origin-right:top right;
   }
   .mdc-menu-surface:focus {
     outline:none;

@@ -193,7 +193,7 @@ abstract class Form_Base extends Widget_Base {
 		ob_start();
 		$options = preg_split( "/\\r\\n|\\r|\\n/", $item['field_options'] );
 		?>
-		<div class="mdc-form-field <?php echo esc_attr( $item['css_classes'] ); ?> <?php echo esc_attr($item['inline_list'] === 'elementor-subgroup-inline') ? 'inline-items':'ontop-items'?>">
+		<div class="mdc-form-field <?php echo esc_attr( $item['css_classes'] ); ?> <?php echo esc_attr($item['inline_list'] === 'elementor-subgroup-inline') ? 'ontop-items':'inline-items'?>">
 			<?php
 			if ( $options ) {
 				foreach ( $options as $key => $option ) {
