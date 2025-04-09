@@ -10,7 +10,7 @@
 .cfkef-toggle-switch input {
     opacity: 0;
     width: 0;
-    height: 0;
+    height: 0; 
 }
 
 .cfkef-slider {
@@ -268,12 +268,18 @@ input:checked + .cfkef-slider:before {
 
 .cfkef-header-logo img {
     max-height: 40px;
+
+    height: calc(100vw - 550px);
+
+    min-height: 25px;
 }
 
 .cfkef-header-buttons {
     display: flex;
     gap: 15px;
 }
+
+
 
 /* Dashboard tab styles */
 .cfkef-dashboard-tabs {
@@ -453,9 +459,7 @@ button#recaptcha-submit{
 
 
 @media (max-width: 571px) and (min-width:300px){
-    .cfkef-header-logo img {
-        width: 90px;
-    }
+    
     .cfkef-header-buttons .button {
         padding: 10px 11px;
         font-size: 10px;
