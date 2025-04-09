@@ -1,6 +1,7 @@
 .cfefp-intl-container{
     --cfefp-intl-tel-button-height: 100%;
     width: 100%;
+    height: 100%;
 }
 
 .elementor-field-group .cfefp-intl-container.iti{

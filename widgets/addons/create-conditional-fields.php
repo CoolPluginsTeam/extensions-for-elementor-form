@@ -34,12 +34,12 @@ class Cfl_Create_Conditional_Fields {
 	 */
 	public function __construct() {
 		add_action( 'elementor/frontend/widget/before_render', array( $this, 'all_field_conditions' ), 10, 3 );
-		add_action( 'elementor/element/form/section_form_fields/before_section_end', array( $this, 'append_conditional_fields_controler' ), 10, 2 );
-		add_action( 'elementor/element/cool-form/section_form_fields/before_section_end', array( $this, 'append_conditional_fields_controler' ), 100, 2 );
+		add_action( 'elementor/element/cool-form/section_form_fields/before_section_end', array( $this, 'append_conditional_fields_controler' ), 10, 2 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_assets_files' ) );
 		add_action( 'elementor/controls/register', array( $this, 'register_fields_repeater_controler' ) );
+		add_action( 'elementor/frontend/after_enqueue_scripts', array( $this, 'frontend_assets' ) );
 		add_action( 'cool_formkit/forms/validation', array( $this, 'check_validation' ), 9, 3 );
-		add_action( 'elementor/editor/before_enqueue_scripts', array( $this, 'add_editor_js' ) );
+		add_action( 'elementor/editor/before_enqueue_styles', array( $this, 'editor_assets' ) );
 		add_action( 'wp_ajax_cfef_elementor_review_notice', array( $this, 'cfef_elementor_review_notice' ) );
 		add_action( 'elementor/editor/before_enqueue_scripts', function() {
 			if ( defined( 'ELEMENTOR_PLUGIN_BASE' ) ) {
@@ -107,10 +107,15 @@ class Cfl_Create_Conditional_Fields {
 	 *
 	 * Js and css files loaded for elementor editor mode for add dynamic tags
 	 */
-	public function add_editor_js() {
+	public function editor_assets() {
 		wp_register_script( 'cfl_logic_editor', CFL_PLUGIN_URL . 'assets/addons/js/editor.min.js', array( 'jquery' ), CFL_VERSION, true );
-		wp_enqueue_style( 'cfl_logic_editor', CFL_PLUGIN_URL . 'assets/addons/css/editor.min.css', null, CFL_VERSION );
-		wp_enqueue_script( 'cfl_logic_editor' );
+		wp_enqueue_style( 'cfl_logic_editor_css', CFL_PLUGIN_URL . 'assets/addons/css/editor.min.css', array(), CFL_VERSION );
+	}
+
+
+	public function frontend_assets() {
+		wp_enqueue_script( 'cfl_logic_editor');
+		wp_enqueue_style( 'cfl_logic_editor_css');
 	}
 
 	/**
