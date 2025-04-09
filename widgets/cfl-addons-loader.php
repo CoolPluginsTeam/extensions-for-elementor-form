@@ -2,6 +2,7 @@
 
 namespace Cool_FormKit\Widgets;
 use Cool_FormKit\Widgets\Addons\CFL_COUNTRY_CODE_FIELD;
+use Cool_FormKit\Widgets\Addons\Cfl_Create_Conditional_Fields;
 
 if (!defined('ABSPATH')) {
     die;
@@ -39,6 +40,8 @@ class CFL_Addons_Loader {
     public function load_addons(){
         require_once CFL_PLUGIN_PATH .'widgets/addons/class-cfl-country-code-addon.php';
         CFL_COUNTRY_CODE_FIELD::get_instance();
+         require_once CFL_PLUGIN_PATH . 'widgets/addons/create-conditional-fields.php';
+            new Cfl_Create_Conditional_Fields();
     }
     /**
      * Get the instance of this class.

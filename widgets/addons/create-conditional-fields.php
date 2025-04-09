@@ -67,7 +67,7 @@ class Cfl_Create_Conditional_Fields {
 	 */
 
 	public function add_assets_files() {
-		wp_register_script( 'cfefp_logic', CFL_PLUGIN_URL . 'assets/js/widgets/logic_frontend.js', array( 'jquery' ), CFL_VERSION, true );
+		wp_register_script( 'cfefp_logic', CFL_PLUGIN_URL . 'assets/addons/js/logic_frontend.js', array( 'jquery' ), CFL_VERSION, true );
 
 		// $post = \Elementor\Plugin::instance()->documents->get( get_the_ID() )->get_elements_data();
 		// if($this->cfefp_check_elementor_content_for_widget($post,'form')){
@@ -108,8 +108,8 @@ class Cfl_Create_Conditional_Fields {
 	 * Js and css files loaded for elementor editor mode for add dynamic tags
 	 */
 	public function add_editor_js() {
-		wp_register_script( 'cfl_logic_editor', CFL_PLUGIN_URL . 'assets/js/widgets/editor.min.js', array( 'jquery' ), CFL_VERSION, true );
-		wp_enqueue_style( 'cfl_logic_editor', CFL_PLUGIN_URL . 'assets/css/widgets/editor.min.css', null, CFL_VERSION );
+		wp_register_script( 'cfl_logic_editor', CFL_PLUGIN_URL . 'assets/addons/js/editor.min.js', array( 'jquery' ), CFL_VERSION, true );
+		wp_enqueue_style( 'cfl_logic_editor', CFL_PLUGIN_URL . 'assets/addons/css/editor.min.css', null, CFL_VERSION );
 		wp_enqueue_script( 'cfl_logic_editor' );
 	}
 
