@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function () {
     const toggleAll = document.getElementById('cfkef-toggle-all');
     const elementToggles = document.querySelectorAll('.cfkef-element-toggle');
@@ -13,3 +14,4 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+

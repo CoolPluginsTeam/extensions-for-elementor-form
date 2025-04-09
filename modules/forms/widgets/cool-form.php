@@ -138,6 +138,7 @@ class Cool_Form extends Form_Base {
 						}
 
 						switch ( item.field_type ) {
+
 							case 'textarea':
 								inputField = '<label class="cool-form-text mdc-text-field mdc-text-field--outlined mdc-text-field--textarea '+ ((item.field_label === '' || !settings.show_labels) ? 'mdc-text-field--no-label' : '') +' ">';
 									inputField += '<span class="mdc-notched-outline">';
@@ -361,6 +362,7 @@ class Cool_Form extends Form_Base {
 		$this->add_style_box_section();
 	}
 
+
 	protected function add_content_form_fields_section(): void {
 		$repeater = new Repeater();
 
@@ -523,6 +525,82 @@ class Cool_Form extends Form_Base {
 				'default' => '100',
 				'tablet_default' => '100',
 				'mobile_default' => '100',
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'field_type',
+							'operator' => '!in',
+							'value' => [
+								'recaptcha',
+								'recaptcha_v3'
+							],
+						],
+					],
+				],
+			]
+		);
+
+
+		$repeater->add_control(
+			'recaptcha_size', [
+				'label' => esc_html__( 'Size', 'cool-formkit' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'normal',
+				'options' => [
+					'normal' => esc_html__( 'Normal', 'cool-formkit' ),
+					'compact' => esc_html__( 'Compact', 'cool-formkit' ),
+				],
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'field_type',
+							'value' => 'recaptcha',
+						],
+					],
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'recaptcha_style',
+			[
+				'label' => esc_html__( 'Style', 'cool-formkit' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'light',
+				'options' => [
+					'light' => esc_html__( 'Light', 'cool-formkit' ),
+					'dark' => esc_html__( 'Dark', 'cool-formkit' ),
+				],
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'field_type',
+							'value' => 'recaptcha',
+						],
+					],
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'recaptcha_badge', [
+				'label' => esc_html__( 'Badge', 'cool-formkit' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'bottomright',
+				'options' => [
+					'bottomright' => esc_html__( 'Bottom Right', 'cool-formkit' ),
+					'bottomleft' => esc_html__( 'Bottom Left', 'cool-formkit' ),
+					'inline' => esc_html__( 'Inline', 'cool-formkit' ),
+				],
+				'description' => esc_html__( 'To view the validation badge, switch to preview mode', 'cool-formkit' ),
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'field_type',
+							'value' => 'recaptcha_v3',
+						],
+					],
+				],
 			]
 		);
 

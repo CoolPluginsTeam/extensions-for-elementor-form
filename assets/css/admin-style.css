@@ -183,17 +183,17 @@ input:checked + .cfkef-slider:before {
     font-family: Inter, Roboto, Helvetica, Arial, sans-serif;
 }
 
-:where(.elementor_page_cool-formkit, .elementor_page_cfkef-entries) #wpbody #wpbody-content {
+:where(.elementor_page_cool-formkit-lite, .elementor_page_cfkef-entries) #wpbody #wpbody-content {
     margin-top: 80px !important;
     margin-block-start: 80px !important;
 }
 
-:where(.elementor_page_cool-formkit, .elementor_page_cfkef-entries) .e-admin-top-bar--active,
-:where(.elementor_page_cool-formkit, .elementor_page_cfkef-entries) #e-admin-top-bar-root,
-:where(.elementor_page_cool-formkit, .elementor_page_cfkef-entries) #wpfooter {
+:where(.elementor_page_cool-formkit-lite, .elementor_page_cfkef-entries) .e-admin-top-bar--active,
+:where(.elementor_page_cool-formkit-lite, .elementor_page_cfkef-entries) #e-admin-top-bar-root,
+:where(.elementor_page_cool-formkit-lite, .elementor_page_cfkef-entries) #wpfooter {
     display: none !important;
 }
-:where(.elementor_page_cool-formkit, .elementor_page_cfkef-entries) .notice {
+:where(.elementor_page_cool-formkit-lite, .elementor_page_cfkef-entries) .notice {
     margin: 2px 20px 20px 0;
 }
 
@@ -443,5 +443,23 @@ input:checked + .cfkef-slider:before {
     margin-top: -21px !important;
 }
 
+button#recaptcha-submit{
+    padding: 10px 15px;
+    background-color: #f16564;
+    color: white;
+    border: 1px solid #d2504f;
+    border-radius: 5px;
+}
 
 
+@media (max-width: 571px) and (min-width:300px){
+    .cfkef-header-logo img {
+        width: 90px;
+    }
+    .cfkef-header-buttons .button {
+        padding: 10px 11px;
+        font-size: 10px;
+        line-height: 12px;
+        min-height: auto;
+    }
+}
