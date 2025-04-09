@@ -75,7 +75,8 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			$this->initialize_plugin();
 
 			// add_action( 'activated_plugin', array( $this, 'EEF_plugin_redirection' ) );
-			add_action('wp_enqueue_scripts', array($this, 'my_enqueue_scripts'));			
+			add_action('wp_enqueue_scripts', array($this, 'my_enqueue_scripts'));	
+			add_action( 'elementor/editor/before_enqueue_scripts', array( $this, 'add_global_editor_js' ) );		
 
 
 		}
@@ -165,6 +166,11 @@ class Cool_Formkit_Lite_For_Elementor_Form
 
 
 		return true;
+	}
+
+	public function add_global_editor_js() {
+		wp_enqueue_script( 'cfl-global-editor-script', CFL_PLUGIN_URL . 'assets/addons/js/global.js', array( 'jquery' ), CFL_VERSION, true );
+
 	}
 
 	public function EEF_plugin_dashboard_link($links)

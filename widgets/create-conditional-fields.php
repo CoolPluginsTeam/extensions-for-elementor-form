@@ -1,6 +1,6 @@
 <?php
-namespace Cool_FormKit;
-
+namespace Cool_FormKit\Widgets\Addons;
+use Cool_FormKit\Widgets\Addons\Control_Repeater_Field;
 /**
  * Main file for adding conditional fields to Elementor Pro forms in WordPress.
  *
@@ -34,11 +34,32 @@ class Cfl_Create_Conditional_Fields {
 	 */
 	public function __construct() {
 		add_action( 'elementor/frontend/widget/before_render', array( $this, 'all_field_conditions' ), 10, 3 );
+		add_action( 'elementor/element/form/section_form_fields/before_section_end', array( $this, 'append_conditional_fields_controler' ), 10, 2 );
 		add_action( 'elementor/element/cool-form/section_form_fields/before_section_end', array( $this, 'append_conditional_fields_controler' ), 100, 2 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_assets_files' ) );
+		add_action( 'elementor/controls/register', array( $this, 'register_fields_repeater_controler' ) );
 		add_action( 'cool_formkit/forms/validation', array( $this, 'check_validation' ), 9, 3 );
 		add_action( 'elementor/editor/before_enqueue_scripts', array( $this, 'add_editor_js' ) );
 		add_action( 'wp_ajax_cfef_elementor_review_notice', array( $this, 'cfef_elementor_review_notice' ) );
+		add_action( 'elementor/editor/before_enqueue_scripts', function() {
+			if ( defined( 'ELEMENTOR_PLUGIN_BASE' ) ) {
+				wp_enqueue_style(
+					'elementor-fontawesome',
+					plugin_dir_url( ELEMENTOR_PLUGIN_BASE ) . 'assets/lib/font-awesome/css/fontawesome.min.css',
+					array(),
+					ELEMENTOR_VERSION
+				);
+				wp_enqueue_style(
+					'elementor-fontawesome-regular',
+					plugin_dir_url( ELEMENTOR_PLUGIN_BASE ) . 'assets/lib/font-awesome/css/regular.min.css',
+					array(),
+					ELEMENTOR_VERSION
+				);
+			}
+		}, 20 );
+		
+		
+			
 	}
 
 	/**
@@ -66,14 +87,6 @@ class Cfl_Create_Conditional_Fields {
 			 }'
 				);
 
-		// wp_register_style( 'hide_field_class_style', false );
-		// 		 wp_enqueue_style( 'hide_field_class_style' );
-		// 		wp_add_inline_style(
-		// 			'hide_field_class_style',
-		// 			'.cfef-hidden {
-		// 			 display: none !important;
-		// 	 }'
-		// 		);
 	}
 
 	// Recursive function to check for a specific widget in Elementor content
@@ -107,160 +120,172 @@ class Cfl_Create_Conditional_Fields {
 	 */
 	public function append_conditional_fields_controler( $widget ) {
 
-			$elementor    = \Elementor\Plugin::instance();
-			$control_data = $elementor->controls_manager->get_control_from_stack( $widget->get_unique_name(), 'form_fields' );
+		$elementor    = \Elementor\Plugin::instance();
+		$control_data = $elementor->controls_manager->get_control_from_stack( $widget->get_unique_name(), 'form_fields' );
 		if ( is_wp_error( $control_data ) ) {
-				return;
+			return;
 		}
-			$field_controls = array(
-				'form_fields_conditions_tab' =>
+		$field_controls = array(
+			'form_fields_conditions_tab' => array(
+				'type'         => 'tab',
+				'tab'          => 'content', 
+				'label'        => esc_html__( 'Conditions', 'cool-formkit' ),
+				'tabs_wrapper' => 'form_fields_tabs',
+				'name'         => 'form_fields_conditions_tab',
+				'condition'    => array(
+					'field_type' => array( 'text', 'email', 'textarea', 'number', 'select', 'radio', 'checkbox', 'tel', 'url', 'date', 'time', 'html','upload', 'recaptcha' , 'recaptcha_v3' , 'password' , 'acceptance' , 'country' , 'rating' , 'slider', 'calculator', 'signature', 'step','image_radio','state','WYSIWYG','currency','monthWeek'),
+				),
+			),
+			'cfef_logic' => array(
+				'name'         => 'cfef_logic',
+				'label'        => esc_html__( 'Enable Conditions', 'cool-formkit' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'tab'          => 'content',
+				'inner_tab'    => 'form_fields_conditions_tab',
+				'tabs_wrapper' => 'form_fields_tabs',
+			),
+				'cfef_logic_mode' => array(
+				'name'    => 'cfef_logic_mode',
+				'label'   => esc_html__( 'Show / Hide Field', 'cool-formkit' ),
+				'type'    => Controls_Manager::CHOOSE,
+				'options' => array(
+					'show' => array(
+						'title' => esc_html__( 'Show', 'cool-formkit' ),
+						'icon'  => 'far fa-eye',
+					),
+					'hide' => array(
+						'title' => esc_html__( 'Hide', 'cool-formkit' ),
+						'icon'  => 'far fa-eye-slash',
+					),
+				),
+				'default'      => 'show',
+				'tab'          => 'content',
+				'condition'    => array(
+					'cfef_logic' => 'yes',
+				),
+				'inner_tab'    => 'form_fields_conditions_tab',
+				'tabs_wrapper' => 'form_fields_tabs',
+			),
+             'cfef_logic_meet' => array(
+				'name'         => 'cfef_logic_meet',
+				'label'        => esc_html__( 'Conditions Trigger', 'cool-formkit' ),
+				'type'         => Controls_Manager::SELECT,
+				'options'      => array(
+					'All' => esc_html__('All - AND Conditions','cool-formkit'),
+					'Any' => esc_html__('Any - OR Conditions','cool-formkit'),
+				),
+				'default'      => 'All',
+				'tab'          => 'content',
+				'condition'    => array(
+					'cfef_logic' => 'yes',
+				),
+				'inner_tab'    => 'form_fields_conditions_tab',
+				'tabs_wrapper' => 'form_fields_tabs',
+			),
+			'cfef_repeater_data' => array(
+				'name'           => 'cfef_repeater_data',
+				'label'          => esc_html__( 'Show / Hide Fields If', 'cool-formkit' ),
+				'type'           => Controls_Manager::REPEATER,
+				'tab'            => 'content',
+				'inner_tab'      => 'form_fields_conditions_tab',
+				'tabs_wrapper'   => 'form_fields_tabs',
+				'fields'         => array(
 					array(
-						'type'         => 'tab',
-						'tab'          => 'content',
-						'label'        => esc_html__( 'Conditions', 'cool-formkit' ),
-						'tabs_wrapper' => 'form_fields_tabs',
-						'name'         => 'form_fields_conditions_tab',
-						'condition'    => array(
-							'field_type' => array( 'text', 'email', 'textarea', 'number', 'select', 'radio', 'checkbox', 'tel', 'url', 'date', 'time', 'html','upload', 'recaptcha' , 'recaptcha_v3' , 'password' , 'acceptance' , 'country' , 'rating' , 'slider', 'calculator', 'signature', 'step','image_radio','state','WYSIWYG','currency','monthWeek'),
+						'name'        => 'cfef_logic_field_id',
+						'label'       => esc_html__( 'Field ID', 'cool-formkit' ),
+						'type'        => Controls_Manager::TEXT,
+						'label_block' => true,
+						'default'     => '',
+						'ai'          => array(
+							'active' => false,
 						),
 					),
-				'cfef_logic'                 => array(
-					'name'         => 'cfef_logic',
-					'label'        => esc_html__( 'Enable Conditions', 'cool-formkit' ),
-					'type'         => Controls_Manager::SWITCHER,
-					'tab'          => 'content',
-					'inner_tab'    => 'form_fields_conditions_tab',
-					'tabs_wrapper' => 'form_fields_tabs',
+					array(
+						'name'        => 'cfef_logic_field_is',
+						'label'       => esc_html__( 'Operator', 'cool-formkit' ),
+						'type'        => Controls_Manager::SELECT,
+						'label_block' => true,
+						'options'     => array(
+							'==' => esc_html__( 'is equal ( == )', 'cool-formkit' ),
+							'!=' => esc_html__( 'is not equal (!=)', 'cool-formkit' ),
+							'>'  => esc_html__( 'greater than (>)', 'cool-formkit' ),
+							'<'  => esc_html__( 'less than (<)', 'cool-formkit' ),
+							'>='  => esc_html__( 'greater than equal (>=)', 'cool-formkit' ),
+							'<='  => esc_html__( 'less than equal (<=)', 'cool-formkit' ),
+							'e'  => esc_html__( "empty ('')", 'cool-formkit' ),
+							'!e' => esc_html__( 'not empty', 'cool-formkit' ),
+							'c'  => esc_html__( 'contains', 'cool-formkit' ),
+							'!c' => esc_html__( 'does not contain', 'cool-formkit' ),
+							'^'  => esc_html__( 'starts with', 'cool-formkit' ),
+							'~'  => esc_html__( 'ends with', 'cool-formkit' ),
+						),
+						'default'     => '==',
+					),
+					array(
+						'name'        => 'cfef_logic_compare_value',
+						'label'       => esc_html__( 'Value to compare', 'cool-formkit' ),
+						'type'        => Controls_Manager::TEXT,
+						'label_block' => true,
+						'default'     => '',
+						'ai'          => array(
+							'active' => false,
+						),
+					),
+				),
+				'condition'      => array(
+					'cfef_logic' => 'yes',
+				),
+				'style_transfer' => false,
+				'title_field'    => '{{{ cfef_logic_field_id  }}} {{{ cfef_logic_field_is  }}} {{{ cfef_logic_compare_value  }}}',
+				'default'        => array(
+					array(
+						'cfef_logic_field_id'      => '',
+						'cfef_logic_field_is'      => '==',
+						'cfef_logic_compare_value' => '',
+					),
+				),
+			),
+		);
 
+		if ( ! get_option( 'cfkef_elementor_notice_dismiss' ) ) {
+			$review_nonce = wp_create_nonce( 'cfef_elementor_review' );
+			$url          = admin_url( 'admin-ajax.php' );
+			$html         = '<div class="cfef_elementor_review_wrapper cfef_custom_html">';
+			$html        .=	'<div id="cfef_elementor_review_dismiss" data-url="' . esc_url( $url ) . '" data-nonce="' . esc_attr( $review_nonce ) . '">Close Notice X</div>
+							<div class="cfef_elementor_review_msg">Hope this addon solved your problem! <br><a href="https://wordpress.org/support/plugin/conditional-fields-for-elementor-form/reviews/#new-post/" target="_blank"">Share the love with a ⭐⭐⭐⭐⭐ rating.</a><br><br></div>
+							<div class="cfef_elementor_demo_btn"><a href="https://wordpress.org/support/plugin/conditional-fields-for-elementor-form/reviews/#new-post" target="_blank">Submit Review</a></div>
+							</div>';
+
+			$field_controls['cfkef_conditional_field_box'] = array(
+				'name'            => 'cfkef_conditional_field_box',
+				'type'            => Controls_Manager::RAW_HTML,
+				'raw'             => $html,
+				'content_classes' => 'cfef_elementor_review_notice',
+				'tab'             => 'content',
+				'condition'       => array(
+					'cfef_logic' => 'yes',
 				),
-				'cfef_logic_mode'            => array(
-					'name'         => 'cfef_logic_mode',
-					'label'        => esc_html__( 'Show / Hide Field', 'cool-formkit' ),
-					'type'         => Controls_Manager::CHOOSE,
-					'options'      => array(
-						'show' => array(
-							'title' => esc_html__( 'Show', 'cool-formkit' ),
-							'icon'  => 'fa fa-eye',
-						),
-						'hide' => array(
-							'title' => esc_html__( 'Hide', 'cool-formkit' ),
-							'icon'  => 'fa fa-eye-slash',
-						),
-					),
-					'default'      => 'show',
-					'tab'          => 'content',
-					'condition'    => array(
-						'cfef_logic' => 'yes',
-					),
-					'inner_tab'    => 'form_fields_conditions_tab',
-					'tabs_wrapper' => 'form_fields_tabs',
-				),
-				'cfef_logic_meet'            => array(
-					'name'         => 'cfef_logic_meet',
-					'label'        => esc_html__( 'Conditions Trigger', 'cool-formkit' ),
-					'type'         => Controls_Manager::SELECT,
-					'options'      => array(
-						'All' => esc_html__('All - AND Conditions','cool-formkit'),
-						'Any' => esc_html__('Any - OR Conditions','cool-formkit'),
-					),
-					'default'      => 'All',
-					'tab'          => 'content',
-					'condition'    => array(
-						'cfef_logic' => 'yes',
-					),
-					'inner_tab'    => 'form_fields_conditions_tab',
-					'tabs_wrapper' => 'form_fields_tabs',
-				),
-				'cfef_repeater_data'         => array(
-					'name'           => 'cfef_repeater_data',
-					'label'          => esc_html__( 'Show / Hide Fields If', 'cool-formkit' ),
-					'type'           => Controls_Manager::REPEATER,
-					'tab'            => 'content',
-					'inner_tab'      => 'form_fields_conditions_tab',
-					'tabs_wrapper'   => 'form_fields_tabs',
-					'fields'         => array(
-						array(
-							'name'        => 'cfef_logic_field_id',
-							'label'       => esc_html__( 'Field ID', 'cool-formkit' ),
-							'type'        => Controls_Manager::TEXT,
-							'label_block' => true,
-							'default'     => '',
-							'ai'          => array(
-								'active' => false,
-							),
-						),
-						array(
-							'name'        => 'cfef_logic_field_is',
-							'label'       => esc_html__( 'Operator', 'cfef' ),
-							'type'        => Controls_Manager::SELECT,
-							'label_block' => true,
-							'options'     => array(
-								'==' => esc_html__( 'is equal ( == )', 'cfef' ),
-								'!=' => esc_html__( 'is not equal (!=)', 'cfef' ),
-								'>'  => esc_html__( 'greater than (>)', 'cfef' ),
-								'<'  => esc_html__( 'less than (<)', 'cfef' ),
-								'>=' => esc_html__( 'greater than equal (>=)', 'cfef' ),
-								'<=' => esc_html__( 'less than equal (<=)', 'cfef' ),
-								'e'  => esc_html__( "empty ('')", 'cfef' ),
-								'!e' => esc_html__( 'not empty', 'cfef' ),
-								'c'  => esc_html__( 'contains', 'cfef' ),
-								'!c' => esc_html__( 'does not contain', 'cfef' ),
-								'^'  => esc_html__( 'starts with', 'cfef' ),
-								'~'  => esc_html__( 'ends with', 'cfef' ),
-							),
-							'default'     => '==',
-						),
-						array(
-							'name'        => 'cfef_logic_compare_value',
-							'label'       => esc_html__( 'Value to compare', 'cool-formkit' ),
-							'type'        => Controls_Manager::TEXT,
-							'label_block' => true,
-							'default'     => '',
-							'ai'          => array(
-								'active' => false,
-							),
-						),
-					),
-					'condition'      => array(
-						'cfef_logic' => 'yes',
-					),
-					'style_transfer' => false,
-					'title_field'    => '{{{ cfef_logic_field_id  }}} {{{ cfef_logic_field_is  }}} {{{ cfef_logic_compare_value  }}}',
-					'default'        => array(
-						array(
-							'cfef_logic_field_id'      => '',
-							'cfef_logic_field_is'      => '==',
-							'cfef_logic_compare_value' => '',
-						),
-					),
-				),
+				'inner_tab'       => 'form_fields_conditions_tab',
+				'tabs_wrapper'    => 'form_fields_tabs',
 			);
-			if ( ! get_option( 'cfkef_elementor_notice_dismiss' ) ) {
-				$review_nonce = wp_create_nonce( 'cfef_elementor_review' );
-				$url          = admin_url( 'admin-ajax.php' );
-				$html         = '<div class="cfef_elementor_review_wrapper cfef_custom_html">';
-				$html        .=	'<div id="cfef_elementor_review_dismiss" data-url="' . esc_url( $url ) . '" data-nonce="' . esc_attr( $review_nonce ) . '">Close Notice X</div>
-								<div class="cfef_elementor_review_msg">Hope this addon solved your problem! <br><a href="https://wordpress.org/support/plugin/conditional-fields-for-elementor-form/reviews/#new-post/" target="_blank"">Share the love with a ⭐⭐⭐⭐⭐ rating.</a><br><br></div>
-								<div class="cfef_elementor_demo_btn"><a href="https://wordpress.org/support/plugin/conditional-fields-for-elementor-form/reviews/#new-post" target="_blank">Submit Review</a></div>
-								</div>';
+		}
 
-				$field_controls['cfkef_conditional_field_box'] = array(
-					'name'            => 'cfkef_conditional_field_box',
-					'type'            => Controls_Manager::RAW_HTML,
-					'raw'             => $html,
-					'content_classes' => 'cfef_elementor_review_notice',
-					'tab'             => 'content',
-					'condition'       => array(
-						'cfef_logic' => 'yes',
-					),
-					'inner_tab'       => 'form_fields_conditions_tab',
-					'tabs_wrapper'    => 'form_fields_tabs',
-				);
-			}
-
-			$control_data['fields'] = \array_merge( $control_data['fields'], $field_controls );
-			$widget->update_control( 'form_fields', $control_data );
+		$control_data['fields'] = \array_merge( $control_data['fields'], $field_controls );
+		$widget->update_control( 'form_fields', $control_data );
 	}
+    
+	/**
+	 * Function for call repeater call to add field repeater functionality
+	 *
+	 * @param object $controls_manager use for register repeater.
+	 */
+
+
+	public function register_fields_repeater_controler( $controls_manager ) {
+		include CFL_PLUGIN_PATH . 'widgets/addons/class-control-repeater-field.php';
+		$controls_manager->register( new Control_Repeater_Field() );
+	}
+
 	/**
 	 * Function for check all the values added in conditional  fields
 	 *
@@ -348,11 +373,11 @@ class Cfl_Create_Conditional_Fields {
 		}
 	
 		$logic_object = array();
-
-
+	
 		foreach ( $settings['form_fields'] as $item_index => $field ) {
 			if ( ! empty( $field['cfef_logic'] ) && 'yes' === $field['cfef_logic'] ) {
-				if(!isset($field['cfef_logic_mode']) && !isset($field['cfef_logic_meet'])){
+				// Skip if both mode and meet are not set.
+				if ( ! isset( $field['cfef_logic_mode'] ) && ! isset( $field['cfef_logic_meet'] ) ) {
 					continue;
 				}
 				$repeater_data = $field['cfef_repeater_data'];
@@ -378,7 +403,6 @@ class Cfl_Create_Conditional_Fields {
 				}
 			}
 		}
-	
 		$condition = count( $logic_object ) > 0 ? wp_json_encode( $logic_object ) : '';
 		if ( ! empty( $condition ) ) {
 			if ( is_object( $instance ) && method_exists( $instance, 'get_id' ) ) {
@@ -391,7 +415,6 @@ class Cfl_Create_Conditional_Fields {
 			$textarea_id = 'cfef_logic_data_' . $form_id;
 			echo '<textarea id="' . esc_attr( $textarea_id ) . '" class="cfef_logic_data_js cfef-hidden" data-form-id="' . esc_attr( $form_id ) . '">' . esc_textarea( $condition ) . '</textarea>';
 		}
-
 	}
 	/**
 	 * Function to validate form before submit and remove hidden fields

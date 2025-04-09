@@ -328,7 +328,7 @@
                     }
                 }
             } 
-            else if (formField.hasClass("elementor-field-type-date")) {
+            else if (formField.hasClass("is-field-type-date")) {
                 let value = formField.find("input").val()
                 if(value === ""){
                     if(formField.find("input.flatpickr-mobile[type='date']")){
@@ -361,7 +361,7 @@
                     formField.find("input").val("cool_plugins@abc.com");
                 }
             } 
-            else if (formField.hasClass("elementor-field-type-upload")) {
+            else if (formField.hasClass("is-field-type-upload")) {
                 const firstType = file_types.split(',')[0];
                 const fileName = `${my_script_vars.pluginConstant}assets/images/placeholder.${firstType}`; // Set the desired filename
                 const defaultImage = new File([], fileName, { type: 'image/png' });
@@ -374,7 +374,7 @@
                 // Set the files property of the file input field to the default image
                 fileInput[0].files = container.files;
             }
-            else if (formField.hasClass("elementor-field-type-number")) {
+            else if (formField.hasClass("is-field-type-number")) {
                 var FieldValues = formField.find("input").val();
                 if(FieldValues === ""){
                     var field_obj = formField.find("input");
@@ -388,7 +388,7 @@
                         formField.find("input").val("000");
                     }
                 }
-            } else if (formField.hasClass("elementor-field-type-textarea")) {
+            } else if (formField.hasClass("is-field-type-textarea")) {
                 let value = formField.find("textarea").val() 
                 if(value === ""){
                     formField.find("textarea").val("cool_plugins");
@@ -404,7 +404,7 @@
                     }
                     selectBox.val(optionValue);
                 }
-            } else if (formField.hasClass("elementor-field-type-text")) {
+            } else if (formField.hasClass("is-field-type-text")) {
                 let value = formField.find("input").val()
                 if(value === ""){
                     formField.find("input").val("cool23plugins");
