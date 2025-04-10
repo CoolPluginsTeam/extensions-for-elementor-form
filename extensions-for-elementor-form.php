@@ -300,6 +300,10 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		update_option('eef-v', CFL_VERSION);
 		update_option('eef-type', 'FREE');
 		update_option('eef-installDate', gmdate('Y-m-d h:i:s'));
+
+		if (!get_option( 'Cool_Formkit_Lite_initial_save_version' ) ) {
+			add_option( 'Cool_Formkit_Lite_initial_save_version', CFL_VERSION );
+		}
 	}
 
 
