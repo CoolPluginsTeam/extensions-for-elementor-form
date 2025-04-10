@@ -387,8 +387,8 @@ class Cfl_Create_Conditional_Fields {
 				}
 				$repeater_data = $field['cfef_repeater_data'];
 				$logic_object[ $field['custom_id'] ] = array(
-					'display_mode' => esc_html( $field['cfef_logic_mode'] ),
-					'fire_action'  => esc_html( $field['cfef_logic_meet'] ),
+					'display_mode' => isset($field['cfef_logic_mode']) ? esc_html( $field['cfef_logic_mode'] ) : 'show',
+					'fire_action'  => isset($field['cfef_logic_meet']) ? esc_html( $field['cfef_logic_meet'] ) : 'All',
 					'file_types'   => ! empty( $field['file_types'] ) ? esc_html( $field['file_types'] ) : 'png',
 				);
 				foreach ( $repeater_data as $key => $data ) {
