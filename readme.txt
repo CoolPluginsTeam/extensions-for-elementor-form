@@ -4,10 +4,10 @@ Contributors: coolplugins, narinder-singh, satindersingh
 Tags: form builder, elementor form, elementor, contact form, custom form
 Requires at least: 6.2
 Tested up to: 6.7.2
-Stable tag: 2.4.2
+Stable tag: 2.4.3
 Requires PHP: 8.2
-Elementor tested up to: 3.28.0
-Elementor Pro tested up to: 3.28.0
+Elementor tested up to: 3.28.3
+Elementor Pro tested up to: 3.28.2
 License: GPL 3.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -141,6 +141,13 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
    - Save and publish the page to display the form on your site.
 
 == Changelog ==
+
+=  Version 2.4.3 | 10/04/2025 =
+* **Added:** Conditional field support.
+* **Added:** Country Code option for telephone field.
+* **Added:** Recaptcha integration for enhanced security.
+* **Tested upto:** WordPress 6.8.
+
 
 =  Version 2.4.2 | 26/03/2025 =
 * **Added:** **Collect Entries** Action after submit a form.
