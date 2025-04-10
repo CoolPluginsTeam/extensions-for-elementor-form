@@ -27,23 +27,10 @@ class Recaptcha_settings{
      * Constructor
      */
 
-     public static function replace_with_star($text){
-            $first_three = substr($text, 0, 3); // Get first 3 characters
-            $last_three = substr($text, -3);   // Get last 3 characters
-            $masked_length = strlen($text) - 6; // Length of the masked portion
-            
-            if ($masked_length > 0) {
-                $masked_part = str_repeat('*', $masked_length); // Replace with '*'
-                return $first_three . $masked_part . $last_three;
-            }
-            
-            return $text; // Return as is if it's too short
-     }
-
      public function recaptcha_setting_html_output(CFKEF_Dashboard $dashboard) {
 
 
-        if($dashboard->current_screen('cool-formkit-lite', 'recaptcha-settings')){
+        if($dashboard->current_screen('cool-formkit', 'recaptcha-settings')){
 
 
             $this->handle_form_submit();
@@ -129,7 +116,7 @@ class Recaptcha_settings{
         $tabs[] = array(
             'title' => 'Settings',
             'position' => 2,
-            'slug' => 'cool-formkit-lite&tab=recaptcha-settings',
+            'slug' => 'cool-formkit&tab=recaptcha-settings',
         );
 
         return $tabs;
