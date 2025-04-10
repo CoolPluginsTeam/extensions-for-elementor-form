@@ -5,8 +5,11 @@ namespace Cool_FormKit\Includes;
 use Cool_FormKit\Includes\Custom_Success_Message;
 use Cool_FormKit\Includes\Actions\Register_Actions;
 use Cool_Formkit\admin\CFKEF_Admin;
+
 use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
 use Cool_FormKit\Admin\Entries\CFKEF_Entries_Posts;
+use Cool_FormKit\Admin\Recaptcha\Recaptcha_settings;
+
 
 /**
  * The file that defines the core plugin class
@@ -100,6 +103,8 @@ class CFL_Loader {
      * @since    1.0.0
      * @return   CFL_Loader    The instance of this class.
      */
+
+
     public static function get_instance() {
         if (null == self::$instance) {
             self::$instance = new self();
@@ -158,6 +163,7 @@ class CFL_Loader {
         $plugin_admin = CFKEF_Admin::get_instance($this->get_plugin_name(), $this->get_version());
     }
 
+
     private function admin_menu_dashboard() {
         if(class_exists(CFKEF_Dashboard::class)){
             $menu_pages = CFKEF_Dashboard::get_instance($this->get_plugin_name(), $this->get_version());
@@ -166,7 +172,14 @@ class CFL_Loader {
         if(class_exists(CFKEF_Entries_Posts::class)){
             $entries_posts = CFKEF_Entries_Posts::get_instance();
         }
+
+
+        if(class_exists(Recaptcha_settings::class)){
+            $entries_posts = Recaptcha_settings::get_instance();
+        }
     }
+
+
     
     /**
 	 * Init plugin
@@ -176,13 +189,15 @@ class CFL_Loader {
 
 		add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'register_editor_scripts') );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frondend_scripts' ) );
+
 	}
 
 	/**
 	 * Enqueue front end styles/scripts
 	 */
+
+     
 	public function enqueue_frondend_scripts() : void {
-		wp_enqueue_script( 'eef-frontend-script', CFL_PLUGIN_URL . 'assets/js/frontend-scripts.min.js', array( 'jquery' ), CFL_VERSION );
 		wp_enqueue_style( 'eef-frontend-style',  CFL_PLUGIN_URL . 'assets/css/style.min.css', array(), CFL_VERSION );
 	}
 
@@ -192,7 +207,7 @@ class CFL_Loader {
 	 * @since 2.0
 	 */
 	function register_editor_scripts() : void {
-		wp_register_script( 'eef-editor-scripts', CFL_PLUGIN_URL . 'assets/js/admin/editor-scripts.min.js', array(), CFL_VERSION );
+		wp_enqueue_script( 'eef-frontend-script', CFL_PLUGIN_URL . 'assets/js/frontend-scripts.min.js', array( 'jquery' ), CFL_VERSION );
 		wp_enqueue_script( 'eef-editor-scripts' );
 	}
     /**

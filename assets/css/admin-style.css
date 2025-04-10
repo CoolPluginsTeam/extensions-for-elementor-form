@@ -443,5 +443,23 @@ input:checked + .cfkef-slider:before {
     margin-top: -21px !important;
 }
 
+button#recaptcha-submit{
+    padding: 10px 15px;
+    background-color: #f16564;
+    color: white;
+    border: 1px solid #d2504f;
+    border-radius: 5px;
+}
 
 
+@media (max-width: 571px) and (min-width:300px){
+    .cfkef-header-logo img {
+        width: 90px;
+    }
+    .cfkef-header-buttons .button {
+        padding: 10px 11px;
+        font-size: 10px;
+        line-height: 12px;
+        min-height: auto;
+    }
+}

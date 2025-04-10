@@ -77,7 +77,7 @@ class CFKEF_Dashboard
             'cool-formkit' => array(
                 'title' => 'Cool FormKit Lite',
                 'position' => 45,
-                'slug' => 'cfkef-entries',
+                'slug' => 'cool-formkit',
             ),
             'cfkef-entries' => array(
                 'title' => '↳ Entries',
@@ -143,10 +143,10 @@ class CFKEF_Dashboard
      * @param string $slug The slug to check.
      * @return bool True if the current screen is the given slug, false otherwise.
      */ 
-    public static function current_screen($slug)
+    public static function current_screen($slug, $tag_slug = null)
     {
         $slug = sanitize_text_field($slug);
-        return self::cfkef_current_page($slug);
+        return self::cfkef_current_page($slug, $tag_slug);
     }
 
     /**
@@ -155,10 +155,12 @@ class CFKEF_Dashboard
      * @param string $slug The slug to check.
      * @return bool True if the current page is the given slug, false otherwise.
      */
-    private static function cfkef_current_page($slug)
+    private static function cfkef_current_page($slug, $tag_slug = null)
     {
         $current_page = isset($_REQUEST['page']) ? esc_html($_REQUEST['page']) : (isset($_REQUEST['post_type']) ? esc_html($_REQUEST['post_type']) : '');
         $status=false;
+
+        $slug = $slug==='cfkef-entries' && !isset($_GET['tab']) && $current_page !== 'cfkef-entries' ? 'cool-formkit' : $slug;
 
         if (in_array($current_page, self::get_allowed_pages()) && $current_page === $slug) {
             $status=true;
@@ -169,6 +171,15 @@ class CFKEF_Dashboard
 
             if($screen && property_exists($screen, 'id') && $screen->id && $screen->id === $slug){
                 $status=true;
+            }
+        }
+
+        if(isset($tag_slug)){
+            $tag_slug = sanitize_text_field($tag_slug);
+            $tab=isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : false;
+
+            if(!isset($tab) || $tab !== $tag_slug){
+                $status=false;
             }
         }
 
@@ -191,7 +202,7 @@ class CFKEF_Dashboard
             </div>
         </div>';
 
-        // $this->render_tabs();
+        $this->render_tabs();
 
         echo '<div class="cfkef-content">';
 
@@ -202,10 +213,15 @@ class CFKEF_Dashboard
 
     public function render_tabs(){
         $tabs = $this->cfkef_get_tabs();
+
         
         echo '<div class="cfkef-dashboard-tabs">';
         foreach ($tabs as $tab) {
-            $active_class = self::current_screen($tab['slug']) ? ' active' : '';
+            $slugs=explode('&tab=', $tab['slug']);
+            $page_name=isset($slugs[0]) ? $slugs[0] : 'cool-formkit';
+            $tab_name=isset($slugs[1]) ? $slugs[1] : null;
+            
+            $active_class = self::current_screen($page_name, $tab_name) ? ' active' : '';
 
             echo '<div class="cfkef-dashboard-tab-wrapper' . esc_attr($active_class) . '">';
             echo '<a href="' . esc_url(admin_url('admin.php?page=' . $tab['slug'])) . '" class="cfkef-dashboard-tab">' . esc_html($tab['title']) . '</a>';
@@ -216,11 +232,11 @@ class CFKEF_Dashboard
 
     public function cfkef_get_tabs(){
         $default_tabs = array(
-            array(
-                'title' => 'Dashboard',
-                'position' => 1,
-                'slug' => 'cool-formkit',
-            ),
+            // array(
+            //     'title' => 'Settings',
+            //     'position' => 1,
+            //     'slug' => 'cool-formkit',
+            // ),
         );
 
         $tabs = apply_filters('cfkef_dashboard_tabs', $default_tabs);
