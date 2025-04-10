@@ -38,7 +38,7 @@ class CFKEF_Dashboard
      * @var array
      */
     private static $allowed_pages = array(
-        'cool-formkit-lite',
+        'cool-formkit',
         'cfkef-entries',
     );
 
@@ -74,10 +74,10 @@ class CFKEF_Dashboard
         $this->plugin_name = $plugin_name;
         $this->version = $version;
         $dashboard_pages = array(
-            'cool-formkit-lite' => array(
+            'cool-formkit' => array(
                 'title' => 'Cool FormKit Lite',
                 'position' => 45,
-                'slug' => 'cool-formkit-lite',
+                'slug' => 'cool-formkit',
             ),
             'cfkef-entries' => array(
                 'title' => '↳ Entries',
@@ -160,7 +160,7 @@ class CFKEF_Dashboard
         $current_page = isset($_REQUEST['page']) ? esc_html($_REQUEST['page']) : (isset($_REQUEST['post_type']) ? esc_html($_REQUEST['post_type']) : '');
         $status=false;
 
-        $slug = $slug==='cfkef-entries' && !isset($_GET['tab']) && $current_page !== 'cfkef-entries' ? 'cool-formkit-lite' : $slug;
+        $slug = $slug==='cfkef-entries' && !isset($_GET['tab']) && $current_page !== 'cfkef-entries' ? 'cool-formkit' : $slug;
 
         if (in_array($current_page, self::get_allowed_pages()) && $current_page === $slug) {
             $status=true;
@@ -218,7 +218,7 @@ class CFKEF_Dashboard
         echo '<div class="cfkef-dashboard-tabs">';
         foreach ($tabs as $tab) {
             $slugs=explode('&tab=', $tab['slug']);
-            $page_name=isset($slugs[0]) ? $slugs[0] : 'cool-formkit-lite';
+            $page_name=isset($slugs[0]) ? $slugs[0] : 'cool-formkit';
             $tab_name=isset($slugs[1]) ? $slugs[1] : null;
             
             $active_class = self::current_screen($page_name, $tab_name) ? ' active' : '';

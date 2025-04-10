@@ -183,17 +183,17 @@ input:checked + .cfkef-slider:before {
     font-family: Inter, Roboto, Helvetica, Arial, sans-serif;
 }
 
-:where(.elementor_page_cool-formkit-lite, .elementor_page_cfkef-entries) #wpbody #wpbody-content {
+:where(.elementor_page_cool-formkit, .elementor_page_cfkef-entries) #wpbody #wpbody-content {
     margin-top: 80px !important;
     margin-block-start: 80px !important;
 }
 
-:where(.elementor_page_cool-formkit-lite, .elementor_page_cfkef-entries) .e-admin-top-bar--active,
-:where(.elementor_page_cool-formkit-lite, .elementor_page_cfkef-entries) #e-admin-top-bar-root,
-:where(.elementor_page_cool-formkit-lite, .elementor_page_cfkef-entries) #wpfooter {
+:where(.elementor_page_cool-formkit, .elementor_page_cfkef-entries) .e-admin-top-bar--active,
+:where(.elementor_page_cool-formkit, .elementor_page_cfkef-entries) #e-admin-top-bar-root,
+:where(.elementor_page_cool-formkit, .elementor_page_cfkef-entries) #wpfooter {
     display: none !important;
 }
-:where(.elementor_page_cool-formkit-lite, .elementor_page_cfkef-entries) .notice {
+:where(.elementor_page_cool-formkit, .elementor_page_cfkef-entries) .notice {
     margin: 2px 20px 20px 0;
 }
 
