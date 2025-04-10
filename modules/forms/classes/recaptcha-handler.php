@@ -4,8 +4,6 @@
 namespace Cool_FormKit\Modules\Forms\Classes;
 
 
-use Elementor\Settings;
-use Elementor\Widget_Base;
 use Cool_FormKit\Includes\Utils;
 
 if (! defined('ABSPATH')) {
@@ -18,11 +16,10 @@ if (! defined('ABSPATH')) {
 class Recaptcha_Handler
 {
 
-	const OPTION_NAME_SITE_KEY = 'elementor_pro_recaptcha_site_key';
+	const OPTION_NAME_SITE_KEY = 'cfl_site_key_v2';
 
-	const OPTION_NAME_SECRET_KEY = 'elementor_pro_recaptcha_secret_key';
+	const OPTION_NAME_SECRET_KEY = 'cfl_secret_key_v2';
 
-	const OPTION_NAME_RECAPTCHA_THRESHOLD = 'elementor_pro_recaptcha_threshold';
 
 	const V2_CHECKBOX = 'v2_checkbox';
 
@@ -53,36 +50,7 @@ class Recaptcha_Handler
 
 	public static function get_setup_message()
 	{
-		return esc_html__('To use reCAPTCHA, you need to add the API Key and complete the setup process in Dashboard > Elementor > Settings > Integrations > reCAPTCHA.', 'cool-formkit');
-	}
-
-	public function register_admin_fields(Settings $settings)
-	{
-		$settings->add_section(Settings::TAB_INTEGRATIONS, static::get_recaptcha_name(), [
-			'label' => esc_html__('reCAPTCHA', 'cool-formkit'),
-			'callback' => function () {
-				echo sprintf(
-					/* translators: 1: Link opening tag, 2: Link closing tag. */
-					esc_html__('%1$sreCAPTCHA%2$s is a free service by Google that protects your website from spam and abuse. It does this while letting your valid users pass through with ease.', 'cool-formkit'),
-					'<a href="https://www.google.com/recaptcha/" target="_blank">',
-					'</a>'
-				);
-			},
-			'fields' => [
-				'pro_recaptcha_site_key' => [
-					'label' => esc_html__('Site Key', 'cool-formkit'),
-					'field_args' => [
-						'type' => 'text',
-					],
-				],
-				'pro_recaptcha_secret_key' => [
-					'label' => esc_html__('Secret Key', 'cool-formkit'),
-					'field_args' => [
-						'type' => 'text',
-					],
-				],
-			],
-		]);
+		return esc_html__('To use reCAPTCHA, you need to add the API Key and complete the setup process in Dashboard > Elementor > Cool FormKit Lite > Settings > reCAPTCHA', 'cool-formkit');
 	}
 
 	protected static function get_script_render_param()
@@ -333,11 +301,6 @@ class Recaptcha_Handler
 			add_action('cool_formkit/forms/validation', [$this, 'validation'], 10, 2);
 			add_action('elementor/preview/enqueue_scripts', [$this, 'enqueue_scripts']);
 		}
-
-		if (is_admin()) {
-			add_action('elementor/admin/after_create_settings/' . Settings::PAGE_ID, [$this, 'register_admin_fields']);
-		}
-
 
 		if (!static::is_enabled()) {
 			return; // Do not load scripts if reCAPTCHA is not enabled

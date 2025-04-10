@@ -3,7 +3,6 @@
 namespace Cool_FormKit\Modules\Forms\Classes;
 
 
-use Elementor\Settings;
 use Cool_FormKit\Includes\Utils;
 
 
@@ -17,9 +16,9 @@ if (! defined('ABSPATH')) {
 class Recaptcha_V3_Handler extends Recaptcha_Handler
 {
 
-    const OPTION_NAME_V3_SITE_KEY = 'elementor_pro_recaptcha_v3_site_key';
-    const OPTION_NAME_V3_SECRET_KEY = 'elementor_pro_recaptcha_v3_secret_key';
-    const OPTION_NAME_RECAPTCHA_THRESHOLD = 'elementor_pro_recaptcha_v3_threshold';
+    const OPTION_NAME_V3_SITE_KEY = 'cfl_site_key_v3';
+    const OPTION_NAME_V3_SECRET_KEY = 'cfl_secret_key_v3';
+    const OPTION_NAME_RECAPTCHA_THRESHOLD = 'cfl_threshold_v3';
     const V3 = 'v3';
     const V3_DEFAULT_THRESHOLD = 0.5;
     const V3_DEFAULT_ACTION = 'Form';
@@ -74,51 +73,7 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
 
     public static function get_setup_message()
     {
-        return esc_html__('To use reCAPTCHA V3, you need to add the API Key and complete the setup process in Dashboard > Elementor > Settings > Integrations > reCAPTCHA V3.', 'cool-formkit');
-    }
-
-
-    public function register_admin_fields(Settings $settings)
-    {
-        $settings->add_section(Settings::TAB_INTEGRATIONS, 'recaptcha_v3', [
-            'label' => esc_html__('reCAPTCHA V3', 'cool-formkit'),
-            'callback' => function () {
-                echo sprintf(
-                    /* translators: 1: Link opening tag, 2: Link closing tag. */
-                    esc_html__('%1$sreCAPTCHA V3%2$s is a free service by Google that protects your website from spam and abuse. It does this while letting your valid users pass through with ease.', 'cool-formkit'),
-                    '<a href="https://www.google.com/recaptcha/intro/v3.html" target="_blank">',
-                    '</a>'
-                );
-            },
-            'fields' => [
-                'pro_recaptcha_v3_site_key' => [
-                    'label' => esc_html__('Site Key', 'cool-formkit'),
-                    'field_args' => [
-                        'type' => 'text',
-                    ],
-                ],
-                'pro_recaptcha_v3_secret_key' => [
-                    'label' => esc_html__('Secret Key', 'cool-formkit'),
-                    'field_args' => [
-                        'type' => 'text',
-                    ],
-                ],
-                'pro_recaptcha_v3_threshold' => [
-                    'label' => esc_html__('Score Threshold', 'cool-formkit'),
-                    'field_args' => [
-                        'attributes' => [
-                            'min' => 0,
-                            'max' => 1,
-                            'placeholder' => '0.5',
-                            'step' => '0.1',
-                        ],
-                        'std' => 0.5,
-                        'type' => 'number',
-                        'desc' => esc_html__('Score threshold should be a value between 0 and 1, default: 0.5', 'cool-formkit'),
-                    ],
-                ],
-            ],
-        ]);
+        return esc_html__('To use reCAPTCHA V3, you need to add the API Key and complete the setup process in Dashboard > Elementor > Cool FormKit Lite > Settings > reCAPTCHA V3.', 'cool-formkit');
     }
 
     public function render_field($item, $item_index, $widget)
@@ -229,11 +184,13 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
     
         // Check reCAPTCHA score (for v3)
 
+        
         if(!static::get_threshold())
             $thres_hold = '0.5';
         else
-            $thres_hold = static::get_threshold();
+            $thres_hold = (float) static::get_threshold();
 
+        
         if (isset($response_data['score']) && $response_data['score'] < $thres_hold) {
             $ajax_handler->add_error($field['id'], esc_html__('Suspicious activity detected. Please try again.', 'cool-formkit'));
             return;

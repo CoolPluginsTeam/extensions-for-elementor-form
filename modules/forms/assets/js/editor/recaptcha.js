@@ -16,13 +16,12 @@ module.exports = elementorModules.editor.utils.Module.extend( {
       },
       getDataSettings(item) {
     
-        console.log(elementor.config.forms.recaptcha_v3);
     
         const config = elementor.config.forms.recaptcha;
         const srcURL = 'https://www.google.com/recaptcha/api.js?onload=recaptchaLoaded&render=explicit';
         if (!config.enabled) {
           console.log('reCAPTCHA is not enabled');
-          return '<div class="elementor-alert elementor-alert-info"> To use reCAPTCHA, you need to add the API Key and complete the setup process in Dashboard > Elementor > Settings > Integrations > reCAPTCHA. </div>';
+          return '<div class="elementor-alert elementor-alert-info"> To use reCAPTCHA, you need to add the API Key and complete the setup process in Dashboard > Elementor > Cool FormKit Lite > Settings > reCAPTCHA. </div>';
         }
         let recaptchaData;
         if (item.field_type == "recaptcha") {

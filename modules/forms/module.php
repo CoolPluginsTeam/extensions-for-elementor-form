@@ -11,7 +11,6 @@ use Cool_FormKit\Modules\Forms\Registrars\Form_Actions_Registrar;
 use Cool_FormKit\Modules\Forms\Registrars\Form_Fields_Registrar;
 use Cool_FormKit\Modules\Forms\Classes\Recaptcha_Handler;
 use Cool_FormKit\Modules\Forms\Classes\Recaptcha_V3_Handler;
-use Cool_FormKit\Widgets\CREATE_COUNTRY_FIELD;
 
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -115,7 +114,7 @@ class Module extends Module_Base {
 	public function enqueue_editor_scripts() {
 		wp_register_script(
 			'Cool_FormKit-forms-editor',
-			CFL_SCRIPTS_URL . 'Cool_FormKit-forms-editor.min.js',
+			CFL_SCRIPTS_URL . 'Cool_FormKit-forms-editor.js',
 			[ 'elementor-editor', 'wp-i18n' ],
 			CFL_VERSION,
 			true
@@ -203,6 +202,5 @@ class Module extends Module_Base {
 		$this->actions_registrar = new Form_Actions_Registrar();
 		$this->fields_registrar = new Form_Fields_Registrar();
 		 new Ajax_Handler();
-		 new CREATE_COUNTRY_FIELD();
 	}
 }
