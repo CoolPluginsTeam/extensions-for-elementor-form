@@ -7,14 +7,14 @@
  * Author: Cool Plugins
  * Author URI: https://coolplugins.net/
  * Text Domain: extensions-for-elementor-form
- * Version: 2.4.2
+ * Version: 2.4.3
  * Requires at least: 6.2
  * Requires PHP: 6.2
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Requires Plugins: elementor
- * Elementor tested up to: 3.28.0
- * Elementor Pro tested up to: 3.28.0
+ * Elementor tested up to: 3.28.3
+ * Elementor Pro tested up to: 3.28.2
  */
 
 namespace Cool_FormKit;
@@ -29,7 +29,7 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 
-define('CFL_VERSION','2.4.2');
+define('CFL_VERSION','2.4.3');
 define('PHP_MINIMUM_VERSION','7.4');
 define('WP_MINIMUM_VERSION','5.5');
 define( 'CFL_PLUGIN_MAIN_FILE', __FILE__ );
