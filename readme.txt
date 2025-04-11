@@ -35,6 +35,9 @@ This addon allows you to build **custom forms** using a **drag-and-drop** interf
     * Textarea Field
     * Checkbox & Radio Fields
     * Acceptance Field
+    * Conditional Field
+    * Country Code Field
+    * reCAPTCHA V2 & V3 Field
 * **Send Confirmation Email:** Automatically send a **confirmation email** to users after form submission.
 * **Form Submission Redirect:** Redirect users to a specific page after submitting a form.
 * **Mobile-Friendly and Responsive**.
