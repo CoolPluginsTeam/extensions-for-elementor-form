@@ -186,14 +186,14 @@ class Module extends Module_Base {
 		parent::__construct();
 
 		if (class_exists(Recaptcha_Handler::class)) {
-
-			$this->add_component( 'recaptcha', instance: new Classes\Recaptcha_Handler() );
+			
+			$this->add_component( 'recaptcha', new Classes\Recaptcha_Handler() );
 
         }
 
 		if (class_exists(Recaptcha_V3_Handler::class)) {
 
-			$this->add_component( 'recaptcha_v3', instance: new Classes\Recaptcha_V3_Handler() );
+			$this->add_component( 'recaptcha_v3', new Classes\Recaptcha_V3_Handler() );
 
         }
 
