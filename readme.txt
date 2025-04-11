@@ -4,7 +4,7 @@ Contributors: coolplugins, narinder-singh, satindersingh
 Tags: form builder, elementor form, elementor, contact form, custom form
 Requires at least: 6.2
 Tested up to: 6.8
-Stable tag: 2.4.3
+Stable tag: 2.4.4
 Requires PHP: 8.2
 Elementor tested up to: 3.28.3
 Elementor Pro tested up to: 3.28.2
@@ -35,6 +35,9 @@ This addon allows you to build **custom forms** using a **drag-and-drop** interf
     * Textarea Field
     * Checkbox & Radio Fields
     * Acceptance Field
+    * Conditional Field
+    * Country Code Field
+    * reCAPTCHA V2 & V3 Field
 * **Send Confirmation Email:** Automatically send a **confirmation email** to users after form submission.
 * **Form Submission Redirect:** Redirect users to a specific page after submitting a form.
 * **Mobile-Friendly and Responsive**.
@@ -141,6 +144,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
    - Save and publish the page to display the form on your site.
 
 == Changelog ==
+
+=  Version 2.4.4 | 11/04/2025 =
+* **Fixed:** Critical error occurring during plugin activation on certain server configurations.
 
 =  Version 2.4.3 | 10/04/2025 =
 * **Added:** Conditional field support.
