@@ -198,6 +198,7 @@ class CFL_Loader {
 
      
 	public function enqueue_frondend_scripts() : void {
+        wp_enqueue_script( 'eef-frontend-script', CFL_PLUGIN_URL . 'assets/js/frontend-scripts.min.js', array( 'jquery' ), CFL_VERSION );
 		wp_enqueue_style( 'eef-frontend-style',  CFL_PLUGIN_URL . 'assets/css/style.min.css', array(), CFL_VERSION );
 	}
 
@@ -207,7 +208,7 @@ class CFL_Loader {
 	 * @since 2.0
 	 */
 	function register_editor_scripts() : void {
-		wp_enqueue_script( 'eef-frontend-script', CFL_PLUGIN_URL . 'assets/js/frontend-scripts.min.js', array( 'jquery' ), CFL_VERSION );
+        wp_register_script( 'eef-editor-scripts', CFL_PLUGIN_URL . 'assets/js/admin/editor-scripts.min.js', array(), CFL_VERSION );
 		wp_enqueue_script( 'eef-editor-scripts' );
 	}
     /**
