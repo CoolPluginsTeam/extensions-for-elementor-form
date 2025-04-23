@@ -11,6 +11,8 @@ use Cool_FormKit\Modules\Forms\Registrars\Form_Actions_Registrar;
 use Cool_FormKit\Modules\Forms\Registrars\Form_Fields_Registrar;
 use Cool_FormKit\Modules\Forms\Classes\Recaptcha_Handler;
 use Cool_FormKit\Modules\Forms\Classes\Recaptcha_V3_Handler;
+use Cool_FormKit\Modules\Forms\Classes\Cloudflare_recaptcha;
+
 
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -194,6 +196,12 @@ class Module extends Module_Base {
 		if (class_exists(Recaptcha_V3_Handler::class)) {
 
 			$this->add_component( 'recaptcha_v3', new Classes\Recaptcha_V3_Handler() );
+
+        }
+
+		if (class_exists(Cloudflare_recaptcha::class)) {
+
+			$this->add_component( 'cloudflare_recaptcha', new Classes\Cloudflare_recaptcha() );
 
         }
 

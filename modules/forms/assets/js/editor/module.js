@@ -7,11 +7,14 @@ export default class FormsModule extends elementorModules.editor.utils.Module {
 		const ReplyToField = require( './reply-to-field' );
 		const Recaptcha = require('./recaptcha');
 		const Recaptcha3 = require('./recaptcha3');
+		const Cloudflare_recaptcha = require('./cloudflare_recaptcha');
+
 
 		
 		this.replyToField = new ReplyToField();
 		this.recaptcha = new Recaptcha();
 		this.recaptcha3 = new Recaptcha3();
+		this.cloudflare_recaptcha = new Cloudflare_recaptcha();
 
 
 		// Form fields

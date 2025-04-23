@@ -455,6 +455,7 @@ class Cool_Form extends Form_Base {
 								'checkbox',
 								'recaptcha',
 								'recaptcha_v3',
+								'cloudflare_recaptcha',
 								'hidden',
 								'html',
 								'step',
@@ -532,7 +533,8 @@ class Cool_Form extends Form_Base {
 							'operator' => '!in',
 							'value' => [
 								'recaptcha',
-								'recaptcha_v3'
+								'recaptcha_v3',
+								'cloudflare_recaptcha'
 							],
 						],
 					],
@@ -549,12 +551,15 @@ class Cool_Form extends Form_Base {
 				'options' => [
 					'normal' => esc_html__( 'Normal', 'cool-formkit' ),
 					'compact' => esc_html__( 'Compact', 'cool-formkit' ),
+					'flexible' => esc_html__( 'Flexible', 'cool-formkit' ),
+
 				],
 				'conditions' => [
 					'terms' => [
 						[
 							'name' => 'field_type',
-							'value' => 'recaptcha',
+							'operator' => 'in',
+							'value' => ['recaptcha', 'cloudflare_recaptcha'],
 						],
 					],
 				],
@@ -575,7 +580,11 @@ class Cool_Form extends Form_Base {
 					'terms' => [
 						[
 							'name' => 'field_type',
-							'value' => 'recaptcha',
+							'operator' => 'in',
+							'value' => [
+								'recaptcha', 
+								'cloudflare_recaptcha'
+							],
 						],
 					],
 				],
@@ -598,6 +607,34 @@ class Cool_Form extends Form_Base {
 						[
 							'name' => 'field_type',
 							'value' => 'recaptcha_v3',
+						],
+					],
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'cloudflare_recaptcha_language', [
+				'label' => esc_html__( 'Language', 'cool-formkit' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'en',
+				'options' => [
+					'en' => esc_html__( 'English', 'cool-formkit' ),
+					'hi' => esc_html__( 'Hindi', 'cool-formkit' ),
+					'ja' => esc_html__( 'Japanese ', 'cool-formkit' ),
+					'ko' => esc_html__( 'Korean ', 'cool-formkit' ),
+					'ar' => esc_html__( 'Arabic', 'cool-formkit' ),
+					'bg' => esc_html__( 'Bulgarian', 'cool-formkit' ),
+					'zh' => esc_html__( 'Chinese', 'cool-formkit' ),
+					'hr' => esc_html__( 'Croatian', 'cool-formkit' ),
+					'cs' => esc_html__( 'Czech', 'cool-formkit' ),
+
+				],
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'field_type',
+							'value' => 'cloudflare_recaptcha',
 						],
 					],
 				],

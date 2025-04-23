@@ -98,6 +98,30 @@ class Recaptcha_settings{
                             
                     </table>
 
+                    <h3><?php esc_html_e('Cloudflare reCAPTCHA', 'cool-formkit'); ?></h3>
+
+
+                    <table class="form-table cool-formkit-table">
+                            
+                            <tr>
+                                <th scope="row" class="cool-formkit-table-th">
+                                    <label for="cloudflare_site_key" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?></label>
+                                </th>
+                                <td class="cool-formkit-table-td">
+                                    <input type="text" id="cloudflare_site_key" name="cloudflare_site_key" class="regular-text cool-formkit-input" value="<?php echo get_option('cfl_cloudflare_site_key'); ?>"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="cool-formkit-table-th">
+                                    <label for="cloudflare_secret_key" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?></label>
+                                </th>
+                                <td class="cool-formkit-table-td">
+                                    <input type="text" id="cloudflare_secret_key" name="cloudflare_secret_key" class="regular-text cool-formkit-input" value="<?php echo get_option('cfl_cloudflare_secret_key'); ?>"/>
+                                </td>
+                            </tr>
+                            
+                    </table>
+
                     <div>
                         <button id="recaptcha-submit" type="submit" name="save">Save Changes</button>
                     </div>
@@ -193,6 +217,27 @@ class Recaptcha_settings{
         }
 
 
+        if(isset($_POST['cloudflare_site_key'])){
+
+            if (preg_match($pattern, $_POST['cloudflare_site_key'])) {
+    
+                echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__('Invalid Input.', 'cool-formkit') . '</p></div>';
+                return;
+            }
+        }
+
+        if(isset($_POST['cloudflare_secret_key'])){
+
+            if (preg_match($pattern, $_POST['cloudflare_secret_key'])) {
+    
+                echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__('Invalid Input.', 'cool-formkit') . '</p></div>';
+
+
+                return;
+            }
+        }
+
+
 
 
         $site_key_v2  = isset($_POST['site_key_v2']) ? sanitize_text_field($_POST['site_key_v2']) : '';
@@ -202,6 +247,9 @@ class Recaptcha_settings{
         $secret_key_v3 = isset($_POST['secret_key_v3']) ? sanitize_text_field($_POST['secret_key_v3']) : '';
 
         $threshold_v3 = isset($_POST['threshold_v3']) ?  sanitize_text_field($_POST['threshold_v3']) : '';
+
+        $cloudflare_site_key = isset($_POST['cloudflare_site_key']) ? sanitize_text_field($_POST['cloudflare_site_key']) : '';
+        $cloudflare_secret_key = isset($_POST['cloudflare_secret_key']) ? sanitize_text_field($_POST['cloudflare_secret_key']) : '';
 
 
         if($threshold_v3 > 1){
@@ -222,6 +270,12 @@ class Recaptcha_settings{
         update_option( "cfl_secret_key_v3",  $secret_key_v3);
 
         update_option( "cfl_threshold_v3",  $threshold_v3);
+
+        update_option( "cfl_cloudflare_site_key",  $cloudflare_site_key);
+
+        update_option( "cfl_cloudflare_secret_key",  $cloudflare_secret_key);
+
+        
 
     echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Settings saved.', 'cool-formkit') . '</p></div>';
 
