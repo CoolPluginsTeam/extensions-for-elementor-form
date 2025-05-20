@@ -3,6 +3,7 @@
 namespace Cool_FormKit\Admin\Recaptcha;
 
 use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
+use Cool_FormKit\Admin\feedback\CPFM_Feedback_Notice\CPFM_Feedback_Notice;
 
 
 
@@ -234,6 +235,24 @@ class Recaptcha_settings{
 
         add_action('cfkef_render_menu_pages', [ $this, 'recaptcha_setting_html_output' ]);
         add_filter('cfkef_dashboard_tabs', [ $this, 'add_dashboard_tab' ]);
+
+        
+        add_action('cpfm_register_notice', function () {
+            
+            if (!class_exists('Cool_FormKit\Admin\feedback\CPFM_Feedback_Notice\CPFM_Feedback_Notice') || !current_user_can('manage_options')) {
+                return;
+            }
+            
+            CPFM_Feedback_Notice::cpfm_register_notice('timeline', [
+                
+                'title' => __('Timeline Plugins by Cool Plugins', 'extensions-for-elementor-form'),
+                'message' => __('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'cool-plugins-feedback'),
+                'pages' => ['cool-formkit','cfkef-entries','cool-formkit&tab=recaptcha-settings'],
+                'always_show_on' => ['cool-formkit','cfkef-entries','cool-formkit&tab=recaptcha-settings'], // This enables auto-show
+                'plugin_name'=>'extensions-for-elementor-form'
+            ]);
+            // var_dump('cpfm_register_notice'); die();
+     });
        
     }
 

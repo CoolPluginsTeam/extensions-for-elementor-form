@@ -120,6 +120,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			new Review_notice();
 
 			require_once CFL_PLUGIN_PATH . 'admin/feedback/admin-feedback-form.php';
+			require_once CFL_PLUGIN_PATH . 'admin/feedback/cpfm-feedback-notice.php';
 		}
 		// add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'EEF_plugin_dashboard_link' ) );
 
