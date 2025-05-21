@@ -115,7 +115,22 @@ class Recaptcha_settings{
                                 </th>
                                 <td class="cool-formkit-table-td usage-share-data">
                                     <input type="checkbox" id="cfl_usage_share_data" name="cfl_usage_share_data" value="on" <?php echo $checked ?>  class="regular-text cool-formkit-input"  />
-                                    <p class="description cool-formkit-description"><?php esc_html_e(' Help us make this plugin more compatible with your site by sharing non-sensitive site data. [See terms]', 'cool-formkit'); ?></p>
+                                    <div class="description cool-formkit-description">
+                                    <?php esc_html_e('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'ccpw'); ?>
+                                    <a href="#" class="ccpw-see-terms">[<?php esc_html_e('See terms', 'ccpw'); ?>]</a>
+
+                                    <div id="termsBox" style="display: none; padding-left: 20px; margin-top: 10px; font-size: 12px; color: #999;">
+                                        <p>
+                                            <?php esc_html_e('Opt in to receive email updates about security improvements, new features, helpful tutorials, and occasional special offers. We\'ll collect:', 'ccpw'); ?>
+                                        </p>
+                                        <ul style="list-style-type: auto;">
+                                            <li><?php esc_html_e('Your website home URL and WordPress admin email.', 'ccpw'); ?></li>
+                                            <li><?php esc_html_e('To check plugin compatibility, we will collect the following: list of active plugins and themes, server type, MySQL version, WordPress version, memory limit, site language and database prefix.', 'ccpw'); ?></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+
                                 </td>
                             </tr>
                             <?php }?>

@@ -9,8 +9,6 @@ use Cool_Formkit\admin\CFKEF_Admin;
 use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
 use Cool_FormKit\Admin\Entries\CFKEF_Entries_Posts;
 use Cool_FormKit\Admin\Recaptcha\Recaptcha_settings;
-use Cool_FormKit\Admin\feedback\CPFM_Feedback_Notice;
-use Cool_FormKit\Includes\Cron\CFL_cronjob;
 
 
 
