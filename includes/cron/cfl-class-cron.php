@@ -3,7 +3,6 @@
 namespace Cool_FormKit\Includes\Cron;
 use Cool_FormKit\feedback\cfl_feedback;
 
-
 if (!defined('ABSPATH')) {
     exit();
 }
@@ -23,14 +22,6 @@ if (!class_exists('CFL_cronjob')) {
         public function cfl_cron_schedules($schedules)
         {
            
-            if (!isset($schedules['5min'])) {
-                $schedules['5min'] = array(
-                    'interval' => 5 * 60,
-                    'display' => __('Once every 5 minutes'),
-                );
-            }
-            // 30days schedule for update information
-
             if (!isset($schedules['every_30_days'])) {
 
                 $schedules['every_30_days'] = array(
@@ -44,21 +35,15 @@ if (!class_exists('CFL_cronjob')) {
         
         function cfl_cron_extra_data_autoupdater(){
             
-            $settings       = get_option('openexchange-api-settings', []);
-            $ccew_response  = isset($settings['ccew_extra_info']) ? $settings['ccew_extra_info'] : '';
+            $settings       = get_option('cfl_usage_share_data');
+           
+            if (!empty($settings) || $settings === 'on'){
 
-
-            if (!empty($ccew_response) || $ccew_response === 'on'){
-          
-                if (class_exists('CFL_cronjob')) {
-                    CFL_cronjob::cfl_send_data();
-                }
+                CFL_cronjob::cfl_send_data();
             }
 
         }
 
-
-                
         static public function cfl_send_data() {
  
                  $feedback_url = 'http://feedback.coolplugins.net/wp-json/coolplugins-feedback/v1/site';
@@ -110,9 +95,9 @@ if (!class_exists('CFL_cronjob')) {
               
                   $response_body = wp_remote_retrieve_body($response);
                   $decoded = json_decode($response_body, true);
-                 
+                
                   if (!wp_next_scheduled('cfl_extra_data_update')) {
-                   wp_schedule_event(time(), 'every_30_days', 'cfl_extra_data_update');
+                    wp_schedule_event(time(), 'every_30_days', 'cfl_extra_data_update');
                 }
              
         }

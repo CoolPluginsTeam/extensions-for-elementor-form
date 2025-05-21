@@ -312,8 +312,14 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		if(!get_option( 'cfl-install-date' ) ) {
 			add_option( 'cfl-install-date', gmdate('Y-m-d h:i:s') );
         }
+
+		$settings       = get_option('cfl_usage_share_data');
+           
+        if (!empty($settings) || $settings === 'on'){
+			
+			self::cfl_cron_job_init();
+        }
 		
-		self::cfl_cron_job_init();
 	}
 		
 	public static function cfl_cron_job_init()
