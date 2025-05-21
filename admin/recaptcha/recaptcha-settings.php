@@ -96,7 +96,29 @@ class Recaptcha_settings{
                                     <p class="description cool-formkit-description"><?php esc_html_e('Score threshold should be a value between 0 and 1, default: 0.5', 'cool-formkit'); ?></p>
                                 </td>
                             </tr>
+                            <?php $cpfm_opt_in = get_option('cpfm_opt_in_choice_timeline','');
+                             if ($cpfm_opt_in) {
+
+                              $check_option =  get_option( 'cfl_usage_share_data','');
                             
+                            if($check_option == 'on'){
+                                $checked = 'checked';
+                            }else{
+                                $checked = '';
+                            }
+
+                            ?>
+                            
+                            <tr>
+                                <th scope="row" class="cool-formkit-table-th">
+                                    <label for="cfl_usage_share_data" class="usage-share-data-label"><?php esc_html_e('Usage Share Data', 'cool-formkit'); ?></label>
+                                </th>
+                                <td class="cool-formkit-table-td usage-share-data">
+                                    <input type="checkbox" id="cfl_usage_share_data" name="cfl_usage_share_data" value="on" <?php echo $checked ?>  class="regular-text cool-formkit-input"  />
+                                    <p class="description cool-formkit-description"><?php esc_html_e(' Help us make this plugin more compatible with your site by sharing non-sensitive site data. [See terms]', 'cool-formkit'); ?></p>
+                                </td>
+                            </tr>
+                            <?php }?>
                     </table>
 
                     <div>
@@ -111,6 +133,7 @@ class Recaptcha_settings{
             <?php
         }
     }
+
 
 
     public function add_dashboard_tab($tabs) {
@@ -200,6 +223,7 @@ class Recaptcha_settings{
         $secret_key_v2 = isset($_POST['secret_key_v2']) ? sanitize_text_field($_POST['secret_key_v2']) : '';
 
         $site_key_v3  = isset($_POST['site_key_v3']) ? sanitize_text_field($_POST['site_key_v3']) : '';
+        $cfl_usage_share_data = isset($_POST['cfl_usage_share_data']) ? sanitize_text_field($_POST['cfl_usage_share_data']) : '';
         $secret_key_v3 = isset($_POST['secret_key_v3']) ? sanitize_text_field($_POST['secret_key_v3']) : '';
 
         $threshold_v3 = isset($_POST['threshold_v3']) ?  sanitize_text_field($_POST['threshold_v3']) : '';
@@ -213,6 +237,8 @@ class Recaptcha_settings{
         
 
 
+       
+        
         update_option( "cfl_site_key_v2",  $site_key_v2);
 
         update_option( "cfl_secret_key_v2",  $secret_key_v2);
@@ -222,13 +248,40 @@ class Recaptcha_settings{
 
         update_option( "cfl_secret_key_v3",  $secret_key_v3);
 
-        update_option( "cfl_threshold_v3",  $threshold_v3);
+        update_option( "cfl_site_key_v2",  $site_key_v2);
+
+        update_option( "cfl_usage_share_data",  $cfl_usage_share_data);
+         $this->cfl_handle_unchecked_checkbox();
 
     echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Settings saved.', 'cool-formkit') . '</p></div>';
 
     }
 
     }
+
+    function cfl_handle_unchecked_checkbox() {
+        $choice  = get_option('cpfm_opt_in_choice_timeline');
+        $options = get_option('cfl_usage_share_data');
+
+        if (!empty($choice)) {
+
+            // If the checkbox is unchecked (value is empty, false, or null)
+            if (empty($options)) {
+                wp_clear_scheduled_hook('cfl_extra_data_update');
+            }
+
+            // If checkbox is checked (value is 'on' or any non-empty value)
+            else {
+                if (!wp_next_scheduled('cfl_extra_data_update')) {
+                    if (class_exists('CFL_cronjob') && method_exists('CFL_cronjob', 'cfl_send_data')) {
+                        CFL_cronjob::cfl_send_data();
+                    }
+                    wp_schedule_event(time(), 'every_30_days', 'cfl_extra_data_update');
+                }
+            }
+        }
+    }
+
 
 
     public function __construct() {
@@ -259,8 +312,7 @@ class Recaptcha_settings{
         if ($category === 'timeline') {
 
             CFL_cronjob::cfl_send_data();
-            
-
+            update_option( 'cfl_usage_share_data','on' );   
         }
     });
        
