@@ -130,7 +130,7 @@ class CPFM_Feedback_Notice {
 
         update_option("cpfm_opt_in_choice_{$category}", $opt_in);
 
-        $review_option = get_option('cpfm_opt_in_choice_timeline');
+        $review_option = get_option('cpfm_opt_in_choice_cool_forms');
        
         if ($review_option === 'yes') {
             

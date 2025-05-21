@@ -96,7 +96,7 @@ class Recaptcha_settings{
                                     <p class="description cool-formkit-description"><?php esc_html_e('Score threshold should be a value between 0 and 1, default: 0.5', 'cool-formkit'); ?></p>
                                 </td>
                             </tr>
-                            <?php $cpfm_opt_in = get_option('cpfm_opt_in_choice_timeline','');
+                            <?php $cpfm_opt_in = get_option('cpfm_opt_in_choice_cool_forms','');
                              if ($cpfm_opt_in) {
 
                               $check_option =  get_option( 'cfl_usage_share_data','');
@@ -275,7 +275,7 @@ class Recaptcha_settings{
     }
 
     function cfl_handle_unchecked_checkbox() {
-        $choice  = get_option('cpfm_opt_in_choice_timeline');
+        $choice  = get_option('cpfm_opt_in_choice_cool_forms');
         $options = get_option('cfl_usage_share_data');
 
         if (!empty($choice)) {
@@ -311,7 +311,7 @@ class Recaptcha_settings{
                 return;
             }
             
-            CPFM_Feedback_Notice::cpfm_register_notice('timeline', [
+            CPFM_Feedback_Notice::cpfm_register_notice('cool_forms', [
                 
                 'title' => __('Timeline Plugins by Cool Plugins', 'extensions-for-elementor-form'),
                 'message' => __('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'cool-plugins-feedback'),
@@ -324,7 +324,7 @@ class Recaptcha_settings{
         add_action('cpfm_after_opt_in_extensions-for-elementor-form', function($category) {
             
 
-        if ($category === 'timeline') {
+        if ($category === 'cool_forms') {
 
             CFL_cronjob::cfl_send_data();
             update_option( 'cfl_usage_share_data','on' );   
