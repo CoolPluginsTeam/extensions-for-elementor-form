@@ -313,22 +313,22 @@ class Recaptcha_settings{
             
             CPFM_Feedback_Notice::cpfm_register_notice('cool_forms', [
                 
-                'title' => __('Timeline Plugins by Cool Plugins', 'extensions-for-elementor-form'),
+                'title' => __('Elementor Form Addons by Cool Plugins', 'extensions-for-elementor-form'),
                 'message' => __('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'cool-plugins-feedback'),
                 'pages' => ['cool-formkit','cfkef-entries','cool-formkit&tab=recaptcha-settings'],
                 'always_show_on' => ['cool-formkit','cfkef-entries','cool-formkit&tab=recaptcha-settings'], // This enables auto-show
-                'plugin_name'=>'extensions-for-elementor-form'
+                'plugin_name'=>'cool_forms'
             ]);
         });
         
-        add_action('cpfm_after_opt_in_extensions-for-elementor-form', function($category) {
+        add_action('cpfm_after_opt_in_cool_forms', function($category) {
             
 
         if ($category === 'cool_forms') {
 
             CFL_cronjob::cfl_send_data();
             update_option( 'cfl_usage_share_data','on' );   
-        }
+        } 
     });
        
     }
