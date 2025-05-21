@@ -109,6 +109,8 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	{
 		// Include main plugin class.
 		require_once CFL_PLUGIN_PATH . '/includes/class-plugin.php';
+		require_once CFL_PLUGIN_PATH . '/includes/cron/cfl-class-cron.php';
+
 		CFL_Loader::get_instance();
 
 		require_once CFL_PLUGIN_PATH . 'widgets/cfl-addons-loader.php';		
@@ -122,6 +124,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			require_once CFL_PLUGIN_PATH . 'admin/feedback/admin-feedback-form.php';
 			require_once CFL_PLUGIN_PATH . 'admin/feedback/cpfm-feedback-notice.php';
 		}
+
 		// add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'EEF_plugin_dashboard_link' ) );
 
 	}
@@ -301,14 +304,31 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		update_option('eef-v', CFL_VERSION);
 		update_option('eef-type', 'FREE');
 		update_option('eef-installDate', gmdate('Y-m-d h:i:s'));
-
-		if (!get_option( 'Cool_Formkit_Lite_initial_save_version' ) ) {
-			add_option( 'Cool_Formkit_Lite_initial_save_version', CFL_VERSION );
+		
+		if (!get_option( 'CFL_initial_save_version' ) ) {
+			add_option( 'CFL_initial_save_version', CFL_VERSION );
+		}
+		
+		if(!get_option( 'cfl-install-date' ) ) {
+			add_option( 'cfl-install-date', gmdate('Y-m-d h:i:s') );
+        }
+		
+		self::cfl_cron_job_init();
+	}
+		
+	public static function cfl_cron_job_init()
+	{
+		if (!wp_next_scheduled('cfl_extra_data_update')) {
+			wp_schedule_event(time(), 'every_30_days', 'cfl_extra_data_update');
 		}
 	}
 
+	public static function eef_deactivate() {
 
-	public static function eef_deactivate() {}
+        if (wp_next_scheduled('cfl_extra_data_update')) {
+            wp_clear_scheduled_hook('cfl_extra_data_update');
+        }
+	}
 }
 
 // Initialize the plugin.

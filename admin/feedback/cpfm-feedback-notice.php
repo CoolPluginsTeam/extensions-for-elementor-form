@@ -134,15 +134,16 @@ class CPFM_Feedback_Notice {
        
         if ($review_option === 'yes') {
             
-             foreach (self::$registered_notices[$category] as $notice) {
+            $category_notices = self::$registered_notices[$category];
 
-                    $plugin_name = isset($notice['plugin_name'])?sanitize_key($notice['plugin_name']):'';
+            foreach ($category_notices as $notice) {
+                if (is_array($notice)) {
+                    $plugin_name = isset($notice['plugin_name']) ? sanitize_key($notice['plugin_name']) : '';
 
-                    if($plugin_name){
-
+                    if ($plugin_name) {
                         do_action('cpfm_after_opt_in_' . $plugin_name, $category);
                     }
-              
+                }
             }
           
         }

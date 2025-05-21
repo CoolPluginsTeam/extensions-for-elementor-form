@@ -4,7 +4,7 @@ namespace Cool_FormKit\Admin\Recaptcha;
 
 use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
 use Cool_FormKit\Admin\feedback\CPFM_Feedback_Notice\CPFM_Feedback_Notice;
-
+use Cool_FormKit\Includes\Cron\CFL_cronjob;
 
 
 class Recaptcha_settings{
@@ -251,8 +251,18 @@ class Recaptcha_settings{
                 'always_show_on' => ['cool-formkit','cfkef-entries','cool-formkit&tab=recaptcha-settings'], // This enables auto-show
                 'plugin_name'=>'extensions-for-elementor-form'
             ]);
-            // var_dump('cpfm_register_notice'); die();
-     });
+        });
+        
+        add_action('cpfm_after_opt_in_extensions-for-elementor-form', function($category) {
+            
+
+        if ($category === 'timeline') {
+
+            CFL_cronjob::cfl_send_data();
+            
+
+        }
+    });
        
     }
 
