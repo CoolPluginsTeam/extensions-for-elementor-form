@@ -3,9 +3,7 @@
 namespace Cool_FormKit\Admin\Recaptcha;
 
 use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
-use Cool_FormKit\Admin\feedback\CPFM_Feedback_Notice\CPFM_Feedback_Notice;
 use Cool_FormKit\Includes\Cron\CFL_cronjob;
-
 
 class Recaptcha_settings{
 
@@ -307,18 +305,27 @@ class Recaptcha_settings{
         
         add_action('cpfm_register_notice', function () {
             
-            if (!class_exists('Cool_FormKit\Admin\feedback\CPFM_Feedback_Notice\CPFM_Feedback_Notice') || !current_user_can('manage_options')) {
+            if (!class_exists('\CPFM_Feedback_Notice') || !current_user_can('manage_options')) {
                 return;
             }
-            
-            CPFM_Feedback_Notice::cpfm_register_notice('cool_forms', [
-                
+
+            $notice = [
+
                 'title' => __('Elementor Form Addons by Cool Plugins', 'extensions-for-elementor-form'),
                 'message' => __('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'cool-plugins-feedback'),
                 'pages' => ['cool-formkit','cfkef-entries','cool-formkit&tab=recaptcha-settings'],
                 'always_show_on' => ['cool-formkit','cfkef-entries','cool-formkit&tab=recaptcha-settings'], // This enables auto-show
                 'plugin_name'=>'cool_forms'
-            ]);
+            ];
+
+            \CPFM_Feedback_Notice::cpfm_register_notice('cool_forms', $notice);
+
+                if (!isset($GLOBALS['cool_plugins_feedback'])) {
+                    $GLOBALS['cool_plugins_feedback'] = [];
+                }
+                
+                $GLOBALS['cool_plugins_feedback']['cool_forms'][] = $notice;
+           
         });
         
         add_action('cpfm_after_opt_in_cool_forms', function($category) {

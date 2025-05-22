@@ -1,10 +1,7 @@
 <?php
 
-namespace Cool_FormKit\Admin\feedback\CPFM_Feedback_Notice;
 if ( ! defined( 'ABSPATH' )) exit;
-
-
-
+if(!class_exists('CPFM_Feedback_Notice')){
 class CPFM_Feedback_Notice {
     
     private static $registered_notices = [];
@@ -122,15 +119,17 @@ class CPFM_Feedback_Notice {
         $category   = isset($_POST['category']) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ): '';
         $opt_in_raw = isset($_POST['opt_in']) ? sanitize_text_field( wp_unslash( $_POST['opt_in'] ) ) : '';
         $opt_in = ($opt_in_raw === 'yes') ? 'yes' : 'no';
+        $category_notices   = self::$registered_notices;
+        $registered_notices = isset($GLOBALS['cool_plugins_feedback'])?$GLOBALS['cool_plugins_feedback']:$category_notices;
        
-        if (!$category || !isset(self::$registered_notices[$category])) {
+        if (!$category || !isset($registered_notices[$category])) {
 
             wp_send_json_error('Invalid notice category.');
         }
-
+       
         update_option("cpfm_opt_in_choice_{$category}", $opt_in);
 
-        $review_option = get_option('cpfm_opt_in_choice_cool_forms');
+        $review_option = get_option("cpfm_opt_in_choice_{$category}");
        
         if ($review_option === 'yes') {
             
@@ -230,3 +229,4 @@ class CPFM_Feedback_Notice {
     }
 }
 new CPFM_Feedback_Notice();
+}
