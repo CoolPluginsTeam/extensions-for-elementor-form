@@ -10,7 +10,7 @@ class CPFM_Feedback_Notice {
         
         add_action('admin_init', [ $this, 'cpfm_listen_for_external_notice_registration' ]);
         add_action('admin_enqueue_scripts', [ $this, 'cpfm_enqueue_assets' ]);
-        add_action('wp_ajax_cpfm_handle_opt_in', [ $this, 'cpfm_cpfm_handle_opt_in_choice' ]);
+        add_action('wp_ajax_cpfm_handle_opt_in', [ $this, 'cpfm_handle_opt_in_choice' ]);
 
         add_action('admin_footer', [ $this, 'cpfm_render_notice_panel' ]);
     }
@@ -107,7 +107,7 @@ class CPFM_Feedback_Notice {
         ]);
     }
   
-    public function cpfm_cpfm_handle_opt_in_choice() {
+    public function cpfm_handle_opt_in_choice() {
 
         if (!current_user_can('manage_options')) {
 
