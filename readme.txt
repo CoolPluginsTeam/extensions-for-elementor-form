@@ -149,8 +149,8 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-Version 2.8.5| 26/05/2025
-* **Improved:** Enhanced user opt-in options for better customization.
+= Version 2.4.5| 26/05/2025 = 
+* **Improvements:** Enhanced user opt-in options for better customization.
 * **Fixed:** All fields visible on load.
 * **Tested upto:** Elementor Version 3.29.0 and Elementor Pro Version 3.29.0 
 
