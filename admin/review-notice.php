@@ -37,7 +37,7 @@ class Review_notice
 
 		// add_action('wp_ajax_cfl_elementor_review_notice', array($this, 'cfl_elementor_review_notice'));
 
-		add_action('wp_ajax_' . $this->plugin_slug . '_dismiss_notice', array($this, 'cfl_review_notice'));
+		add_action('wp_ajax_' . sanitize_key($this->plugin_slug) . '_dismiss_notice', array($this, 'cfl_review_notice'));
 	}
 
 	public function add_review_notice($widget)
@@ -112,16 +112,16 @@ class Review_notice
 	function cfl_create_notice_content()
 	{
 		$html = '
-		<div data-ajax-url="' . admin_url('admin-ajax.php') . '" data-nonce="' . wp_create_nonce('cfl_elementor_review') . '" data-ajax-callback="' . $this->plugin_slug . '_dismiss_notice" class="' . $this->plugin_slug . '-review-notice-wrapper notice">
+		<div data-ajax-url="' . admin_url('admin-ajax.php') . '" data-nonce="' . wp_create_nonce('cfl_elementor_review') . '" data-ajax-callback="' . esc_attr($this->plugin_slug) . '_dismiss_notice" class="' . esc_attr($this->plugin_slug) . '-review-notice-wrapper notice">
 			<div class="logo_container">
-				<a href="' . esc_url($this->review_link) . '" target="_blank"><img src="' . $this->plugin_url . $this->plugin_logo . '" alt="' . $this->plugin_name . '"></a>
+				<a href="' . esc_url($this->review_link) . '" target="_blank"><img src="' . $this->plugin_url . $this->plugin_logo . '" alt="' . esc_attr($this->plugin_name) . '"></a>
 			</div>
 			<div class="message_container">
-				<p>Thanks for using <b>' . $this->plugin_name . '</b> WordPress plugin. We hope it meets your expectations!<br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href="https://coolplugins.net" target="_blank"><strong>Cool Plugins</strong></a>!</p>
+				<p>Thanks for using <b>' . esc_html($this->plugin_name) . '</b> WordPress plugin. We hope it meets your expectations!<br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href="https://coolplugins.net" target="_blank"><strong>Cool Plugins</strong></a>!</p>
 				<ul>
 					<li><a href="' . esc_url($this->review_link) . '" class="rate-it-btn button button-primary" target="_blank" title="Submit A Review...">Rate Now! ★★★★★</a></li>
-					<li><a href="javascript:void(0);" class="already-rated-btn button button-secondary ' . $this->plugin_slug . '_dismiss_notice" title="Already Rated - Close This Notice!">Already Rated</a></li>
-					<li><a href="javascript:void(0);" class="already-rated-btn button button-secondary ' . $this->plugin_slug . '_dismiss_notice" title="Not Interested - Close This Notice!">Not Interested</a></li>
+					<li><a href="javascript:void(0);" class="already-rated-btn button button-secondary ' . esc_attr($this->plugin_slug) . '_dismiss_notice" title="Already Rated - Close This Notice!">Already Rated</a></li>
+					<li><a href="javascript:void(0);" class="already-rated-btn button button-secondary ' . esc_attr($this->plugin_slug) . '_dismiss_notice" title="Not Interested - Close This Notice!">Not Interested</a></li>
 				</ul>
 			</div>
 		</div>
@@ -130,7 +130,7 @@ class Review_notice
 		// css styles
 		$style = '
 		<style>
-		#wpbody .' . $this->plugin_slug . '-review-notice-wrapper.notice {
+		#wpbody .' . esc_attr($this->plugin_slug) . '-review-notice-wrapper.notice {
 			padding: 5px;
 			margin: 5px 0;
 			display: table;
@@ -140,51 +140,51 @@ class Review_notice
 			box-sizing: border-box;
 			box-shadow: 2px 4px 8px -2px rgba(0, 0, 0, 0.1)
 		}
-		.' . $this->plugin_slug . '-review-notice-wrapper .logo_container {
+		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper .logo_container {
 			width: 80px;
 			display: table-cell;
 			padding: 5px;
 			vertical-align: middle;
 		}
-		.' . $this->plugin_slug . '-review-notice-wrapper .logo_container a,
-		.' . $this->plugin_slug . '-review-notice-wrapper .logo_container img {
+		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper .logo_container a,
+		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper .logo_container img {
 			width:80px;
 			height:auto;
 			display:inline-block;
 		}
-		.' . $this->plugin_slug . '-review-notice-wrapper .message_container {
+		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper .message_container {
 			display: table-cell;
 			padding: 5px;
 			vertical-align: middle;
 		}
-		.' . $this->plugin_slug . '-review-notice-wrapper p,
-		.' . $this->plugin_slug . '-review-notice-wrapper ul {
+		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper p,
+		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper ul {
 			padding: 0;
 			margin: 0;
 			line-height: 1.25em;
 			display: flow-root;
 		}
-		.' . $this->plugin_slug . '-review-notice-wrapper ul {
+		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper ul {
 			margin-top: 10px;
 		}
-		.' . $this->plugin_slug . '-review-notice-wrapper ul li {
+		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper ul li {
 			float: left;
 			margin: 0px 10px 0 0;
 		}
-		.' . $this->plugin_slug . '-review-notice-wrapper ul li .button-primary {
+		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper ul li .button-primary {
 			background: #772ec9;
 			text-shadow: none;
 			border-color: #a69516;
 			box-shadow: none;
 			color: #fff;
 		}
-		.' . $this->plugin_slug . '-review-notice-wrapper ul li .button-secondary {
+		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper ul li .button-secondary {
 			background: #fff;
 			background-color: #fff;
 			border: 1px solid #757575;
 			color: #757575;
 		}
-		.' . $this->plugin_slug . '-review-notice-wrapper ul li .button-secondary.already-rated-btn:after {
+		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper ul li .button-secondary.already-rated-btn:after {
 			color: #f12945;
 			content: "\f153";
 			display: inline-block;
@@ -194,15 +194,15 @@ class Review_notice
 			line-height: 14px;
 			font-family: dashicons;
 		}
-		.' . $this->plugin_slug . '-review-notice-wrapper ul li .button-primary:hover {
+		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper ul li .button-primary:hover {
 			background: #222;
 			border-color: #000;
 		}
 		@media screen and (max-width: 660px) {
-			.' . $this->plugin_slug . '-review-notice-wrapper .logo_container{
+			.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper .logo_container{
 				display:none;
 			}
-			.' . $this->plugin_slug . '-review-notice-wrapper .message_container {
+			.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper .message_container {
 				display: flow-root;
 			}
 		}
@@ -213,9 +213,9 @@ class Review_notice
 		$script = '
 		<script>
 		jQuery(document).ready(function ($) {
-			$(".' . $this->plugin_slug . '_dismiss_notice").on("click", function (event) {
+			$(".' . esc_js($this->plugin_slug) . '_dismiss_notice").on("click", function (event) {
 				var $this = $(this);
-				var wrapper=$this.parents(".' . $this->plugin_slug . '-review-notice-wrapper");
+				var wrapper=$this.parents(".' . esc_js($this->plugin_slug) . '-review-notice-wrapper");
 				var ajaxURL=wrapper.data("ajax-url");
 				var nonce = wrapper.data("nonce");
 				var ajaxCallback=wrapper.data("ajax-callback");         
