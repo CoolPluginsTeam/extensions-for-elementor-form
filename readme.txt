@@ -149,8 +149,8 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-Version 2.8.5| 26/05/2025
-Improvements: Enhanced user opt-in options for better customization.
+= Version 2.4.5| 26/05/2025 = 
+* **Improvements:** Enhanced user opt-in options for better customization.
 
 =  Version 2.4.4 | 11/04/2025 =
 * **Fixed:** Critical error occurring during plugin activation on certain server configurations.
