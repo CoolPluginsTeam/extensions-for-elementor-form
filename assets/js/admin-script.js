@@ -13,5 +13,20 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+    const termsLinks = document.querySelectorAll('.ccpw-see-terms');
+    const termsBox = document.getElementById('termsBox');
+
+    termsLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (termsBox) {
+                // Toggle display using plain JavaScript
+                const isVisible = termsBox.style.display === 'block';
+                termsBox.style.display = isVisible ? 'none' : 'block';
+                link.innerHTML = !isVisible ? 'Hide Terms' : 'See terms';
+            }
+        });
+    });
+
 });
 
