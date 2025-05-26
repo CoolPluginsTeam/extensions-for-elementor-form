@@ -17,9 +17,13 @@ Cool FormKit - A contact form builder for Elementor with a drag-and-drop Element
 
 https://youtu.be/u1PYFXv01Rc
 
-**Cool FormKit Lite** is a powerful form builder for Elementor, designed to give Elementor (Free) users access to **form-building** capabilities that were previously only available to **Elementor Pro users**.
+**[Cool FormKit Lite](https://coolplugins.net/cool-formkit-lite/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=demo&utm_content=view_plugin)** is a powerful form builder for Elementor, designed to give Elementor (Free) users access to **form-building** capabilities that were previously only available to **Elementor Pro users**.
 
 This addon allows you to build **custom forms** using a **drag-and-drop** interface, just like Elementor. Create **Contact Forms, Registration Forms, Survey Forms**, and more without writing a single line of code.
+
+— —————————————- —
+[**CHECK PLUGIN DEMO**](https://coolplugins.net/cool-formkit-lite/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=demo&utm_content=check_plugin_demo)
+— —————————————- —
 
 **Key Features**
 

@@ -451,6 +451,11 @@ button#recaptcha-submit{
     border-radius: 5px;
 }
 
+td.cool-formkit-table-td.usage-share-data {
+    display: flex;
+    align-items: start;
+    gap: 8px;
+}
 
 @media (max-width: 571px) and (min-width:300px){
     .cfkef-header-logo img {
