@@ -480,6 +480,16 @@
             });
         });
 
+        $(document).ready(function(){
+            $(".cool-form").each(function() {
+                var form = $(this).closest(".elementor-widget-cool-form");
+                var formId = form.closest(".elementor-element").attr("data-id");
+                form.attr("data-form-id", "form-" + formId);
+                addHiddenClass(form,formId);
+                logicLoad(form, formId);
+            });
+        });
+
      //add conditional fields on form when page load
         window.addEventListener('elementor/frontend/init', function() {
             $(".cool-form").each(function() {
