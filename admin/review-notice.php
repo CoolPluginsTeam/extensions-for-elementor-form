@@ -15,11 +15,10 @@ class Review_notice
 {
 
 	private $plugin_url     = CFL_PLUGIN_URL;
-	private $plugin_name    = 'Cool Formkit Lite';
+	private $plugin_name    = sanitize_text_field('Cool Formkit Lite');
+	private $plugin_slug    = sanitize_text_field('cfl');
 
 	private $review_option = 'cfl_review_notice_dismiss';
-	private $plugin_slug    = 'cfl';
-
 	private $installation_date_option = 'eef-installDate';
 
 	private $review_link = 'https://wordpress.org/support/plugin/extensions-for-elementor-form/reviews/#new-post';
@@ -49,10 +48,10 @@ class Review_notice
 
 			// HTML for the review notice
 
-			$html         = '<div class="cfl_elementor_review_wrapper">';
-			$html        .= '<div id="cfl_elementor_review_dismiss" data-url="' . esc_url($url) . '" data-nonce="' . esc_attr($review_nonce) . '">Close Notice X</div>
-								<div class="cfl_elementor_review_msg">' . __('Hope this addon solved your problem!', 'cfl') . '<br><a href="https://wordpress.org/support/plugin/extensions-for-elementor-form/reviews/#new-post" target="_blank"">Share the love with a ⭐⭐⭐⭐⭐ rating.</a><br><br></div>
-								<div class="cfl_elementor_demo_btn"><a href="https://wordpress.org/support/plugin/extensions-for-elementor-form/reviews/#new-post" target="_blank">Submit Review</a></div>
+			$html         = '<div class="' . esc_attr($this->plugin_slug) . '_review_wrapper">';
+			$html        .= '<div id="' . esc_attr($this->plugin_slug) . '_review_dismiss" data-url="' . esc_url($url) . '" data-nonce="' . esc_attr($review_nonce) . '">Close Notice X</div>
+								<div class="' . esc_attr($this->plugin_slug) . '_review_msg">' . __('Hope this addon solved your problem!', 'cfl') . '<br><a href="' . esc_url($this->review_link) . '" target="_blank" rel="noopener noreferrer">Share the love with a ⭐⭐⭐⭐⭐ rating.</a><br><br></div>
+								<div class="' . esc_attr($this->plugin_slug) . '_demo_btn"><a href="' . esc_url($this->review_link) . '" target="_blank" rel="noopener noreferrer">Submit Review</a></div>
 								</div>'; // Close main wrapper 
 
 			$widget->start_controls_section(
@@ -69,7 +68,7 @@ class Review_notice
 					'label' => __('Review Notice', 'cfl'),
 					'type' => \Elementor\Controls_Manager::RAW_HTML,
 					'raw' => $html,
-					'content_classes' => 'cfl_elementor_review_notice',
+					'content_classes' => esc_attr($this->plugin_slug) . '_review_notice',
 					'tab' => 'content',
 				)
 			);
@@ -114,12 +113,12 @@ class Review_notice
 		$html = '
 		<div data-ajax-url="' . admin_url('admin-ajax.php') . '" data-nonce="' . wp_create_nonce('cfl_elementor_review') . '" data-ajax-callback="' . $this->plugin_slug . '_dismiss_notice" class="' . $this->plugin_slug . '-review-notice-wrapper notice">
 			<div class="logo_container">
-				<a href="' . esc_url($this->review_link) . '" target="_blank"><img src="' . $this->plugin_url . $this->plugin_logo . '" alt="' . $this->plugin_name . '"></a>
+				<a href="' . esc_url($this->review_link) . '" target="_blank" rel="noopener noreferrer"><img src="' . $this->plugin_url . $this->plugin_logo . '" alt="' . $this->plugin_name . '"></a>
 			</div>
 			<div class="message_container">
-				<p>Thanks for using <b>' . $this->plugin_name . '</b> WordPress plugin. We hope it meets your expectations!<br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href="https://coolplugins.net" target="_blank"><strong>Cool Plugins</strong></a>!</p>
+				<p>Thanks for using <b>' . $this->plugin_name . '</b> WordPress plugin. We hope it meets your expectations!<br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href="https://coolplugins.net" target="_blank" rel="noopener noreferrer"><strong>Cool Plugins</strong></a>!</p>
 				<ul>
-					<li><a href="' . esc_url($this->review_link) . '" class="rate-it-btn button button-primary" target="_blank" title="Submit A Review...">Rate Now! ★★★★★</a></li>
+					<li><a href="' . esc_url($this->review_link) . '" class="rate-it-btn button button-primary" target="_blank" rel="noopener noreferrer" title="Submit A Review...">Rate Now! ★★★★★</a></li>
 					<li><a href="javascript:void(0);" class="already-rated-btn button button-secondary ' . $this->plugin_slug . '_dismiss_notice" title="Already Rated - Close This Notice!">Already Rated</a></li>
 					<li><a href="javascript:void(0);" class="already-rated-btn button button-secondary ' . $this->plugin_slug . '_dismiss_notice" title="Not Interested - Close This Notice!">Not Interested</a></li>
 				</ul>
