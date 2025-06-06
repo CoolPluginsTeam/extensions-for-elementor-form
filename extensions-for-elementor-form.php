@@ -125,6 +125,13 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			if(!class_exists('CPFM_Feedback_Notice')){
 				require_once CFL_PLUGIN_PATH . 'admin/feedback/cpfm-feedback-notice.php';
 			}
+			if (!get_option( 'CFL_initial_save_version' ) ) {
+				add_option( 'CFL_initial_save_version', CFL_VERSION );
+			}
+		
+			if(!get_option( 'cfl-install-date' ) ) {
+				add_option( 'cfl-install-date', gmdate('Y-m-d h:i:s') );
+        	}
 		}
 
 		// add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'EEF_plugin_dashboard_link' ) );
