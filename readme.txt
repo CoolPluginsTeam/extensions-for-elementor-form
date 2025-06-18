@@ -11,7 +11,7 @@ Elementor Pro tested up to: 3.29.0
 License: GPL 3.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Cool FormKit - A contact form builder for Elementor with a drag-and-drop Elementor form widget.
+Cool FormKit - A contact form builder for Elementor with a drag-and-drop Elementor form widgetttt.
 
 == Description ==
 
