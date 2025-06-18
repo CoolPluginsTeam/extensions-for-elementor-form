@@ -1,7 +1,7 @@
 === Cool FormKit Lite - Elementor Form Builder ===
 
 Contributors: coolplugins, narinder-singh, satindersingh
-Tags: form builder, elementor form, elementor, contact form, custom form
+Tags: form builder, elementor form, elementor, contact form, custom formopopopopo
 Requires at least: 6.2
 Tested up to: 6.8.1
 Stable tag: 2.4.5
