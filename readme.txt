@@ -15,10 +15,6 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Cool FormKit - A contact form builder for Elementor with a drag-and-drop Elementor form widget.
 
-Cool FormKit - A contact form builder for Elementor with a drag-and-drop Elementor form widget.
-
-Cool FormKit - A contact form builder for Elementor with a drag-and-drop Elementor form widget.
-
 == Description ==
 
 https://youtu.be/u1PYFXv01Rc
