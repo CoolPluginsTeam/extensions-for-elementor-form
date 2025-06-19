@@ -1,6 +1,6 @@
 # Extensions for Elementor Form
 
-\=== Cool FormKit Lite - Elementor Form Builder ===
+=== Cool FormKit Lite - Elementor Form Builder ===
 
 Contributors: coolplugins, narinder-singh, satindersingh\
 Tags: form builder, elementor form, elementor, contact form, custom form\
@@ -15,7 +15,9 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Cool FormKit - A contact form builder for Elementor with a drag-and-drop Elementor form widget.
 
-\== Description ==
+Cool FormKit - A contact form builder for Elementor with a drag-and-drop Elementor form widget.
+
+== Description ==
 
 https://youtu.be/u1PYFXv01Rc
 
@@ -72,59 +74,59 @@ We’re actively improving Cool FormKit Lite. Future updates will include condit
 * **Hide Form After Submission:** Automatically hide the form after successful submission. [👉 Video demo](https://www.youtube.com/watch?v=CMN32j4hGlA)
 * **Custom Success Message:** Display a custom message template after submission. [👉 Video demo](https://www.youtube.com/watch?v=CMN32j4hGlA)
 
-\== Screenshots ==
+== Screenshots ==
 
 1. Cool FormKit Lite preview.
 2. Cool FormKit Lite form.
 3. Cool Formkit Entries.
 
-\== Frequently Asked Questions ==
+== Frequently Asked Questions ==
 
-\= Do I need Elementor Pro to use Cool FormKit Lite? =\
+= Do I need Elementor Pro to use Cool FormKit Lite? =\
 No, Cool FormKit Lite works with Elementor (Free), so you don’t need Elementor Pro.
 
-\= How do I customize the form fields in Cool FormKit Lite? =\
+= How do I customize the form fields in Cool FormKit Lite? =\
 Customize form fields in the Elementor editor by adjusting labels, placeholders, required status, and other settings.
 
-\= Do I need coding knowledge to build forms? =\
+= Do I need coding knowledge to build forms? =\
 No, you don’t need any coding knowledge. The drag-and-drop interface allows easy form building.
 
-\= How does Cool FormKit Lite use Material Design? =\
+= How does Cool FormKit Lite use Material Design? =\
 It follows Google’s Material Design guidelines for clean layouts and responsive elements.
 
-\= Is there a limit to how many forms I can create? =\
+= Is there a limit to how many forms I can create? =\
 No, you can create and manage unlimited forms.
 
-\= Can I style forms to match my website's theme? =\
+= Can I style forms to match my website's theme? =\
 Yes, you can customize forms using Elementor’s design features like typography, colors, and spacing.
 
-\= Does Cool FormKit Lite integrate with third-party email marketing tools? =\
+= Does Cool FormKit Lite integrate with third-party email marketing tools? =\
 Currently, it does not support direct integrations with third-party email marketing tools.
 
-\= How do I set up a thank-you page or redirect after submission? =\
+= How do I set up a thank-you page or redirect after submission? =\
 Enable the redirect option in "Actions After Submit" and enter the desired redirect URL.
 
-\= What’s new in Cool FormKit Lite v2.4.0? =\
+= What’s new in Cool FormKit Lite v2.4.0? =\
 In this update, we have introduced a **drag-and-drop form builder**, allowing users to create custom forms easily using Elementor (Free). We’ve also improved compatibility, updated branding, and optimized the code for better performance.
 
-\= Can I use the new form builder with Elementor Free? =\
+= Can I use the new form builder with Elementor Free? =\
 Yes! The latest update makes Cool FormKit Lite fully compatible with Elementor Free, so you don’t need Elementor Pro to create custom forms.
 
-\= How do I enable the new drag-and-drop form builder? =\
+= How do I enable the new drag-and-drop form builder? =\
 Simply open Elementor, drag the **Cool FormKit** widget onto your page, and start adding and customizing form fields using the intuitive interface.
 
-\= Has the plugin name changed? =\
+= Has the plugin name changed? =\
 Yes, we have rebranded the plugin from **Extensions for Elementor Form** to **Cool FormKit Lite - Elementor Form Builder** for better clarity and recognition.
 
-\= Do I need to update anything after upgrading to v2.4.0? =\
+= Do I need to update anything after upgrading to v2.4.0? =\
 No manual updates are required. Just upgrade to v2.4.0, and the new features will be available in Elementor automatically.
 
-\= Will my existing forms still work after the update? =\
+= Will my existing forms still work after the update? =\
 Yes, all your existing forms will continue to function as expected. The update only enhances functionality without affecting previous forms.\
-\= How can I report security bugs? =\
+= How can I report security bugs? =\
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/extensions-for-elementor-form)
 
-\== Installation ==
+== Installation ==
 
 1. **Download the Plugin:**
    * Go to the WordPress Plugin Directory.
@@ -145,26 +147,26 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
    * Customize the **form fields, layout**, and settings.
    * Save and publish the page to display the form on your site.
 
-\== Changelog ==
+== Changelog ==
 
-\= Version 2.4.5| 26/05/2025 =
+= Version 2.4.5| 26/05/2025 =
 
 * **Improvements:** Enhanced user opt-in options for better customization.
 * **Fixed:** All fields visible on load.
 * **Tested upto:** Elementor Version 3.29.0 and Elementor Pro Version 3.29.0
 
-\= Version 2.4.4 | 11/04/2025 =
+= Version 2.4.4 | 11/04/2025 =
 
 * **Fixed:** Critical error occurring during plugin activation on certain server configurations.
 
-\= Version 2.4.3 | 10/04/2025 =
+= Version 2.4.3 | 10/04/2025 =
 
 * **Added:** Conditional field support.
 * **Added:** Country Code option for telephone field.
 * **Added:** Recaptcha integration for enhanced security.
 * **Tested upto:** WordPress 6.8.
 
-\= Version 2.4.2 | 26/03/2025 =
+= Version 2.4.2 | 26/03/2025 =
 
 * **Added:** **Collect Entries** Action after submit a form.
 * **Added:** **Dashboard & Entries** page to view and manage form entries.
@@ -172,7 +174,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * **Fixed:** Default value not sent in the select field.
 * **Improved:** Security improvements.
 
-\= Version 2.4.1 | 18/03/2025 =
+= Version 2.4.1 | 18/03/2025 =
 
 * **Tested upto:** Elementor Version 3.28.0
 * **Tested upto:** Elementor Pro Version 3.28.0
@@ -181,7 +183,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 **Version 2.4.0** introduces a **drag-and-drop form builder** for Elementor, making form creation effortless for users of Elementor Free. This update also enhances compatibility, improves code efficiency, and includes a branding change to **Cool FormKit Lite - Elementor Form Builder**. Upgrade now for a seamless experience!
 
-\= Version 2.4.0 | 04/03/2025 =
+= Version 2.4.0 | 04/03/2025 =
 
 * **Added:** Introduced a **drag-and-drop form builder** for Elementor, allowing users to **create custom forms effortlessly**.
 * **Enhanced:** Improved compatibility with Elementor Free, making it fully functional without Elementor Pro.
@@ -189,68 +191,68 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * **Optimized:** Improved overall code structure and performance.
 * **Updated:** Refreshed readme content for better clarity.
 
-\= 2.3 =
+= 2.3 =
 
 * Refactored code to support Pro version.
 * Improved asset build process.
 
-\= 2.2 =
+= 2.2 =
 
 * Code improvements.
 
-\= 2.1 =
+= 2.1 =
 
 * Added dynamic controls for phone and WhatsApp redirection actions.
 * Set PHP minimum version to 7.4.
 * Code improvements.
 
-\= 2.0.3 =
+= 2.0.3 =
 
 * Compatibility updates for WordPress 6.7.
 * Code improvements.
 
-\= 2.0.2 =
+= 2.0.2 =
 
 * Compatibility updates for WordPress 6.5.
 * Code improvements.
 
-\= 2.0.1 =
+= 2.0.1 =
 
 * Compatibility updates for WordPress 6.2.
 
-\= 2.0 =
+= 2.0 =
 
 * Added action to register post/custom post with form.
 * Code improvements.
 
-\= 1.3.7 =
+= 1.3.7 =
 
 * Compatibility updates for WordPress 6.1.
 
-\= 1.3.6 =
+= 1.3.6 =
 
 * Compatibility updates for WordPress 6.0.
 
-\= 1.3.1 =
+= 1.3.1 =
 
 * Compatibility updates for WordPress 5.7.
 
-\= 1.3 =
+= 1.3 =
 
 * Fixed issue: Form hiding after submission.
 
-\= 1.2 =
+= 1.2 =
 
 * Added support for break line with token %break%.
 
-\= 1.1 =
+= 1.1 =
 
 * Fixed bug in phone number field.
 
-\= 1.0 =
+= 1.0 =
 
 * Initial release.
 
-\== Upgrade Notice ==
+== Upgrade Notice ==
 
 **Version 2.4.0** introduces a **drag-and-drop form builder** for Elementor, making form creation effortless for users of Elementor Free. This update also enhances compatibility, improves code efficiency, and includes a branding change to **Cool FormKit Lite - Elementor Form Builder**. Upgrade now for a seamless experience!
