@@ -2,16 +2,18 @@
 
 === Cool FormKit Lite - Elementor Form Builder ===
 
-Contributors: coolplugins, narinder-singh, satindersingh\
-Tags: form builder, elementor form, elementor, contact form, custom form\
-Requires at least: 6.2\
-Tested up to: 6.8.1\
-Stable tag: 2.4.5\
-Requires PHP: 8.2\
-Elementor tested up to: 3.29.0\
-Elementor Pro tested up to: 3.29.0\
-License: GPL 3.0\
+Contributors: coolplugins, narinder-singh, satindersingh
+Tags: form builder, elementor form, elementor, contact form, custom form
+Requires at least: 6.2
+Tested up to: 6.8.1
+Stable tag: 2.4.5
+Requires PHP: 8.2
+Elementor tested up to: 3.29.0
+Elementor Pro tested up to: 3.29.0
+License: GPL 3.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+Cool FormKit - A contact form builder for Elementor with a drag-and-drop Elementor form widget.
 
 Cool FormKit - A contact form builder for Elementor with a drag-and-drop Elementor form widget.
 
@@ -25,7 +27,7 @@ https://youtu.be/u1PYFXv01Rc
 
 This addon allows you to build **custom forms** using a **drag-and-drop** interface, just like Elementor. Create **Contact Forms, Registration Forms, Survey Forms**, and more without writing a single line of code.
 
-— —————————————- —[**CHECK PLUGIN DEMO**](https://coolplugins.net/cool-formkit-lite/?utm_source=cfkl_plugin\&utm_medium=readme\&utm_campaign=demo\&utm_content=check_plugin_demo)\
+— —————————————- —[**CHECK PLUGIN DEMO**](https://coolplugins.net/cool-formkit-lite/?utm_source=cfkl_plugin\&utm_medium=readme\&utm_campaign=demo\&utm_content=check_plugin_demo)
 — —————————————- —
 
 **Key Features**
@@ -82,48 +84,48 @@ We’re actively improving Cool FormKit Lite. Future updates will include condit
 
 == Frequently Asked Questions ==
 
-= Do I need Elementor Pro to use Cool FormKit Lite? =\
+= Do I need Elementor Pro to use Cool FormKit Lite? =
 No, Cool FormKit Lite works with Elementor (Free), so you don’t need Elementor Pro.
 
-= How do I customize the form fields in Cool FormKit Lite? =\
+= How do I customize the form fields in Cool FormKit Lite? =
 Customize form fields in the Elementor editor by adjusting labels, placeholders, required status, and other settings.
 
-= Do I need coding knowledge to build forms? =\
+= Do I need coding knowledge to build forms? =
 No, you don’t need any coding knowledge. The drag-and-drop interface allows easy form building.
 
-= How does Cool FormKit Lite use Material Design? =\
+= How does Cool FormKit Lite use Material Design? =
 It follows Google’s Material Design guidelines for clean layouts and responsive elements.
 
-= Is there a limit to how many forms I can create? =\
+= Is there a limit to how many forms I can create? =
 No, you can create and manage unlimited forms.
 
-= Can I style forms to match my website's theme? =\
+= Can I style forms to match my website's theme? =
 Yes, you can customize forms using Elementor’s design features like typography, colors, and spacing.
 
-= Does Cool FormKit Lite integrate with third-party email marketing tools? =\
+= Does Cool FormKit Lite integrate with third-party email marketing tools? =
 Currently, it does not support direct integrations with third-party email marketing tools.
 
-= How do I set up a thank-you page or redirect after submission? =\
+= How do I set up a thank-you page or redirect after submission? =
 Enable the redirect option in "Actions After Submit" and enter the desired redirect URL.
 
-= What’s new in Cool FormKit Lite v2.4.0? =\
+= What’s new in Cool FormKit Lite v2.4.0? =
 In this update, we have introduced a **drag-and-drop form builder**, allowing users to create custom forms easily using Elementor (Free). We’ve also improved compatibility, updated branding, and optimized the code for better performance.
 
-= Can I use the new form builder with Elementor Free? =\
+= Can I use the new form builder with Elementor Free? =
 Yes! The latest update makes Cool FormKit Lite fully compatible with Elementor Free, so you don’t need Elementor Pro to create custom forms.
 
-= How do I enable the new drag-and-drop form builder? =\
+= How do I enable the new drag-and-drop form builder? =
 Simply open Elementor, drag the **Cool FormKit** widget onto your page, and start adding and customizing form fields using the intuitive interface.
 
-= Has the plugin name changed? =\
+= Has the plugin name changed? =
 Yes, we have rebranded the plugin from **Extensions for Elementor Form** to **Cool FormKit Lite - Elementor Form Builder** for better clarity and recognition.
 
-= Do I need to update anything after upgrading to v2.4.0? =\
+= Do I need to update anything after upgrading to v2.4.0? =
 No manual updates are required. Just upgrade to v2.4.0, and the new features will be available in Elementor automatically.
 
-= Will my existing forms still work after the update? =\
-Yes, all your existing forms will continue to function as expected. The update only enhances functionality without affecting previous forms.\
-= How can I report security bugs? =\
+= Will my existing forms still work after the update? =
+Yes, all your existing forms will continue to function as expected. The update only enhances functionality without affecting previous forms.
+= How can I report security bugs? =
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/extensions-for-elementor-form)
 
 == Installation ==
