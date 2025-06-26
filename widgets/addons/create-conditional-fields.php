@@ -67,12 +67,12 @@ class Cfl_Create_Conditional_Fields {
 	 */
 
 	public function add_assets_files() {
-		wp_register_script( 'cfefp_logic_cfl', CFL_PLUGIN_URL . 'assets/addons/js/logic_frontend.js', array( 'jquery' ), CFL_VERSION, true );
+		wp_register_script( 'cfefp_logic', CFL_PLUGIN_URL . 'assets/addons/js/logic_frontend.js', array( 'jquery' ), CFL_VERSION, true );
 
 		// $post = \Elementor\Plugin::instance()->documents->get( get_the_ID() )->get_elements_data();
 		// if($this->cfefp_check_elementor_content_for_widget($post,'form')){
-			wp_enqueue_script( 'cfefp_logic_cfl' );
-			wp_localize_script('cfefp_logic_cfl', 'my_script_vars', array(
+			wp_enqueue_script( 'cfefp_logic' );
+			wp_localize_script('cfefp_logic', 'my_script_vars', array(
 				'pluginConstant' => CFL_VERSION
 			));
 		// }
@@ -366,13 +366,6 @@ class Cfl_Create_Conditional_Fields {
 	 */
 	public function all_field_conditions( $instance ) {
 		// Check if $instance is an object and has a get_settings() method.
-		if ( is_object( $instance ) && method_exists( $instance, 'get_name' ) ) {
-			$widget_name = $instance->get_name();
-			if($widget_name !== 'cool-form'){
-				return;
-			}
-		}
-
 		if ( is_object( $instance ) && method_exists( $instance, 'get_settings' ) ) {
 			$settings = $instance->get_settings();
 		} else {

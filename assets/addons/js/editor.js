@@ -3,12 +3,8 @@
 
     // function for all dynamic tag to show the Id's of all elements
     $( document ).ready( function () { 
-        // Check if we're in the correct form editor
-        const panelTitle = $('#elementor-panel-header-title').text();
-        if (panelTitle !== 'Edit Cool Form') {
-            return; // Exit if not in the correct form editor
-        }
 
+        
         jQuery(document).on('click','.elementor-control-form_fields_conditions_tab',(event)=>{
             const mainWrp=jQuery(event.currentTarget).closest('.elementor-repeater-row-controls.editable');
             const addBtn=mainWrp.find('.elementor-control-cfef_repeater_data .elementor-repeater-add');
