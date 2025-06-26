@@ -1,6 +1,11 @@
 (function($) {
     "use strict";
     
+    const widgetType = jQuery('.elementor-widget-cool-form').attr('data-widget_type');
+    if(widgetType !== 'cool-form.default'){
+        return;
+    }
+    
     $(document).ready(function() {
         // function for compare conditional values 
         function checkFieldLogic(compareFieldValue, conditionOperation, compareValue) {   
