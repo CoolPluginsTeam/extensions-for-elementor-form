@@ -74,7 +74,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 
 			$this->initialize_plugin();
 
-			// add_action( 'activated_plugin', array( $this, 'EEF_plugin_redirection' ) );
+			add_action( 'activated_plugin', array( $this, 'EEF_plugin_redirection' ) );
 			add_action('wp_enqueue_scripts', array($this, 'my_enqueue_scripts'));	
 			add_action( 'elementor/editor/before_enqueue_scripts', array( $this, 'add_global_editor_js' ) );		
 
@@ -109,7 +109,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	{
 		// Include main plugin class.
 		require_once CFL_PLUGIN_PATH . '/includes/class-plugin.php';
-		require_once CFL_PLUGIN_PATH . '/includes/cron/cfl-class-cron.php';
+		require_once CFL_PLUGIN_PATH . 'admin/feedback/cron/cfl-class-cron.php';
 
 		CFL_Loader::get_instance();
 
@@ -134,15 +134,12 @@ class Cool_Formkit_Lite_For_Elementor_Form
         	}
 		}
 
-		// add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'EEF_plugin_dashboard_link' ) );
+		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'EEF_plugin_dashboard_link' ) );
 
 	}
 
 	public function EEF_plugin_redirection($plugin)
 	{
-		if (! is_plugin_active('elementor-pro/elementor-pro.php')) {
-			return false;
-		}
 		if (is_plugin_active('cool-formkit-for-elementor-forms/cool-formkit-for-elementor-forms.php')) {
 			return false;
 		}

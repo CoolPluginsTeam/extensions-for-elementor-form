@@ -86,10 +86,6 @@ class CFL_Loader {
         $this->version = CFL_VERSION;
 
         $this->admin_menu_dashboard();
-        
-        if ( ! is_plugin_active( 'elementor-pro/elementor-pro.php' ) ) {
-            return false;
-		}
 
         do_action( 'extensions_for_elementor_form_load' );
 		add_action( 'elementor/init', array( $this, 'init' ), 5 );
