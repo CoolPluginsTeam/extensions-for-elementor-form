@@ -27,22 +27,22 @@ function cfkef_sanitize_sql_input($input) {
 
 function cfkef_handle_unchecked_checkbox() {
         $choice  = get_option('cpfm_opt_in_choice_cool_forms');
-        $options = get_option('cfkef_usage_share_data');
+        $options = get_option('cfl_usage_share_data');
 
         if (!empty($choice)) {
 
             // If the checkbox is unchecked (value is empty, false, or null)
             if (empty($options)) {
-                wp_clear_scheduled_hook('cfkef_extra_data_update');
+                wp_clear_scheduled_hook('cfl_extra_data_update');
             }
 
             // If checkbox is checked (value is 'on' or any non-empty value)
             else {
-                if (!wp_next_scheduled('cfkef_extra_data_update')) {
-                    if (class_exists('cfkef_cronjob') && method_exists('cfkef_cronjob', 'cfkef_send_data')) {
-                        cfkef_cronjob::cfkef_send_data();
+                if (!wp_next_scheduled('cfl_extra_data_update')) {
+                    if (class_exists('CFL_cronjob') && method_exists('CFL_cronjob', 'cfl_send_data')) {
+                        CFL_cronjob::cfl_send_data();
                     }
-                    wp_schedule_event(time(), 'every_30_days', 'cfkef_extra_data_update');
+                    wp_schedule_event(time(), 'every_30_days', 'cfl_extra_data_update');
                 }
             }
         }
@@ -177,7 +177,7 @@ function handle_form_submit() {
 }
 
 // Save API keys when the form is submitted
-if (isset($_POST['cfkef_country_code_api_key']) || isset($_POST['cfefp_redirect_conditionally']) || isset($_POST['cfefp_email_conditionally']) || isset($_POST['cfefp_cdn_image']) || isset($_POST['cfkef_geo_provider']) || isset($_POST['cfkef_country_code_non_ipapi_api_key']) || isset($_POST['cfefp_site_key']) || isset($_POST['cfefp_cloudflare_secret_key']) || isset($_POST['cfefp_cloudflare_site_key']) || isset($_POST['cfefp_h_secret_key']) || isset($_POST['cfefp_h_site_key']) || isset($_POST['cfl_site_key_v2']) || isset($_POST['cfl_secret_key_v2']) || isset($_POST['cfl_site_key_v3']) || isset($_POST['cfl_secret_key_v3']) || isset($_POST['cfl_threshold_v3'])) {
+if (isset($_POST['cfl_site_key_v2']) || isset($_POST['cfl_secret_key_v2']) || isset($_POST['cfl_site_key_v3']) || isset($_POST['cfl_secret_key_v3']) || isset($_POST['cfl_threshold_v3']) || isset($_POST['cfl_usage_share_data'])) {
 
     check_admin_referer('cool_formkit_save_api_keys', 'cool_formkit_nonce');
 
@@ -186,44 +186,13 @@ if (isset($_POST['cfkef_country_code_api_key']) || isset($_POST['cfefp_redirect_
 
     }else{
 
-    $geo_provider = sanitize_text_field($_POST['cfkef_geo_provider']);
-    $api_key_one = sanitize_text_field(isset($_POST['cfkef_country_code_api_key']) ? $_POST['cfkef_country_code_api_key'] : '');
-    $api_key_one = cfkef_sanitize_sql_input($api_key_one);
-
-    $non_ipapi_api_key = sanitize_text_field(isset($_POST['cfkef_country_code_non_ipapi_api_key']) ? $_POST['cfkef_country_code_non_ipapi_api_key'] : '');
-    $non_ipapi_api_key = cfkef_sanitize_sql_input($non_ipapi_api_key);
-     
-    $redirect_conditionally = sanitize_text_field($_POST['cfefp_redirect_conditionally']);
-    $email_conditionally = sanitize_text_field($_POST['cfefp_email_conditionally']);
-    $cdn_image = isset($_POST['cfefp_cdn_image']) ? '1' : '0';
-
-    $cloudflare_site_key  = isset($_POST['cfefp_cloudflare_site_key']) ? sanitize_text_field($_POST['cfefp_cloudflare_site_key']) : '';
-    $cloudflare_secret_key = isset($_POST['cfefp_cloudflare_secret_key']) ? sanitize_text_field($_POST['cfefp_cloudflare_secret_key']) : '';
-
-    $h_site_key  = isset($_POST['cfefp_h_site_key']) ? sanitize_text_field($_POST['cfefp_h_site_key']) : '';
-    $h_secret_key = isset($_POST['cfefp_h_secret_key']) ? sanitize_text_field($_POST['cfefp_h_secret_key']) : '';
-
     $recaptcha_site_key  = isset($_POST['cfl_site_key_v2']) ? sanitize_text_field($_POST['cfl_site_key_v2']) : '';
     $recaptcha_secret_key = isset($_POST['cfl_secret_key_v2']) ? sanitize_text_field($_POST['cfl_secret_key_v2']) : '';
 
     $recaptcha_v3_site_key  = isset($_POST['cfl_site_key_v3']) ? sanitize_text_field($_POST['cfl_site_key_v3']) : '';
     $recaptcha_v3_secret_key = isset($_POST['cfl_secret_key_v3']) ? sanitize_text_field($_POST['cfl_secret_key_v3']) : '';
     $recaptcha_v3_threshold = isset($_POST['cfl_threshold_v3']) ? sanitize_text_field($_POST['cfl_threshold_v3']) : '';
-    $cfkef_usage_share_data = isset($_POST['cfkef_usage_share_data']) ? sanitize_text_field($_POST['cfkef_usage_share_data']) : '';
-
-
-    update_option('cfkef_geo_provider', $geo_provider);
-    update_option('cfkef_country_code_api_key', $api_key_one);
-    update_option('cfkef_country_code_non_ipapi_api_key', $non_ipapi_api_key);
-    update_option('cfefp_redirect_conditionally', $redirect_conditionally);
-    update_option('cfefp_email_conditionally', $email_conditionally);
-    update_option('cfefp_cdn_image', $cdn_image);
-
-    update_option('cfefp_cloudflare_site_key', $cloudflare_site_key);
-    update_option('cfefp_cloudflare_secret_key', $cloudflare_secret_key);
-
-    update_option('cfefp_h_site_key', $h_site_key);
-    update_option('cfefp_h_secret_key', $h_secret_key);
+    $cfl_usage_share_data = isset($_POST['cfl_usage_share_data']) ? sanitize_text_field($_POST['cfl_usage_share_data']) : '';
 
     update_option('cfl_site_key_v2', $recaptcha_site_key);
     update_option('cfl_secret_key_v2', $recaptcha_secret_key);
@@ -231,7 +200,7 @@ if (isset($_POST['cfkef_country_code_api_key']) || isset($_POST['cfefp_redirect_
     update_option('cfl_site_key_v3', $recaptcha_v3_site_key);
     update_option('cfl_secret_key_v3', $recaptcha_v3_secret_key);
     update_option('cfl_threshold_v3', $recaptcha_v3_threshold);
-    update_option( "cfkef_usage_share_data",  $cfkef_usage_share_data);
+    update_option( "cfl_usage_share_data",  $cfl_usage_share_data);
 
 
     cfkef_handle_unchecked_checkbox();
@@ -261,285 +230,270 @@ $cdn_image = get_option('cfefp_cdn_image', '');
 
 <div class="cfkef-settings-box">
 
-    <div class="wrapper-header">
-        <div class="cfkef-save-all">
-            <div class="cfkef-title-desc">
-                <h2><?php esc_html_e('Cool FormKit Settings', 'cool-formkit'); ?></h2>
-            </div>
-            <div class="cfkef-save-controls">
-                <button type="submit" class="button button-primary"><?php esc_html_e('Save Changes', 'cool-formkit'); ?></button>
-            </div>
-        </div>
-    </div>
-
-    <div class="wrapper-body">
-        <p class="cool-formkit-description highlight-description"><?php esc_html_e('Configure the settings for country code and country field.', 'cool-formkit'); ?></p>
+    <div>
         <form method="post" action="" class="cool-formkit-form">
-            <?php wp_nonce_field('cool_formkit_save_api_keys', 'cool_formkit_nonce'); ?>
-            <table class="form-table cool-formkit-table">
-    
-                <tr id="api-selector">
-                    <th scope="row" class="cool-formkit-table-th">
-                        <label for="cfkef_geo_provider" class="cool-formkit-label"><?php esc_html_e('Geo-IP Provider', 'cool-formkit'); ?></label>
-                    </th>
-                    <td class="cool-formkit-table-td">
-                        <select id="cfkef_geo_provider" name="cfkef_geo_provider" class="regular-text cool-formkit-input">
-                            <option value="ipapi"  <?php selected($geo_provider, 'ipapi'); ?> >ipapi.co</option>
-                            <option value="ipstack" <?php selected($geo_provider, 'ipstack'); ?>>ipstack.com</option>
-                            <option value="ipinfo" <?php selected($geo_provider, 'ipinfo'); ?>>ipinfo.io</option>
-                            <option value="geojs"  <?php selected($geo_provider, 'geojs');  ?>>geojs.io</option>
-                            <option value="ip-api"  <?php selected($geo_provider, 'ip-api');  ?>>ip-api.com</option>
-                        </select>
-                        <p class="description cool-formkit-description"><?php esc_html_e('Choose the Geo-IP service to use for auto-detecting country by IP.', 'cool-formkit'); ?></p>
-                    </td>
-                </tr>
-    
-                <tr id="ipapi-row">
-                    <th scope="row" class="cool-formkit-table-th">
-                        <label for="cfkef_country_code_api_key" class="cool-formkit-label"><?php esc_html_e('Enter ipapi.co API Key', 'cool-formkit'); ?></label>
-                    </th>
-                    <td class="cool-formkit-table-td">
-                            <input type="text" id="cfkef_country_code_api_key" name="cfkef_country_code_api_key" value="<?php echo esc_attr($api_key_one); ?>" class="regular-text cool-formkit-input" />
-                            <p class="description cool-formkit-description"><?php esc_html_e('Auto-detect country code in the Tel field via IP address.', 'cool-formkit'); ?></p>
-                            <p class="description cool-formkit-description"><?php _e('We use <a href="https://ipapi.co/#pricing" target="_blank">ipapi.co</a> to auto-detect the country code in the telephone field using the IP address. It offers 1000 free IP lookups per day. No API key is needed for low requests or if you are not using the auto-detect feature. However, please add an API key if you have a lot of users or purchase a premium plan.', 'cool-formkit'); ?></p>
-                    </td>
-                </tr>
-                <tr id="other-api-row">
-                    <th scope="row" class="cool-formkit-table-th">
-                        <label for="cfkef_country_code_non_ipapi_api_key" class="cool-formkit-label"><?php esc_html_e('Enter Geo API Key', 'cool-formkit'); ?></label>
-                    </th>
-                    <td class="cool-formkit-table-td">
-                            <input type="text" id="cfkef_country_code_non_ipapi_api_key" name="cfkef_country_code_non_ipapi_api_key" value="<?php echo esc_attr($non_ipapi_api_key); ?>" class="regular-text cool-formkit-input" />
-                            <p class="description cool-formkit-description"><a href="" target="_blank" class="api-infromation"><?php _e('Read More')?></a> <?php _e('About API')?></p>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="cool-formkit-table-th">
-                        <label class="cool-formkit-label"><?php esc_html_e('CDN Image', 'cool-formkit'); ?></label>
-                    </th>
-                    <td class="cool-formkit-table-td">
-                    <label class="cfkef-toggle-switch">
-                        <input type="checkbox" name="cfefp_cdn_image" class="cfkef-element-toggle" value="1" <?php checked($cdn_image); ?>>
-                        <span class="cfkef-slider round"></span>
-                    
-                    </label>
-                    <p class="description cool-formkit-description"><?php _e("In case the flags appear blurry, enable the option to load flag images directly from the CDN.", 'cool-formkit'); ?></p>
-                    </td>
-                </tr>
-            </table>
-            <hr>
-            <p class="cool-formkit-description highlight-description"><?php esc_html_e('Configure the settings for conditional fields\' action after submit.', 'cool-formkit'); ?></p>
-            <table class="form-table cool-formkit-table">
-                <tr>
-                    <th scope="row" class="cool-formkit-table-th">
-                        <label for="cfefp_email_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Emails', 'cool-formkit'); ?></label>
-                    </th>
-                    <td class="cool-formkit-table-td">
-                        <input type="number" id="cfefp_email_conditionally" name="cfefp_email_conditionally" min="4" value="<?php echo esc_attr($email_conditionally); ?>" class="regular-text cool-formkit-input" />
-                        <p class="description cool-formkit-description"><?php esc_html_e('Set the no. of conditional emails for the Elementor form.', 'cool-formkit'); ?></p>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="cool-formkit-table-th">
-                        <label for="cfefp_redirect_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Redirections', 'cool-formkit'); ?></label>
-                    </th>
-                    <td class="cool-formkit-table-td">
-                        <input type="number" id="cfefp_redirect_conditionally" name="cfefp_redirect_conditionally" min="4" value="<?php echo esc_attr($redirect_conditionally); ?>" class="regular-text cool-formkit-input" />
-                        <p class="description cool-formkit-description"><?php esc_html_e('Set the no. of conditional redirects for the Elementor form.', 'cool-formkit'); ?></p>
-                    </td>
-                </tr>
-            </table>
-            <hr>
-    
-            <h3><?php esc_html_e('Cloudflare Turnstile Settings', 'cool-formkit'); ?></h3>
-    
-            <p class="description cool-formkit-description"><?php _e('You can get your site key and secret key from here: <a href="https://www.cloudflare.com/en-au/application-services/products/turnstile/" target="_blank">https://www.cloudflare.com/en-au/application-services/products/turnstile/</a>', 'cool-formkit'); ?></p>
-    
-            <table class="form-table cool-formkit-table">
-                
-                <tr>
-                    <th scope="row" class="cool-formkit-table-th">
-                        <label for="cfefp_cloudflare_site_key" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?></label>
-                    </th>
-                    <td class="cool-formkit-table-td site-key-td">
-                        <input type="password" id="cfefp_cloudflare_site_key" name="cfefp_cloudflare_site_key" min="4" value="<?php echo get_option('cfefp_cloudflare_site_key'); ?>" class="regular-text cool-formkit-input"/>
+            <div class="wrapper-header">
+                <div class="cfkef-save-all">
+                    <div class="cfkef-title-desc">
+                        <h2><?php esc_html_e('Cool FormKit Settings', 'cool-formkit'); ?></h2>
+                    </div>
+                    <div class="cfkef-save-controls">
+                        <button type="submit" class="button button-primary"><?php esc_html_e('Save Changes', 'cool-formkit'); ?></button>
+                    </div>
+                </div>
+            </div>
+            <div class="wrapper-body">
+                <?php wp_nonce_field('cool_formkit_save_api_keys', 'cool_formkit_nonce'); ?>
+
+
+                <p class="highlight-description"><?php esc_html_e('reCAPTCHA and reCAPTCHA V3 for Cool Form builder', 'cool-formkit'); ?></p>
+                <h3><?php esc_html_e('reCAPTCHA Settings', 'cool-formkit'); ?></h3>
+                <table class="form-table cool-formkit-table">
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfl_site_key_v2" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?></label>
+                        </th>
+                        <td class="cool-formkit-table-td site-key-td">
+                            <input type="password" id="cfl_site_key_v2" name="cfl_site_key_v2" min="4" value="<?php echo get_option('cfl_site_key_v2'); ?>" class="regular-text cool-formkit-input"/>
+                            
+                            <span class="site-key-show-hide-icon-recaptcha">
+                                <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfl_secret_key_v2" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?></label>
+                        </th>
+                        <td class="cool-formkit-table-td secret-key-td">
+                            <input type="password" id="cfl_secret_key_v2" name="cfl_secret_key_v2" min="4" value="<?php echo get_option('cfl_secret_key_v2'); ?>" class="regular-text cool-formkit-input" />
+        
+                            <span class="secret-key-show-hide-icon-recaptcha">
+                                <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
+                            </span>
+        
+                        </td>
+                    </tr>
+                </table>
+
+                <h3><?php esc_html_e('reCAPTCHA V3 Settings', 'cool-formkit'); ?></h3>
+                <table class="form-table cool-formkit-table">
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfl_site_key_v3" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?></label>
+                        </th>
+                        <td class="cool-formkit-table-td site-key-td">
+                            <input type="password" id="cfl_site_key_v3" name="cfl_site_key_v3" min="4" value="<?php echo get_option('cfl_site_key_v3'); ?>" class="regular-text cool-formkit-input"/>
+                            
+                            <span class="site-key-show-hide-icon-recaptcha_v3">
+                                <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfl_secret_key_v3" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?></label>
+                        </th>
+                        <td class="cool-formkit-table-td secret-key-td">
+                            <input type="password" id="cfl_secret_key_v3" name="cfl_secret_key_v3" min="4" value="<?php echo get_option('cfl_secret_key_v3'); ?>" class="regular-text cool-formkit-input" />
+        
+                            <span class="secret-key-show-hide-icon-recaptcha_v3">
+                                <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
+                            </span>
+        
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="threshold_v3" class="cool-formkit-label"><?php esc_html_e('Score Threshold', 'cool-formkit'); ?></label>
+                        </th>
+                        <td class="cool-formkit-table-td">
+                            <input type="number" id="threshold_v3" name="cfl_threshold_v3" class="regular-text cool-formkit-input" value="<?php echo get_option('cfl_threshold_v3')?>" min="0" max="1"  step="0.1"/>
+                            <p class="description cool-formkit-description"><?php esc_html_e('Score threshold should be a value between 0 and 1, default: 0.5', 'cool-formkit'); ?></p>
+                        </td>
+                    </tr>
+                </table>
+                <hr>
+
+                <p class="cool-formkit-description highlight-description"><?php esc_html_e('Configure the settings for country code and country field.', 'cool-formkit'); ?></p>
+                <table class="form-table cool-formkit-table">
+        
+                    <tr id="api-selector">
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfkef_geo_provider" class="cool-formkit-label"><?php esc_html_e('Geo-IP Provider', 'cool-formkit'); ?></label>
+                        </th>
+                        <td class="cool-formkit-table-td">
+                            <select id="cfkef_geo_provider" name="cfkef_geo_provider" class="regular-text cool-formkit-input" disabled="disabled">
+                                <option value="ipapi"  <?php selected($geo_provider, 'ipapi'); ?> >ipapi.co</option>
+                                <option value="ipstack" <?php selected($geo_provider, 'ipstack'); ?>>ipstack.com</option>
+                                <option value="ipinfo" <?php selected($geo_provider, 'ipinfo'); ?>>ipinfo.io</option>
+                                <option value="geojs"  <?php selected($geo_provider, 'geojs');  ?>>geojs.io</option>
+                                <option value="ip-api"  <?php selected($geo_provider, 'ip-api');  ?>>ip-api.com</option>
+                            </select>
+                            <p class="description cool-formkit-description"><?php esc_html_e('Choose the Geo-IP service to use for auto-detecting country by IP.', 'cool-formkit'); ?></p>
+                        </td>
+                    </tr>
+        
+                    <tr id="ipapi-row">
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfkef_country_code_api_key" class="cool-formkit-label"><?php esc_html_e('Enter ipapi.co API Key', 'cool-formkit'); ?></label>
+                        </th>
+                        <td class="cool-formkit-table-td">
+                                <input type="text" id="cfkef_country_code_api_key" name="cfkef_country_code_api_key" value="<?php echo esc_attr($api_key_one); ?>" class="regular-text cool-formkit-input" disabled="disabled"/>
+                                <p class="description cool-formkit-description"><?php esc_html_e('Auto-detect country code in the Tel field via IP address.', 'cool-formkit'); ?></p>
+                                <p class="description cool-formkit-description"><?php _e('We use <a href="https://ipapi.co/#pricing" target="_blank">ipapi.co</a> to auto-detect the country code in the telephone field using the IP address. It offers 1000 free IP lookups per day. No API key is needed for low requests or if you are not using the auto-detect feature. However, please add an API key if you have a lot of users or purchase a premium plan.', 'cool-formkit'); ?></p>
+                        </td>
+                    </tr>
+                    <tr id="other-api-row">
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfkef_country_code_non_ipapi_api_key" class="cool-formkit-label"><?php esc_html_e('Enter Geo API Key', 'cool-formkit'); ?></label>
+                        </th>
+                        <td class="cool-formkit-table-td">
+                                <input type="text" id="cfkef_country_code_non_ipapi_api_key" name="cfkef_country_code_non_ipapi_api_key" value="<?php echo esc_attr($non_ipapi_api_key); ?>" class="regular-text cool-formkit-input" disabled="disabled"/>
+                                <p class="description cool-formkit-description"><a href="" target="_blank" class="api-infromation"><?php _e('Read More')?></a> <?php _e('About API')?></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label class="cool-formkit-label"><?php esc_html_e('CDN Image', 'cool-formkit'); ?></label>
+                        </th>
+                        <td class="cool-formkit-table-td">
+                        <label class="cfkef-toggle-switch">
+                            <input type="checkbox" name="cfefp_cdn_image" class="cfkef-element-toggle" value="1" <?php checked($cdn_image); ?>
+                            disabled="disabled">
+                            <span class="cfkef-slider round"></span>
                         
-                        <span class="site-key-show-hide-icon">
-                            <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="cool-formkit-table-th">
-                        <label for="cfefp_cloudflare_secret_key" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?></label>
-                    </th>
-                    <td class="cool-formkit-table-td secret-key-td">
-                        <input type="password" id="cfefp_cloudflare_secret_key" name="cfefp_cloudflare_secret_key" min="4" value="<?php echo get_option('cfefp_cloudflare_secret_key'); ?>" class="regular-text cool-formkit-input" />
-    
-                        <span class="secret-key-show-hide-icon">
-                            <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
-                        </span>
-    
-                    </td>
-                </tr>
-                
-            </table>
-            <hr>
-    
-            <h3><?php esc_html_e('hCAPTCHA Settings', 'cool-formkit'); ?></h3>
-    
-            <p class="description cool-formkit-description"><?php _e('To use <a href="https://www.hcaptcha.com/" target="_blank">hCaptcha</a>, please register <a href="https://www.hcaptcha.com/signup-interstitial" target="_blank">here</a> to get your site and secret keys.', 'cool-formkit'); ?></p>
-    
-            <table class="form-table cool-formkit-table">
-                
-                <tr>
-                    <th scope="row" class="cool-formkit-table-th">
-                        <label for="cfefp_h_site_key" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?></label>
-                    </th>
-                    <td class="cool-formkit-table-td site-key-td">
-                        <input type="password" id="cfefp_h_site_key" name="cfefp_h_site_key" min="4" value="<?php echo get_option('cfefp_h_site_key'); ?>" class="regular-text cool-formkit-input"/>
-                        
-                        <span class="site-key-show-hide-icon-h-captcha">
-                            <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="cool-formkit-table-th">
-                        <label for="cfefp_h_secret_key" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?></label>
-                    </th>
-                    <td class="cool-formkit-table-td secret-key-td">
-                        <input type="password" id="cfefp_h_secret_key" name="cfefp_h_secret_key" min="4" value="<?php echo get_option('cfefp_h_secret_key'); ?>" class="regular-text cool-formkit-input" />
-    
-                        <span class="secret-key-show-hide-icon-h-captcha">
-                            <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
-                        </span>
-    
-                    </td>
-                </tr>
-    
-           
-            </table>
-            <hr>
-            <p class="highlight-description"><?php esc_html_e('reCAPTCHA and reCAPTCHA V3 for Cool Form builder', 'cool-formkit'); ?></p>
-    
-    
-            <h3><?php esc_html_e('reCAPTCHA Settings', 'cool-formkit'); ?></h3>
-    
-    
-            <table class="form-table cool-formkit-table">
-                
-                <tr>
-                    <th scope="row" class="cool-formkit-table-th">
-                        <label for="cfl_site_key_v2" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?></label>
-                    </th>
-                    <td class="cool-formkit-table-td site-key-td">
-                        <input type="password" id="cfl_site_key_v2" name="cfl_site_key_v2" min="4" value="<?php echo get_option('cfl_site_key_v2'); ?>" class="regular-text cool-formkit-input"/>
-                        
-                        <span class="site-key-show-hide-icon-recaptcha">
-                            <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="cool-formkit-table-th">
-                        <label for="cfl_secret_key_v2" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?></label>
-                    </th>
-                    <td class="cool-formkit-table-td secret-key-td">
-                        <input type="password" id="cfl_secret_key_v2" name="cfl_secret_key_v2" min="4" value="<?php echo get_option('cfl_secret_key_v2'); ?>" class="regular-text cool-formkit-input" />
-    
-                        <span class="secret-key-show-hide-icon-recaptcha">
-                            <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
-                        </span>
-    
-                    </td>
-                </tr>
-                
-            </table>
-    
-            <h3><?php esc_html_e('reCAPTCHA V3 Settings', 'cool-formkit'); ?></h3>
-    
-            <table class="form-table cool-formkit-table">
-                
-                <tr>
-                    <th scope="row" class="cool-formkit-table-th">
-                        <label for="cfl_site_key_v3" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?></label>
-                    </th>
-                    <td class="cool-formkit-table-td site-key-td">
-                        <input type="password" id="cfl_site_key_v3" name="cfl_site_key_v3" min="4" value="<?php echo get_option('cfl_site_key_v3'); ?>" class="regular-text cool-formkit-input"/>
-                        
-                        <span class="site-key-show-hide-icon-recaptcha_v3">
-                            <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="cool-formkit-table-th">
-                        <label for="cfl_secret_key_v3" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?></label>
-                    </th>
-                    <td class="cool-formkit-table-td secret-key-td">
-                        <input type="password" id="cfl_secret_key_v3" name="cfl_secret_key_v3" min="4" value="<?php echo get_option('cfl_secret_key_v3'); ?>" class="regular-text cool-formkit-input" />
-    
-                        <span class="secret-key-show-hide-icon-recaptcha_v3">
-                            <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
-                        </span>
-    
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="cool-formkit-table-th">
-                        <label for="threshold_v3" class="cool-formkit-label"><?php esc_html_e('Score Threshold', 'cool-formkit'); ?></label>
-                    </th>
-                    <td class="cool-formkit-table-td">
-                        <input type="number" id="threshold_v3" name="cfl_threshold_v3" class="regular-text cool-formkit-input" value="<?php echo get_option('cfl_threshold_v3')?>" min="0" max="1"  step="0.1"/>
-                        <p class="description cool-formkit-description"><?php esc_html_e('Score threshold should be a value between 0 and 1, default: 0.5', 'cool-formkit'); ?></p>
-                    </td>
-                </tr>
-                
-            </table>
-            <hr>
-            <table class="form-table cool-formkit-table">
-                <?php $cpfm_opt_in = get_option('cpfm_opt_in_choice_cool_forms','');
-                                 if ($cpfm_opt_in) {
-    
-                                  $check_option =  get_option( 'cfkef_usage_share_data','');
+                        </label>
+                        <p class="description cool-formkit-description"><?php _e("In case the flags appear blurry, enable the option to load flag images directly from the CDN.", 'cool-formkit'); ?></p>
+                        </td>
+                    </tr>
+                </table>
+                <hr>
+                <p class="cool-formkit-description highlight-description"><?php esc_html_e('Configure the settings for conditional fields\' action after submit.', 'cool-formkit'); ?></p>
+                <table class="form-table cool-formkit-table">
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfefp_email_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Emails', 'cool-formkit'); ?></label>
+                        </th>
+                        <td class="cool-formkit-table-td">
+                            <input type="number" id="cfefp_email_conditionally" name="cfefp_email_conditionally" min="4" value="<?php echo esc_attr($email_conditionally); ?>" class="regular-text cool-formkit-input" 
+                            disabled="disabled"/>
+                            <p class="description cool-formkit-description"><?php esc_html_e('Set the no. of conditional emails for the Elementor form.', 'cool-formkit'); ?></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfefp_redirect_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Redirections', 'cool-formkit'); ?></label>
+                        </th>
+                        <td class="cool-formkit-table-td">
+                            <input type="number" id="cfefp_redirect_conditionally" name="cfefp_redirect_conditionally" min="4" value="<?php echo esc_attr($redirect_conditionally); ?>" class="regular-text cool-formkit-input" disabled="disabled"/>
+                            <p class="description cool-formkit-description"><?php esc_html_e('Set the no. of conditional redirects for the Elementor form.', 'cool-formkit'); ?></p>
+                        </td>
+                    </tr>
+                </table>
+                <hr>
+                <h3><?php esc_html_e('Cloudflare Turnstile Settings', 'cool-formkit'); ?></h3>
+                <p class="description cool-formkit-description"><?php _e('You can get your site key and secret key from here: <a href="https://www.cloudflare.com/en-au/application-services/products/turnstile/" target="_blank">https://www.cloudflare.com/en-au/application-services/products/turnstile/</a>', 'cool-formkit'); ?></p>
+
+                <table class="form-table cool-formkit-table">
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfefp_cloudflare_site_key" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?></label>
+                        </th>
+                        <td class="cool-formkit-table-td site-key-td">
+                            <input type="password" id="cfefp_cloudflare_site_key" name="cfefp_cloudflare_site_key" min="4" value="<?php echo get_option('cfefp_cloudflare_site_key'); ?>" class="regular-text cool-formkit-input" disabled="disabled"/>    
+                            <span class="site-key-show-hide-icon">
+                                <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfefp_cloudflare_secret_key" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?></label>
+                        </th>
+                        <td class="cool-formkit-table-td secret-key-td">
+                            <input type="password" id="cfefp_cloudflare_secret_key" name="cfefp_cloudflare_secret_key" min="4" value="<?php echo get_option('cfefp_cloudflare_secret_key'); ?>" class="regular-text cool-formkit-input" disabled="disabled"/>
+                            <span class="secret-key-show-hide-icon">
+                                <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+                <hr>
+                <h3><?php esc_html_e('hCAPTCHA Settings', 'cool-formkit'); ?></h3>
+                <p class="description cool-formkit-description"><?php _e('To use <a href="https://www.hcaptcha.com/" target="_blank">hCaptcha</a>, please register <a href="https://www.hcaptcha.com/signup-interstitial" target="_blank">here</a> to get your site and secret keys.', 'cool-formkit'); ?></p>
+
+                <table class="form-table cool-formkit-table">
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfefp_h_site_key" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?></label>
+                        </th>
+                        <td class="cool-formkit-table-td site-key-td">
+                            <input type="password" id="cfefp_h_site_key" name="cfefp_h_site_key" min="4" value="<?php echo get_option('cfefp_h_site_key'); ?>" class="regular-text cool-formkit-input" disabled="disabled"/>
                                 
-                                if($check_option == 'on'){
-                                    $checked = 'checked';
-                                }else{
-                                    $checked = '';
-                                }
-    
-                                ?>
-                                
-                                <tr>
-                                    <th scope="row" class="cool-formkit-table-th">
-                                        <label for="cfkef_usage_share_data" class="usage-share-data-label"><?php esc_html_e('Usage Share Data', 'cool-formkit'); ?></label>
-                                    </th>
-                                    <td class="cool-formkit-table-td usage-share-data">
-                                        <input type="checkbox" id="cfkef_usage_share_data" name="cfkef_usage_share_data" value="on" <?php echo $checked ?>  class="regular-text cool-formkit-input"  />
-                                        <div class="description cool-formkit-description">
-                                        <?php esc_html_e('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'ccpw'); ?>
-                                        <a href="#" class="ccpw-see-terms">[<?php esc_html_e('See terms', 'ccpw'); ?>]</a>
-    
-                                        <div id="termsBox" style="display: none; padding-left: 20px; margin-top: 10px; font-size: 12px; color: #999;">
-                                            <p>
-                                                <?php esc_html_e('Opt in to receive email updates about security improvements, new features, helpful tutorials, and occasional special offers. We\'ll collect:', 'ccpw'); ?>
-                                            </p>
-                                            <ul style="list-style-type: auto;">
-                                                <li><?php esc_html_e('Your website home URL and WordPress admin email.', 'ccpw'); ?></li>
-                                                <li><?php esc_html_e('To check plugin compatibility, we will collect the following: list of active plugins and themes, server type, MySQL version, WordPress version, memory limit, site language and database prefix.', 'ccpw'); ?></li>
-                                            </ul>
+                            <span class="site-key-show-hide-icon-h-captcha">
+                                <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfefp_h_secret_key" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?></label>
+                        </th>
+                        <td class="cool-formkit-table-td secret-key-td">
+                            <input type="password" id="cfefp_h_secret_key" name="cfefp_h_secret_key" min="4" value="<?php echo get_option('cfefp_h_secret_key'); ?>" class="regular-text cool-formkit-input" 
+                            disabled="disabled"/>
+                            <span class="secret-key-show-hide-icon-h-captcha">
+                                <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+                <hr>
+                            
+                <table class="form-table cool-formkit-table">
+                    <?php $cpfm_opt_in = get_option('cpfm_opt_in_choice_cool_forms','');
+                                     if ($cpfm_opt_in) {
+        
+                                      $check_option =  get_option( 'cfl_usage_share_data','');
+                                    
+                                    if($check_option == 'on'){
+                                        $checked = 'checked';
+                                    }else{
+                                        $checked = '';
+                                    }
+        
+                                    ?>
+                                    
+                                    <tr>
+                                        <th scope="row" class="cool-formkit-table-th">
+                                            <label for="cfl_usage_share_data" class="usage-share-data-label"><?php esc_html_e('Usage Share Data', 'cool-formkit'); ?></label>
+                                        </th>
+                                        <td class="cool-formkit-table-td usage-share-data">
+                                            <input type="checkbox" id="cfl_usage_share_data" name="cfl_usage_share_data" value="on" <?php echo $checked ?>  class="regular-text cool-formkit-input"  />
+                                            <div class="description cool-formkit-description">
+                                            <?php esc_html_e('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'ccpw'); ?>
+                                            <a href="#" class="ccpw-see-terms">[<?php esc_html_e('See terms', 'ccpw'); ?>]</a>
+        
+                                            <div id="termsBox" style="display: none; padding-left: 20px; margin-top: 10px; font-size: 12px; color: #999;">
+                                                <p>
+                                                    <?php esc_html_e('Opt in to receive email updates about security improvements, new features, helpful tutorials, and occasional special offers. We\'ll collect:', 'ccpw'); ?>
+                                                </p>
+                                                <ul style="list-style-type: auto;">
+                                                    <li><?php esc_html_e('Your website home URL and WordPress admin email.', 'ccpw'); ?></li>
+                                                    <li><?php esc_html_e('To check plugin compatibility, we will collect the following: list of active plugins and themes, server type, MySQL version, WordPress version, memory limit, site language and database prefix.', 'ccpw'); ?></li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                    </div>
-    
-    
-                                    </td>
-                                </tr>
-                                <?php }?>
-            </table>
-            <div class="cool-formkit-submit">
-                <?php submit_button(); ?>
+        
+        
+                                        </td>
+                                    </tr>
+                                    <?php }?>
+                </table>
+                <div class="cool-formkit-submit">
+                    <?php submit_button(); ?>
+                </div>
             </div>
         </form>
     </div>

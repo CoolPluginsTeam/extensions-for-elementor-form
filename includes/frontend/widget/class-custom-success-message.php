@@ -1,6 +1,6 @@
 <?php
 
-namespace Cool_FormKit\Includes;
+namespace Cool_FormKit\Includes\Frontend\Widget;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -16,8 +16,13 @@ class Custom_Success_Message {
 	public function set_hooks() : void {
 		add_action( 'elementor/widget/before_render_content', array( $this, 'add_message_class' ) );
 		add_action( 'elementor/element/form/section_integration/after_section_end', array( $this, 'add_message_control' ), 100, 2 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frondend_scripts' ) );
 	}
 
+	public function enqueue_frondend_scripts(){
+		wp_register_style( 'eef-frontend-style',  CFL_PLUGIN_URL . 'assets/css/style.min.css', array(), CFL_VERSION );	
+		wp_register_script( 'eef-frontend-script', CFL_PLUGIN_URL . 'assets/js/frontend-scripts.min.js', array( 'jquery' ), CFL_VERSION );
+	}
 	/**
 	 * add_css_class_field_control
 	 * @param $element
@@ -54,6 +59,9 @@ class Custom_Success_Message {
 				'render_type' => 'none',
 				'classes' => 'elementor_control_message_control-ltr',
 				'description' => \esc_html__( 'Paste shortcode for your sucess message template.', 'extensions_elementor_form' ),
+				'condition' => array(
+					'hide_form_after_submit' => 'yes'
+				)
 			]
 		);
 
@@ -72,6 +80,8 @@ class Custom_Success_Message {
 			add_action( 'elementor-pro/forms/pre_render', [ $this, 'template_message' ] );
 
 			if( 'yes' == $settings['hide_form_after_submit'] ) {
+				wp_enqueue_style( 'eef-frontend-style' );
+				wp_enqueue_script( 'eef-frontend-script' );
 				$form->add_render_attribute( 'wrapper', 'class', 'ele-extensions-hide-form', true );
 			}
 		}

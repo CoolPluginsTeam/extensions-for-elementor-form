@@ -44,6 +44,9 @@ input:checked + .cfkef-slider {
 input:checked + .cfkef-slider::before {
     transform: translate(1.1em, -50%);
 }
+input:disabled + .cfkef-slider {
+    background-color: #403a3d1a;
+}
 
 /* nav tab css */
 .cfkef-wrapper h2.nav-tab-wrapper,

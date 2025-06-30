@@ -147,19 +147,6 @@ class Recaptcha_settings{
         }
     }
 
-
-
-    public function add_dashboard_tab($tabs) {
-        $tabs[] = array(
-            'title' => 'Settings',
-            'position' => 2,
-            'slug' => 'cool-formkit&tab=recaptcha-settings',
-        );
-
-        return $tabs;
-    }
-
-
     public function handle_form_submit() {
 
         // Security check
@@ -261,8 +248,6 @@ class Recaptcha_settings{
 
         update_option( "cfl_secret_key_v3",  $secret_key_v3);
 
-        update_option( "cfl_site_key_v2",  $site_key_v2);
-
         update_option( "cfl_usage_share_data",  $cfl_usage_share_data);
          $this->cfl_handle_unchecked_checkbox();
 
@@ -299,45 +284,7 @@ class Recaptcha_settings{
 
     public function __construct() {
 
-        add_action('cfkef_render_menu_pages', [ $this, 'recaptcha_setting_html_output' ]);
-        // add_filter('cfkef_dashboard_tabs', [ $this, 'add_dashboard_tab' ]);
-
-        
-    //     add_action('cpfm_register_notice', function () {
-            
-    //         if (!class_exists('\CPFM_Feedback_Notice') || !current_user_can('manage_options')) {
-    //             return;
-    //         }
-
-    //         $notice = [
-
-    //             'title' => __('Elementor Form Addons by Cool Plugins', 'extensions-for-elementor-form'),
-    //             'message' => __('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'cool-plugins-feedback'),
-    //             'pages' => ['cool-formkit','cfkef-entries','cool-formkit&tab=recaptcha-settings'],
-    //             'always_show_on' => ['cool-formkit','cfkef-entries','cool-formkit&tab=recaptcha-settings'], // This enables auto-show
-    //             'plugin_name'=>'cool_forms'
-    //         ];
-
-    //         \CPFM_Feedback_Notice::cpfm_register_notice('cool_forms', $notice);
-
-    //             if (!isset($GLOBALS['cool_plugins_feedback'])) {
-    //                 $GLOBALS['cool_plugins_feedback'] = [];
-    //             }
-                
-    //             $GLOBALS['cool_plugins_feedback']['cool_forms'][] = $notice;
-           
-    //     });
-        
-    //     add_action('cpfm_after_opt_in_cool_forms', function($category) {
-            
-
-    //     if ($category === 'cool_forms') {
-
-    //         CFL_cronjob::cfl_send_data();
-    //         update_option( 'cfl_usage_share_data','on' );   
-    //     } 
-    // });
-       
+        add_action('cfkef_render_menu_pages', [ $this, 'recaptcha_setting_html_output' ]);       
     }
 
 }

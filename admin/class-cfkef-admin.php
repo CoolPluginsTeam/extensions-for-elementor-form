@@ -189,8 +189,13 @@ class CFKEF_Admin {
             'type' => 'array',
             'description' => 'Enabled Form Elements',
             'sanitize_callback' => array($this, 'sanitize_form_elements'),
-            'default' => array()
+            'default' => array('conditional_logic','country_code')
         ));
+        register_setting( 'cfkef_form_elements_group', 'cfkef_toggle_all' );
+
+        register_setting( 'cfkef_form_elements_group', 'cfkef_enable_elementor_pro_form' );
+        register_setting( 'cfkef_form_elements_group', 'cfkef_enable_hello_plus' );
+        register_setting( 'cfkef_form_elements_group', 'cfkef_enable_formkit_builder' );
     }
 
     /**
@@ -220,11 +225,18 @@ class CFKEF_Admin {
      * @since    1.0.0
      */
     public function enqueue_admin_styles() {
+        wp_enqueue_script('cfkef-global-admin', CFL_PLUGIN_URL . 'assets/js/global-admin.js', array('jquery'), $this->version, true);
 
-        if (isset($_GET['page']) && strpos($_GET['page'], 'cool-formkit') !== false) {
+        if (isset($_GET['page']) &&(strpos($_GET['page'], 'cool-formkit') !== false || strpos($_GET['page'], 'cfkef-entries') !== false)) {
             wp_enqueue_style('cfkef-admin-style', CFL_PLUGIN_URL . 'assets/css/admin-style.css', array(), $this->version, 'all');
             wp_enqueue_style('dashicons');
             wp_enqueue_script('cfkef-admin-script', CFL_PLUGIN_URL . 'assets/js/admin-script.js', array('jquery'), $this->version, true);
+
+            wp_localize_script( 'cfkef-admin-script', 'cfkef_plugin_vars', [
+                'nonce' => wp_create_nonce( 'cfkef_plugin_nonce' ),
+                'ajaxurl' => admin_url( 'admin-ajax.php' ),
+                'installNonce' => wp_create_nonce( 'updates' ),
+            ] );
         }
     }
 

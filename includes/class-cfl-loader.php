@@ -2,14 +2,13 @@
 
 namespace Cool_FormKit\Includes;
 
-use Cool_FormKit\Includes\Custom_Success_Message;
-use Cool_FormKit\Includes\Actions\Register_Actions;
 use Cool_Formkit\admin\CFKEF_Admin;
 
 use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
 use Cool_FormKit\Admin\Entries\CFKEF_Entries_Posts;
-use Cool_FormKit\Admin\Recaptcha\Recaptcha_settings;
+use Cool_FormKit\Includes\Frontend\CFKEF_Frontend;
 
+use Cool_FormKit\Includes\Frontend\Widget\Custom_Success_Message;
 
 
 /**
@@ -116,32 +115,9 @@ class CFL_Loader {
     }
 
     public function include_addons(){
-        include_once CFL_PLUGIN_PATH . '/includes/actions/class-register-actions.php';
-        // if($this->is_field_enabled('custom_success_message')){
-    		include_once CFL_PLUGIN_PATH . 'includes/widget/class-custom-success-message.php';
-            $custom_success_message = new Custom_Success_Message();
-            $custom_success_message->set_hooks();
-        // }
-        // if($this->is_field_enabled('register_post_after_submit')){
-            $actions = array(
-                'register_post' => array(
-                    'relative_path' => '/includes/actions/class-register-post.php',
-                    'class_name' => 'Register_Post',
-                ),
-            );
-            $regiser_actions = new Register_Actions( $actions );
-            $regiser_actions->set_hooks();
-        // }
-        // if($this->is_field_enabled('whatsapp_redirect')){
-            $actions = array(
-                'whatsapp_redirect' => array(
-                    'relative_path' => '/includes/actions/class-whatsapp-redirect.php',
-                    'class_name' => 'Whatsapp_Redirect',
-                )
-            );
-            $regiser_actions = new Register_Actions( $actions );
-            $regiser_actions->set_hooks();
-        // }
+    	// include_once CFL_PLUGIN_PATH . 'includes/frontend/widget/class-custom-success-message.php';
+        // $custom_success_message = new Custom_Success_Message();
+        // $custom_success_message->set_hooks();
     }
     /**
      * Load the required dependencies for this plugin.
@@ -158,6 +134,10 @@ class CFL_Loader {
     private function load_dependencies() {
         require_once CFL_PLUGIN_PATH . 'admin/class-cfkef-admin.php';
         $plugin_admin = CFKEF_Admin::get_instance($this->get_plugin_name(), $this->get_version());
+        if(get_option('cfkef_enable_elementor_pro_form', true)){
+            require_once CFL_PLUGIN_PATH . 'includes/frontend/class-cfl-frontend.php';
+            $plugin_public = new CFKEF_Frontend($this->get_plugin_name(), $this->get_version());
+        }
     }
 
 
@@ -171,9 +151,9 @@ class CFL_Loader {
         }
 
 
-        if(class_exists(Recaptcha_settings::class)){
-            $entries_posts = Recaptcha_settings::get_instance();
-        }
+        // if(class_exists(Recaptcha_settings::class)){
+        //     $entries_posts = Recaptcha_settings::get_instance();
+        // }
     }
 
 
@@ -183,30 +163,8 @@ class CFL_Loader {
 	 */
 	public function init() : void {
 		do_action( 'extensions_for_elementor_form_init' );
-
-		add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'register_editor_scripts') );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frondend_scripts' ) );
-
 	}
-
-	/**
-	 * Enqueue front end styles/scripts
-	 */
-
-     
-	public function enqueue_frondend_scripts() : void {
-		wp_enqueue_style( 'eef-frontend-style',  CFL_PLUGIN_URL . 'assets/css/style.min.css', array(), CFL_VERSION );
-	}
-
-	/**
-	 * Register custom scritps on Elementor editor
-	 *
-	 * @since 2.0
-	 */
-	function register_editor_scripts() : void {
-		wp_enqueue_script( 'eef-frontend-script', CFL_PLUGIN_URL . 'assets/js/frontend-scripts.min.js', array( 'jquery' ), CFL_VERSION );
-		wp_enqueue_script( 'eef-editor-scripts' );
-	}
+    
     /**
      * The name of the plugin used to uniquely identify it within the context of
      * WordPress and to define internationalization functionality.

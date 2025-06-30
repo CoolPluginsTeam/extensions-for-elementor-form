@@ -108,7 +108,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	public function initialize_plugin()
 	{
 		// Include main plugin class.
-		require_once CFL_PLUGIN_PATH . '/includes/class-plugin.php';
+		require_once CFL_PLUGIN_PATH . '/includes/class-cfl-loader.php';
 		require_once CFL_PLUGIN_PATH . 'admin/feedback/cron/cfl-class-cron.php';
 
 		CFL_Loader::get_instance();
