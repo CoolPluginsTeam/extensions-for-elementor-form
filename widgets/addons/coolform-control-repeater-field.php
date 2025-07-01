@@ -15,7 +15,7 @@ use ElementorPro\Plugin;
 	/**
 	 * Class for creating repeater field
 	 */
-class Control_Repeater_Field extends \Elementor\Control_Repeater {
+class CoolForm_Control_Repeater_Field extends \Elementor\Control_Repeater {
 	/**
 	 * Function for creating repeater field
 	 */

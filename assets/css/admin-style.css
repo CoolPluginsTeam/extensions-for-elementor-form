@@ -44,8 +44,17 @@ input:checked + .cfkef-slider {
 input:checked + .cfkef-slider::before {
     transform: translate(1.1em, -50%);
 }
-input:disabled + .cfkef-slider {
+input.cfkef-element-toggle:disabled + .cfkef-slider {
     background-color: #403a3d1a;
+}
+input.cfkef-element-toggle:disabled + .cfkef-slider::before{
+    transform: translate(0em, -50%);
+}
+input.cfkef-element-toggle:disabled{
+    opacity: 0;
+}
+input.cfkef-element-toggle:disabled::before{
+    content: '';
 }
 
 /* nav tab css */

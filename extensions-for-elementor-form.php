@@ -21,7 +21,7 @@ namespace Cool_FormKit;
 
 use Cool_FormKit\Includes\Module_Base;
 use Cool_FormKit\Includes\CFL_Loader;
-use Cool_FormKit\Widgets\CFL_Addons_Loader;
+use Cool_FormKit\Widgets\CoolForm_Addons_Loader;
 
 if (! defined('ABSPATH')) {
 	header('Status: 403 Forbidden');
@@ -113,8 +113,8 @@ class Cool_Formkit_Lite_For_Elementor_Form
 
 		CFL_Loader::get_instance();
 
-		require_once CFL_PLUGIN_PATH . 'widgets/cfl-addons-loader.php';		
-		CFL_Addons_Loader::get_instance();
+		require_once CFL_PLUGIN_PATH . 'widgets/coolform-addons-loader.php';		
+		CoolForm_Addons_Loader::get_instance();
 		
 		if (is_admin()) {
 

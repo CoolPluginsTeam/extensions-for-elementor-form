@@ -14,12 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @version 1.0.0
  */
-class CFL_COUNTRY_CODE_FIELD {
+class CoolForm_COUNTRY_CODE_FIELD {
 
 	/**
 	 * Plugin instance.
 	 *
-	 * @var CFL_COUNTRY_CODE_FIELD
+	 * @var CoolForm_COUNTRY_CODE_FIELD
 	 *
 	 * @access private
 	 * @var null

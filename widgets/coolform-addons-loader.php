@@ -1,15 +1,15 @@
 <?php
 
 namespace Cool_FormKit\Widgets;
-use Cool_FormKit\Widgets\Addons\CFL_COUNTRY_CODE_FIELD;
-use Cool_FormKit\Widgets\Addons\Cfl_Create_Conditional_Fields;
+use Cool_FormKit\Widgets\Addons\CoolForm_COUNTRY_CODE_FIELD;
+use Cool_FormKit\Widgets\Addons\CoolForm_Create_Conditional_Fields;
 
 if (!defined('ABSPATH')) {
     die;
 }
 
-if(!class_exists('CFL_Addons_Loader')) { 
-class CFL_Addons_Loader {
+if(!class_exists('CoolForm_Addons_Loader')) { 
+class CoolForm_Addons_Loader {
 
     protected $plugin_name;
 
@@ -38,10 +38,10 @@ class CFL_Addons_Loader {
     }
 
     public function load_addons(){
-        require_once CFL_PLUGIN_PATH .'widgets/addons/class-cfl-country-code-addon.php';
-        CFL_COUNTRY_CODE_FIELD::get_instance();
-         require_once CFL_PLUGIN_PATH . 'widgets/addons/create-conditional-fields.php';
-            new Cfl_Create_Conditional_Fields();
+        require_once CFL_PLUGIN_PATH .'widgets/addons/coolform-country-code-addon.php';
+        CoolForm_COUNTRY_CODE_FIELD::get_instance();
+        require_once CFL_PLUGIN_PATH . 'widgets/addons/coolform-create-conditional-fields.php';
+        new CoolForm_Create_Conditional_Fields();
     }
     /**
      * Get the instance of this class.

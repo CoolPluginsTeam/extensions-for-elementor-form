@@ -18,8 +18,8 @@ use ElementorPro\Plugin;
 	/**
 	 * Class for creating conditional fields and varify logic comparision before send
 	 */
-if(!class_exists('Cfl_Create_Conditional_Fields')) {	 
-class Cfl_Create_Conditional_Fields {
+if(!class_exists('CoolForm_Create_Conditional_Fields')) {	 
+class CoolForm_Create_Conditional_Fields {
 
 	/**
 	 * Validate checker varibale.
@@ -287,8 +287,8 @@ class Cfl_Create_Conditional_Fields {
 
 
 	public function register_fields_repeater_controler( $controls_manager ) {
-		include CFL_PLUGIN_PATH . 'widgets/addons/class-control-repeater-field.php';
-		$controls_manager->register( new Control_Repeater_Field() );
+		include CFL_PLUGIN_PATH . 'widgets/addons/coolform-control-repeater-field.php';
+		$controls_manager->register( new CoolForm_Control_Repeater_Field() );
 	}
 
 	/**
