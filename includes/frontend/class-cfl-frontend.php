@@ -7,6 +7,7 @@ use Cool_FormKit\Includes\Actions\Register_Post;
 use Cool_FormKit\Includes\Frontend\Widget\Custom_Success_Message;
 use Cool_FormKit\Includes\Frontend\Widget\CFL_Create_Conditional_Fields;
 use Cool_FormKit\Includes\Frontend\Widget\CFL_COUNTRY_CODE_FIELD;
+use Cool_FormKit\Includes\Frontend\Widget\FME_Plugin;
 
 /**
  * The public-facing functionality of the plugin.
@@ -83,6 +84,8 @@ class CFKEF_Frontend {
             new CFL_COUNTRY_CODE_FIELD();
         }
         if($this->is_field_enabled('form_input_mask')){
+            require_once CFL_PLUGIN_PATH . 'includes/frontend/widget/class-fme-plugin.php';
+            FME_Plugin::instance();   
         }
     }
      /**

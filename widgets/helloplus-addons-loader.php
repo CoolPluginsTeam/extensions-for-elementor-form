@@ -10,6 +10,7 @@ use Cool_FormKit\Widgets\HelloPlusAddons\Action\Save_Form_Data;
 
 use Cool_FormKit\Widgets\HelloPlusAddons\HelloPlus_Create_Conditional_Fields;
 use Cool_FormKit\Widgets\HelloPlusAddons\HelloPlus_COUNTRY_CODE_FIELD;
+use Cool_FormKit\Widgets\HelloPlusAddons\HelloPlus_FME_Plugin;
 
 
 if (!defined('ABSPATH')) {
@@ -75,6 +76,10 @@ class HelloPlus_Addons_Loader {
         if($this->is_field_enabled('country_code')){
             require_once CFL_PLUGIN_PATH . 'widgets/helloplus-addons/helloplus-country-code-addon.php';
             new HelloPlus_COUNTRY_CODE_FIELD();
+        }
+        if($this->is_field_enabled('form_input_mask')){
+            require_once CFL_PLUGIN_PATH . 'widgets/helloplus-addons/helloplus-fme-plugin.php';
+            HelloPlus_FME_Plugin::instance();
         }
     }   
 

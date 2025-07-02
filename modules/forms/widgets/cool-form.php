@@ -162,22 +162,42 @@ class Cool_Form extends Form_Base {
 							case 'number':
 							case 'password':
 							case 'search':
-								inputField = '<label class="cool-form-text mdc-text-field mdc-text-field--outlined '+ ((item.field_label === '' || !settings.show_labels) ? 'mdc-text-field--no-label' : '') +' cool-field-size-'+settings.input_size+'">';
+								let fieldClasses = 'mdc-text-field__input cool-form__field cool-field-size-' + settings.input_size;
+
+								let customAttrs = '';
+								if ( item.custom_mask_attributes ) {
+									_.each( item.custom_mask_attributes, function (value, attr) {
+										if (attr === 'class') {
+											// Append additional classes to input field
+											fieldClasses += ' ' + value;
+										} else {
+											customAttrs += ' ' + attr + '="' + _.escape(value) + '"';
+										}
+									});
+								}
+
+								inputField  = '<label class="cool-form-text mdc-text-field mdc-text-field--outlined ';
+								inputField += ((item.field_label === '' || !settings.show_labels) ? 'mdc-text-field--no-label' : '') + ' cool-field-size-' + settings.input_size + '">';
 								inputField += '<span class="mdc-notched-outline">';
 								inputField += '<span class="mdc-notched-outline__leading"></span>';
 								inputField += '<span class="mdc-notched-outline__notch">';
+
 								if ( item.field_label !== '' && settings.show_labels ) {
-									inputField += '<span class="mdc-floating-label" id="text-label-' + i + '">' + _.escape( item.field_label ) + '</span>';
+									inputField += '<span class="mdc-floating-label" id="text-label-' + i + '">' + _.escape(item.field_label) + '</span>';
 								}
+
 								inputField += '</span>';
 								inputField += '<span class="mdc-notched-outline__trailing"></span>';
 								inputField += '</span>';
-								inputField += '<input type="' + item.field_type + '" class="mdc-text-field__input cool-form__field" name="form_field_' + i + '" id="form_field_' + i + '" value="' + item.field_value + '" ' + required + ' ' + placeholder + '>';
-									inputField += '<i aria-hidden="true" class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing cool-+ item.field_type +-error-icon" style="display:none">error</i>';
+
+								inputField += '<input type="' + item.field_type + '" class="' + fieldClasses + '" name="form_field_' + i + '" id="form_field_' + i + '" value="' + _.escape(item.field_value) + '" ' + required + ' ' + placeholder + customAttrs + '>';
+
+								inputField += '<i aria-hidden="true" class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing cool-' + item.field_type + '-error-icon" style="display:none">error</i>';
+
 								inputField += '</label>';
-									inputField += '<div class="mdc-text-field-helper-line">' +
-												'<div class="mdc-text-field-helper-text" id="cool-+ item.field_type +-error" aria-hidden="true"></div>' +
-												'</div>';
+								inputField += '<div class="mdc-text-field-helper-line">' +
+												'<div class="mdc-text-field-helper-text" id="cool-' + item.field_type + '-error" aria-hidden="true"></div>' +
+											'</div>';
 								break;
 
 							case 'select':

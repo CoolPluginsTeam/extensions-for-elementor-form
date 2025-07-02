@@ -32,6 +32,7 @@ class HelloPlus_Whatsapp_Redirect extends Action_Base {
 		return 'WhatsApp';
 	}
 
+	private static $registered_actions = [];
 	/**
 	 * Register Settings Section
 	 *
@@ -40,6 +41,14 @@ class HelloPlus_Whatsapp_Redirect extends Action_Base {
 	 * @param \Elementor\Widget_Base $widget
 	 */
 	public function register_settings_section( $widget ) {
+		$control_id = 'section_whatsapp-redirect';
+        
+        if ( in_array( $control_id, self::$registered_actions, true ) ) {
+            return; // Already registered
+        }
+
+        self::$registered_actions[] = $control_id;
+
 		$widget->start_controls_section(
 			'section_whatsapp-redirect',
 			[

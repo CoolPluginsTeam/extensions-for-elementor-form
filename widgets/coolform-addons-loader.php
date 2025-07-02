@@ -3,6 +3,7 @@
 namespace Cool_FormKit\Widgets;
 use Cool_FormKit\Widgets\Addons\CoolForm_COUNTRY_CODE_FIELD;
 use Cool_FormKit\Widgets\Addons\CoolForm_Create_Conditional_Fields;
+use Cool_FormKit\Widgets\Addons\CoolForm_FME_Plugin;
 
 use Cool_FormKit\Widgets\Addons\CoolForm_Whatsapp_Redirect;
 
@@ -67,6 +68,10 @@ class CoolForm_Addons_Loader {
         if($this->is_field_enabled('conditional_logic')){
             require_once CFL_PLUGIN_PATH . 'widgets/addons/coolform-create-conditional-fields.php';
             new CoolForm_Create_Conditional_Fields();
+        }
+        if($this->is_field_enabled('form_input_mask')){
+            require_once CFL_PLUGIN_PATH . 'widgets/addons/coolform-fme-plugin.php';
+            CoolForm_FME_Plugin::instance();
         }
     }
     /**

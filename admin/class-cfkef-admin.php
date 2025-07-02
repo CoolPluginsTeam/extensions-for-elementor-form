@@ -207,7 +207,7 @@ class CFKEF_Admin {
     public function sanitize_form_elements($input) {
         $valid = array();
 
-        $form_elements = array('conditional_logic', 'conditional_redirect', 'conditional_email', 'conditional_submit_button', 'range_slider', 'country_code', 'calculator_field', 'rating_field', 'signature_field', 'image_radio', 'radio_checkbox_styler', 'label_styler', 'select2','WYSIWYG','confirm_dialog','restrict_date','currency_field','month_week_field','custom_success_message','register_post_after_submit','whatsapp_redirect');
+        $form_elements = array('conditional_logic', 'conditional_redirect', 'conditional_email', 'conditional_submit_button', 'range_slider', 'country_code', 'calculator_field', 'rating_field', 'signature_field', 'image_radio', 'radio_checkbox_styler', 'label_styler', 'select2','WYSIWYG','confirm_dialog','restrict_date','currency_field','month_week_field','custom_success_message','register_post_after_submit','whatsapp_redirect','form_input_mask');
 
         if (is_array($input)) {
             foreach ($input as $element) {
