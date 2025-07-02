@@ -5,6 +5,8 @@ use Cool_FormKit\Includes\Actions\Whatsapp_Redirect;
 use Cool_FormKit\Includes\Actions\Register_Post;
 
 use Cool_FormKit\Includes\Frontend\Widget\Custom_Success_Message;
+use Cool_FormKit\Includes\Frontend\Widget\CFL_Create_Conditional_Fields;
+use Cool_FormKit\Includes\Frontend\Widget\CFL_COUNTRY_CODE_FIELD;
 
 /**
  * The public-facing functionality of the plugin.
@@ -71,6 +73,17 @@ class CFKEF_Frontend {
         include_once CFL_PLUGIN_PATH . 'includes/frontend/widget/class-custom-success-message.php';
         $custom_success_message = new Custom_Success_Message();
         $custom_success_message->set_hooks();
+
+        if($this->is_field_enabled('conditional_logic')){
+            require_once CFL_PLUGIN_PATH . 'includes/frontend/widget/create-conditional-fields.php';
+            new CFL_Create_Conditional_Fields();
+        }
+        if($this->is_field_enabled('country_code')){
+            require_once CFL_PLUGIN_PATH . 'includes/frontend/widget/country-code-addon.php';
+            new CFL_COUNTRY_CODE_FIELD();
+        }
+        if($this->is_field_enabled('form_input_mask')){
+        }
     }
      /**
      * Check if a field is enabled in the settings.

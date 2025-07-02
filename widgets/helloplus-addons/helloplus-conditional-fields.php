@@ -1,6 +1,6 @@
 <?php
-namespace Cool_FormKit\Widgets\Addons;
-use Cool_FormKit\Widgets\Addons\Control_Repeater_Field;
+namespace Cool_FormKit\Widgets\HelloPlusAddons;
+
 /**
  * Main file for adding conditional fields to Elementor Pro forms in WordPress.
  *
@@ -18,8 +18,8 @@ use ElementorPro\Plugin;
 	/**
 	 * Class for creating conditional fields and varify logic comparision before send
 	 */
-if(!class_exists('CoolForm_Create_Conditional_Fields')) {	 
-class CoolForm_Create_Conditional_Fields {
+if(!class_exists('HelloPlus_Create_Conditional_Fields')) {	 
+class HelloPlus_Create_Conditional_Fields {
 
 	/**
 	 * Validate checker varibale.
@@ -34,10 +34,9 @@ class CoolForm_Create_Conditional_Fields {
 	 */
 	public function __construct() {
 		add_action( 'elementor/frontend/widget/before_render', array( $this, 'all_field_conditions' ), 10, 3 );
-		add_action( 'elementor/element/cool-form/section_form_fields/before_section_end', array( $this, 'append_conditional_fields_controler' ), 10, 2 );
+		add_action( 'elementor/element/ehp-form/section_form_fields/before_section_end', array( $this, 'append_conditional_fields_controler' ), 10, 2 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_assets_files' ) );
-		// add_action( 'elementor/controls/register', array( $this, 'register_fields_repeater_controler' ) );
-		add_action( 'cool_formkit/forms/validation', array( $this, 'check_validation' ), 9, 3 );
+		add_action( 'hello_plus/forms/validation', array( $this, 'check_validation' ), 9, 3 );
 		add_action( 'elementor/editor/before_enqueue_styles', array( $this, 'editor_assets' ) );
 		add_action( 'wp_ajax_cfef_elementor_review_notice', array( $this, 'cfef_elementor_review_notice' ) );
 		
@@ -48,9 +47,9 @@ class CoolForm_Create_Conditional_Fields {
 	 */
 
 	public function add_assets_files() {
-		wp_register_script( 'coolform_cfefp_logic', CFL_PLUGIN_URL . 'assets/addons/js/logic_frontend.js', array( 'jquery' ), CFL_VERSION, true );
+		wp_register_script( 'helloplus_cfefp_logic', CFL_PLUGIN_URL . 'assets/helloplus-addons/js/helloplus_logic_frontend.js', array( 'jquery' ), CFL_VERSION, true );
 
-		wp_localize_script('coolform_cfefp_logic', 'my_script_vars', array(
+		wp_localize_script('helloplus_cfefp_logic', 'my_script_vars', array(
 			'pluginConstant' => CFL_VERSION
 		));
 	
@@ -70,9 +69,9 @@ class CoolForm_Create_Conditional_Fields {
 	 * Js and css files loaded for elementor editor mode for add dynamic tags
 	 */
 	public function editor_assets() {
-		wp_register_script( 'coolform_logic_editor', CFL_PLUGIN_URL . 'assets/addons/js/editor.min.js', array( 'jquery' ), CFL_VERSION, true );
-		wp_enqueue_script('coolform_logic_editor');
-		wp_enqueue_style( 'coolform_logic_editor_css', CFL_PLUGIN_URL . 'assets/addons/css/editor.min.css', array(), CFL_VERSION );
+		wp_register_script( 'helloplus_logic_editor', CFL_PLUGIN_URL . 'assets/addons/js/editor.min.js', array( 'jquery' ), CFL_VERSION, true );
+		wp_enqueue_script('helloplus_logic_editor');
+		wp_enqueue_style( 'helloplus_logic_editor_css', CFL_PLUGIN_URL . 'assets/addons/css/editor.min.css', array(), CFL_VERSION );
 
 		if ( defined( 'ELEMENTOR_PLUGIN_BASE' ) ) {
 				wp_enqueue_style(
@@ -252,18 +251,6 @@ class CoolForm_Create_Conditional_Fields {
 	}
     
 	/**
-	 * Function for call repeater call to add field repeater functionality
-	 *
-	 * @param object $controls_manager use for register repeater.
-	 */
-
-
-	public function register_fields_repeater_controler( $controls_manager ) {
-		include CFL_PLUGIN_PATH . 'widgets/addons/coolform-control-repeater-field.php';
-		$controls_manager->register( new CoolForm_Control_Repeater_Field() );
-	}
-
-	/**
 	 * Function for check all the values added in conditional  fields
 	 *
 	 * @param string $value_id having field value that use for compare.
@@ -337,7 +324,7 @@ class CoolForm_Create_Conditional_Fields {
 	 * @param  array $instance get form all fields.
 	 */
 	public function all_field_conditions( $instance ) {
-		if($instance->get_name() !== 'cool-form'){
+        if($instance->get_name() !== 'ehp-form'){
 			return;
 		}
 		// Check if $instance is an object and has a get_settings() method.
@@ -361,7 +348,7 @@ class CoolForm_Create_Conditional_Fields {
 					continue;
 				}
 
-				wp_enqueue_script( 'coolform_cfefp_logic' );
+				wp_enqueue_script( 'helloplus_cfefp_logic' );
 				$repeater_data = $field['cfef_repeater_data'];
 				$logic_object[ $field['custom_id'] ] = array(
 					'display_mode' => isset($field['cfef_logic_mode']) ? esc_html( $field['cfef_logic_mode'] ) : 'show',
@@ -384,7 +371,7 @@ class CoolForm_Create_Conditional_Fields {
 					}
 				}
 			}
-		}
+		}        
 		$condition = count( $logic_object ) > 0 ? wp_json_encode( $logic_object ) : '';
 		if ( ! empty( $condition ) ) {
 			if ( is_object( $instance ) && method_exists( $instance, 'get_id' ) ) {
@@ -394,6 +381,7 @@ class CoolForm_Create_Conditional_Fields {
 			} else {
 				$form_id = uniqid();
 			}
+
 			$textarea_id = 'cfef_logic_data_' . $form_id;
 			echo '<template id="' . esc_attr( $textarea_id ) . '" class="cfef_logic_data_js cfef-hidden" data-form-id="' . esc_attr( $form_id ) . '">' . esc_html( $condition ) . '</template>';
 		}

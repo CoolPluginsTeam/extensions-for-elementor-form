@@ -90,7 +90,6 @@ class CFL_Loader {
 		add_action( 'elementor/init', array( $this, 'init' ), 5 );
 
         $this->load_dependencies();
-        $this->include_addons();
     }
 
     /**
@@ -114,11 +113,6 @@ class CFL_Loader {
 
     }
 
-    public function include_addons(){
-    	// include_once CFL_PLUGIN_PATH . 'includes/frontend/widget/class-custom-success-message.php';
-        // $custom_success_message = new Custom_Success_Message();
-        // $custom_success_message->set_hooks();
-    }
     /**
      * Load the required dependencies for this plugin.
      *

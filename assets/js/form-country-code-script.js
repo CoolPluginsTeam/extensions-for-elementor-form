@@ -1,7 +1,7 @@
 /**
 * Class for handling country code functionality in Elementor forms.
 */
-class CoolFormCCFEF extends elementorModules.frontend.handlers.Base {
+class CCFEF extends elementorModules.frontend.handlers.Base {
 
     /**
      * Retrieves the default settings for the country code functionality.
@@ -12,7 +12,8 @@ class CoolFormCCFEF extends elementorModules.frontend.handlers.Base {
             selectors: {
                 inputTelTextArea: 'textarea.ccfef_country_code_data_js',
                 intlInputSpan: '.ccfef-editor-intl-input',
-                submitButton: 'div.cool-form__submit-group button'
+                submitButton: 'div.elementor-field-type-submit button',
+                form: ".elementor-form"
             },
         };
     }
@@ -61,106 +62,7 @@ class CoolFormCCFEF extends elementorModules.frontend.handlers.Base {
         this.removeInputTelSpanEle(); // Removes the telephone input span element from the DOM, typically used to clean up after modifications.
 
         this.intlInputValidation(); // Validates the international input fields to ensure they meet specific criteria.
-    }
-
-handleTelWithMdcFields(iti) {
-        const input = iti.telInput;
-        const parentFieldGroup = input.closest('.cool-form__field-group');
-        const $parent = jQuery(parentFieldGroup);
-    
-        // Cache common elements
-        const $floatingLabel = $parent.find('.mdc-floating-label');
-        const $inputs = $parent.find('input');
-        const $notchedOutlineNotch = $parent.find('.mdc-notched-outline__notch');
-        const $notchedOutlineLeading = $parent.find('.mdc-notched-outline__leading');
-    
-        let selectedDialCode = $inputs.eq(1).prev('.iti__country-container').find('.iti__selected-dial-code')
-        selectedDialCode.css('visibility','hidden')
-        if($inputs.eq(1).val() !== ""){
-            selectedDialCode.css('visibility','visible')
-        }else{
-            selectedDialCode.css('visibility','hidden')
-        }
-        if ($parent.nextAll().length > 0) {
-            const $nextAll = $parent.nextAll();
-            if ($nextAll.length > 0) {
-                const first = $nextAll[0];
-                const second = $nextAll[1];
-
-                const isSubmitGroup = (el) => el && el.classList && el.classList.contains('cool-form__submit-group');
-
-                const conditionMatched = !$parent.hasClass('has-width-100')
-                    ? (isSubmitGroup(first) || isSubmitGroup(second))
-                    : isSubmitGroup(first);
-
-                if (conditionMatched) {
-                    $parent.css({ 'margin-bottom': '25px' });
-                    $parent.find('.iti__country-list').css({ 'max-height': '100px' });
-                }
-            }
-        }
-
-        // Set initial floating label style
-        $floatingLabel.css('left', '50px');
-    
-        // Input focus event for the second input element
-        $inputs.eq(1).on('blur',()=>{
-            if($inputs.eq(1).val() !== ""){
-            selectedDialCode.css('visibility','visible')
-            }else{
-                selectedDialCode.css('visibility','hidden')
-            }
-        })
-        $inputs.eq(1).on('focus', () => {
-            selectedDialCode.css('visibility','visible')
-            $floatingLabel.css({
-                "left": "50px",
-                "background-color": "white"
-            });
-            const borderTop = getComputedStyle($notchedOutlineNotch[0]).getPropertyValue('border-bottom');
-            $notchedOutlineNotch.css({ 'border-top': borderTop });
-        });
-    
-        // Bind a click event on the parent container
-        $parent.on('click', (e) => {
-            handleMainLogic();
-        });
-    
-        // Mouseover on the first input element
-        $inputs.eq(0).on('mouseover', () => {
-            const borderWidth = getComputedStyle($notchedOutlineLeading[0]).getPropertyValue('border-bottom-width');
-            $notchedOutlineNotch.css({ 'border-top-width': borderWidth, 'border-top-color': 'black' });
-        });
-    
-        // Parent mouseover event
-        $parent.on('mouseover', (e) => {
-            const borderWidth = getComputedStyle($notchedOutlineLeading[0]).getPropertyValue('border-bottom-width');
-            $notchedOutlineNotch.css({ 'border-top-width': borderWidth, 'border-top-color': 'black' });
-            handleMainLogic();
-        });
-    
-        // Mouse leave event on the parent container
-        $parent.on('mouseleave', (e) => {
-            const borderWidth = getComputedStyle($notchedOutlineLeading[0]).getPropertyValue('border-bottom-width');
-            const borderColor = getComputedStyle($notchedOutlineLeading[0]).getPropertyValue('border-right-color');
-            $notchedOutlineNotch.css({ 'border-top-width': borderWidth, 'border-top-color': borderColor });
-            handleMainLogic();
-        });
-    
-        // Inner function to handle the main logic
-        function handleMainLogic() {
-            const $dropdown = $parent.find('.iti__dropdown-content');
-            $parent.nextAll('.cool-form__field-group').each(function() {
-                if (!$dropdown.hasClass('iti__hide')) {
-                    this.style.zIndex = '-1';
-                } else {
-                    this.style.zIndex = 'initial';
-                }
-            });
-        
-        }
     }    
-    
 
     /**
      * Method to handle appending country code.
@@ -181,7 +83,6 @@ handleTelWithMdcFields(iti) {
         Object.keys(itiArr).forEach(key => {
             const iti = itiArr[key];
             const inputElement = iti.telInput;
-            this.handleTelWithMdcFields(iti)
 
             let previousCountryData = iti.getSelectedCountryData();
             let previousCode = `+${previousCountryData.dialCode}`;
@@ -192,7 +93,6 @@ handleTelWithMdcFields(iti) {
             };
 
             const handleCountryChange = (e) => {
-                this.handleTelWithMdcFields(iti)
                 this.customFlags();
                 const currentCountryData = iti.getSelectedCountryData();
                 const currentCode = `+${currentCountryData.dialCode}`;
@@ -232,7 +132,7 @@ handleTelWithMdcFields(iti) {
      */
      addCountryCodeIconHandler(formId, widgetId, inputId) {
         const utilsPath = CCFEFCustomData.pluginDir + 'assets/addons/intl-tel-input/js/utils.min.js';
-        const telFIeld = jQuery(`.elementor-widget.elementor-widget-cool-form[data-id="${formId}"] .is-field-type-tel.cool-form__field-group input[type="tel"]#${inputId}`)[0];
+        const telFIeld = jQuery(`.elementor-widget.elementor-widget-form[data-id="${formId}"] .elementor-field-type-tel.elementor-field-group input[type="tel"]#${inputId}`)[0];
         
         if (undefined !== telFIeld) {
             let includeCountries = [];
@@ -484,7 +384,7 @@ handleTelWithMdcFields(iti) {
             const fieldId = element.data('field-id');
             const dialCodeVisibility=element.data('dial-code-visibility');
             const countryStrictMode = element.data('strict-mode')
-            const formId = element.closest('.elementor-element.elementor-widget-cool-form').data('id');
+            const formId = element.closest('.elementor-element.elementor-widget-form').data('id');
             const currentId = `${formId}${fieldId}`;
 
             if ('same' === commonAttr && '' === includeCountries && '' !== excludeCountries) {
@@ -557,12 +457,9 @@ handleTelWithMdcFields(iti) {
               
                     const inputTelElement = iti.telInput;                    
 
-                    let mainField = inputTelElement.closest('label')
-                    let mdcField = mdc.textfield.MDCTextField.attachTo(mainField);
-
                     if('' !== inputTelElement.value){
                         inputTelElement.value=inputTelElement.value.replace(/[^0-9+]/g, '');
-
+                                                
                         // Always ensure dial code is present in the value before validation
                         const currentCountryData = iti.getSelectedCountryData();
                         const dialCode = `+${currentCountryData.dialCode}`;
@@ -575,7 +472,7 @@ handleTelWithMdcFields(iti) {
                         }
                     }
 
-                    const parentWrp = inputTelElement.closest('.cool-form__field-group');
+                    const parentWrp = inputTelElement.closest('.elementor-field-group');
                     const telContainer=parentWrp.querySelector('.cfefp-intl-container');
 
                     if (telContainer && inputTelElement.offsetHeight) {
@@ -590,13 +487,8 @@ handleTelWithMdcFields(iti) {
                     if('' === inputTelElement.value){
                         return;
                     };
-                    
                     if (iti.isValidNumber()) {
                         jQuery(inputTelElement).closest('.cfefp-intl-container').removeClass('elementor-error');
-
-                        mdcField.valid = true;
-                        mdcField.trailingIcon.root.style.display = 'none';
-                        mdcField.helperText.foundation.adapter.setContent('');
                     } else {
                         const errorType = iti.getValidationError();
                         if (errorType !== undefined && errorMap[errorType]) {
@@ -610,12 +502,7 @@ handleTelWithMdcFields(iti) {
                             }
                             errorMsgHtml += errorMap[errorType] + '</span>';
                             jQuery(inputTelElement).closest('.cfefp-intl-container').addClass('elementor-error');
-
-                            mdcField.valid = false;
-                            mdcField.trailingIcon.root.style.display = 'initial';
-                            mdcField.helperText.foundation.adapter.setContent(errorMap[errorType]);
-
-                            // jQuery(inputTelElement).after(errorMsgHtml);
+                            jQuery(inputTelElement).after(errorMsgHtml);
                             e.preventDefault();
                         }
                     }
@@ -629,11 +516,11 @@ handleTelWithMdcFields(iti) {
 
 jQuery(window).on('elementor/frontend/init', () => {
     const addHandler = ($element) => {
-        elementorFrontend.elementsHandler.addHandler(CoolFormCCFEF, {
+        elementorFrontend.elementsHandler.addHandler(CCFEF, {
             $element,
         });
     };
 
-    elementorFrontend.hooks.addAction('frontend/element_ready/cool-form.default', addHandler);
+    elementorFrontend.hooks.addAction('frontend/element_ready/form.default', addHandler);
 });
 

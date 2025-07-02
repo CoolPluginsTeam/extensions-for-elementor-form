@@ -36,6 +36,9 @@
     background-position: center;
     background-size:cover; 
 }
+.elementor-field-type-tel{
+    height: 100%;
+}
 .is-field-type-ehp-tel.has-width-100 .iti input{
     width: 100%;
 }

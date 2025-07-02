@@ -42,6 +42,13 @@ $form_elements = array(
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/whatsapp-icon-min.svg',
         'pro' => false
     ),
+    'form_input_mask' => array(
+        'label' => __('Form Input Mask', 'cool-formkit'),
+        'how_to' => 'https://docs.coolplugins.net/doc/input-masks-elementor-form/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
+        'demo' => 'https://coolplugins.net/add-input-masks-elementor-form/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#input-masks-demos',
+        'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/input-mask-min.svg',
+        'pro' => false
+    ),
     'conditional_redirect' => array(
         'label' => __('Redirect Conditionally After Submit', 'cool-formkit'),
         'how_to' => 'https://docs.coolplugins.net/doc/conditional-redirect-elementor-form/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
@@ -154,13 +161,6 @@ $form_elements = array(
         'how_to' => 'https://docs.coolplugins.net/doc/add-month-week/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
         'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/month-week-field-min.svg',
-        'pro' => true
-    ),
-    'form_input_mask' => array(
-        'label' => __('Form Input Mask', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/input-masks-elementor-form/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/add-input-masks-elementor-form/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#input-masks-demos',
-        'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/input-mask-min.svg',
         'pro' => true
     ),
     'cloudflare_recaptcha' => array(

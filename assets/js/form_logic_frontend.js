@@ -48,8 +48,8 @@
                     $.each(logicData, function(logic_key, logic_value) {
                         var field;
 
-                        if ($(form).find(".is-field-group-" + logic_key).length) {
-                            field = $(form).find(".is-field-group-" + logic_key).closest(".cool-form__field-group");
+                        if ($(form).find(".elementor-field-group-" + logic_key).length) {
+                            field = $(form).find(".elementor-field-group-" + logic_key).closest(".cool-form__field-group");
                         } else {
                             field = getFieldMainDivById(logic_key, form);
                         }
@@ -96,42 +96,36 @@
                 try {
                     logicData = jQuery.parseJSON(logicData);
                     $.each(logicData, function (logic_key, logic_value) {
-        
-                        if ($(form).find(".is-field-group-" + logic_key).length)
-                      {
-                        field = $(form).find(".is-field-group-" + logic_key).closest(
-                          ".cool-form__field-group"
-                        )
-                      } else {
-                        if (
-                          $(form).find(".is-field-group-" + logic_key).hasClass(
-                            "is-field-type-step"
-                          )
-                        ) {
-                          setTimeout(() => {
-                            $(form).find(".is-field-group-" + logic_key)
-                              .find(".cool-form__submit-group")
-                              .find(
-                                ".is-field-type-next, .cool-form__submit-group"
-                              )
-                              .find(".cool-form__button")
-                              .attr("id", "form-field-" + logic_key)
-                              .closest(
-                                ".is-field-type-next, .cool-form__submit-group"
-                              )
-                              .addClass("cfef-step-field");
+                        if ($(form).find(".elementor-field-group-" + logic_key).length){
+                            field = $(form).find(".elementor-field-group-" + logic_key).closest(
+                            ".elementor-field-group"
+                            )
+                        } else {
+                            if ($(form).find(".elementor-field-group-" + logic_key).hasClass("elementor-field-type-step")) {
+                                setTimeout(() => {
+                                    $(form).find(".elementor-field-group-" + logic_key)
+                                    .find(".e-form__buttons")
+                                    .find(
+                                        ".elementor-field-type-next, .elementor-field-type-submit"
+                                    )
+                                    .find(".cool-form__button")
+                                    .attr("id", "form-field-" + logic_key)
+                                    .closest(
+                                        ".elementor-field-type-next, .elementor-field-type-submit"
+                                    )
+                                    .addClass("cfef-step-field");
+                                    var field = getFieldMainDivById(logic_key, form);
+                                    performFieldLogic(
+                                    field,
+                                    logic_value,
+                                    form,
+                                    logic_key,
+                                    formId
+                                    );
+                                }, 500);
+                            }
                             var field = getFieldMainDivById(logic_key, form);
-                            performFieldLogic(
-                              field,
-                              logic_value,
-                              form,
-                              logic_key,
-                              formId
-                            );
-                          }, 500);
-                        }
-                        var field = getFieldMainDivById(logic_key, form);
-                        performFieldLogic(field, logic_value, form, logic_key, formId);
+                            performFieldLogic(field, logic_value, form, logic_key, formId);
                       }
                       performFieldLogic(field, logic_value, form, logic_key, formId);
                     });
@@ -147,16 +141,15 @@
             var file_types = logic_value.file_types;
             var conditionPassFail = [];
             $.each(logic_value.logic_data, function(conditional_logic_key, conditional_logic_values) {
-                var dependent_fi = $(".is-field-group-" + conditional_logic_values.cfef_logic_field_id, form);
-                if(dependent_fi.hasClass('is-field-group-acceptance') || dependent_fi.hasClass('is-field-type-acceptance')){
-                        dependent_fi.find('.mdc-form-field .mdc-checkbox input').click(()=>{
-                                if(dependent_fi.find('.mdc-form-field .mdc-checkbox input')[0].checked === true){
-                                    dependent_fi.find('.mdc-form-field .mdc-checkbox input').val('on') 
+                var dependent_fi = $(".elementor-field-group-" + conditional_logic_values.cfef_logic_field_id, form);
+                if(dependent_fi.hasClass('elementor-field-group-acceptance') || dependent_fi.hasClass('elementor-field-type-acceptance')){
+                        dependent_fi.find('.elementor-field-subgroup .elementor-field-option input').click(()=>{
+                                if(dependent_fi.find('.elementor-field-subgroup .elementor-field-option input')[0].checked === true){
+                                    dependent_fi.find('.elementor-field-subgroup .elementor-field-option input').val('on') 
                                 }else{
-
-                                    dependent_fi.find('.mdc-form-field .mdc-checkbox input').val('')
-                                }
-                                })
+                                    dependent_fi.find('.elementor-field-subgroup .elementor-field-option input').val('')
+                            }
+                        })
                 }
                 var hiddenDiv = dependent_fi[0];
                 var	is_field_hidden = hiddenDiv ? hiddenDiv.classList.contains('cfef-hidden') : hiddenDiv;
@@ -174,19 +167,19 @@
             if (displayMode== "show") {
                 if (conditionResult) {
                     field.removeClass("cfef-hidden");
-                    if(field.hasClass('is-field-required')){
+                    if(field.hasClass('elementor-field-required')){
                     logicFixedRequiredShow(field,file_types);
                     }
                 } else {
                     field.addClass("cfef-hidden");
-                    if(field.hasClass('is-field-required')){
+                    if(field.hasClass('elementor-field-required')){
                         logicFixedRequiredHidden(field, logic_key,file_types);
                     } 
                 }
             } else {
                 if (conditionResult) {
                     if (field.hasClass("cfef-step-field")) {
-                        var container = field.closest(".cool-form__submit-group");
+                        var container = field.closest(".e-form__buttons");
                     
                         // Get the inner text of the button (assuming the "Next" button has a data attribute for direction)
                         var nextButtonText = container
@@ -206,7 +199,7 @@
                         // Check if field exists before adding the class
                         if (field && field.length > 0) {
                           field.addClass("cfef-hidden");
-                          if (field.hasClass("is-field-required")) {
+                          if (field.hasClass("elementor-field-required")) {
                             logicFixedRequiredHidden(field, logic_key, file_types);
                           }
                         }
@@ -214,10 +207,10 @@
                     } else {
                       // If the field has the "cfef-step-field" class, remove the appended message
                       if (field.hasClass("cfef-step-field")) {
-                        var container = field.closest(".cool-form__submit-group");
+                        var container = field.closest(".e-form__buttons");
                         container.prev(".cfef-step-field-text").remove();
                       }
-                      if (field.hasClass("is-field-required")) {
+                      if (field.hasClass("elementor-field-required")) {
                         logicFixedRequiredShow(field, file_types, "visible");
                       }
                       // Check if field exists before removing the class
@@ -229,38 +222,38 @@
         }
 
         function logicFixedRequiredShow(formField,file_types,status) {
-            if (formField.hasClass("is-field-type-radio") && formField.find('input[value="^newOptionTest"]').length !== 0) {
+            if (formField.hasClass("elementor-field-type-radio") && formField.find('input[value="^newOptionTest"]').length !== 0) {
                 formField.find('input[value="^newOptionTest"]').closest("div.mdc-radio").remove();
                 let checkedRadio = formField.find('input[checked="checked"]')[0]
                 checkedRadio ? $(checkedRadio).prop('checked', true):  $(checkedRadio).prop('checked', false)
-            } else if (formField.hasClass("is-field-type-acceptance")) {
+            } else if (formField.hasClass("elementor-field-type-acceptance")) {
                 const acceptanceInput = formField.find('.mdc-form-field .mdc-checkbox input')
                 if (acceptanceInput.hasClass("acceptance_check_toggle")) {
                     acceptanceInput[0].checked = false;
                     acceptanceInput.removeClass("acceptance_check_toggle");
                   }
-            } else if (formField.hasClass("is-field-type-checkbox") && formField.find('input[value="newchkTest"]').length !== 0) {
-                formField.find('input[value="newchkTest"]').closest("span.is-field-option").remove();
-            } else if (formField.hasClass("is-field-type-date") && formField.find("input").val() === "1003-01-01") {
+            } else if (formField.hasClass("elementor-field-type-checkbox") && formField.find('input[value="newchkTest"]').length !== 0) {
+                formField.find('input[value="newchkTest"]').closest("span.elementor-field-option").remove();
+            } else if (formField.hasClass("elementor-field-type-date") && formField.find("input").val() === "1003-01-01") {
                 formField.find("input")[0].value = ''
                 flatpickr(formField.find("input")[0], {});
-            } else if (formField.hasClass("is-field-type-time") && formField.find("input").val() === "11:59") {
+            } else if (formField.hasClass("elementor-field-type-time") && formField.find("input").val() === "11:59") {
                 let value=formField.find("input").attr('value') ? formField.find("input").attr('value') : '';
                 formField.find("input").val(value);
-            } else if (formField.hasClass("is-field-type-tel") && formField.find("input").val() === "+1234567890") {
+            } else if (formField.hasClass("elementor-field-type-tel") && formField.find("input").val() === "+1234567890") {
                 let value=formField.find("input").attr('value') ? formField.find("input").attr('value') : '';
                 formField.find("input").val(value);
-            } else if (formField.hasClass("is-field-type-url") && formField.find("input").val() === "https://testing.com") {
+            } else if (formField.hasClass("elementor-field-type-url") && formField.find("input").val() === "https://testing.com") {
                 let value=formField.find("input").attr('value') ? formField.find("input").attr('value') : '';
                 formField.find("input").val(value);
-            } else if (formField.hasClass("is-field-type-email") && formField.find("input").val() === "cool_plugins@abc.com") {
+            } else if (formField.hasClass("elementor-field-type-email") && formField.find("input").val() === "cool_plugins@abc.com") {
                 let value=formField.find("input").attr('value') ? formField.find("input").attr('value') : '';
                 formField.find("input").val(value);
-            } else if (formField.hasClass("is-field-type-number") && formField.find("input").val() === "000") {
+            } else if (formField.hasClass("elementor-field-type-number") && formField.find("input").val() === "000") {
                 let value=formField.find("input").attr('value') ? formField.find("input").attr('value') : '';
                 formField.find("input").val(value);
             } 
-            else if (formField.hasClass("is-field-type-upload")) {
+            else if (formField.hasClass("elementor-field-type-upload")) {
                 const firstType = file_types.split(',')[0];
                 const inputField=formField.find('input');
                 const fileName = `${my_script_vars.pluginConstant}assets/images/placeholder.${firstType}`;
@@ -273,7 +266,7 @@
                 let defaultVal = formField.find("textarea")[0].innerHTML;
                 let value = formField.find("textarea")[0].innerHTML ? formField.find("textarea")[0].innerHTML : '';
                 formField.find("textarea").val(value);
-            } else if (formField.hasClass("is-field-type-select")) {
+            } else if (formField.hasClass("elementor-field-type-select")) {
                 var selectBox = formField.find("select");
                 if (selectBox.length > 0 && selectBox.find("option").length > 0) {
                     var selectedValue = selectBox.val();
@@ -295,8 +288,8 @@
         
             // Add the default value when form Field is hidden
         function logicFixedRequiredHidden(formField, fieldKey, file_types) {
-            if (formField.hasClass("is-field-type-radio")) {
-                var groupclass = '.is-field-group-' + fieldKey;
+            if (formField.hasClass("elementor-field-type-radio")) {
+                var groupclass = '.elementor-field-group-' + fieldKey;
                 const field2 = $(groupclass);
 
                 if (field2.length > 0) {
@@ -309,13 +302,13 @@
                         field2.find('.mdc-form-field').append(newOption);
                     }
                 }
-            } else if (formField.hasClass("is-field-type-acceptance")) {
+            } else if (formField.hasClass("elementor-field-type-acceptance")) {
                 const acceptanceInput = formField.find('.mdc-form-field .mdc-checkbox input')[0]
                 jQuery(acceptanceInput).addClass("acceptance_check_toggle");
           if (acceptanceInput) {
             acceptanceInput.checked = true;
           }
-            } else if (formField.hasClass("is-field-type-checkbox")) {
+            } else if (formField.hasClass("elementor-field-type-checkbox")) {
                 var groupclass = '.elementor-field-group-' + fieldKey;
                 const field2 = $(groupclass);
 
@@ -328,7 +321,7 @@
                     }
                 }
             } 
-            else if (formField.hasClass("is-field-type-date")) {
+            else if (formField.hasClass("elementor-field-type-date")) {
                 let value = formField.find("input").val()
                 if(value === ""){
                     if(formField.find("input.flatpickr-mobile[type='date']")){
@@ -338,30 +331,30 @@
                     formField.find("input").val("1003-01-01");
                 }
             } 
-            else if (formField.hasClass("is-field-type-time")) {
+            else if (formField.hasClass("elementor-field-type-time")) {
                 let value = formField.find("input").val() 
                 if(value === ""){
                     formField.find("input").val("11:59");
                 }
-            } else if (formField.hasClass("is-field-type-tel")) {
+            } else if (formField.hasClass("elementor-field-type-tel")) {
                 // Remove the pattern attribute
                 let value = formField.find("input").val() 
                 if(value === ""){
                     formField.find("input").removeAttr("pattern");
                     formField.find("input").val("+1234567890");
                 }
-            } else if (formField.hasClass("is-field-type-url")) {
+            } else if (formField.hasClass("elementor-field-type-url")) {
                 let value = formField.find("input").val()
                 if(value === ""){
                     formField.find("input").val("https://testing.com");
                 } 
-            } else if (formField.hasClass("is-field-type-email")) {
+            } else if (formField.hasClass("elementor-field-type-email")) {
                 let value = formField.find("input").val()
                 if(value === ""){
                     formField.find("input").val("cool_plugins@abc.com");
                 }
             } 
-            else if (formField.hasClass("is-field-type-upload")) {
+            else if (formField.hasClass("elementor-field-type-upload")) {
                 const firstType = file_types.split(',')[0];
                 const fileName = `${my_script_vars.pluginConstant}assets/images/placeholder.${firstType}`; // Set the desired filename
                 const defaultImage = new File([], fileName, { type: 'image/png' });
@@ -374,7 +367,7 @@
                 // Set the files property of the file input field to the default image
                 fileInput[0].files = container.files;
             }
-            else if (formField.hasClass("is-field-type-number")) {
+            else if (formField.hasClass("elementor-field-type-number")) {
                 var FieldValues = formField.find("input").val();
                 if(FieldValues === ""){
                     var field_obj = formField.find("input");
@@ -388,12 +381,12 @@
                         formField.find("input").val("000");
                     }
                 }
-            } else if (formField.hasClass("is-field-type-textarea")) {
+            } else if (formField.hasClass("elementor-field-type-textarea")) {
                 let value = formField.find("textarea").val() 
                 if(value === ""){
                     formField.find("textarea").val("cool_plugins");
                 }
-            } else if (formField.hasClass("is-field-type-select")) {
+            } else if (formField.hasClass("elementor-field-type-select")) {
                 var selectBox = formField.find("select");
                 var optionText = 'Premium1@';
                 var optionValue = 'premium1@';
@@ -404,7 +397,7 @@
                     }
                     selectBox.val(optionValue);
                 }
-            } else if (formField.hasClass("is-field-type-text")) {
+            } else if (formField.hasClass("elementor-field-type-text")) {
                 let value = formField.find("input").val()
                 if(value === ""){
                     formField.find("input").val("cool23plugins");
@@ -422,25 +415,25 @@
                 // Function to get the value of the conditional field 
                 function getFieldEnteredValue(id = "", form = "body") {
                     var inputValue = "";
-                    var fieldGroup = $(".is-field-group-" + id, form);
+                    var fieldGroup = $(".elementor-field-group-" + id, form);
                   
-                    if (fieldGroup.hasClass("is-field-type-radio")) {
+                    if (fieldGroup.hasClass("elementor-field-type-radio")) {
                       inputValue = fieldGroup.find("input:checked").val();
-                    } else if (fieldGroup.hasClass("is-field-type-checkbox")) {
+                    } else if (fieldGroup.hasClass("elementor-field-type-checkbox")) {
                       var multiValue = [];
                       fieldGroup.find("input[type='checkbox']:checked").each(function () {
                         multiValue.push($(this).val());
                       });
                       inputValue = multiValue.length ? multiValue.join(", ") : id;
-                    } else if (fieldGroup.hasClass("is-field-type-select")) {
+                    } else if (fieldGroup.hasClass("elementor-field-type-select")) {
                       inputValue = fieldGroup.find("select", form).val();
                       if (fieldGroup.find("select")[0].multiple) {
                         inputValue = inputValue.join(", ");
                       }
-                    } else if (fieldGroup.hasClass("is-field-type-textarea")) {
+                    } else if (fieldGroup.hasClass("elementor-field-type-textarea")) {
                       inputValue = fieldGroup.find("textarea", form).val();
                     }
-                    else if (fieldGroup.hasClass("is-field-type-acceptance")) {
+                    else if (fieldGroup.hasClass("elementor-field-type-acceptance")) {
                         let acceptanceInput = fieldGroup.find('.mdc-form-field .mdc-checkbox input');
                         inputValue = "";
                         acceptanceInput.each(function() {
@@ -460,9 +453,9 @@
         function getFieldMainDivById(id = "", form = null) {
             if (form) {
               if ($("#form-field-" + id, form).length > 0) {
-                return $("#form-field-" + id, form).closest(".cool-form__field-group");
+                return $("#form-field-" + id, form).closest(".elementor-field-group");
               } else {
-                return $("#form-field-" + id + "-0", form).closest(".cool-form__field-group");
+                return $("#form-field-" + id + "-0", form).closest(".elementor-field-group");
               }
             }
             return null;
@@ -471,8 +464,8 @@
 
         //add conditional fields on popup form when page load
         $(document).on('elementor/popup/show', function() {
-            $(".cool-form").each(function() {
-                var form = $(this).closest(".elementor-widget-cool-form");
+            $(".elementor-form").each(function() {
+                var form = $(this).closest(".elementor-widget-form");
                 var formId = form.closest(".elementor-element").attr("data-id");
                 form.attr("data-form-id", "form-" + formId);
                 addHiddenClass(form,formId);
@@ -481,9 +474,10 @@
         });
 
         $(document).ready(function(){
-            $(".cool-form").each(function() {
-                var form = $(this).closest(".elementor-widget-cool-form");
+            $(".elementor-form").each(function() {
+                var form = $(this).closest(".elementor-widget-form");
                 var formId = form.closest(".elementor-element").attr("data-id");
+
                 form.attr("data-form-id", "form-" + formId);
                 addHiddenClass(form,formId);
                 logicLoad(form, formId);
@@ -492,8 +486,8 @@
 
         //add conditional fields on form when page load
         window.addEventListener('elementor/frontend/init', function() {
-            $(".cool-form").each(function() {
-                var form = $(this).closest(".elementor-widget-cool-form");
+            $(".elementor-form").each(function() {
+                var form = $(this).closest(".elementor-widget-form");
                 var formId = form.closest(".elementor-element").attr("data-id");
                 form.attr("data-form-id", "form-" + formId);
                 addHiddenClass(form,formId);
@@ -504,7 +498,7 @@
         // Update form filed hidden status after form submit
         jQuery(document).on('submit_success', function(e, data) {
             setTimeout(()=>{
-                    var form = jQuery(e.target).closest(".elementor-widget-cool-form");
+                    var form = jQuery(e.target).closest(".elementor-widget-form");
                     var formId = form.closest(".elementor-element").attr("data-id");
                     form.attr("data-form-id", "form-" + formId);
                     logicLoad(form, formId);
@@ -512,32 +506,12 @@
         });
 
         // jQuery listener for standard form elements.
-        $("body").on("input change", ".cool-form input, .cool-form select, .cool-form textarea", function(e) {
-            var form = $(this).closest(".elementor-widget-cool-form");
+        $("body").on("input change", ".elementor-form input, .elementor-form select, .elementor-form textarea", function(e) {
+            var form = $(this).closest(".elementor-widget-form");
             var formId = form.closest(".elementor-element").attr("data-id");
             form.attr("data-form-id", "form-" + formId);
             // Trigger your logic for standard inputs.
             logicLoad(form, formId);
-        });
-
-        // Iterate over each MDCSelect component.
-        $(".mdc-select").each(function() {
-            const mdcSelectElem = this;
-            // Initialize the MDCSelect component for this element.
-            const mdcSelect = new mdc.select.MDCSelect(mdcSelectElem);
-            
-            // Listen for the custom MDCSelect change event.
-            mdcSelect.listen('MDCSelect:change', function() {
-                // Use a timeout to let the native select update its value.
-                setTimeout(function() {
-                    var form = $(mdcSelectElem).closest(".elementor-widget-cool-form");
-                    var formId = form.closest(".elementor-element").attr("data-id");
-                    form.attr("data-form-id", "form-" + formId);
-                    
-                    // Now the underlying select should have the updated value.
-                    logicLoad(form, formId);
-                }, 0);
-            });
         });
     });
 

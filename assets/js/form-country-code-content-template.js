@@ -60,5 +60,5 @@ jQuery(document).ready(function ($) {
     };
 
     // Add the filter for rendering telephone fields in Elementor forms.
-    elementor.hooks.addFilter('cool_formkit/forms/content_template/field/tel', InputTelFieldRender, 10, 4);
+    elementor.hooks.addFilter('elementor_pro/forms/content_template/field/tel', InputTelFieldRender, 10, 4);
 });

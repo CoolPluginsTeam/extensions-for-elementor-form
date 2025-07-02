@@ -49,7 +49,7 @@
                         var field;
 
                         if ($(form).find(".is-field-group-" + logic_key).length) {
-                            field = $(form).find(".is-field-group-" + logic_key).closest(".cool-form__field-group");
+                            field = $(form).find(".is-field-group-" + logic_key).closest(".ehp-form__field-group");
                         } else {
                             field = getFieldMainDivById(logic_key, form);
                         }
@@ -100,7 +100,7 @@
                         if ($(form).find(".is-field-group-" + logic_key).length)
                       {
                         field = $(form).find(".is-field-group-" + logic_key).closest(
-                          ".cool-form__field-group"
+                          ".ehp-form__field-group"
                         )
                       } else {
                         if (
@@ -110,14 +110,14 @@
                         ) {
                           setTimeout(() => {
                             $(form).find(".is-field-group-" + logic_key)
-                              .find(".cool-form__submit-group")
+                              .find(".ehp-form__submit-group")
                               .find(
-                                ".is-field-type-next, .cool-form__submit-group"
+                                ".is-field-type-next, .ehp-form__submit-group"
                               )
-                              .find(".cool-form__button")
+                              .find(".ehp-form__button")
                               .attr("id", "form-field-" + logic_key)
                               .closest(
-                                ".is-field-type-next, .cool-form__submit-group"
+                                ".is-field-type-next, .ehp-form__submit-group"
                               )
                               .addClass("cfef-step-field");
                             var field = getFieldMainDivById(logic_key, form);
@@ -186,7 +186,7 @@
             } else {
                 if (conditionResult) {
                     if (field.hasClass("cfef-step-field")) {
-                        var container = field.closest(".cool-form__submit-group");
+                        var container = field.closest(".ehp-form__submit-group");
                     
                         // Get the inner text of the button (assuming the "Next" button has a data attribute for direction)
                         var nextButtonText = container
@@ -214,7 +214,7 @@
                     } else {
                       // If the field has the "cfef-step-field" class, remove the appended message
                       if (field.hasClass("cfef-step-field")) {
-                        var container = field.closest(".cool-form__submit-group");
+                        var container = field.closest(".ehp-form__submit-group");
                         container.prev(".cfef-step-field-text").remove();
                       }
                       if (field.hasClass("is-field-required")) {
@@ -459,10 +459,11 @@
         // function to get the id of the conditional field 
         function getFieldMainDivById(id = "", form = null) {
             if (form) {
+                console.log(' first if case ')
               if ($("#form-field-" + id, form).length > 0) {
-                return $("#form-field-" + id, form).closest(".cool-form__field-group");
+                return $("#form-field-" + id, form).closest(".ehp-form__field-group");
               } else {
-                return $("#form-field-" + id + "-0", form).closest(".cool-form__field-group");
+                return $("#form-field-" + id + "-0", form).closest(".ehp-form__field-group");
               }
             }
             return null;
@@ -471,8 +472,8 @@
 
         //add conditional fields on popup form when page load
         $(document).on('elementor/popup/show', function() {
-            $(".cool-form").each(function() {
-                var form = $(this).closest(".elementor-widget-cool-form");
+            $(".ehp-form").each(function() {
+                var form = $(this).closest(".elementor-widget-ehp-form");
                 var formId = form.closest(".elementor-element").attr("data-id");
                 form.attr("data-form-id", "form-" + formId);
                 addHiddenClass(form,formId);
@@ -481,8 +482,8 @@
         });
 
         $(document).ready(function(){
-            $(".cool-form").each(function() {
-                var form = $(this).closest(".elementor-widget-cool-form");
+            $(".ehp-form").each(function() {
+                var form = $(this).closest(".elementor-widget-ehp-form");
                 var formId = form.closest(".elementor-element").attr("data-id");
                 form.attr("data-form-id", "form-" + formId);
                 addHiddenClass(form,formId);
@@ -492,8 +493,8 @@
 
         //add conditional fields on form when page load
         window.addEventListener('elementor/frontend/init', function() {
-            $(".cool-form").each(function() {
-                var form = $(this).closest(".elementor-widget-cool-form");
+            $(".ehp-form").each(function() {
+                var form = $(this).closest(".elementor-widget-ehp-form");
                 var formId = form.closest(".elementor-element").attr("data-id");
                 form.attr("data-form-id", "form-" + formId);
                 addHiddenClass(form,formId);
@@ -504,7 +505,7 @@
         // Update form filed hidden status after form submit
         jQuery(document).on('submit_success', function(e, data) {
             setTimeout(()=>{
-                    var form = jQuery(e.target).closest(".elementor-widget-cool-form");
+                    var form = jQuery(e.target).closest(".elementor-widget-ehp-form");
                     var formId = form.closest(".elementor-element").attr("data-id");
                     form.attr("data-form-id", "form-" + formId);
                     logicLoad(form, formId);
@@ -512,32 +513,12 @@
         });
 
         // jQuery listener for standard form elements.
-        $("body").on("input change", ".cool-form input, .cool-form select, .cool-form textarea", function(e) {
-            var form = $(this).closest(".elementor-widget-cool-form");
+        $("body").on("input change", ".ehp-form input, .ehp-form select, .ehp-form textarea", function(e) {
+            var form = $(this).closest(".elementor-widget-ehp-form");
             var formId = form.closest(".elementor-element").attr("data-id");
             form.attr("data-form-id", "form-" + formId);
             // Trigger your logic for standard inputs.
             logicLoad(form, formId);
-        });
-
-        // Iterate over each MDCSelect component.
-        $(".mdc-select").each(function() {
-            const mdcSelectElem = this;
-            // Initialize the MDCSelect component for this element.
-            const mdcSelect = new mdc.select.MDCSelect(mdcSelectElem);
-            
-            // Listen for the custom MDCSelect change event.
-            mdcSelect.listen('MDCSelect:change', function() {
-                // Use a timeout to let the native select update its value.
-                setTimeout(function() {
-                    var form = $(mdcSelectElem).closest(".elementor-widget-cool-form");
-                    var formId = form.closest(".elementor-element").attr("data-id");
-                    form.attr("data-form-id", "form-" + formId);
-                    
-                    // Now the underlying select should have the updated value.
-                    logicLoad(form, formId);
-                }, 0);
-            });
         });
     });
 

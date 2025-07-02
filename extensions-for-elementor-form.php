@@ -21,7 +21,9 @@ namespace Cool_FormKit;
 
 use Cool_FormKit\Includes\Module_Base;
 use Cool_FormKit\Includes\CFL_Loader;
+
 use Cool_FormKit\Widgets\CoolForm_Addons_Loader;
+use Cool_FormKit\Widgets\HelloPlus_Addons_Loader;
 
 if (! defined('ABSPATH')) {
 	header('Status: 403 Forbidden');
@@ -113,8 +115,15 @@ class Cool_Formkit_Lite_For_Elementor_Form
 
 		CFL_Loader::get_instance();
 
-		require_once CFL_PLUGIN_PATH . 'widgets/coolform-addons-loader.php';		
-		CoolForm_Addons_Loader::get_instance();
+		if(get_option('cfkef_enable_formkit_builder',true)){
+			require_once CFL_PLUGIN_PATH . 'widgets/coolform-addons-loader.php';		
+			CoolForm_Addons_Loader::get_instance();
+		}
+
+		if(get_option('cfkef_enable_hello_plus',true)){
+			require_once CFL_PLUGIN_PATH . 'widgets/helloplus-addons-loader.php';		
+			HelloPlus_Addons_Loader::get_instance();
+		}
 		
 		if (is_admin()) {
 

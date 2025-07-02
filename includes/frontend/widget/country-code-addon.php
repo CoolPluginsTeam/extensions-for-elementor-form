@@ -1,5 +1,5 @@
 <?php
-namespace Cool_FormKit\Widgets\Addons;
+namespace Cool_FormKit\Includes\Frontend\Widget;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -14,12 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @version 1.0.0
  */
-class CoolForm_COUNTRY_CODE_FIELD {
+class CFL_COUNTRY_CODE_FIELD {
 
 	/**
 	 * Plugin instance.
 	 *
-	 * @var CoolForm_COUNTRY_CODE_FIELD
+	 * @var CFL_COUNTRY_CODE_FIELD
 	 *
 	 * @access private
 	 * @var null
@@ -44,15 +44,15 @@ class CoolForm_COUNTRY_CODE_FIELD {
 	 */
 	public function __construct() {
 		add_action('wp_enqueue_scripts',array($this,'register_plugin_assets'));
-		add_action( 'cool_formkit/forms/render_field/tel', array( $this, 'elementor_form_tel_field_rendering' ), 9, 3 );
-		add_action( 'elementor/element/cool-form/section_form_fields/before_section_end', array( $this, 'update_controls' ), 100, 2);
+		add_action( 'elementor_pro/forms/render_field/tel', array( $this, 'elementor_form_tel_field_rendering' ), 9, 3 );
+		add_action( 'elementor/element/form/section_form_fields/before_section_end', array( $this, 'update_controls' ), 100, 2);
 		add_action( 'elementor/preview/init', array( $this, 'editor_inline_JS' ) );
 		add_action( 'elementor/editor/before_enqueue_styles', array( $this, 'editor_assets') );
 		add_action( 'wp_ajax_ccfef_elementor_review_notice', array( $this, 'ccfef_elementor_review_notice' ) );
 	}
 
 	public function elementor_form_tel_field_rendering( $item, $item_index, $form ) {
-		if ( ( 'ehp-tel' === $item['field_type'] || 'tel' === $item['field_type'] ) && 'yes' === $item['ccfef-country-code-field'] ) {
+		if ( ( 'tel' === $item['field_type'] ) && 'yes' === $item['ccfef-country-code-field'] ) {
 			// Get and sanitize the default country.
 			$default_country = $item['ccfef-country-code-default'];
 			if ( preg_match( '/[^a-zA-Z]/', $default_country ) ) {
@@ -94,7 +94,7 @@ class CoolForm_COUNTRY_CODE_FIELD {
 	
 
 	public function editor_inline_JS() {
-		wp_enqueue_script( 'coolform-country-code-editor-script', CFL_PLUGIN_URL . 'assets/addons/js/ccfef-content-template.js', array(), CFL_VERSION, true ); 
+		wp_enqueue_script( 'cfl-country-code-editor-script', CFL_PLUGIN_URL . 'assets/js/form-country-code-content-template.js', array(), CFL_VERSION, true ); 
 		$this->enqueue_common_assets();
 	}
 
@@ -111,13 +111,13 @@ class CoolForm_COUNTRY_CODE_FIELD {
 			__("The phone number you entered is not valid. Please check the format and try again.", "country-code-for-elementor-form-telephone-field")
 		];
 
-		wp_register_script( 'coolform-country-code-library-script', CFL_PLUGIN_URL . 'assets/addons/intl-tel-input/js/intlTelInput.js', array(), CFL_VERSION, true );		
-		wp_register_script( 'coolform-country-code-script', CFL_PLUGIN_URL . 'assets/addons/js/country-code-script.js', array( 'elementor-frontend', 'jquery', 'coolform-country-code-library-script' ), CFL_VERSION, true );
-		wp_register_style( 'coolform-country-code-library-style', CFL_PLUGIN_URL . 'assets/addons/intl-tel-input/css/intlTelInput.min.css', array(), CFL_VERSION, 'all' );
-		wp_register_style( 'coolform-country-code-style', CFL_PLUGIN_URL . 'assets/addons/css/country-code-style.min.css', array(), CFL_VERSION, 'all' );
+		wp_register_script( 'cfl-country-code-library-script', CFL_PLUGIN_URL . 'assets/addons/intl-tel-input/js/intlTelInput.js', array(), CFL_VERSION, true );
+		wp_register_script( 'cfl-country-code-script', CFL_PLUGIN_URL . 'assets/js/form-country-code-script.js', array( 'elementor-frontend', 'jquery', 'cfl-country-code-library-script' ), CFL_VERSION, true );
+		wp_register_style( 'cfl-country-code-library-style', CFL_PLUGIN_URL . 'assets/addons/intl-tel-input/css/intlTelInput.min.css', array(), CFL_VERSION, 'all' );
+		wp_register_style( 'cfl-country-code-style', CFL_PLUGIN_URL . 'assets/addons/css/country-code-style.min.css', array(), CFL_VERSION, 'all' );
 
 		wp_localize_script(
-			'coolform-country-code-script',
+			'cfl-country-code-script',
 			'CCFEFCustomData',
 			array(
 				'pluginDir' => CFL_PLUGIN_URL,
@@ -130,29 +130,29 @@ class CoolForm_COUNTRY_CODE_FIELD {
 	 * Enqueue frontend assets for the plugin.
 	 */
 	public function editor_assets() {
-		wp_enqueue_style( 'coolform-editor-style', CFL_PLUGIN_URL . 'assets/addons/css/ccfef_editor.min.css', array(), CFL_VERSION, 'all' );
-		wp_enqueue_script( 'coolform-editor-script', CFL_PLUGIN_URL . 'assets/addons/js/ccfef-editor.min.js', array( 'jquery' ), CFL_VERSION, true );
+		wp_enqueue_style( 'cfl-editor-style', CFL_PLUGIN_URL . 'assets/addons/css/ccfef_editor.min.css', array(), CFL_VERSION, 'all' );
+		wp_enqueue_script( 'cfl-editor-script', CFL_PLUGIN_URL . 'assets/addons/js/ccfef-editor.min.js', array( 'jquery' ), CFL_VERSION, true );
 	}
 
 	/**
 	 * Register common assets for the plugin.
 	*/
 	public function enqueue_common_assets() {
-		if ( ! wp_script_is( 'coolform-country-code-library-script', 'enqueued' ) ) {
-			wp_enqueue_script( 'coolform-country-code-library-script' );
+		if ( ! wp_script_is( 'cfl-country-code-library-script', 'enqueued' ) ) {
+			wp_enqueue_script( 'cfl-country-code-library-script' );
 		}
-		wp_enqueue_script( 'coolform-country-code-script' );
-		wp_enqueue_style( 'coolform-country-code-library-style' );
+		wp_enqueue_script( 'cfl-country-code-script' );
+		wp_enqueue_style( 'cfl-country-code-library-style' );
 		
 		if ( get_option( 'cfefp_cdn_image' ) ) {
 			$inline_css = '
 			.cfefp-intl-container .iti__country-container .iti__flag:not(.iti__globe)  {
 				background-image: url("'.esc_url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/23.8.1/img/flags@2x.png").'");
 			}';
-			wp_add_inline_style( 'coolform-country-code-library-style', $inline_css );
+			wp_add_inline_style( 'cfl-country-code-library-style', $inline_css );
 		}
 
-		wp_enqueue_style( 'coolform-country-code-style' );
+		wp_enqueue_style( 'cfl-country-code-style' );
 	}
 
 	/**
