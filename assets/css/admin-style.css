@@ -104,6 +104,7 @@ input.cfkef-element-toggle:disabled::before{
     box-shadow: 0px 2px 2px rgb(150 150 150 / 12%);
 }
 
+.cfkef-license-box .wrapper-body,
 .cfkef-settings-box .wrapper-body{
     padding: 10px 20px;
 }
@@ -128,19 +129,25 @@ input.cfkef-element-toggle:disabled::before{
     gap: 20px;
     flex-wrap: wrap;
 }
-
+.cfkef-license-box .wrapper-header,
 .cfkef-settings-box .wrapper-header,
 .cfkef-form-element-wrapper .wrapper-header {
     padding: 1px 20px;
     background-color: #3f415e;
     border-radius: 5px 5px 0px 0px;
 }
+.cfkef-license-box .wrapper-header h2,
 .cfkef-settings-box .wrapper-header h2,
 .cfkef-form-element-wrapper .wrapper-header h2,
 .cfkef-form-element-wrapper .wrapper-header span{
     color: white;
 }
+.cfkef-license-box .wrapper-header .cfkef-save-controls span{
+    color: white;
+    font-weight: bold;
+}
 
+.cfkef-license-box .wrapper-header .cfkef-save-all,
 .cfkef-settings-box .wrapper-header .cfkef-save-all,
 .cfkef-form-element-wrapper .wrapper-header .cfkef-save-all{
     margin-bottom: 0px;
@@ -522,6 +529,7 @@ body.elementor_page_cfkef-entries{
 }
 
 /* Settings Page */
+.cfkef-license-box,
 .cfkef-settings-box {
     margin: 25px 0;
     background: #fff;
@@ -534,6 +542,35 @@ body.elementor_page_cfkef-entries{
     position: relative;
     flex-direction: column;
     font-family: Inter, Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* License Page */
+.cfkef-license-box{
+    width: 50%;
+}
+
+.cfkef-license-upgrade-box{
+    background-color: #fff6f7;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    border-left: 4px solid #fb5fab;
+}
+.cfkef-license-upgrade-box a {
+    color: #0073aa;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.cfkef-license-upgrade-box a:hover {
+    text-decoration: underline;
+}
+
+.cfkef-license-upgrade-box em {
+    display: block;
+    margin-top: 5px;
+    font-size: 13px;
+    color: #555;
 }
 
 .highlight-description{

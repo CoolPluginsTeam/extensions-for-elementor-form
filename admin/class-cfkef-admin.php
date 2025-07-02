@@ -99,8 +99,33 @@ class CFKEF_Admin {
                 update_option( 'cfl_usage_share_data','on' );   
             } 
         });
+
+        add_action( 'wp_ajax_cfkef_plugin_install', 'wp_ajax_install_plugin' );
+        add_action( 'wp_ajax_cfkef_plugin_activate', array($this,'cfkef_plugin_activate') );
     }
 
+    public function cfkef_plugin_activate(){
+        check_ajax_referer( 'cfkef_plugin_nonce', 'security' );
+        if ( ! current_user_can( 'activate_plugins' ) ) {
+            wp_send_json_error( [ 'message' => 'Permission denied' ] );
+        }
+
+        if ( empty( $_POST['init'] ) ) {
+            wp_send_json_error( [ 'message' => 'Plugin init file missing' ] );
+        }
+
+        include_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+        $init_file = sanitize_text_field( $_POST['init'] );
+
+        $activate = activate_plugin( $init_file );
+
+        if ( is_wp_error( $activate ) ) {
+            wp_send_json_error( [ 'message' => $activate->get_error_message() ] );
+        }
+
+        wp_send_json_success( [ 'message' => 'Plugin activated successfully' ] );
+    } 
     /**
      * Get the instance of this class.
      *

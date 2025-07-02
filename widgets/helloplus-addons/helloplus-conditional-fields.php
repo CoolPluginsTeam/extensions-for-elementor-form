@@ -10,10 +10,9 @@ namespace Cool_FormKit\Widgets\HelloPlusAddons;
  */
 
 use Elementor\Widget_Base;
-use ElementorPro\Modules\Forms;
 use Elementor\Controls_Manager;
 use Elementor\Repeater;
-use ElementorPro\Plugin;
+use HelloPlus\Includes\Utils;
 
 	/**
 	 * Class for creating conditional fields and varify logic comparision before send
@@ -96,7 +95,7 @@ class HelloPlus_Create_Conditional_Fields {
 	 */
 	public function append_conditional_fields_controler( $widget ) {
 
-		$elementor    = \Elementor\Plugin::instance();
+		$elementor    = Utils::elementor();
 		$control_data = $elementor->controls_manager->get_control_from_stack( $widget->get_unique_name(), 'form_fields' );
 		if ( is_wp_error( $control_data ) ) {
 			return;

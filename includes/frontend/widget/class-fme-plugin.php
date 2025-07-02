@@ -70,6 +70,20 @@ final class FME_Plugin {
 	}
 
 	public function my_enqueue_scripts(){
+		$post_id = get_the_ID();
+        $post    = get_post($post_id);
+    
+        // Check if Elementor Pro is active and if the current page is built with Elementor.
+        $using_elementor_pro = false;
+        if ( defined('ELEMENTOR_PRO_VERSION') ) {
+            $using_elementor_pro = \Elementor\Plugin::$instance->db->is_built_with_elementor( $post_id );
+        }
+
+		if(!$using_elementor_pro);{
+			wp_enqueue_script( 'fme-jquery-mask-min', CFL_PLUGIN_URL . 'assets/js/inputmask/jquery.mask.min.js', array('jquery'), time(), true );
+			wp_enqueue_script( 'fme-otherform-mask', CFL_PLUGIN_URL . 'assets/js/inputmask/otherform-mask.js', array('jquery'), time(), true );
+		}
+
 		wp_register_script( 'fme-custom-mask-script', CFL_PLUGIN_URL . 'assets/js/inputmask/custom-mask-script.js', array('jquery'), time(), true );
 
 		wp_register_style( 'fme-frontend-css', CFL_PLUGIN_URL . 'assets/css/inputmask/mask-frontend.css', CFL_VERSION, true );

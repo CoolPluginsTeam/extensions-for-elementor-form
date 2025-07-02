@@ -72,10 +72,13 @@ class Cool_Formkit_Lite_For_Elementor_Form
 				$autoloader_registered = spl_autoload_register([$this, 'autoload']);
 			}
 
-			$this->initialize_modules();
+			if(get_option('cfkef_enable_formkit_builder',true)){
+				$this->initialize_modules();
+			}
 
 			$this->initialize_plugin();
-
+			$this->deactivate_child_plugins();
+			
 			add_action( 'activated_plugin', array( $this, 'EEF_plugin_redirection' ) );
 			add_action('wp_enqueue_scripts', array($this, 'my_enqueue_scripts'));	
 			add_action( 'elementor/editor/before_enqueue_scripts', array( $this, 'add_global_editor_js' ) );		
@@ -197,6 +200,46 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		$settings_link = '<a href="' . admin_url('admin.php?page=cool-formkit') . '">Settings</a>';
 		array_unshift($links, $settings_link);
 		return $links;
+	}
+
+	// Define a helper function for plugin deactivation and admin notice
+	private function deactivate_plugin_with_notice( $plugin_path, $plugin_name ) {
+		if ( file_exists( plugin_dir_path( __DIR__ ) . $plugin_path ) ) {
+			if ( is_plugin_active( $plugin_path ) ) {
+				deactivate_plugins( $plugin_path );
+				add_action(
+					'admin_notices',
+					function() use ( $plugin_name ) {
+						$this->admin_notice_deactivating_conditional_field_plugin( $plugin_name );
+					}
+				);
+			}
+		}
+	}
+
+	// Method to deactivate child plugins
+	public function deactivate_child_plugins() {
+		// Array of plugins to deactivate
+		$plugins_to_deactivate = array(
+			'conditional-fields-for-elementor-form/class-conditional-fields-for-elementor-form.php' => 'Conditional Fields for Elementor Form',
+			'country-code-field-for-elementor-form/country-code-field-for-elementor-form.php' => 'Country Code Field For Elementor Form',
+			'country-code-field-for-elementor-form/country-code-field-for-elementor-form-pro.php' => 'Country Code Field For Elementor Form Pro',
+			'form-masks-for-elementor/form-masks-for-elementor.php' => 'Form Input Masks for Elementor Form',
+			'mask-form-elementor/index.php' => 'Input Mask Elementor Form Fields',
+		);
+
+		// Loop through the plugins and deactivate them if necessary
+		foreach ( $plugins_to_deactivate as $plugin_path => $plugin_name ) {
+			$this->deactivate_plugin_with_notice( $plugin_path, $plugin_name );
+		}
+	}
+
+	public function admin_notice_deactivating_conditional_field_plugin( $plugin_name ) {
+		?>
+		<div class="notice notice-error">
+			<p><?php echo esc_html( "{$plugin_name} is deactivated because Cool FormKit is installed and activated." ); ?></p>
+		</div>
+		<?php
 	}
 	/**
 	 * Show notice to enable elementor pro

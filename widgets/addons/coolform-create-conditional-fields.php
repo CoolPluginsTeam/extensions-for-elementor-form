@@ -1,6 +1,5 @@
 <?php
 namespace Cool_FormKit\Widgets\Addons;
-use Cool_FormKit\Widgets\Addons\Control_Repeater_Field;
 /**
  * Main file for adding conditional fields to Elementor Pro forms in WordPress.
  *
@@ -10,10 +9,9 @@ use Cool_FormKit\Widgets\Addons\Control_Repeater_Field;
  */
 
 use Elementor\Widget_Base;
-use ElementorPro\Modules\Forms;
 use Elementor\Controls_Manager;
 use Elementor\Repeater;
-use ElementorPro\Plugin;
+use Cool_FormKit\Includes\Utils;
 
 	/**
 	 * Class for creating conditional fields and varify logic comparision before send
@@ -36,7 +34,6 @@ class CoolForm_Create_Conditional_Fields {
 		add_action( 'elementor/frontend/widget/before_render', array( $this, 'all_field_conditions' ), 10, 3 );
 		add_action( 'elementor/element/cool-form/section_form_fields/before_section_end', array( $this, 'append_conditional_fields_controler' ), 10, 2 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_assets_files' ) );
-		// add_action( 'elementor/controls/register', array( $this, 'register_fields_repeater_controler' ) );
 		add_action( 'cool_formkit/forms/validation', array( $this, 'check_validation' ), 9, 3 );
 		add_action( 'elementor/editor/before_enqueue_styles', array( $this, 'editor_assets' ) );
 		add_action( 'wp_ajax_cfef_elementor_review_notice', array( $this, 'cfef_elementor_review_notice' ) );
@@ -97,7 +94,7 @@ class CoolForm_Create_Conditional_Fields {
 	 */
 	public function append_conditional_fields_controler( $widget ) {
 
-		$elementor    = \Elementor\Plugin::instance();
+		$elementor    = Utils::elementor();
 		$control_data = $elementor->controls_manager->get_control_from_stack( $widget->get_unique_name(), 'form_fields' );
 		if ( is_wp_error( $control_data ) ) {
 			return;
@@ -251,18 +248,6 @@ class CoolForm_Create_Conditional_Fields {
 		$widget->update_control( 'form_fields', $control_data );
 	}
     
-	/**
-	 * Function for call repeater call to add field repeater functionality
-	 *
-	 * @param object $controls_manager use for register repeater.
-	 */
-
-
-	public function register_fields_repeater_controler( $controls_manager ) {
-		include CFL_PLUGIN_PATH . 'widgets/addons/coolform-control-repeater-field.php';
-		$controls_manager->register( new CoolForm_Control_Repeater_Field() );
-	}
-
 	/**
 	 * Function for check all the values added in conditional  fields
 	 *
