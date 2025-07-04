@@ -44,10 +44,14 @@ input:checked + .cfkef-slider {
 input:checked + .cfkef-slider::before {
     transform: translate(1.1em, -50%);
 }
-input.cfkef-element-toggle:disabled + .cfkef-slider {
+input.cfkef-element-toggle:disabled + a:focus{
+    box-shadow: none;
+    border: unset;
+}
+input.cfkef-element-toggle:disabled + a .cfkef-slider {
     background-color: #403a3d1a;
 }
-input.cfkef-element-toggle:disabled + .cfkef-slider::before{
+input.cfkef-element-toggle:disabled + a .cfkef-slider::before{
     transform: translate(0em, -50%);
 }
 input.cfkef-element-toggle:disabled{
@@ -284,6 +288,15 @@ input.cfkef-element-toggle:disabled::before{
     top: -10px;
     left: 20px;
 }
+.cfkef-label-popular a{
+    text-decoration: none;
+    color: white;
+}
+.cfkef-label-popular:hover{
+    background-color: rgb(232, 51, 138);
+    text-shadow: rgb(240, 57, 141) 1px 1px 1px;
+    border-color: rgb(255, 87, 168);
+}
 
 .cfkef-label-updated {
     background-color: #3f415e;
@@ -396,7 +409,28 @@ body.elementor_page_cfkef-entries{
 
 .cfkef-header-logo {
     display: flex;
-    align-items: center;
+    align-items: start;
+    gap: 10px;
+}
+.cfkef-header-logo span{
+    padding: 1px 4px;
+    background-color: #fceef5;
+    border-radius: 2px;
+    border: 1px solid #dcd0d6;
+}
+.cfkef-header-logo .button{
+    background-color: #fb5fab;
+    border: 1px solid #fd79b9;
+    text-shadow: 1px 1px 1px #fc63ad;
+}
+.cfkef-header-logo .button:hover,.cfkef-header-logo .button:focus{
+    background-color: #e8338a;
+    border-color: #ff57a8;
+    text-shadow: 1px 1px 1px #f0398d;
+}
+.cfkef-header-logo .button:focus{
+    box-shadow: 0 0 4px 2px #f0cedf;
+    outline: none;
 }
 .cfkef-header-logo a[href="?page=cool-formkit"]:focus{
     box-shadow: unset;
@@ -405,6 +439,15 @@ body.elementor_page_cfkef-entries{
 
 .cfkef-header-logo img {
     max-height: 32px;
+}
+img.crown-diamond-pro{
+    height: 15px;
+}
+a.button-primary.upgrade-pro-btn{
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    gap: 5px;
 }
 
 .cfkef-header-buttons {
@@ -510,6 +553,9 @@ body.elementor_page_cfkef-entries{
     align-items: center;
     gap: 10px;
 }
+.cfkef-sidebar-link-group .cfkef-review-right{
+    flex-direction: row-reverse;
+}
 
 .cfkef-review-request h3 {
     margin: 0 0 10px;
@@ -542,6 +588,11 @@ body.elementor_page_cfkef-entries{
     position: relative;
     flex-direction: column;
     font-family: Inter, Roboto, Helvetica, Arial, sans-serif;
+}
+span.cfkef-pro-feature a{
+    color: red;
+    text-decoration: none;
+    font-style:italic;
 }
 
 /* License Page */
@@ -600,14 +651,13 @@ body.elementor_page_cfkef-entries{
 
 
 .form-table .site-key-td, .form-table .secret-key-td{
-
     display: inline-block;
     padding: 0px 10px;
     width: 25em;
 
     box-shadow: 0 0 0 transparent;
     border-radius: 4px;
-    border: 1px solid #8c8f94;
+    border: 1px solid rgba(220, 220, 222, .75);
     background-color: #fff;
     color: #2c3338;
 
@@ -754,6 +804,10 @@ td.cool-formkit-table-td.usage-share-data {
 .elementor_page_cool-formkit #screen-meta-links {
     display: none !important;
 }
+.elementor_page_cfkef-entries #footer-left,
+.elementor_page_cfkef-entries #footer-upgrade{
+    display: none;
+}  
 
 button#recaptcha-submit{
     padding: 10px 15px;

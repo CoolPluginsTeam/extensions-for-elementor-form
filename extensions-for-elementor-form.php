@@ -146,8 +146,29 @@ class Cool_Formkit_Lite_For_Elementor_Form
         	}
 		}
 
-		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'EEF_plugin_dashboard_link' ) );
+		add_filter( 'plugin_action_links_' . plugin_basename( CFL_PLUGIN_MAIN_FILE ), array( $this, 'EEF_plugin_dashboard_link' ) );
+		add_filter( 'plugin_action_links_' . plugin_basename( CFL_PLUGIN_MAIN_FILE ), array( $this, 
+		'EEF_get_pro_link' ) );
+		add_filter( 'plugin_row_meta', array( $this, 'cfkef_plugin_row_meta' ), 10, 2 );
 
+
+	}
+
+	public function cfkef_plugin_row_meta( $plugin_meta, $plugin_file ) {
+		if ( plugin_basename( CFL_PLUGIN_MAIN_FILE ) === $plugin_file ) {
+			$row_meta = array(
+				'docs' => '<a href="' . esc_url('https://docs.coolplugins.net/plugin/cool-formkit-for-elementor-form/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-list') . '" aria-label="' . esc_attr(esc_html__('View CoolFomkit Documentation', 'cool-formkit')) . '" target="_blank">' . esc_html__('View Documentation', 'cool-formkit') . '</a>',
+			);
+
+			$plugin_meta = array_merge( $plugin_meta, $row_meta );
+		}
+		return $plugin_meta;
+	}
+
+	public function EEF_get_pro_link($links){
+		$get_pro = '<a target="_blank" style="font-weight:bold;color:green;" href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-list#pricing">Get Pro</a>';
+		array_push($links, $get_pro);
+		return $links;	
 	}
 
 	public function EEF_plugin_redirection($plugin)
@@ -155,7 +176,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		if (is_plugin_active('cool-formkit-for-elementor-forms/cool-formkit-for-elementor-forms.php')) {
 			return false;
 		}
-		if ($plugin == plugin_basename(__FILE__)) {
+		if ($plugin == plugin_basename(CFL_PLUGIN_MAIN_FILE)) {
 			exit(wp_redirect(admin_url('admin.php?page=cool-formkit')));
 		}
 	}
@@ -256,7 +277,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			esc_html__('Elementor', 'extensions-for-elementor-form'),
 		);
 		printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', esc_html($message));
-		deactivate_plugins(plugin_basename(__FILE__));
+		deactivate_plugins(plugin_basename(CFL_PLUGIN_MAIN_FILE));
 	}
 
 	public function cool_formkit_active_notice()
@@ -398,5 +419,5 @@ class Cool_Formkit_Lite_For_Elementor_Form
 // Initialize the plugin.
 Cool_Formkit_Lite_For_Elementor_Form::instance();
 
-register_activation_hook(__FILE__, array('Cool_FormKit\Cool_Formkit_Lite_For_Elementor_Form', 'eef_activate'));
-register_deactivation_hook(__FILE__, array('Cool_FormKit\Cool_Formkit_Lite_For_Elementor_Form', 'eef_deactivate'));
+register_activation_hook(CFL_PLUGIN_MAIN_FILE, array('Cool_FormKit\Cool_Formkit_Lite_For_Elementor_Form', 'eef_activate'));
+register_deactivation_hook(CFL_PLUGIN_MAIN_FILE, array('Cool_FormKit\Cool_Formkit_Lite_For_Elementor_Form', 'eef_deactivate'));

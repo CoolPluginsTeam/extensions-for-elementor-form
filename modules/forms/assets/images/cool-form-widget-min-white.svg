@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1080" height="1080" viewBox="0 0 1080 1080" xml:space="preserve">
+<desc>Created with Fabric.js 5.2.4</desc>
+<defs>
+</defs>
+<g transform="matrix(1 0 0 1 540 540)" id="0d586be7-7442-48a8-bd6b-9c94d1a68e75"  >
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1; visibility: hidden;" vector-effect="non-scaling-stroke"  x="-540" y="-540" rx="0" ry="0" width="1080" height="1080" />
+</g>
+<g transform="matrix(1 0 0 1 540 540)" id="f79a429c-7dc3-491f-b5f7-45aeaeabbcdc"  >
+</g>
+<g transform="matrix(1 0 0 1 540 540)"  >
+<g style="" vector-effect="non-scaling-stroke"   >
+		<g transform="matrix(1 0 0 1 0 -0.5)"  >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(231,231,231); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-12, -11.5)" d="M 22 6 L 2 6 C 0.9 6 0 5.1 0 4 L 0 2 C 0 0.9 0.9 0 2 0 L 22 0 C 23.1 0 24 0.9 24 2 L 24 4 C 24 5.1 23.1 6 22 6 z M 22 4 L 22 5 L 22 4 z M 2 2 L 2 4 L 22 4 L 22 2 L 2 2 z M 22 15 L 2 15 C 0.8999999999999999 15 0 14.1 0 13 L 0 11 C 0 9.9 0.9 9 2 9 L 22 9 C 23.1 9 24 9.9 24 11 L 24 13 C 24 14.1 23.1 15 22 15 z M 22 13 L 22 14 L 22 13 z M 2 11 L 2 13 L 22 13 L 22 11 L 2 11 z M 11 23 L 2 23 C 1.5 23 1 22.5 1 22 L 1 20 C 1 19.5 1.5 19 2 19 L 11 19 C 11.6 19 12 19.5 12 20 L 12 22 C 12 22.5 11.6 23 11 23 z" stroke-linecap="round" />
+</g>
+		<g transform="matrix(1 0 0 1 -5.5 9)"  >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(231,231,231); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-6.5, -21)" d="M 11 24 L 2 24 C 0.8999999999999999 24 0 23.1 0 22 L 0 20 C 0 18.9 0.9 18 2 18 L 11 18 C 12.1 18 13 18.9 13 20 L 13 22 C 13 23.1 12.1 24 11 24 z M 11 22 L 11 23 L 11 22 z M 2 20 L 2 22 L 11 22 L 11 20 L 2 20 z" stroke-linecap="round" />
+</g>
+</g>
+</g>
+</svg>

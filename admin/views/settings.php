@@ -320,7 +320,13 @@ $cdn_image = get_option('cfefp_cdn_image', '');
         
                     <tr id="api-selector">
                         <th scope="row" class="cool-formkit-table-th">
-                            <label for="cfkef_geo_provider" class="cool-formkit-label"><?php esc_html_e('Geo-IP Provider', 'cool-formkit'); ?></label>
+                            <label for="cfkef_geo_provider" class="cool-formkit-label"><?php esc_html_e('Geo-IP Provider', 'cool-formkit'); ?>
+                                <span class="cfkef-pro-feature">
+                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    (Pro)
+                                    </a>
+                                </span>
+                            </label>
                         </th>
                         <td class="cool-formkit-table-td">
                             <select id="cfkef_geo_provider" name="cfkef_geo_provider" class="regular-text cool-formkit-input" disabled="disabled">
@@ -336,7 +342,13 @@ $cdn_image = get_option('cfefp_cdn_image', '');
         
                     <tr id="ipapi-row">
                         <th scope="row" class="cool-formkit-table-th">
-                            <label for="cfkef_country_code_api_key" class="cool-formkit-label"><?php esc_html_e('Enter ipapi.co API Key', 'cool-formkit'); ?></label>
+                            <label for="cfkef_country_code_api_key" class="cool-formkit-label"><?php esc_html_e('Enter ipapi.co API Key', 'cool-formkit'); ?>
+                                <span class="cfkef-pro-feature">
+                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    (Pro)
+                                    </a>
+                                </span>
+                            </label>
                         </th>
                         <td class="cool-formkit-table-td">
                                 <input type="text" id="cfkef_country_code_api_key" name="cfkef_country_code_api_key" value="<?php echo esc_attr($api_key_one); ?>" class="regular-text cool-formkit-input" disabled="disabled"/>
@@ -346,7 +358,13 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                     </tr>
                     <tr id="other-api-row">
                         <th scope="row" class="cool-formkit-table-th">
-                            <label for="cfkef_country_code_non_ipapi_api_key" class="cool-formkit-label"><?php esc_html_e('Enter Geo API Key', 'cool-formkit'); ?></label>
+                            <label for="cfkef_country_code_non_ipapi_api_key" class="cool-formkit-label"><?php esc_html_e('Enter Geo API Key', 'cool-formkit'); ?>
+                                <span class="cfkef-pro-feature">
+                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    (Pro)
+                                    </a>
+                                </span>
+                            </label>
                         </th>
                         <td class="cool-formkit-table-td">
                                 <input type="text" id="cfkef_country_code_non_ipapi_api_key" name="cfkef_country_code_non_ipapi_api_key" value="<?php echo esc_attr($non_ipapi_api_key); ?>" class="regular-text cool-formkit-input" disabled="disabled"/>
@@ -355,7 +373,13 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                     </tr>
                     <tr>
                         <th scope="row" class="cool-formkit-table-th">
-                            <label class="cool-formkit-label"><?php esc_html_e('CDN Image', 'cool-formkit'); ?></label>
+                            <label class="cool-formkit-label"><?php esc_html_e('CDN Image', 'cool-formkit'); ?>
+                                    <span class="cfkef-pro-feature">
+                                        <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                        (Pro)
+                                    </a>
+                                </span>
+                            </label>
                         </th>
                         <td class="cool-formkit-table-td">
                         <label class="cfkef-toggle-switch">
@@ -373,7 +397,13 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                 <table class="form-table cool-formkit-table">
                     <tr>
                         <th scope="row" class="cool-formkit-table-th">
-                            <label for="cfefp_email_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Emails', 'cool-formkit'); ?></label>
+                            <label for="cfefp_email_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Emails', 'cool-formkit'); ?>
+                                <span class="cfkef-pro-feature">
+                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    (Pro)
+                                    </a>
+                                </span>
+                            </label>
                         </th>
                         <td class="cool-formkit-table-td">
                             <input type="number" id="cfefp_email_conditionally" name="cfefp_email_conditionally" min="4" value="<?php echo esc_attr($email_conditionally); ?>" class="regular-text cool-formkit-input" 
@@ -383,7 +413,13 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                     </tr>
                     <tr>
                         <th scope="row" class="cool-formkit-table-th">
-                            <label for="cfefp_redirect_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Redirections', 'cool-formkit'); ?></label>
+                            <label for="cfefp_redirect_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Redirections', 'cool-formkit'); ?>
+                                <span class="cfkef-pro-feature">
+                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    (Pro)
+                                    </a>
+                                </span>
+                            </label>
                         </th>
                         <td class="cool-formkit-table-td">
                             <input type="number" id="cfefp_redirect_conditionally" name="cfefp_redirect_conditionally" min="4" value="<?php echo esc_attr($redirect_conditionally); ?>" class="regular-text cool-formkit-input" disabled="disabled"/>
@@ -398,7 +434,13 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                 <table class="form-table cool-formkit-table">
                     <tr>
                         <th scope="row" class="cool-formkit-table-th">
-                            <label for="cfefp_cloudflare_site_key" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?></label>
+                            <label for="cfefp_cloudflare_site_key" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?>
+                                <span class="cfkef-pro-feature">
+                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    (Pro)
+                                    </a>
+                                </span>
+                            </label>
                         </th>
                         <td class="cool-formkit-table-td site-key-td">
                             <input type="password" id="cfefp_cloudflare_site_key" name="cfefp_cloudflare_site_key" min="4" value="<?php echo get_option('cfefp_cloudflare_site_key'); ?>" class="regular-text cool-formkit-input" disabled="disabled"/>    
@@ -409,7 +451,13 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                     </tr>
                     <tr>
                         <th scope="row" class="cool-formkit-table-th">
-                            <label for="cfefp_cloudflare_secret_key" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?></label>
+                            <label for="cfefp_cloudflare_secret_key" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?>
+                                <span class="cfkef-pro-feature">
+                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    (Pro)
+                                    </a>
+                                </span>
+                            </label>
                         </th>
                         <td class="cool-formkit-table-td secret-key-td">
                             <input type="password" id="cfefp_cloudflare_secret_key" name="cfefp_cloudflare_secret_key" min="4" value="<?php echo get_option('cfefp_cloudflare_secret_key'); ?>" class="regular-text cool-formkit-input" disabled="disabled"/>
@@ -426,7 +474,13 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                 <table class="form-table cool-formkit-table">
                     <tr>
                         <th scope="row" class="cool-formkit-table-th">
-                            <label for="cfefp_h_site_key" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?></label>
+                            <label for="cfefp_h_site_key" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?>
+                                <span class="cfkef-pro-feature">
+                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    (Pro)
+                                    </a>
+                                </span>
+                            </label>
                         </th>
                         <td class="cool-formkit-table-td site-key-td">
                             <input type="password" id="cfefp_h_site_key" name="cfefp_h_site_key" min="4" value="<?php echo get_option('cfefp_h_site_key'); ?>" class="regular-text cool-formkit-input" disabled="disabled"/>
@@ -438,7 +492,13 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                     </tr>
                     <tr>
                         <th scope="row" class="cool-formkit-table-th">
-                            <label for="cfefp_h_secret_key" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?></label>
+                            <label for="cfefp_h_secret_key" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?>
+                                <span class="cfkef-pro-feature">
+                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    (Pro)
+                                    </a>
+                                </span>
+                            </label>
                         </th>
                         <td class="cool-formkit-table-td secret-key-td">
                             <input type="password" id="cfefp_h_secret_key" name="cfefp_h_secret_key" min="4" value="<?php echo get_option('cfefp_h_secret_key'); ?>" class="regular-text cool-formkit-input" 

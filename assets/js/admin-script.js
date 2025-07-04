@@ -21,8 +21,10 @@ document.addEventListener('DOMContentLoaded', function () {
 	handleElementCardTooltip();
 	// function to handle tooltip buttons actions
 	handleTooltipButtonAction();
-	// function to handle tooltip buttons actions
+	// function to handle admin notice
 	handleAdminNoticeOnEntriesPage();
+	// function to add notice text in admin footer of dashboard pages
+	handleNoticeTextAdmitFooter();
 
     const termsLinks = document.querySelectorAll('.ccpw-see-terms');
     const termsBox = document.getElementById('termsBox');
@@ -275,4 +277,8 @@ function handleAdminNoticeOnEntriesPage(){
 			notice.style.top = '70px';
 		},100)
     }
+}
+function handleNoticeTextAdmitFooter(){
+	let wpFooter = document.querySelector('#wpfooter')
+	jQuery(wpFooter).append('<p>Enjoyed Cool Formkit Lite? Please leave us a <a href="https://wordpress.org/support/plugin/extensions-for-elementor-form/reviews/#new-post" target="_blank">★★★★★</a> rating. We really appreciate your support!</p>')
 }

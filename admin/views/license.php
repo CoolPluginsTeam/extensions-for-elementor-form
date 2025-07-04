@@ -14,7 +14,10 @@ if (!defined('ABSPATH')) {
             </div>
             <div class="cfkef-save-controls">
                 <span><?php esc_html_e('Free', 'cool-formkit'); ?></span>
-                <a class="button button-primary" target="_blank" href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboard#pricing"><?php esc_html_e('Upgrade To Pro', 'cool-formkit'); ?></a>
+                <a class="button button-primary upgrade-pro-btn" target="_blank" href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboard#pricing">
+                    <img class="crown-diamond-pro" src="<?php echo esc_url(CFL_PLUGIN_URL . 'admin/assets/images/crown-diamond-pro.png'); ?>" alt="Cool FormKit Logo">
+                    <?php esc_html_e('Upgrade To Pro', 'cool-formkit'); ?>
+                </a>
             </div>
         </div>
     </div>

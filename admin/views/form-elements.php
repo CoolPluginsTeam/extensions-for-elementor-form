@@ -381,7 +381,7 @@ $updated_elements = array('');
                                 <h4>
                                     <?php echo esc_html($element['label']); ?>
                                     <?php if (!empty($element['pro'])): ?>
-                                        <span class="cfkef-label-popular">Pro</span>
+                                        <span class="cfkef-label-popular"><a href="<?php echo $element['how_to'] ?>" target="_blank"><?php esc_html_e('Pro', 'cool-formkit'); ?></a></span>
                                     <?php endif; ?>
 
                                     <?php if (in_array($key, $popular_elements)): ?>
@@ -402,7 +402,14 @@ $updated_elements = array('');
                                 <input type="checkbox" name="cfkef_enabled_elements[]" value="<?php echo esc_attr($key); ?>" <?php checked(in_array($key, $enabled_elements)); ?> class="cfkef-element-toggle"
                                 <?php disabled(!empty($element['pro'])); ?>
                                 >
-                                <span class="cfkef-slider round"></span>
+                                <?php if(!empty($element['pro'])): ?>
+                                    <a href="<?php echo $element['how_to'] ?>" target="_blank">
+                                        <span class="cfkef-slider round"></span>
+                                    </a>
+                                <?php else:?>
+                                    <span class="cfkef-slider round"></span>
+                                <?php endif;?>
+                                
                             </label>
                         </div>
                         <?php endforeach; ?>
@@ -424,7 +431,7 @@ $updated_elements = array('');
                     <div class="cfkef-stars">
                     ★★★★★
                     </div>
-                    <a href="https://coolplugins.net/reviews/submit-review/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=review&utm_content=cfkef-footer" class="button button-primary" target="_blank"><?php esc_html_e('Leave a Review', 'cool-formkit'); ?></a>
+                    <a href="https://wordpress.org/support/plugin/extensions-for-elementor-form/reviews/#new-post" class="button button-primary" target="_blank"><?php esc_html_e('Leave a Review', 'cool-formkit'); ?></a>
                 </div>
             </div>
         </div>
@@ -454,7 +461,12 @@ $updated_elements = array('');
                 <h3><?php esc_html_e('Enjoying Cool FormKit?', 'cool-formkit'); ?></h3>
                 <p><?php esc_html_e('Please consider leaving us a review. It helps us a lot!', 'cool-formkit'); ?></p>
                 <div class="cfkef-sidebar-link-group">
-                    <a href="https://trustpilot.com/review/coolplugins.net" class="button button-primary" target="_blank"><?php esc_html_e('Leave a Review', 'cool-formkit'); ?></a>
+                    <div class="cfkef-review-right">
+                        <div class="cfkef-stars">
+                        ★★★★★
+                        </div>
+                        <a href="https://wordpress.org/support/plugin/extensions-for-elementor-form/reviews/#new-post" class="button button-primary" target="_blank"><?php esc_html_e('Leave a Review', 'cool-formkit'); ?></a>
+                    </div>
                 </div>
             </div>
         </div>
