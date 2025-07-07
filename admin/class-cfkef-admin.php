@@ -226,6 +226,25 @@ class CFKEF_Admin {
         register_setting( 'cfkef_form_elements_group', 'cfkef_enable_elementor_pro_form' );
         register_setting( 'cfkef_form_elements_group', 'cfkef_enable_hello_plus' );
         register_setting( 'cfkef_form_elements_group', 'cfkef_enable_formkit_builder' );
+
+        if (!get_option('cfl_plugin_initialized')) {
+            // Get current enabled elements or empty array
+            $enabled_elements = get_option('cfkef_enabled_elements', array());
+
+            // Only update if it's empty (first-time install)
+            if (empty($enabled_elements)) {
+                $default_elements = array(
+                    'conditional_logic',
+                    'country_code',
+                    'form_input_mask',
+                    'whatsapp_redirect'
+                );
+
+                update_option('cfkef_enabled_elements', $default_elements);
+            }
+            // Set initialization flag to avoid repeating
+            update_option('cfkef_plugin_initialized', true);
+        }
     }
 
     /**

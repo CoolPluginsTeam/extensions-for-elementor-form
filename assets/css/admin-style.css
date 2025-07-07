@@ -492,6 +492,9 @@ a.button-primary.upgrade-pro-btn{
     flex-wrap:wrap;
     position: relative;
 }
+.cfkef-sidebar-block .cfkef-sidebar-link-group a{
+    white-space: normal;
+}
 .cfkef-sidebar-block .cfkef-sidebar-link-group a picture img{
     height: 100%;
     width: 100%;
@@ -706,7 +709,7 @@ td.cool-formkit-table-td.usage-share-data {
     transform: translateY(-100%);
     background: #3f415e;
     color: #fff;
-    padding: 6px 4px;
+    padding: 10px;
     font-size: 12px;
     border-radius: 4px;
     white-space: nowrap;
@@ -753,7 +756,7 @@ td.cool-formkit-table-td.usage-share-data {
     border: none;
     padding: 5px 3px;
     border-radius: 3px;
-    margin-left: 4px;
+    margin-left: 10px;
 }
 
 /* dashboard loader effect css */

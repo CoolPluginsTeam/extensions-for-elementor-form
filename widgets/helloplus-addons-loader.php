@@ -112,6 +112,8 @@ class HelloPlus_Addons_Loader {
     }
 
     public function show_actions_on_editor_side( $element, $args ) {
+        require_once CFL_PLUGIN_PATH . 'widgets/helloplus-addons/helloplus-whatsapp-redirect.php';
+        
         $custom_actions   = [];
         $action_instances = [];
 

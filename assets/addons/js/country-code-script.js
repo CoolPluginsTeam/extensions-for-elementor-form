@@ -63,7 +63,7 @@ class CoolFormCCFEF extends elementorModules.frontend.handlers.Base {
         this.intlInputValidation(); // Validates the international input fields to ensure they meet specific criteria.
     }
 
-handleTelWithMdcFields(iti) {
+    handleTelWithMdcFields(iti) {
         const input = iti.telInput;
         const parentFieldGroup = input.closest('.cool-form__field-group');
         const $parent = jQuery(parentFieldGroup);
@@ -101,7 +101,7 @@ handleTelWithMdcFields(iti) {
         }
 
         // Set initial floating label style
-        $floatingLabel.css('left', '50px');
+        $floatingLabel.css('left', '55px');
     
         // Input focus event for the second input element
         $inputs.eq(1).on('blur',()=>{
@@ -114,7 +114,7 @@ handleTelWithMdcFields(iti) {
         $inputs.eq(1).on('focus', () => {
             selectedDialCode.css('visibility','visible')
             $floatingLabel.css({
-                "left": "50px",
+                "left": "55px",
                 "background-color": "white"
             });
             const borderTop = getComputedStyle($notchedOutlineNotch[0]).getPropertyValue('border-bottom');

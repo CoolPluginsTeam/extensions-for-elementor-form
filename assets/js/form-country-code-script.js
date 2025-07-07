@@ -1,7 +1,7 @@
 /**
 * Class for handling country code functionality in Elementor forms.
 */
-class CCFEF extends elementorModules.frontend.handlers.Base {
+class FormCCFEF extends elementorModules.frontend.handlers.Base {
 
     /**
      * Retrieves the default settings for the country code functionality.
@@ -516,7 +516,7 @@ class CCFEF extends elementorModules.frontend.handlers.Base {
 
 jQuery(window).on('elementor/frontend/init', () => {
     const addHandler = ($element) => {
-        elementorFrontend.elementsHandler.addHandler(CCFEF, {
+        elementorFrontend.elementsHandler.addHandler(FormCCFEF, {
             $element,
         });
     };
