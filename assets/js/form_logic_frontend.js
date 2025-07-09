@@ -100,15 +100,14 @@
                             field = $(form).find(".elementor-field-group-" + logic_key).closest(
                             ".elementor-field-group"
                             )
-                        } else {
                             if ($(form).find(".elementor-field-group-" + logic_key).hasClass("elementor-field-type-step")) {
                                 setTimeout(() => {
-                                    $(form).find(".elementor-field-group-" + logic_key)
+                                    jQuery(".elementor-field-group-" + logic_key, form)
                                     .find(".e-form__buttons")
                                     .find(
                                         ".elementor-field-type-next, .elementor-field-type-submit"
                                     )
-                                    .find(".cool-form__button")
+                                    .find(".elementor-button")
                                     .attr("id", "form-field-" + logic_key)
                                     .closest(
                                         ".elementor-field-type-next, .elementor-field-type-submit"
@@ -124,6 +123,7 @@
                                     );
                                 }, 500);
                             }
+                        } else {
                             var field = getFieldMainDivById(logic_key, form);
                             performFieldLogic(field, logic_value, form, logic_key, formId);
                       }
@@ -168,13 +168,34 @@
                 if (conditionResult) {
                     field.removeClass("cfef-hidden");
                     if(field.hasClass('elementor-field-required')){
-                    logicFixedRequiredShow(field,file_types);
+                        logicFixedRequiredShow(field,file_types);
+                    }           
+                    // Remove step message if it's a step field and message exists
+                    if (field.hasClass("cfef-step-field")) {
+                        var container = field.closest(".e-form__buttons");
+                        container.prev(".cfef-step-field-text").remove();
                     }
                 } else {
-                    field.addClass("cfef-hidden");
-                    if(field.hasClass('elementor-field-required')){
-                        logicFixedRequiredHidden(field, logic_key,file_types);
-                    } 
+                    if (field.hasClass("cfef-step-field")) {
+                        var container = field.closest(".e-form__buttons");
+                        var nextButtonText = container
+                            .find('button[id^="form-field-"]')
+                            .text()
+                            .trim();
+            
+                        if (container.prev(".cfef-step-field-text").length === 0) {
+                            var message = my_script_vars.no_input_step.replace('%s', nextButtonText);
+                            container.before('<p class="cfef-step-field-text">' + message + '</p>');
+                        }
+            
+                    }else{
+                        if(!field.hasClass('elementor-field-type-step')){
+                            field.addClass("cfef-hidden");
+                        }
+                        if(field.hasClass('elementor-field-required')){
+                            logicFixedRequiredHidden(field, logic_key,file_types);
+                        } 
+                    }
                 }
             } else {
                 if (conditionResult) {

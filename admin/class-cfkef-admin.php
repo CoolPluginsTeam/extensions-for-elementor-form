@@ -243,7 +243,7 @@ class CFKEF_Admin {
                 update_option('cfkef_enabled_elements', $default_elements);
             }
             // Set initialization flag to avoid repeating
-            update_option('cfkef_plugin_initialized', true);
+            update_option('cfl_plugin_initialized', true);
         }
     }
 

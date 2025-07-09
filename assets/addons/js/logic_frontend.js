@@ -202,7 +202,7 @@
                               '" to proceed.</p>'
                           );
                         }
-                      } else {
+                    } else {
                         // Check if field exists before adding the class
                         if (field && field.length > 0) {
                           field.addClass("cfef-hidden");
@@ -210,8 +210,8 @@
                             logicFixedRequiredHidden(field, logic_key, file_types);
                           }
                         }
-                      }
-                    } else {
+                    }
+                } else {
                       // If the field has the "cfef-step-field" class, remove the appended message
                       if (field.hasClass("cfef-step-field")) {
                         var container = field.closest(".cool-form__submit-group");
@@ -224,7 +224,7 @@
                       if (field && field.length > 0) {
                         field.removeClass("cfef-hidden");
                       }
-                    }
+                }
             }
         }
 

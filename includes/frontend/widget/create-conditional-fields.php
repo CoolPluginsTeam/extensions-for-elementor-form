@@ -49,7 +49,10 @@ class CFL_Create_Conditional_Fields {
 		wp_register_script( 'cfl_logic', CFL_PLUGIN_URL . 'assets//js/form_logic_frontend.js', array( 'jquery' ), CFL_VERSION, true );
 
 		wp_localize_script('cfl_logic', 'my_script_vars', array(
-			'pluginConstant' => CFL_VERSION
+			'pluginConstant' => CFL_VERSION,
+			'pluginUrl' => CFL_PLUGIN_URL,
+			'no_input_step' => __('No input is required on this step. Just click "%s" to proceed.', 'cool-formkit'),
+		    'next_button'   => __('Next', 'cool-formkit'),
 		));
 	
 		// Add hidden class CSS

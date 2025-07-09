@@ -101,7 +101,7 @@ class CoolFormCCFEF extends elementorModules.frontend.handlers.Base {
         }
 
         // Set initial floating label style
-        $floatingLabel.css('left', '55px');
+        $floatingLabel.css('left', '57px');
     
         // Input focus event for the second input element
         $inputs.eq(1).on('blur',()=>{
@@ -114,7 +114,7 @@ class CoolFormCCFEF extends elementorModules.frontend.handlers.Base {
         $inputs.eq(1).on('focus', () => {
             selectedDialCode.css('visibility','visible')
             $floatingLabel.css({
-                "left": "55px",
+                "left": "57px",
                 "background-color": "white"
             });
             const borderTop = getComputedStyle($notchedOutlineNotch[0]).getPropertyValue('border-bottom');

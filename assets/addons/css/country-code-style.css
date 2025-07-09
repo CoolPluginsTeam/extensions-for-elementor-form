@@ -1,7 +1,5 @@
 .cfefp-intl-container{
     --cfefp-intl-tel-button-height: 100%;
-    width: 100%;
-    height: 100%;
 }
 
 .elementor-field-group .cfefp-intl-container.iti{
@@ -49,8 +47,9 @@
     background-position: center;
     background-size:cover; 
 }
-.elementor-field-type-tel{
+.cool-form__field-group.is-field-type-tel .cfefp-intl-container{
     height: 100%;
+    width: 100%;
 }
 .is-field-type-ehp-tel.has-width-100 .iti input{
     width: 100%;
