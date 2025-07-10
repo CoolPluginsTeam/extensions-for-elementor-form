@@ -749,7 +749,7 @@ td.cool-formkit-table-td.usage-share-data {
 .cfkef-dashboard-tabs {
     margin-top: 80px;
 }
-.cfkef-activate-plugin-btn,.cfkef-install-plugin-btn{
+.cfkef-activate-plugin-btn,.cfkef-install-plugin-btn,.cfkef-activate-check-theme{
     cursor: pointer;
     background-color: #fb5fab;
     color: white;

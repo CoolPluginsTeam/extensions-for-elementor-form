@@ -31,3 +31,5 @@ if (!defined('ABSPATH')) {
     </div>
     </div>
 </div>
+<?php 
+do_action('cfkef_render_pro_license_fields');

@@ -19,6 +19,7 @@ if ($default_plugin_enabled && !in_array('conditional_logic', $enabled_elements)
     $enabled_elements[] = 'country_code';
     update_option('cfkef-defaultPlugin',false);
 }
+$conditional_pro_install = is_plugin_active('conditional-fields-for-elementor-form-pro/class-conditional-fields-for-elementor-form-pro.php');
 
 $form_elements = array(
     'conditional_logic' => array(
@@ -54,7 +55,7 @@ $form_elements = array(
         'how_to' => 'https://docs.coolplugins.net/doc/conditional-redirect-elementor-form/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
         'demo' => 'https://coolplugins.net/product/conditional-fields-for-elementor-form/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#conditional-redirect',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/redirect-conditionally-min.svg',
-        'pro' => true
+        'pro' => !$conditional_pro_install
     ),
     'conditional_email' => array(
         'label' => __('Conditional Email After Submit', 'cool-formkit'),
@@ -62,7 +63,7 @@ $form_elements = array(
         'demo' => 'https://coolplugins.net/product/conditional-fields-for-elementor-form/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#conditional-email',
         'popular' => true,
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/conditional-email-1-min.svg',
-        'pro' => true
+        'pro' => !$conditional_pro_install
     ),
     'conditional_submit_button' => array(
         'label' => __('Conditional Logic For Submit Button', 'cool-formkit'),
@@ -70,7 +71,7 @@ $form_elements = array(
         'demo' => 'https://coolplugins.net/product/conditional-fields-for-elementor-form/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#view-demo-forms',
         'popular' => true,
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/conditional-button-min.svg',
-        'pro' => true
+        'pro' => !$conditional_pro_install
     ),
     'range_slider' => array(
         'label' => __('Range Slider', 'cool-formkit'),
@@ -278,6 +279,9 @@ $updated_elements = array('');
                    
     
                             <?php
+                            $theme = wp_get_theme();                          
+                            $theme_name = $theme->get('Name');
+
                             $plugin_file = 'hello-plus/hello-plus.php';
                             $plugin_slug = 'hello-plus';
 
@@ -301,7 +305,8 @@ $updated_elements = array('');
                             <div class="cfkef-form-element-card<?php echo esc_attr($card_class); ?>"
                                 data-action="<?php echo esc_attr($data_action); ?>"
                                 data-slug="<?php echo esc_attr($plugin_slug); ?>"
-                                data-init="<?php echo esc_attr($plugin_file); ?>">
+                                data-init="<?php echo esc_attr($plugin_file); ?>"
+                                data-gettheme="<?php echo esc_attr($theme_name); ?>">
                                 <div class="cfkef-form-element-info">
                                     <img src="<?php echo CFL_PLUGIN_URL . 'admin/assets/icons/form-lite-min.svg'?>">
                                     <h4>

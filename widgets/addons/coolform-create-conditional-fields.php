@@ -68,7 +68,11 @@ class CoolForm_Create_Conditional_Fields {
 	 */
 	public function editor_assets() {
 		wp_register_script( 'coolform_logic_editor', CFL_PLUGIN_URL . 'assets/addons/js/editor.min.js', array( 'jquery' ), CFL_VERSION, true );
-		wp_enqueue_script('coolform_logic_editor');
+		$conditional_pro_install = is_plugin_active('conditional-fields-for-elementor-form-pro/class-conditional-fields-for-elementor-form-pro.php');
+		if(!$conditional_pro_install){
+			wp_enqueue_script('coolform_logic_editor');
+		}
+		
 		wp_enqueue_style( 'coolform_logic_editor_css', CFL_PLUGIN_URL . 'assets/addons/css/editor.min.css', array(), CFL_VERSION );
 
 		if ( defined( 'ELEMENTOR_PLUGIN_BASE' ) ) {

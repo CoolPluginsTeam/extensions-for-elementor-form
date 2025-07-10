@@ -32,6 +32,11 @@ class CFL_Create_Conditional_Fields {
 	 * @access public
 	 */
 	public function __construct() {
+		$conditional_pro_install = is_plugin_active('conditional-fields-for-elementor-form-pro/class-conditional-fields-for-elementor-form-pro.php');
+		if($conditional_pro_install){
+			return;
+		}
+
 		add_action( 'elementor/frontend/widget/before_render', array( $this, 'all_field_conditions' ), 10, 3 );
 		add_action( 'elementor/element/form/section_form_fields/before_section_end', array( $this, 'append_conditional_fields_controler' ), 10, 2 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_assets_files' ) );

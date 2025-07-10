@@ -135,31 +135,50 @@ function buttonShakeEffectHandler() {
 }
 
 function handleElementCardTooltip() {
-	const cardElm = document.querySelectorAll('.cfkef-form-element-card.cfkef-has-tooltip');
+	const cardElms = document.querySelectorAll('.cfkef-form-element-card.cfkef-has-tooltip');
 
-	cardElm.forEach(el => {
+	cardElms.forEach(el => {
 		el.addEventListener('click', function () {
 			const tooltip = el.querySelector('.cfkef-tooltip');
 			if (!tooltip) return;
 
+			// Reset tooltip content
+			tooltip.innerHTML = '';
+
+			const action = el.dataset.action;
+			const slug = el.dataset.slug;
+			const init = el.dataset.init;
+			const getCurrentTheme = el.dataset.gettheme; // e.g. 'hello-biz'
+
+			// Default message based on plugin
+			let defaultMessage = 'Requires plugin to be activated.';
+			if (slug === 'hello-plus') {
+				defaultMessage = 'Requires Hello Plus plugin to be activated.';
+			} else if (slug === 'elementor-pro') {
+				defaultMessage = 'Requires Elementor Pro plugin to be activated.';
+			}
+
 			// Toggle visibility
 			if (tooltip.style.display === 'block') {
 				tooltip.style.display = 'none';
-				tooltip.innerHTML = 'Requires Hello Plus plugin to be activated'; // Reset message
+				tooltip.innerHTML = defaultMessage;
 			} else {
 				tooltip.style.display = 'block';
 
-				const action = el.dataset.action;
-				const slug = el.dataset.slug;
-				const init = el.dataset.init;
+				if (slug === 'hello-plus' && getCurrentTheme !== 'Hello Biz') {
+					tooltip.innerHTML = 'Hello Plus requires Hello Biz theme to be activated. <button class="cfkef-activate-check-theme" data-buttonrole="redirect">Check Theme</button>';
+					return; 
+				}
 
-				// Append button
+				tooltip.innerHTML = defaultMessage;
+
+				// Add the button if valid action
 				if (action === 'activate') {
 					tooltip.innerHTML += `<button class="cfkef-activate-plugin-btn" data-slug="${slug}" data-init="${init}">Activate Plugin</button>`;
 				} else if (action === 'install') {
-					let extraCss;
-					if(el.classList.contains('need-install') && el.dataset.slug === 'elementor-pro'){
-						extraCss = 'redirect-elementor-page'
+					let extraCss = '';
+					if (el.classList.contains('need-install') && slug === 'elementor-pro') {
+						extraCss = 'redirect-elementor-page';
 					}
 					tooltip.innerHTML += `<button class="cfkef-install-plugin-btn ${extraCss}" data-slug="${slug}" data-init="${init}">Install Plugin</button>`;
 				}
@@ -167,12 +186,26 @@ function handleElementCardTooltip() {
 		});
 	});
 
-	// Hide tooltip if clicked outside any .cfkef-form-element-card
+	// Hide tooltip if clicked outside
 	document.addEventListener('click', function (e) {
+		if(e.target.dataset.buttonrole && e.target.dataset.buttonrole === 'redirect'){
+			window.open('https://wordpress.org/themes/hello-biz/', '_blank');
+		}
+
 		if (!e.target.closest('.cfkef-form-element-card')) {
 			document.querySelectorAll('.cfkef-tooltip').forEach(tip => {
-				tip.style.display = 'none';
-				tip.innerHTML = 'Requires Hello Plus plugin to be activated';
+				const parentCard = tip.closest('.cfkef-form-element-card');
+				if (parentCard) {
+					const slug = parentCard.dataset.slug;
+					let resetMsg = 'Requires Hello Plus plugin to be activated.';
+					if (slug === 'hello-plus') {
+						resetMsg = 'Requires Hello Plus plugin to be activated.';
+					} else if (slug === 'elementor-pro') {
+						resetMsg = 'Requires Elementor Pro plugin to be activated.';
+					}
+					tip.style.display = 'none';
+					tip.innerHTML = resetMsg;
+				}
 			});
 		}
 	});
@@ -212,7 +245,7 @@ function handleTooltipButtonAction(){
 								if (res.success) {
 									window.location.reload();
 								} else {
-									alert('Activation error: ' + res.data?.message + ' Please try to activate manually.');
+									alert('Activation error. Please try to activate manually.');
 								}
 							},
 							error: function () {
@@ -223,7 +256,7 @@ function handleTooltipButtonAction(){
 							}
 						});
 					} else {
-						alert('Installation error: ' + res.data?.message + ' Please try to install manually.');
+						alert('Installation error. Please try to install manually.');
 						ajaxLoader.hide();
 					}
 				},
