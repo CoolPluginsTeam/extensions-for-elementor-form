@@ -116,7 +116,7 @@ class CFKEF_Admin {
 
         include_once ABSPATH . 'wp-admin/includes/plugin.php';
 
-        $init_file = sanitize_text_field( $_POST['init'] );
+        $init_file = sanitize_text_field( wp_unslash($_POST['init']) );
 
         $activate = activate_plugin( $init_file );
 

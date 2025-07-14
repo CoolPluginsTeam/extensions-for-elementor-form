@@ -179,13 +179,13 @@ $form_elements = array(
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/hcaptcha-icon-min.svg',
         'pro' => true
     ),
-    // 'toggle_field' => array(
-    //     'label' => __('Toggle Field', 'cool-formkit'),
-    //     'how_to' => ' ',
-    //     'demo' => ' ',
-    //     'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/toggle-field.svg',
-    //     'pro' => true
-    // )
+    'toggle_field' => array(
+        'label' => __('Toggle Field', 'cool-formkit'),
+        'how_to' => 'https://docs.coolplugins.net/doc/toggle-field-elementor-form/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard',
+        'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/toggle-field.svg',
+        'pro' => true
+    )
 );
 
 $popular_elements = array('');
