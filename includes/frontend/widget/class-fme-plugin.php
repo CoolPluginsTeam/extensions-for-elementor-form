@@ -79,7 +79,7 @@ final class FME_Plugin {
             $using_elementor_pro = \Elementor\Plugin::$instance->db->is_built_with_elementor( $post_id );
         }
 
-		if(!$using_elementor_pro);{
+		if(!$using_elementor_pro){
 			wp_enqueue_script( 'fme-jquery-mask-min', CFL_PLUGIN_URL . 'assets/js/inputmask/jquery.mask.min.js', array('jquery'), time(), true );
 			wp_enqueue_script( 'fme-otherform-mask', CFL_PLUGIN_URL . 'assets/js/inputmask/otherform-mask.js', array('jquery'), time(), true );
 		}
