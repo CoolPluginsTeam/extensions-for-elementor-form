@@ -4,10 +4,10 @@ Contributors: coolplugins, narinder-singh, satindersingh
 Tags: form builder, elementor form, elementor, contact form, custom form
 Requires at least: 6.2
 Tested up to: 6.8.1
-Stable tag: 2.4.5
+Stable tag: 2.5.0
 Requires PHP: 8.2
-Elementor tested up to: 3.29.0
-Elementor Pro tested up to: 3.29.0
+Elementor tested up to: 3.30.2
+Elementor Pro tested up to: 3.30.0
 License: GPL 3.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -171,6 +171,11 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
    - Save and publish the page to display the form on your site.
 
 == Changelog ==
+
+= Version 2.5.0| 17/07/2025 = 
+* **Added:- Support for Hello Plus Form Lite and Elementor Form widget.
+* **Updated:- Admin Dashboard enhancements.
+* **Tested upto:** Elementor Version 3.30.2 and Elementor Pro Version 3.30.0 
 
 = Version 2.4.5| 26/05/2025 = 
 * **Improvements:** Enhanced user opt-in options for better customization.

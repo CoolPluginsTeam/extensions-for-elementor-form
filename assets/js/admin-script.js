@@ -242,11 +242,7 @@ function handleTooltipButtonAction(){
 								security: cfkef_plugin_vars.nonce
 							},
 							success: function (res) {
-								if (res.success) {
-									window.location.reload();
-								} else {
-									alert('Activation error. Please try to activate manually.');
-								}
+								window.location.reload();
 							},
 							error: function () {
 								alert('Activation failed. Please try to activate manually.');
