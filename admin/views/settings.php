@@ -186,8 +186,9 @@ if (isset($_POST['cfl_site_key_v2']) || isset($_POST['cfl_secret_key_v2']) || is
 
     }else{
 
-    $redirect_conditionally = sanitize_text_field($_POST['cfefp_redirect_conditionally']);
-    $email_conditionally = sanitize_text_field($_POST['cfefp_email_conditionally']);
+    $redirect_conditionally = isset($_POST['cfefp_redirect_conditionally']) ?  sanitize_text_field($_POST['cfefp_redirect_conditionally']) : '';
+    
+    $email_conditionally = isset($_POST['cfefp_email_conditionally']) ? sanitize_text_field($_POST['cfefp_email_conditionally']) : '';
 
     $recaptcha_site_key  = isset($_POST['cfl_site_key_v2']) ? sanitize_text_field($_POST['cfl_site_key_v2']) : '';
     $recaptcha_secret_key = isset($_POST['cfl_secret_key_v2']) ? sanitize_text_field($_POST['cfl_secret_key_v2']) : '';
