@@ -489,7 +489,9 @@ class FormCCFEF extends elementorModules.frontend.handlers.Base {
                     };
                     if (iti.isValidNumber()) {
                         jQuery(inputTelElement).closest('.cfefp-intl-container').removeClass('elementor-error');
+                        this.elements.$submitButton.removeClass('cfkef-prevent-submit')
                     } else {
+                        this.elements.$submitButton.addClass('cfkef-prevent-submit')
                         const errorType = iti.getValidationError();
                         if (errorType !== undefined && errorMap[errorType]) {
                             // Remove dial code from input field if validation fails

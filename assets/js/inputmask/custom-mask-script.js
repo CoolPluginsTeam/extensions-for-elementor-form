@@ -688,6 +688,11 @@
 
         $(document).on("click", ".elementor-field-type-submit", function (e) {
           var $submitBtn = $(this);
+
+          if($submitBtn.find('button').hasClass('cfkef-prevent-submit') ){
+            return
+          }
+          
           var $form = $submitBtn.closest("form");
 
           // Prevent double-clicks
