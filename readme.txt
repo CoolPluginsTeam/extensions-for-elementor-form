@@ -3,7 +3,7 @@
 Contributors: coolplugins, narinder-singh, satindersingh
 Tags: form builder, elementor form, elementor, contact form, custom form
 Requires at least: 6.2
-Tested up to: 6.8.1
+Tested up to: 6.8.2
 Stable tag: 2.5.0
 Requires PHP: 8.2
 Elementor tested up to: 3.30.2
