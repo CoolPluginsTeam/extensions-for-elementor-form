@@ -41,7 +41,7 @@
 
         // function to add hidden class when form load
         function addHiddenClass(form, formId) { 
-            var logicData = $('#cfef_logic_data_'+formId).val();
+            var logicData = $('#cfef_logic_data_'+formId).html();
             if (logicData && logicData !== "undefined") {
                 try {
                     logicData = jQuery.parseJSON(logicData);
@@ -91,7 +91,7 @@
         
         // function to check all the conditions valid or not . and based on that condition shosw and hide the fields 
         function logicLoad(form, formId) {
-            var logicData =$('#cfef_logic_data_'+formId).val();
+            var logicData = $('#cfef_logic_data_'+formId).html();
             if (logicData && logicData !== "undefined") {
                 try {
                     logicData = jQuery.parseJSON(logicData);
@@ -202,7 +202,7 @@
                               '" to proceed.</p>'
                           );
                         }
-                      } else {
+                    } else {
                         // Check if field exists before adding the class
                         if (field && field.length > 0) {
                           field.addClass("cfef-hidden");
@@ -210,8 +210,8 @@
                             logicFixedRequiredHidden(field, logic_key, file_types);
                           }
                         }
-                      }
-                    } else {
+                    }
+                } else {
                       // If the field has the "cfef-step-field" class, remove the appended message
                       if (field.hasClass("cfef-step-field")) {
                         var container = field.closest(".cool-form__submit-group");
@@ -224,7 +224,7 @@
                       if (field && field.length > 0) {
                         field.removeClass("cfef-hidden");
                       }
-                    }
+                }
             }
         }
 
@@ -460,9 +460,9 @@
         function getFieldMainDivById(id = "", form = null) {
             if (form) {
               if ($("#form-field-" + id, form).length > 0) {
-                return $("#form-field-" + id, form).closest(".elementor-field-group");
+                return $("#form-field-" + id, form).closest(".cool-form__field-group");
               } else {
-                return $("#form-field-" + id + "-0", form).closest(".elementor-field-group");
+                return $("#form-field-" + id + "-0", form).closest(".cool-form__field-group");
               }
             }
             return null;
@@ -490,7 +490,7 @@
             });
         });
 
-     //add conditional fields on form when page load
+        //add conditional fields on form when page load
         window.addEventListener('elementor/frontend/init', function() {
             $(".cool-form").each(function() {
                 var form = $(this).closest(".elementor-widget-cool-form");
@@ -511,39 +511,34 @@
             },200)
         });
 
-// jQuery listener for standard form elements.
-$("body").on("input change", ".cool-form input, .cool-form select, .cool-form textarea", function(e) {
-    var form = $(this).closest(".elementor-widget-cool-form");
-    var formId = form.closest(".elementor-element").attr("data-id");
-    form.attr("data-form-id", "form-" + formId);
-    // Trigger your logic for standard inputs.
-    logicLoad(form, formId);
-});
-
-// Iterate over each MDCSelect component.
-$(".mdc-select").each(function() {
-    const mdcSelectElem = this;
-    // Initialize the MDCSelect component for this element.
-    const mdcSelect = new mdc.select.MDCSelect(mdcSelectElem);
-    
-    // Listen for the custom MDCSelect change event.
-    mdcSelect.listen('MDCSelect:change', function() {
-        // Use a timeout to let the native select update its value.
-        setTimeout(function() {
-            var form = $(mdcSelectElem).closest(".elementor-widget-cool-form");
+        // jQuery listener for standard form elements.
+        $("body").on("input change", ".cool-form input, .cool-form select, .cool-form textarea", function(e) {
+            var form = $(this).closest(".elementor-widget-cool-form");
             var formId = form.closest(".elementor-element").attr("data-id");
             form.attr("data-form-id", "form-" + formId);
-            
-            // Now the underlying select should have the updated value.
+            // Trigger your logic for standard inputs.
             logicLoad(form, formId);
-        }, 0);
-    });
-});
+        });
 
-
-
-    
-
+        // Iterate over each MDCSelect component.
+        $(".mdc-select").each(function() {
+            const mdcSelectElem = this;
+            // Initialize the MDCSelect component for this element.
+            const mdcSelect = new mdc.select.MDCSelect(mdcSelectElem);
+            
+            // Listen for the custom MDCSelect change event.
+            mdcSelect.listen('MDCSelect:change', function() {
+                // Use a timeout to let the native select update its value.
+                setTimeout(function() {
+                    var form = $(mdcSelectElem).closest(".elementor-widget-cool-form");
+                    var formId = form.closest(".elementor-element").attr("data-id");
+                    form.attr("data-form-id", "form-" + formId);
+                    
+                    // Now the underlying select should have the updated value.
+                    logicLoad(form, formId);
+                }, 0);
+            });
+        });
     });
 
 })(jQuery);

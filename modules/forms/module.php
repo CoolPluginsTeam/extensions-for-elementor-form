@@ -120,6 +120,14 @@ class Module extends Module_Base {
 			true
 		);
 
+		wp_enqueue_script(
+			'cool-forms-editor-handler',
+			CFL_PLUGIN_URL . 'assets/js/cool-forms-editor-handler.js',
+			[ 'elementor-editor'],
+			CFL_VERSION,
+			true
+		);
+
 		wp_enqueue_script('Cool_FormKit-forms-editor', true);
 	}
 

@@ -43,8 +43,8 @@
 
 .cfefp-intl-container .iti__country-container .iti__flag:not(.iti__globe){
     height:13px;
-    background-position: 'center';
-    background-size:'cover'; 
+    background-position: center;
+    background-size:cover; 
 }
 .iti__dropdown-content{
     margin-top: 20px !important;

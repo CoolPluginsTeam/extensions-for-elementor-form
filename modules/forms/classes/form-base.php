@@ -73,35 +73,58 @@ abstract class Form_Base extends Widget_Base {
 	}
 
 	public function make_text_field_md( $item, $item_index, $instance ): string {
-		ob_start();		
+		ob_start();
 		?>
-		<label class="cool-form-text mdc-text-field mdc-text-field--outlined <?php echo ($item['field_label'] === '' || empty($instance['show_labels'])) ? 'mdc-text-field--no-label' : '' ?> cool-field-size-<?php echo $instance['input_size'] ?>">
+		<label class="cool-form-text mdc-text-field mdc-text-field--outlined <?php echo ($item['field_label'] === '' || empty($instance['show_labels'])) ? 'mdc-text-field--no-label' : '' ?> cool-field-size-<?php echo esc_attr( $instance['input_size'] ); ?>">
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">
-					<?php if($item['field_label'] !== '' && !empty($instance['show_labels'])){?>
+					<?php if ( $item['field_label'] !== '' && ! empty( $instance['show_labels'] ) ) : ?>
 						<span class="mdc-floating-label" id="text-label-<?php echo esc_attr( $item_index ); ?>">
 							<?php echo esc_html( $item['field_label'] ); ?>
 						</span>
-					<?php
-					}
-					?>
+					<?php endif; ?>
 				</span>
 				<span class="mdc-notched-outline__trailing"></span>
 			</span>
+
 			<input 
 				type="<?php echo esc_attr( $item['field_type'] ); ?>"
-				class="mdc-text-field__input cool-form__field cool-field-size-<?php echo $instance['input_size'] ?>"
-				id="<?php echo $this->get_attribute_id( $item ); ?>"
-				name="<?php echo $this->get_attribute_name( $item ); ?>"
-				<?php echo ( ! empty( $item['placeholder'] ) ) ? 'placeholder="' . esc_attr( $item['placeholder'] ) . '"' : ''; ?>
-				<?php echo ( ! empty( $item['field_value'] ) ) ? 'value="' . esc_attr( $item['field_value'] ) . '"' : ''; ?>
-				<?php echo ( ! empty( $item['required'] ) ) ? 'required' : ''; ?>
+				id="<?php echo esc_attr( $this->get_attribute_id( $item ) ); ?>"
+				name="<?php echo esc_attr( $this->get_attribute_name( $item ) ); ?>"
+				class="mdc-text-field__input cool-form__field cool-field-size-<?php echo esc_attr( $instance['input_size'] ); ?><?php
+					// Add classes from custom_mask_attributes if any
+					if ( ! empty( $item['custom_mask_attributes']['class'] ) ) {
+						echo ' ' . esc_attr( $item['custom_mask_attributes']['class'] );
+					}
+				?>"
+				<?php if ( ! empty( $item['placeholder'] ) ) : ?>
+					placeholder="<?php echo esc_attr( $item['placeholder'] ); ?>"
+				<?php endif; ?>
+				<?php if ( ! empty( $item['field_value'] ) ) : ?>
+					value="<?php echo esc_attr( $item['field_value'] ); ?>"
+				<?php endif; ?>
+				<?php if ( ! empty( $item['required'] ) ) : ?>
+					required
+				<?php endif; ?>
+
+				<?php
+				// Inject custom data-* or other attributes (except class, already handled)
+				if ( ! empty( $item['custom_mask_attributes'] ) && is_array( $item['custom_mask_attributes'] ) ) {
+					foreach ( $item['custom_mask_attributes'] as $attr => $value ) {
+						if ( $attr !== 'class' ) {
+							echo esc_attr( $attr ) . '="' . esc_attr( $value ) . '" ';
+						}
+					}
+				}
+				?>
 			>
+
 			<i aria-hidden="true" class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing cool-<?php echo esc_attr( $item['field_type'] ); ?>-error-icon" style="display:none">error</i>
 		</label>
+
 		<div class="mdc-text-field-helper-line">
-  			<div class="mdc-text-field-helper-text" id="cool-<?php echo esc_attr( $item['field_type'] ); ?>-error" aria-hidden="true"></div>
+			<div class="mdc-text-field-helper-text" id="cool-<?php echo esc_attr( $item['field_type'] ); ?>-error" aria-hidden="true"></div>
 		</div>
 		<?php
 		return ob_get_clean();

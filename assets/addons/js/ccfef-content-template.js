@@ -10,6 +10,8 @@ jQuery(document).ready(function ($) {
             let includeCountries = '';
             let excludeCountries = '';
             let defaultCountry = '';
+            let dialCodeVisibility = items['ccfef-dial-code-visibility'];
+            let countryStrictMode = items['ccfef-strict-mode']
 
             // Get and sanitize the exclude countries list.
             if (items.hasOwnProperty('ccfef-country-code-exclude')) {
@@ -48,7 +50,10 @@ jQuery(document).ready(function ($) {
             const trimmedInclude = includeCountries ? includeCountries.split(',').map(item => item.trim()).filter(Boolean).join(',') : '';
 
             // Build the output HTML for the hidden span with all data attributes.
-            return `${inputField}<span class="ccfef-editor-intl-input" data-id="form_field_${index}" data-field-id="${fieldId}" data-default-country="${defaultCountry}" data-exclude-countries="${excludeCountries}" data-include-countries="${trimmedInclude}" data-common-countries="${commonAttr}" style="display: none;"></span>`;
+            return `${inputField}<span class="ccfef-editor-intl-input" data-id="form_field_${index}" data-field-id="${fieldId}" data-default-country="${defaultCountry}" data-exclude-countries="${excludeCountries}" data-include-countries="${trimmedInclude}" data-common-countries="${commonAttr}"
+            data-dial-code-visibility="${dialCodeVisibility}" 
+            data-strict-mode="${countryStrictMode}" 
+            style="display: none;"></span>`;
         } else {
             return inputField;
         }

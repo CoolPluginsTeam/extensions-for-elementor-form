@@ -1,7 +1,7 @@
 /**
-     * Class for handling country code functionality in Elementor forms.
-     */
-class CCFEF extends elementorModules.frontend.handlers.Base {
+* Class for handling country code functionality in Elementor forms.
+*/
+class CoolFormCCFEF extends elementorModules.frontend.handlers.Base {
 
     /**
      * Retrieves the default settings for the country code functionality.
@@ -44,6 +44,10 @@ class CCFEF extends elementorModules.frontend.handlers.Base {
 
         this.commonCountries = {}; // NEW: Object to store flag if common-countries === 'same'
 
+        this.dialCodeVisibility = {};
+
+        this.countryStrictMode = {}; 
+
         this.iti = {}; // Object to store international telephone input instances
 
         this.getIntlUserData(); // Retrieves international telephone input data from the DOM and stores them for further processing.
@@ -70,13 +74,47 @@ class CCFEF extends elementorModules.frontend.handlers.Base {
         const $notchedOutlineNotch = $parent.find('.mdc-notched-outline__notch');
         const $notchedOutlineLeading = $parent.find('.mdc-notched-outline__leading');
     
+        let selectedDialCode = $inputs.eq(1).prev('.iti__country-container').find('.iti__selected-dial-code')
+        selectedDialCode.css('visibility','hidden')
+        if($inputs.eq(1).val() !== ""){
+            selectedDialCode.css('visibility','visible')
+        }else{
+            selectedDialCode.css('visibility','hidden')
+        }
+        if ($parent.nextAll().length > 0) {
+            const $nextAll = $parent.nextAll();
+            if ($nextAll.length > 0) {
+                const first = $nextAll[0];
+                const second = $nextAll[1];
+
+                const isSubmitGroup = (el) => el && el.classList && el.classList.contains('cool-form__submit-group');
+
+                const conditionMatched = !$parent.hasClass('has-width-100')
+                    ? (isSubmitGroup(first) || isSubmitGroup(second))
+                    : isSubmitGroup(first);
+
+                if (conditionMatched) {
+                    $parent.css({ 'margin-bottom': '25px' });
+                    $parent.find('.iti__country-list').css({ 'max-height': '100px' });
+                }
+            }
+        }
+
         // Set initial floating label style
-        $floatingLabel.css('left', '50px');
+        $floatingLabel.css('left', '57px');
     
         // Input focus event for the second input element
+        $inputs.eq(1).on('blur',()=>{
+            if($inputs.eq(1).val() !== ""){
+            selectedDialCode.css('visibility','visible')
+            }else{
+                selectedDialCode.css('visibility','hidden')
+            }
+        })
         $inputs.eq(1).on('focus', () => {
+            selectedDialCode.css('visibility','visible')
             $floatingLabel.css({
-                "left": "50px",
+                "left": "57px",
                 "background-color": "white"
             });
             const borderTop = getComputedStyle($notchedOutlineNotch[0]).getPropertyValue('border-bottom');
@@ -111,15 +149,6 @@ class CCFEF extends elementorModules.frontend.handlers.Base {
     
         // Inner function to handle the main logic
         function handleMainLogic() {
-            // const $dropdown = $parent.find('.iti__dropdown-content');
-            // const nextSibling = parentFieldGroup ? parentFieldGroup.nextElementSibling : null;
-            // if (nextSibling && nextSibling.classList.contains('cool-form__field-group')) {
-            //     if (!$dropdown.hasClass('iti__hide')) {
-            //         nextSibling.style.zIndex = '-1';
-            //     } else {
-            //         nextSibling.style.zIndex = 'initial';
-            //     }
-            // }
             const $dropdown = $parent.find('.iti__dropdown-content');
             $parent.nextAll('.cool-form__field-group').each(function() {
                 if (!$dropdown.hasClass('iti__hide')) {
@@ -185,7 +214,7 @@ class CCFEF extends elementorModules.frontend.handlers.Base {
                     previousCountryData = currentCountryData;
                 }
 
-                this.updateCountryCodeHandler(e.currentTarget, currentCode, previousCode);
+                this.updateCountryCodeHandler(e.currentTarget, currentCode, previousCode, this.dialCodeVisibility[key]);
                 previousCode = currentCode;
             };
 
@@ -231,6 +260,9 @@ class CCFEF extends elementorModules.frontend.handlers.Base {
             const iti = window.intlTelInput(telFIeld, {
                 initialCountry: defaultCountry,
                 utilsScript: utilsPath,
+                dialCodeVisibility: this.dialCodeVisibility[uniqueId],
+                strictMode: (this.countryStrictMode[uniqueId] === 'yes') ? true : false, 
+                separateDialCode: this.dialCodeVisibility[uniqueId] === 'separate' ? true : false,
                 formatOnDisplay: false,
                 formatAsYouType: true,
                 autoFormat: false,
@@ -254,11 +286,27 @@ class CCFEF extends elementorModules.frontend.handlers.Base {
                         placeHolder = selectedCountryPlaceholder.replace(/^0+/, '');
                     }
                     
-                    const placeholderText = `+${selectedCountryData.dialCode} ${placeHolder}`;
-                    return placeholderText.replace(/\s/g, '');
+                    const placeholderText = this.dialCodeVisibility[uniqueId] === 'separate' || this.dialCodeVisibility[uniqueId] === 'hide' ? `${placeHolder}` : `+${selectedCountryData.dialCode} ${placeHolder}`;
+                    return placeholderText;
                 },            
             });
             
+            // Add styling for separate dial code
+            if (this.dialCodeVisibility[uniqueId] === 'separate') {
+                const style = document.createElement('style');
+                style.textContent = `
+                    .cfefp-intl-container .iti__selected-dial-code,
+                    .cfefp-intl-container .iti__selected-flag {
+                        color: var(--e-form-field-text-color, #7a7a7a) !important;
+                    }
+                    .cfefp-intl-container .iti__selected-dial-code {
+                        font-size: inherit !important;
+                        font-family: inherit !important;
+                        line-height: inherit !important;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
             // Retrieve commonAttr from the hidden span to decide whether to hide the country list.
             const intlSpan = document.querySelector(`.elementor-widget.elementor-widget-form[data-id="${formId}"] .ccfef-editor-intl-input[data-field-id="${widgetId}"]`);
             const commonAttr = intlSpan ? intlSpan.getAttribute('data-common-countries') : '';
@@ -378,7 +426,7 @@ class CCFEF extends elementorModules.frontend.handlers.Base {
      * @param {string} countryCode - The country code.
      * @param {string} previousCode - The previous country code.
      */
-    updateCountryCodeHandler(element, currentCode, previousCode) {
+    updateCountryCodeHandler(element, currentCode, previousCode,dialCodeVisibility) {
         let value = element.value;
         
         if(currentCode && '+undefined' === currentCode || ['','+'].includes(value)){
@@ -391,7 +439,7 @@ class CCFEF extends elementorModules.frontend.handlers.Base {
         
         if (!value.startsWith(currentCode)) {
             value = value.replace(/\+/g, '');
-            element.value = currentCode + value;
+            element.value = dialCodeVisibility === 'separate' || dialCodeVisibility === 'hide' ? value : currentCode + value;
         }
     }
 
@@ -434,6 +482,8 @@ class CCFEF extends elementorModules.frontend.handlers.Base {
             const commonAttr=element.data('common-countries');
             const inputId = element.data('id');
             const fieldId = element.data('field-id');
+            const dialCodeVisibility=element.data('dial-code-visibility');
+            const countryStrictMode = element.data('strict-mode')
             const formId = element.closest('.elementor-element.elementor-widget-cool-form').data('id');
             const currentId = `${formId}${fieldId}`;
 
@@ -470,6 +520,14 @@ class CCFEF extends elementorModules.frontend.handlers.Base {
                 }
                 }
                 
+                if('' !== dialCodeVisibility){
+                    this.dialCodeVisibility[currentId] = dialCodeVisibility;
+                }
+
+                if('' !== countryStrictMode){
+                    this.countryStrictMode[currentId] = countryStrictMode
+                }
+
                 if ('' !== defaultCountry) {
                      this.defaultCountry[currentId] = defaultCountry;
                 }
@@ -497,12 +555,24 @@ class CCFEF extends elementorModules.frontend.handlers.Base {
                 Object.keys(itiArr).forEach(data => {
                     const iti = itiArr[data];
               
-                    const inputTelElement = iti.telInput;
+                    const inputTelElement = iti.telInput;                    
+
                     let mainField = inputTelElement.closest('label')
                     let mdcField = mdc.textfield.MDCTextField.attachTo(mainField);
-                    
+
                     if('' !== inputTelElement.value){
                         inputTelElement.value=inputTelElement.value.replace(/[^0-9+]/g, '');
+
+                        // Always ensure dial code is present in the value before validation
+                        const currentCountryData = iti.getSelectedCountryData();
+                        const dialCode = `+${currentCountryData.dialCode}`;
+                        
+                        // If using separate or hide mode, ensure dial code is in the value
+                        if (this.dialCodeVisibility[data] === 'separate' || this.dialCodeVisibility[data] === 'hide') {
+                            if (!inputTelElement.value.startsWith('+')) {
+                                inputTelElement.value = dialCode + inputTelElement.value;
+                            }
+                        }
                     }
 
                     const parentWrp = inputTelElement.closest('.cool-form__field-group');
@@ -520,6 +590,7 @@ class CCFEF extends elementorModules.frontend.handlers.Base {
                     if('' === inputTelElement.value){
                         return;
                     };
+                    
                     if (iti.isValidNumber()) {
                         jQuery(inputTelElement).closest('.cfefp-intl-container').removeClass('elementor-error');
 
@@ -529,6 +600,14 @@ class CCFEF extends elementorModules.frontend.handlers.Base {
                     } else {
                         const errorType = iti.getValidationError();
                         if (errorType !== undefined && errorMap[errorType]) {
+                            // Remove dial code from input field if validation fails
+                            if (this.dialCodeVisibility[data] === 'separate' || this.dialCodeVisibility[data] === 'hide') {
+                                const currentCountryData = iti.getSelectedCountryData();
+                                const dialCode = `+${currentCountryData.dialCode}`;
+                                if (inputTelElement.value.startsWith(dialCode)) {
+                                    inputTelElement.value = inputTelElement.value.substring(dialCode.length);
+                                }
+                            }
                             errorMsgHtml += errorMap[errorType] + '</span>';
                             jQuery(inputTelElement).closest('.cfefp-intl-container').addClass('elementor-error');
 
@@ -550,7 +629,7 @@ class CCFEF extends elementorModules.frontend.handlers.Base {
 
 jQuery(window).on('elementor/frontend/init', () => {
     const addHandler = ($element) => {
-        elementorFrontend.elementsHandler.addHandler(CCFEF, {
+        elementorFrontend.elementsHandler.addHandler(CoolFormCCFEF, {
             $element,
         });
     };

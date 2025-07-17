@@ -168,3 +168,6 @@
 input.cool-form__field[type=email]:focus, input.cool-form__field[type=password]:focus, input.cool-form__field[type=reset]:focus, input.cool-form__field[type=search]:focus, input.cool-form__field[type=tel]:focus, input.cool-form__field[type=text]:focus, input.cool-form__field[type=url]:focus, select:focus, textarea.cool-form__field:focus{
   background-color:var(--cool-form-field-bg-color) !important;
 }
+.cool-form__field-group input.mdc-text-field__input.cool-form__field:not(.iti__tel-input){
+  padding: 0px;
+}

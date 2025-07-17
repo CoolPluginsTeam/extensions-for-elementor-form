@@ -10,13 +10,20 @@ $editor-background:#f0f0f0;
   
 	&::before {
 	  content: "";
-	  background: url(../images/cool-formkit-lite-icon.png) no-repeat center center;
+	  background: url(../images/cool-form-widget-min.svg) no-repeat center center;
 	  top: -4px;
 	  left: 0;
 	  width: 100%;
 	  height: 30px;
 	  background-size: 30px 30px;
 	  display: inline-block;
+	}
+	body.dark-mode-enabled &::before {
+		background: url(../images/cool-form-widget-min-white.svg) no-repeat center center;
+	}
+
+	body.light-mode-enabled &::before {
+		background: url(../images/cool-form-widget-min.svg) no-repeat center center;
 	}
 }
   
