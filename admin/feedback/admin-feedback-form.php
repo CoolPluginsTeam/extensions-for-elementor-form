@@ -206,12 +206,12 @@ class cfl_feedback {
 
 			$deativation_reason = array_key_exists( $reason, $deactivate_reasons ) ? $reason : 'other';
 
-			$plugin_initial =  get_option( 'Cool_Formkit_Lite_initial_save_version' );
+			$plugin_initial =  get_option( 'CFL_initial_save_version' );
 			$deativation_reason = esc_html($deativation_reason);
 			$sanitized_message = empty( $_POST['message'] ) || sanitize_text_field( $_POST['message'] ) == '' ? 'N/A' : sanitize_text_field( $_POST['message'] );
 			$admin_email       = sanitize_email( get_option( 'admin_email' ) );
 			$site_url          = esc_url( site_url() );
-			$feedback_url      = esc_url( 'http://feedback.coolplugins.net/wp-json/coolplugins-feedback/v1/feedback' );
+			$feedback_url      = CFL_FEEDBACK_URL.'wp-json/coolplugins-feedback/v1/feedback';
 			$install_date 		= get_option('cfl-install-date');
 			$unique_key     	= '4';
             $site_id        	= $site_url . '-' . $install_date . '-' . $unique_key;

@@ -27,13 +27,17 @@ function cfkef_sanitize_sql_input($input) {
 
 function cfkef_handle_unchecked_checkbox() {
         $choice  = get_option('cpfm_opt_in_choice_cool_forms');
-        $options = get_option('cfl_usage_share_data');
+        $options = get_option('cfef_usage_share_data');
 
         if (!empty($choice)) {
 
             // If the checkbox is unchecked (value is empty, false, or null)
             if (empty($options)) {
                 wp_clear_scheduled_hook('cfl_extra_data_update');
+
+                if(method_exists('cfefp_cronjob', 'cfefp_send_data')){
+                    wp_clear_scheduled_hook('cfefp_extra_data_update');
+                }
             }
 
             // If checkbox is checked (value is 'on' or any non-empty value)
@@ -43,6 +47,17 @@ function cfkef_handle_unchecked_checkbox() {
                         CFL_cronjob::cfl_send_data();
                     }
                     wp_schedule_event(time(), 'every_30_days', 'cfl_extra_data_update');
+                }
+
+
+                if(method_exists('cfefp_cronjob', 'cfefp_send_data')){
+
+
+                    if (!wp_next_scheduled('cfefp_extra_data_update')) {
+                        wp_schedule_event(time(), 'every_30_days', 'cfefp_extra_data_update');
+                            cfefp_cronjob::cfefp_send_data();
+                    }
+
                 }
             }
         }
@@ -177,7 +192,7 @@ function handle_form_submit() {
 }
 
 // Save API keys when the form is submitted
-if (isset($_POST['cfl_site_key_v2']) || isset($_POST['cfl_secret_key_v2']) || isset($_POST['cfl_site_key_v3']) || isset($_POST['cfl_secret_key_v3']) || isset($_POST['cfl_threshold_v3']) || isset($_POST['cfl_usage_share_data']) || isset($_POST['cfefp_redirect_conditionally']) || isset($_POST['cfefp_email_conditionally'])) {
+if (isset($_POST['cfl_site_key_v2']) || isset($_POST['cfl_secret_key_v2']) || isset($_POST['cfl_site_key_v3']) || isset($_POST['cfl_secret_key_v3']) || isset($_POST['cfl_threshold_v3']) || isset($_POST['cfef_usage_share_data']) || isset($_POST['cfefp_redirect_conditionally']) || isset($_POST['cfefp_email_conditionally'])) {
 
     check_admin_referer('cool_formkit_save_api_keys', 'cool_formkit_nonce');
 
@@ -196,7 +211,7 @@ if (isset($_POST['cfl_site_key_v2']) || isset($_POST['cfl_secret_key_v2']) || is
     $recaptcha_v3_site_key  = isset($_POST['cfl_site_key_v3']) ? sanitize_text_field($_POST['cfl_site_key_v3']) : '';
     $recaptcha_v3_secret_key = isset($_POST['cfl_secret_key_v3']) ? sanitize_text_field($_POST['cfl_secret_key_v3']) : '';
     $recaptcha_v3_threshold = isset($_POST['cfl_threshold_v3']) ? sanitize_text_field($_POST['cfl_threshold_v3']) : '';
-    $cfl_usage_share_data = isset($_POST['cfl_usage_share_data']) ? sanitize_text_field($_POST['cfl_usage_share_data']) : '';
+    $cfef_usage_share_data = isset($_POST['cfef_usage_share_data']) ? sanitize_text_field($_POST['cfef_usage_share_data']) : '';
 
     update_option('cfl_site_key_v2', $recaptcha_site_key);
     update_option('cfl_secret_key_v2', $recaptcha_secret_key);
@@ -204,7 +219,7 @@ if (isset($_POST['cfl_site_key_v2']) || isset($_POST['cfl_secret_key_v2']) || is
     update_option('cfl_site_key_v3', $recaptcha_v3_site_key);
     update_option('cfl_secret_key_v3', $recaptcha_v3_secret_key);
     update_option('cfl_threshold_v3', $recaptcha_v3_threshold);
-    update_option( "cfl_usage_share_data",  $cfl_usage_share_data);
+    update_option( "cfef_usage_share_data",  $cfef_usage_share_data);
     update_option('cfefp_redirect_conditionally', $redirect_conditionally);
     update_option('cfefp_email_conditionally', $email_conditionally);
 
@@ -524,7 +539,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                     <?php $cpfm_opt_in = get_option('cpfm_opt_in_choice_cool_forms','');
                                      if ($cpfm_opt_in) {
         
-                                      $check_option =  get_option( 'cfl_usage_share_data','');
+                                      $check_option =  get_option( 'cfef_usage_share_data','');
                                     
                                     if($check_option == 'on'){
                                         $checked = 'checked';
@@ -536,10 +551,10 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                                     
                                     <tr>
                                         <th scope="row" class="cool-formkit-table-th">
-                                            <label for="cfl_usage_share_data" class="usage-share-data-label"><?php esc_html_e('Usage Share Data', 'cool-formkit'); ?></label>
+                                            <label for="cfef_usage_share_data" class="usage-share-data-label"><?php esc_html_e('Usage Share Data', 'cool-formkit'); ?></label>
                                         </th>
                                         <td class="cool-formkit-table-td usage-share-data">
-                                            <input type="checkbox" id="cfl_usage_share_data" name="cfl_usage_share_data" value="on" <?php echo $checked ?>  class="regular-text cool-formkit-input"  />
+                                            <input type="checkbox" id="cfef_usage_share_data" name="cfef_usage_share_data" value="on" <?php echo $checked ?>  class="regular-text cool-formkit-input"  />
                                             <div class="description cool-formkit-description">
                                             <?php esc_html_e('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'ccpw'); ?>
                                             <a href="#" class="ccpw-see-terms">[<?php esc_html_e('See terms', 'ccpw'); ?>]</a>
@@ -547,6 +562,8 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                                             <div id="termsBox" style="display: none; padding-left: 20px; margin-top: 10px; font-size: 12px; color: #999;">
                                                 <p>
                                                     <?php esc_html_e('Opt in to receive email updates about security improvements, new features, helpful tutorials, and occasional special offers. We\'ll collect:', 'ccpw'); ?>
+                                                    <a href="https://my.coolplugins.net/terms/usage-tracking/" target="_blank">Click Here</a>
+
                                                 </p>
                                                 <ul style="list-style-type: auto;">
                                                     <li><?php esc_html_e('Your website home URL and WordPress admin email.', 'ccpw'); ?></li>

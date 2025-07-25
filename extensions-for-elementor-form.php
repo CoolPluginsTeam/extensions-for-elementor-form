@@ -7,13 +7,13 @@
  * Author: Cool Plugins
  * Author URI: https://coolplugins.net/
  * Text Domain: extensions-for-elementor-form
- * Version: 2.5.0
+ * Version: 2.5.1
  * Requires at least: 6.2
  * Requires PHP: 6.2
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Requires Plugins: elementor
- * Elementor tested up to: 3.30.2
+ * Elementor tested up to: 3.30.3
  * Elementor Pro tested up to: 3.30.0
  */
 
@@ -31,7 +31,7 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 
-define('CFL_VERSION','2.5.0');
+define('CFL_VERSION','2.5.1');
 define('PHP_MINIMUM_VERSION','7.4');
 define('WP_MINIMUM_VERSION','5.5');
 define( 'CFL_PLUGIN_MAIN_FILE', __FILE__ );
@@ -46,6 +46,8 @@ define( 'CFL_STYLE_URL', CFL_ASSETS_URL . 'css/' );
 define( 'CFL_IMAGES_PATH', CFL_ASSETS_PATH . 'images/' );
 define( 'CFL_IMAGES_URL', CFL_ASSETS_URL . 'images/' );
 define( 'CFL__MIN_ELEMENTOR_VERSION', '3.26.4' );
+define( 'CFL_FEEDBACK_URL', 'https://feedback.coolplugins.net/' );
+
 
 
 if ( ! function_exists( 'is_plugin_active' ) ) {
@@ -392,7 +394,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			add_option( 'cfl-install-date', gmdate('Y-m-d h:i:s') );
         }
 
-		$settings       = get_option('cfl_usage_share_data');
+		$settings       = get_option('cfef_usage_share_data');
            
         if (!empty($settings) || $settings === 'on'){
 			

@@ -35,7 +35,7 @@ if (!class_exists('CFL_cronjob')) {
         
         function cfl_cron_extra_data_autoupdater(){
             
-            $settings       = get_option('cfl_usage_share_data');
+            $settings       = get_option('cfef_usage_share_data');
            
             if (!empty($settings) || $settings === 'on'){
 
@@ -45,7 +45,7 @@ if (!class_exists('CFL_cronjob')) {
         }
 
         static public function cfl_send_data() {
-                 $feedback_url = 'http://feedback.coolplugins.net/wp-json/coolplugins-feedback/v1/site';
+                 $feedback_url = CFL_FEEDBACK_URL.'wp-json/coolplugins-feedback/v1/site';
                  require_once CFL_PLUGIN_PATH . 'admin/feedback/admin-feedback-form.php';
 
                  if (!defined('CFL_PLUGIN_PATH') || !class_exists('Cool_FormKit\\feedback\\cfl_feedback')) {

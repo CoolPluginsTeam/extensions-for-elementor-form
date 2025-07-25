@@ -97,7 +97,7 @@ class Recaptcha_settings{
                             <?php $cpfm_opt_in = get_option('cpfm_opt_in_choice_cool_forms','');
                              if ($cpfm_opt_in) {
 
-                              $check_option =  get_option( 'cfl_usage_share_data','');
+                              $check_option =  get_option( 'cfef_usage_share_data','');
                             
                             if($check_option == 'on'){
                                 $checked = 'checked';
@@ -109,10 +109,10 @@ class Recaptcha_settings{
                             
                             <tr>
                                 <th scope="row" class="cool-formkit-table-th">
-                                    <label for="cfl_usage_share_data" class="usage-share-data-label"><?php esc_html_e('Usage Share Data', 'cool-formkit'); ?></label>
+                                    <label for="cfef_usage_share_data" class="usage-share-data-label"><?php esc_html_e('Usage Share Data', 'cool-formkit'); ?></label>
                                 </th>
                                 <td class="cool-formkit-table-td usage-share-data">
-                                    <input type="checkbox" id="cfl_usage_share_data" name="cfl_usage_share_data" value="on" <?php echo $checked ?>  class="regular-text cool-formkit-input"  />
+                                    <input type="checkbox" id="cfef_usage_share_data" name="cfef_usage_share_data" value="on" <?php echo $checked ?>  class="regular-text cool-formkit-input"  />
                                     <div class="description cool-formkit-description">
                                     <?php esc_html_e('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'ccpw'); ?>
                                     <a href="#" class="ccpw-see-terms">[<?php esc_html_e('See terms', 'ccpw'); ?>]</a>
@@ -120,6 +120,8 @@ class Recaptcha_settings{
                                     <div id="termsBox" style="display: none; padding-left: 20px; margin-top: 10px; font-size: 12px; color: #999;">
                                         <p>
                                             <?php esc_html_e('Opt in to receive email updates about security improvements, new features, helpful tutorials, and occasional special offers. We\'ll collect:', 'ccpw'); ?>
+                                            <a href="https://my.coolplugins.net/terms/usage-tracking/" target="_blank">Click Here</a>
+
                                         </p>
                                         <ul style="list-style-type: auto;">
                                             <li><?php esc_html_e('Your website home URL and WordPress admin email.', 'ccpw'); ?></li>
@@ -223,7 +225,7 @@ class Recaptcha_settings{
         $secret_key_v2 = isset($_POST['secret_key_v2']) ? sanitize_text_field($_POST['secret_key_v2']) : '';
 
         $site_key_v3  = isset($_POST['site_key_v3']) ? sanitize_text_field($_POST['site_key_v3']) : '';
-        $cfl_usage_share_data = isset($_POST['cfl_usage_share_data']) ? sanitize_text_field($_POST['cfl_usage_share_data']) : '';
+        $cfef_usage_share_data = isset($_POST['cfef_usage_share_data']) ? sanitize_text_field($_POST['cfef_usage_share_data']) : '';
         $secret_key_v3 = isset($_POST['secret_key_v3']) ? sanitize_text_field($_POST['secret_key_v3']) : '';
 
         $threshold_v3 = isset($_POST['threshold_v3']) ?  sanitize_text_field($_POST['threshold_v3']) : '';
@@ -248,7 +250,7 @@ class Recaptcha_settings{
 
         update_option( "cfl_secret_key_v3",  $secret_key_v3);
 
-        update_option( "cfl_usage_share_data",  $cfl_usage_share_data);
+        update_option( "cfef_usage_share_data",  $cfef_usage_share_data);
          $this->cfl_handle_unchecked_checkbox();
 
     echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Settings saved.', 'cool-formkit') . '</p></div>';
@@ -259,7 +261,7 @@ class Recaptcha_settings{
 
     function cfl_handle_unchecked_checkbox() {
         $choice  = get_option('cpfm_opt_in_choice_cool_forms');
-        $options = get_option('cfl_usage_share_data');
+        $options = get_option('cfef_usage_share_data');
 
         if (!empty($choice)) {
 

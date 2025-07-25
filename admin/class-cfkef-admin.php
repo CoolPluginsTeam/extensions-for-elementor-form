@@ -96,7 +96,7 @@ class CFKEF_Admin {
             if ($category === 'cool_forms') {
 
                 CFL_cronjob::cfl_send_data();
-                update_option( 'cfl_usage_share_data','on' );   
+                update_option( 'cfef_usage_share_data','on' );   
             } 
         });
 
