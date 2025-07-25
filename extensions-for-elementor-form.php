@@ -46,6 +46,8 @@ define( 'CFL_STYLE_URL', CFL_ASSETS_URL . 'css/' );
 define( 'CFL_IMAGES_PATH', CFL_ASSETS_PATH . 'images/' );
 define( 'CFL_IMAGES_URL', CFL_ASSETS_URL . 'images/' );
 define( 'CFL__MIN_ELEMENTOR_VERSION', '3.26.4' );
+define( 'CFL_FEEDBACK_URL', 'https://feedback.coolplugins.net/' );
+
 
 
 if ( ! function_exists( 'is_plugin_active' ) ) {
@@ -392,7 +394,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			add_option( 'cfl-install-date', gmdate('Y-m-d h:i:s') );
         }
 
-		$settings       = get_option('cfl_usage_share_data');
+		$settings       = get_option('cfef_usage_share_data');
            
         if (!empty($settings) || $settings === 'on'){
 			
