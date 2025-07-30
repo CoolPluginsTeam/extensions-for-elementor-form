@@ -372,45 +372,6 @@ class CFL_COUNTRY_CODE_FIELD {
 			),
 
 		);
-		
-		if( !is_plugin_active('conditional-fields-for-elementor-form/class-conditional-fields-for-elementor-form.php') && !is_plugin_active('conditional-fields-for-elementor-form-pro/class-conditional-fields-for-elementor-form-pro.php')){
-			$condition_field_controls = array(
-			'ccfef-country-code-conditions' => array(
-				'name'         => 'ccfef-country-code-conditions',
-				'label'        => esc_html__( 'Enable Conditions', 'country-code-for-elementor-form-telephone-field' ),
-				'type'         => \Elementor\Controls_Manager::SWITCHER,
-				'label_on'     => esc_html__( 'Yes', 'country-code-for-elementor-form-telephone-field' ),
-				'label_off'    => esc_html__( 'No', 'country-code-for-elementor-form-telephone-field' ),
-				'condition'    => array(
-					'field_type' => array( 'text', 'email', 'textarea', 'number', 'select', 'radio', 'checkbox', 'tel'),				
-				),
-				'tab'          => 'content',
-				'default'      => 'no',
-				'inner_tab'    => 'form_fields_advanced_tab',
-				'tabs_wrapper' => 'form_fields_tabs',
-				'ai'           => array(
-					'active' => false,
-				),
-			),
-		
-			'ccfef_condition_notice' => array(
-				'name'            => 'ccfef_condition_notice',
-				'type'            => \Elementor\Controls_Manager::RAW_HTML,
-				'raw'             => 'To Apply conditional logic to Elementor form fields - <a href="plugin-install.php?s=Conditional%2520Fields%2520for%2520Elementor%2520Form%2520by%2520coolplugins&tab=search&type=term" target="_blank">Activate Plugin</a>',
-				'content_classes' => 'ccfef_elementor_review_notice',
-				'tab'             => 'content',
-				'condition'       => array(
-					'field_type' => array( 'text', 'email', 'textarea', 'number', 'select', 'radio', 'checkbox', 'tel' ),	
-					'ccfef-country-code-conditions' => 'yes'	
-				),
-				'inner_tab'       => 'form_fields_advanced_tab',
-				'tabs_wrapper'    => 'form_fields_tabs',
-			)
-			);
-			$field_controls = array_merge( $field_controls, $condition_field_controls );
-		}
-
-		
 
 		if ( ! get_option( 'ccfef_review_notice_dismiss' ) ) {
 			$review_nonce = wp_create_nonce( 'ccfef_elementor_review' );
