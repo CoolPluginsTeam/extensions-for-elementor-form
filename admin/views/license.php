@@ -28,8 +28,32 @@ if (!defined('ABSPATH')) {
             <p><?php esc_html_e('To unlock more features, consider ', 'cool-formkit'); ?><a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboard#pricing" target="_blank"><?php esc_html_e('upgrading to Pro', 'cool-formkit'); ?></a>.
             </p>
             <em><?php esc_html_e('As a valued user, you automatically receive an exclusive discount on the Annual License and an even greater discount on the POPULAR Lifetime License at checkout!', 'cool-formkit'); ?></em>
-    </div>
+        </div>
+
+
+        <div class="pro-plugin-buy">
+
+            <p><?php esc_html_e('Have you purchased pro plugin?', 'cool-formkit'); ?></p>
+
+
+
+            <div class="pro-plugin-buy-buttons-con">
+
+                <a class="button button-primary pro-bought-btn" target="_blank" href="https://my.coolplugins.net/account/downloads/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=plugin-zip&utm_content=plugins-dashboard">
+                    <?php esc_html_e('Yes', 'cool-formkit'); ?>
+                </a>
+
+
+                <a class="button button-primary no-pro-buy-btn" target="_blank" href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboard#pricing">
+                    <?php esc_html_e('No', 'cool-formkit'); ?>
+                </a>
+            </div>
+
+            <em>If you've purchased the Pro plugin, download it from MyCoolPlugins, deactivate the free plugin, then install and activate the Pro version along with the license.</em>
+
+        </div>
+
     </div>
 </div>
-<?php 
+<?php
 do_action('cfkef_render_pro_license_fields');
