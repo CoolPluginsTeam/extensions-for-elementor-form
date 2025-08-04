@@ -31,7 +31,7 @@ if (!defined('ABSPATH')) {
         </div>
 
 
-        <div class="pro-plugin-buy">
+        <div class="pro-plugin-buy cfkef-license-upgrade-box">
 
             <p><?php esc_html_e('Have you purchased pro plugin?', 'cool-formkit'); ?></p>
 
@@ -49,7 +49,7 @@ if (!defined('ABSPATH')) {
                 </a>
             </div>
 
-            <em>If you've purchased the Pro plugin, download it from MyCoolPlugins, deactivate the free plugin, then install and activate the Pro version along with the license.</em>
+            <em>If you've purchased the Pro plugin, download it from <a href="https://my.coolplugins.net/account/downloads/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=plugin-zip&utm_content=plugins-dashboard">my.coolplugins.net</a>, deactivate the free plugin, then install and activate the Pro version along with the license.</em>
 
         </div>
 
