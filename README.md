@@ -150,8 +150,8 @@ GNU General Public License for more details.
 ## Links
 
 - **Plugin Homepage**: [Cool FormKit Lite – Elementor Form Builder](https://coolplugins.net/cool-formkit-lite/)
-- **WordPress.org**: [Plugin Page](https://wordpress.org/plugins/cool-formkit-lite/)
-- **Support & Issues**: [Support Forum](https://wordpress.org/support/plugin/cool-formkit-lite/)
+- **WordPress.org**: [Plugin Page](https://wordpress.org/plugins/extensions-for-elementor-form/)
+- **Support & Issues**: [Support Forum](https://wordpress.org/support/plugin/extensions-for-elementor-form/)
 - **Security**: [Patchstack Vulnerability Disclosure](https://patchstack.com/database/vdp/extensions-for-elementor-form)
 
 
