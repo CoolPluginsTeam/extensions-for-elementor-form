@@ -50,7 +50,7 @@ class CFKEF_Entries_Posts {
     public function add_dashboard_tab($tabs) {
         $tabs[] = array(
             'title' => 'Entries',
-            'position' => 2,
+            'position' => 1,
             'slug' => 'cfkef-entries',
         );
 

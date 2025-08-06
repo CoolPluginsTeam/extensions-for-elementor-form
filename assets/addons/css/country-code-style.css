@@ -1,0 +1,71 @@
+.cfefp-intl-container{
+    --cfefp-intl-tel-button-height: 100%;
+}
+
+.elementor-field-group .cfefp-intl-container.iti{
+    width: 100%;
+}
+
+.ehp-form__field-group .cfefp-intl-container.iti{
+    width: 100%;
+}
+
+.elementor-field-group .cfefp-intl-container.iti.elementor-error .iti__country-container{
+   bottom: 23px;
+}
+
+.ehp-form__field-group .cfefp-intl-container.iti.elementor-error .iti__country-container{
+   bottom: 23px;
+}
+
+.cfefp-intl-container .iti__country-container{
+    height: var(--cfefp-intl-tel-button-height);
+}
+
+.cfefp-intl-container button.iti__selected-country{
+    background: transparent !important;
+    box-shadow:  unset !important;
+}
+.cfefp-intl-container button.iti__selected-country{
+    background: transparent !important;
+    box-shadow:  unset !important;
+    padding:0px 6px 0px 8px;
+	border:none;
+	border-radius:unset;
+}
+.cfefp-intl-container button.iti__selected-country:hover{
+    border: unset;
+}
+.cfefp-intl-container .iti__dropdown-content input.iti__search-input:focus {
+  background-color:transparent
+}
+.elementor-field-type-tel .cfefp-intl-container .iti__selected-country-primary:hover{
+    background-color: transparent !important;
+}
+.cfefp-intl-container .iti__country-container .iti__flag:not(.iti__globe){
+    height:13px;
+    background-position: center;
+    background-size:cover; 
+}
+.cool-form__field-group.is-field-type-tel .cfefp-intl-container{
+    height: 100%;
+    width: 100%;
+}
+.is-field-type-ehp-tel.has-width-100 .iti input{
+    width: 100%;
+}
+.is-field-type-ehp-tel.has-width-50 .iti input{
+    width: 50%;
+}
+.is-field-type-ehp-tel.has-width-33 .iti input{
+    width: 33%;
+}
+
+.iti--allow-dropdown input.iti__tel-input,
+.is-field-type-ehp-tel .iti--allow-dropdown input.iti__tel-input[type="ehp-tel"],
+.elementor-field-type-tel .iti--allow-dropdown input.iti__tel-input[type="tel"],
+.iti--allow-dropdown input.iti__tel-input[type="text"] {
+    padding-right: var(--iti-input-padding);
+    padding-left: var(--iti-selected-country-arrow-padding);
+    margin-left: 0;
+}

@@ -18,11 +18,10 @@ class Number extends Field_Base {
 	}
 
 	public function get_name() {
-		return esc_html__( 'Number', 'elementor-pro' );
+		return esc_html__( 'Number', 'cool-formkit' );
 	}
 
 	public function render( $item, $item_index, $form ) {
-
 
 		$settings = $form->get_settings();
 
@@ -79,7 +78,7 @@ class Number extends Field_Base {
 		$field_controls = [
 			'num_field_min' => [
 				'name' => 'num_field_min',
-				'label' => esc_html__( 'Min. Value', 'elementor-pro' ),
+				'label' => esc_html__( 'Min. Value', 'cool-formkit' ),
 				'type' => Controls_Manager::NUMBER,
 				'condition' => [
 					'field_type' => $this->get_type(),
@@ -90,7 +89,7 @@ class Number extends Field_Base {
 			],
 			'num_field_max' => [
 				'name' => 'num_field_max',
-				'label' => esc_html__( 'Max. Value', 'elementor-pro' ),
+				'label' => esc_html__( 'Max. Value', 'cool-formkit' ),
 				'type' => Controls_Manager::NUMBER,
 				'condition' => [
 					'field_type' => $this->get_type(),

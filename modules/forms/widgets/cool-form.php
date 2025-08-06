@@ -138,6 +138,7 @@ class Cool_Form extends Form_Base {
 						}
 
 						switch ( item.field_type ) {
+
 							case 'textarea':
 								inputField = '<label class="cool-form-text mdc-text-field mdc-text-field--outlined mdc-text-field--textarea '+ ((item.field_label === '' || !settings.show_labels) ? 'mdc-text-field--no-label' : '') +' ">';
 									inputField += '<span class="mdc-notched-outline">';
@@ -161,22 +162,42 @@ class Cool_Form extends Form_Base {
 							case 'number':
 							case 'password':
 							case 'search':
-								inputField = '<label class="cool-form-text mdc-text-field mdc-text-field--outlined '+ ((item.field_label === '' || !settings.show_labels) ? 'mdc-text-field--no-label' : '') +' cool-field-size-'+settings.input_size+'">';
+								let fieldClasses = 'mdc-text-field__input cool-form__field cool-field-size-' + settings.input_size;
+
+								let customAttrs = '';
+								if ( item.custom_mask_attributes ) {
+									_.each( item.custom_mask_attributes, function (value, attr) {
+										if (attr === 'class') {
+											// Append additional classes to input field
+											fieldClasses += ' ' + value;
+										} else {
+											customAttrs += ' ' + attr + '="' + _.escape(value) + '"';
+										}
+									});
+								}
+
+								inputField  = '<label class="cool-form-text mdc-text-field mdc-text-field--outlined ';
+								inputField += ((item.field_label === '' || !settings.show_labels) ? 'mdc-text-field--no-label' : '') + ' cool-field-size-' + settings.input_size + '">';
 								inputField += '<span class="mdc-notched-outline">';
 								inputField += '<span class="mdc-notched-outline__leading"></span>';
 								inputField += '<span class="mdc-notched-outline__notch">';
+
 								if ( item.field_label !== '' && settings.show_labels ) {
-									inputField += '<span class="mdc-floating-label" id="text-label-' + i + '">' + _.escape( item.field_label ) + '</span>';
+									inputField += '<span class="mdc-floating-label" id="text-label-' + i + '">' + _.escape(item.field_label) + '</span>';
 								}
+
 								inputField += '</span>';
 								inputField += '<span class="mdc-notched-outline__trailing"></span>';
 								inputField += '</span>';
-								inputField += '<input type="' + item.field_type + '" class="mdc-text-field__input cool-form__field" name="form_field_' + i + '" id="form_field_' + i + '" value="' + item.field_value + '" ' + required + ' ' + placeholder + '>';
-									inputField += '<i aria-hidden="true" class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing cool-+ item.field_type +-error-icon" style="display:none">error</i>';
+
+								inputField += '<input type="' + item.field_type + '" class="' + fieldClasses + '" name="form_field_' + i + '" id="form_field_' + i + '" value="' + _.escape(item.field_value) + '" ' + required + ' ' + placeholder + customAttrs + '>';
+
+								inputField += '<i aria-hidden="true" class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing cool-' + item.field_type + '-error-icon" style="display:none">error</i>';
+
 								inputField += '</label>';
-									inputField += '<div class="mdc-text-field-helper-line">' +
-												'<div class="mdc-text-field-helper-text" id="cool-+ item.field_type +-error" aria-hidden="true"></div>' +
-												'</div>';
+								inputField += '<div class="mdc-text-field-helper-line">' +
+												'<div class="mdc-text-field-helper-text" id="cool-' + item.field_type + '-error" aria-hidden="true"></div>' +
+											'</div>';
 								break;
 
 							case 'select':
@@ -230,7 +251,7 @@ class Cool_Form extends Form_Base {
 							case 'checkbox':
 								if ( options.length ) {
 									var multi = ( item.field_type === 'checkbox' && options.length > 1 ) ? '[]' : '';
-									inputField = '<div class="mdc-form-field ' + itemClasses + ' ' + ( item.inline_list === 'elementor-subgroup-inline' ? 'inline-items' : 'ontop-items' ) + '">';
+									inputField = '<div class="mdc-form-field ' + itemClasses + ' ' + ( item.inline_list === 'elementor-subgroup-inline' ? 'ontop-items' : 'inline-items' ) + '">';
 									for ( var x in options ) {
 										var option = options[x],
 											option_value = option,
@@ -360,6 +381,7 @@ class Cool_Form extends Form_Base {
 		$this->add_style_messages_section();
 		$this->add_style_box_section();
 	}
+
 
 	protected function add_content_form_fields_section(): void {
 		$repeater = new Repeater();
@@ -523,6 +545,82 @@ class Cool_Form extends Form_Base {
 				'default' => '100',
 				'tablet_default' => '100',
 				'mobile_default' => '100',
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'field_type',
+							'operator' => '!in',
+							'value' => [
+								'recaptcha',
+								'recaptcha_v3'
+							],
+						],
+					],
+				],
+			]
+		);
+
+
+		$repeater->add_control(
+			'recaptcha_size', [
+				'label' => esc_html__( 'Size', 'cool-formkit' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'normal',
+				'options' => [
+					'normal' => esc_html__( 'Normal', 'cool-formkit' ),
+					'compact' => esc_html__( 'Compact', 'cool-formkit' ),
+				],
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'field_type',
+							'value' => 'recaptcha',
+						],
+					],
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'recaptcha_style',
+			[
+				'label' => esc_html__( 'Style', 'cool-formkit' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'light',
+				'options' => [
+					'light' => esc_html__( 'Light', 'cool-formkit' ),
+					'dark' => esc_html__( 'Dark', 'cool-formkit' ),
+				],
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'field_type',
+							'value' => 'recaptcha',
+						],
+					],
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'recaptcha_badge', [
+				'label' => esc_html__( 'Badge', 'cool-formkit' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'bottomright',
+				'options' => [
+					'bottomright' => esc_html__( 'Bottom Right', 'cool-formkit' ),
+					'bottomleft' => esc_html__( 'Bottom Left', 'cool-formkit' ),
+					'inline' => esc_html__( 'Inline', 'cool-formkit' ),
+				],
+				'description' => esc_html__( 'To view the validation badge, switch to preview mode', 'cool-formkit' ),
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'field_type',
+							'value' => 'recaptcha_v3',
+						],
+					],
+				],
 			]
 		);
 

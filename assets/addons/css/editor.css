@@ -1,0 +1,82 @@
+.cfef-dynamic-tag {
+    background: #d3d3d3;
+    padding: 5px;
+    border-radius: 5px;
+    position: absolute;
+    right: 0;
+    z-index: 9999;
+    color: #000;
+  }
+  .cfef-dynamic-tag li {
+    cursor: pointer;
+    padding: 5px;
+  }
+  .cfef-dynamic-tag li:hover {
+    opacity: 0.7;
+  }
+  .cfef_elementor_review_notice .cfef_elementor_review_wrapper{
+    padding: 10px;
+    border:2px solid #EDACFB;
+  }
+  .cfef_elementor_review_notice .cfef_elementor_offer_notice{
+    position: absolute;
+    top: -11px;
+    left: 16px;
+    background: #EDACFB;
+    color: #0C0D0E;
+    font-size: 10px;
+    padding: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .cfef_elementor_review_notice .cfef_elementor_offer_notice a{
+    color: #0C0D0E;
+  }
+  .cfef_elementor_review_notice #cfef_elementor_review_dismiss{
+    position: absolute;
+    bottom: 4px;
+    background: #EDACFB;
+    color: #0C0D0E;
+    font-size: 10px;
+    padding: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .cfef_elementor_review_notice .cfef_elementor_review_msg{
+    font-size: 12px;
+    line-height: 18px;
+  }
+  
+  .cfef_elementor_review_notice .cfef_elementor_review_msg a{
+    color: #EDACFB;
+  }
+  .cfef_elementor_demo_btn{
+    position: absolute;
+    bottom: 4px;
+    right: 20px;
+    background: #EDACFB;
+    font-size: 10px;
+    padding: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .cfef_elementor_demo_btn a{
+    color: black;
+  }
+  .cfef_elementor_demo_btn a:hover{
+    color:black;
+    text-decoration: none;
+  }
+  .cfefp_pro_link_button{
+    padding: 5px;
+    background-color: #edacfb;
+    text-align: center;
+    border-radius: 5px;
+  }
+  .cfefp_pro_link_button a{
+    color: black;
+  }
+  .cfefp_pro_link_button a:hover{
+    color: black;
+  }
+  

@@ -3,11 +3,11 @@
 Contributors: coolplugins, narinder-singh, satindersingh
 Tags: form builder, elementor form, elementor, contact form, custom form
 Requires at least: 6.2
-Tested up to: 6.7.2
-Stable tag: 2.4.2
+Tested up to: 6.8.2
+Stable tag: 2.5.1
 Requires PHP: 8.2
-Elementor tested up to: 3.28.0
-Elementor Pro tested up to: 3.28.0
+Elementor tested up to: 3.30.3
+Elementor Pro tested up to: 3.30.0
 License: GPL 3.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,9 +17,13 @@ Cool FormKit - A contact form builder for Elementor with a drag-and-drop Element
 
 https://youtu.be/u1PYFXv01Rc
 
-**Cool FormKit Lite** is a powerful form builder for Elementor, designed to give Elementor (Free) users access to **form-building** capabilities that were previously only available to **Elementor Pro users**.
+**[Cool FormKit Lite](https://coolplugins.net/cool-formkit-lite/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=demo&utm_content=view_plugin)** is a powerful form builder for Elementor, designed to give Elementor (Free) users access to **form-building** capabilities that were previously only available to **Elementor Pro users**.
 
 This addon allows you to build **custom forms** using a **drag-and-drop** interface, just like Elementor. Create **Contact Forms, Registration Forms, Survey Forms**, and more without writing a single line of code.
+
+— —————————————- —
+[**CHECK PLUGIN DEMO**](https://coolplugins.net/cool-formkit-lite/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=demo&utm_content=check_plugin_demo)
+— —————————————- —
 
 **Key Features**
 
@@ -35,6 +39,9 @@ This addon allows you to build **custom forms** using a **drag-and-drop** interf
     * Textarea Field
     * Checkbox & Radio Fields
     * Acceptance Field
+    * Conditional Field
+    * Country Code Field
+    * reCAPTCHA V2 & V3 Field
 * **Send Confirmation Email:** Automatically send a **confirmation email** to users after form submission.
 * **Form Submission Redirect:** Redirect users to a specific page after submitting a form.
 * **Mobile-Friendly and Responsive**.
@@ -64,6 +71,29 @@ We’re actively improving Cool FormKit Lite. Future updates will include condit
 * **Register Posts and Custom Post Types:** Create posts or custom post types directly from the frontend. [👉 Video demo](https://www.youtube.com/watch?v=fNIoWyXF9js)
 * **Hide Form After Submission:** Automatically hide the form after successful submission. [👉 Video demo](https://www.youtube.com/watch?v=CMN32j4hGlA)
 * **Custom Success Message:** Display a custom message template after submission. [👉 Video demo](https://www.youtube.com/watch?v=CMN32j4hGlA)
+
+### A PLUGIN BY COOL PLUGINS
+— —————————————- —
+
+This plugin is created and supported by **[Cool Plugins](https://coolplugins.net/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=homepage)**, a team of expert WordPress developers who have already developed 20+ free and premium WordPress plugins. Explore some of their cool solutions and plugins below:
+
+**[Cool FormKit For Elementor Forms](https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=get-pro&utm_content=buy-coolformkit)**
+Add advanced fields and features to Elementor form widget, like **conditional fields**, **range sliders** and **country code**. Upgrade your form building experience with **Cool FormKit**.
+
+**[Country Code For Elementor Form Telephone Field](https://coolplugins.short.gy/country-code)**
+*Guide your visitors to select their country code while entering their mobile number, ensuring accurate and properly formatted data submissions.*
+
+**[Timeline Widget for Elementor](https://cooltimeline.com/plugin/timeline-widget-pro/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=timeline-widget)**
+*Use this plugin to showcase your history in a stylish vertical or horizontal timeline layout on Elementor pages.*
+
+**[Events Widgets for Elementor](https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=events-widgets)**
+*This provides **The Events Calendar** plugin widgets for Elementor, allowing you to easily display events in a grid, list, or carousel format on Elementor pages.*
+
+**[Loco Translate Addon](https://locoaddon.com/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=homepage)**
+*Automatically translate WordPress plugin and theme strings with a single click.*
+
+**[Loop Grid Extender for Elementor Pro](https://wordpress.org/plugins/loop-grid-extender-for-elementor-pro/)**
+*Enhance Elementor Pro's Loop Grid widget by displaying ACF Repeater Fields inside loop templates.*
 
 == Screenshots ==
 1. Cool FormKit Lite preview.
@@ -141,6 +171,30 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
    - Save and publish the page to display the form on your site.
 
 == Changelog ==
+
+= Version 2.5.1| 25/07/2025 = 
+* **Optimization:- Bug fixes and code improvements.
+* **Tested upto:** Elementor Version 3.30.3 and Elementor Pro Version 3.30.0 
+
+= Version 2.5.0| 17/07/2025 = 
+* **Added:- Support for Hello Plus Form Lite and Elementor Form widget.
+* **Updated:- Admin Dashboard enhancements.
+* **Tested upto:** Elementor Version 3.30.2 and Elementor Pro Version 3.30.0 
+
+= Version 2.4.5| 26/05/2025 = 
+* **Improvements:** Enhanced user opt-in options for better customization.
+* **Fixed:** All fields visible on load.
+* **Tested upto:** Elementor Version 3.29.0 and Elementor Pro Version 3.29.0 
+
+=  Version 2.4.4 | 11/04/2025 =
+* **Fixed:** Critical error occurring during plugin activation on certain server configurations.
+
+=  Version 2.4.3 | 10/04/2025 =
+* **Added:** Conditional field support.
+* **Added:** Country Code option for telephone field.
+* **Added:** Recaptcha integration for enhanced security.
+* **Tested upto:** WordPress 6.8.
+
 
 =  Version 2.4.2 | 26/03/2025 =
 * **Added:** **Collect Entries** Action after submit a form.

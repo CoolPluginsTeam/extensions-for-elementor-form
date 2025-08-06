@@ -232,6 +232,18 @@
 				}
 			}
 		}
+		&.has-width-50,&.has-width-25,&.has-width-33 {
+			@media screen and (max-width: 768px) {
+				--cool-column-width: 100%;
+				max-width: 100%;
+			}
+
+			// At screen width 480px or below
+			@media screen and (max-width: 480px) {
+				--cool-column-width: 100%;
+				max-width: 100%;
+			}
+		}
 	}
 
 	&__text-container {

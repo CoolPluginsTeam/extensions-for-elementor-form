@@ -74,11 +74,11 @@ class CFKEF_Dashboard
         $this->plugin_name = $plugin_name;
         $this->version = $version;
         $dashboard_pages = array(
-            'cool-formkit' => array(
-                'title' => 'Cool FormKit Lite',
-                'position' => 45,
-                'slug' => 'cfkef-entries',
-            ),
+            // 'cool-formkit' => array(
+            //     'title' => 'Cool FormKit Lite',
+            //     'position' => 45,
+            //     'slug' => 'cool-formkit',
+            // ),
             'cfkef-entries' => array(
                 'title' => '↳ Entries',
                 'position' => 46,
@@ -143,10 +143,10 @@ class CFKEF_Dashboard
      * @param string $slug The slug to check.
      * @return bool True if the current screen is the given slug, false otherwise.
      */ 
-    public static function current_screen($slug)
+    public static function current_screen($slug, $tag_slug = null)
     {
         $slug = sanitize_text_field($slug);
-        return self::cfkef_current_page($slug);
+        return self::cfkef_current_page($slug, $tag_slug);
     }
 
     /**
@@ -155,10 +155,12 @@ class CFKEF_Dashboard
      * @param string $slug The slug to check.
      * @return bool True if the current page is the given slug, false otherwise.
      */
-    private static function cfkef_current_page($slug)
+    private static function cfkef_current_page($slug, $tag_slug = null)
     {
         $current_page = isset($_REQUEST['page']) ? esc_html($_REQUEST['page']) : (isset($_REQUEST['post_type']) ? esc_html($_REQUEST['post_type']) : '');
         $status=false;
+
+        $slug = $slug==='cfkef-entries' && !isset($_GET['tab']) && $current_page !== 'cfkef-entries' ? 'cool-formkit' : $slug;
 
         if (in_array($current_page, self::get_allowed_pages()) && $current_page === $slug) {
             $status=true;
@@ -172,6 +174,15 @@ class CFKEF_Dashboard
             }
         }
 
+        if(isset($tag_slug)){
+            $tag_slug = sanitize_text_field($tag_slug);
+            $tab=isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : false;
+
+            if(!isset($tab) || $tab !== $tag_slug){
+                $status=false;
+            }
+        }
+
         return $status;
     }
 
@@ -180,46 +191,86 @@ class CFKEF_Dashboard
      */
     public function render_page()
     {
-        echo '<div class="cfkef-wrapper">
+        echo '<div class="cfkef-wrapper">';
+        ?>
         <div class="cfkef-header">
-            <div class="cfkef-header-logo">
-                <img src="'.esc_url(CFL_PLUGIN_URL . 'assets/images/cool-formkit-logo.png').' ?>" alt="Cool FormKit Logo">
+                <div class="cfkef-header-logo">
+                    <a href="?page=cool-formkit">
+                        <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/logo-cool-formkit.png'); ?>" alt="Cool FormKit Logo">
+                    </a>
+                    <span>Lite</span>
+                    <a class="button button-primary upgrade-pro-btn" target="_blank" href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboard#pricing">
+                        <img class="crown-diamond-pro" src="<?php echo esc_url(CFL_PLUGIN_URL . 'admin/assets/images/crown-diamond-pro.png'); ?>" alt="Cool FormKit Logo">
+                        <?php esc_html_e('Upgrade To Pro', 'cool-formkit'); ?>
+                    </a>
+                </div>
+                <div class="cfkef-header-buttons">
+                    <p><?php esc_html_e('Advanced Elementor Form Builder.', 'cool-formkit'); ?></p>
+                    <a href="https://docs.coolplugins.net/plugin/cool-formkit-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=doc&utm_content=setting-page-header" class="button" target="_blank"><?php esc_html_e('Check Docs', 'cool-formkit'); ?></a>
+                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=setting-page-header" class="button button-secondary" target="_blank"><?php esc_html_e('View Form Demos', 'cool-formkit'); ?></a>
+                </div>
             </div>
-            <div class="cfkef-header-buttons">
-                <p>Cool FormKit Lite – Elementor Form Builder.</p>
-                <a href="https://www.youtube.com/watch?v=u1PYFXv01Rc" class="button" target="_blank">'.esc_html__('Video Demo', 'cool-formkit').'</a>
-            </div>
-        </div>';
+        <?php
 
-        // $this->render_tabs();
+        $this->render_tabs();
 
-        echo '<div class="cfkef-content">';
+        echo '<div class="tab-content">';
 
-        do_action('cfkef_render_menu_pages', $this);
-        
+        if ( defined( 'ELEMENTOR_PRO_VERSION' ) ) {
+            ?>
+            <p>
+                <?php esc_html_e( 'Form submissions submitted through', 'cool-formkit' ); ?> 
+                <strong><?php esc_html_e( 'Elementor Pro Form Widget', 'cool-formkit' ); ?></strong> 
+                <?php esc_html_e( 'are not shown here. You can view them in the', 'cool-formkit' ); ?>
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=e-form-submissions' ) ); ?>" target="_blank" rel="noopener noreferrer">
+                    <?php esc_html_e( 'Elementor Form Submissions section', 'cool-formkit' ); ?>
+                </a>.
+            </p>
+            <?php
+        }
+
+
+        if(get_option('cfkef_enable_hello_plus',true) || get_option('cfkef_enable_formkit_builder',true)){
+            do_action('cfkef_render_menu_pages', $this);
+        }else{
+            echo '<p style="margin:20px auto;
+                    width: 500px;
+                    padding: 50px;
+                    background-color: white;
+                    text-align: center;
+            ">Sorry, you are not allowed on this page</p>';
+        }        
+
         echo '</div></div>';
     }
 
     public function render_tabs(){
         $tabs = $this->cfkef_get_tabs();
-        
-        echo '<div class="cfkef-dashboard-tabs">';
-        foreach ($tabs as $tab) {
-            $active_class = self::current_screen($tab['slug']) ? ' active' : '';
 
-            echo '<div class="cfkef-dashboard-tab-wrapper' . esc_attr($active_class) . '">';
-            echo '<a href="' . esc_url(admin_url('admin.php?page=' . $tab['slug'])) . '" class="cfkef-dashboard-tab">' . esc_html($tab['title']) . '</a>';
-            echo '</div>';
+        echo '<h2 class="nav-tab-wrapper cfkef-dashboard-tabs">';
+        foreach ($tabs as $tab) {
+            $active_class = self::current_screen($tab['slug']) ? ' nav-tab-active' : '';
+            echo '<a href="' . esc_url(admin_url('admin.php?page=' . $tab['slug'])) . '" class="nav-tab ' . esc_attr($active_class) . '">' . esc_html($tab['title']) . '</a>';
         }
-        echo '</div>';
+        echo '</h2>';
     }
 
     public function cfkef_get_tabs(){
         $default_tabs = array(
             array(
-                'title' => 'Dashboard',
+                'title' => 'Form Elements',
                 'position' => 1,
                 'slug' => 'cool-formkit',
+            ),
+            array(
+                'title' => 'Settings',
+                'position' => 3,
+                'slug' => 'cool-formkit&tab=settings',
+            ),
+            array(
+                'title' => 'License',
+                'position' => 4,
+                'slug' => 'cool-formkit&tab=license',
             ),
         );
 
