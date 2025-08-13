@@ -179,7 +179,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			return false;
 		}
 		if ($plugin == plugin_basename(CFL_PLUGIN_MAIN_FILE)) {
-			exit(wp_redirect(admin_url('admin.php?page=cool-formkit')));
+			exit(wp_safe_redirect(admin_url('admin.php?page=cool-formkit')));
 		}
 	}
 	/**
@@ -336,7 +336,9 @@ class Cool_Formkit_Lite_For_Elementor_Form
 				$class_name::instance();
 			} else {
 				// Optional: Log or debug if the module class isn't found.
-				error_log('Module class not found or not active: ' . $class_name);
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log('Module class not found or not active: ' . $class_name);
+				}
 			}
 		}
 	}

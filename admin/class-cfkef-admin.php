@@ -165,7 +165,7 @@ class CFKEF_Admin {
      * @since    1.0.0
      */
     public function display_plugin_admin_page() {
-        $tab = isset($_GET['tab']) ? $_GET['tab'] : 'form-elements';
+        $tab = isset($_GET['tab']) ? sanitize_key($_GET['tab']) : 'form-elements';
         ?>
         <div class="cfkef-wrapper">
             <div class="cfkef-header">

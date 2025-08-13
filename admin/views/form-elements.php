@@ -290,7 +290,7 @@ $updated_elements = array('');
                                     title="<?php echo !$is_elementor_active ? 'Requires Elementor Pro plugin to be activated' : ''; ?>"
                                 >
                                 <div class="cfkef-form-element-info">
-                                    <img src="<?php echo CFL_PLUGIN_URL . 'admin/assets/icons/elementor-pro-form-widget-min.svg'; ?>" alt="Elementor Field">
+                                    <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'admin/assets/icons/elementor-pro-form-widget-min.svg'); ?>" alt="Elementor Field">
                                     <h4>
                                         <?php if($pro_elements_activate): ?>
                                             <span><?php esc_html_e('Form Widget By', 'cool-formkit'); ?></span><br>
@@ -346,7 +346,7 @@ $updated_elements = array('');
                                 data-init="<?php echo esc_attr($plugin_file); ?>"
                                 data-gettheme="<?php echo esc_attr($theme_name); ?>">
                                 <div class="cfkef-form-element-info">
-                                    <img src="<?php echo CFL_PLUGIN_URL . 'admin/assets/icons/form-lite-min.svg'?>">
+                                    <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'admin/assets/icons/form-lite-min.svg')?>">
                                     <h4>
                                         <span><?php esc_html_e('Form Lite Widget by', 'cool-formkit'); ?></span><br>
                                         <?php esc_html_e('Hello Plus','cool-formkit'); ?>
@@ -370,7 +370,7 @@ $updated_elements = array('');
     
                             <div class="cfkef-form-element-card">
                                 <div class="cfkef-form-element-info">
-                                    <img src="<?php echo CFL_PLUGIN_URL . 'admin/assets/icons/cool-form-widget-min.svg'?>">
+                                    <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'admin/assets/icons/cool-form-widget-min.svg')?>">
                                     <h4>
                                         <span><?php esc_html_e('Cool Form Widget by', 'cool-formkit'); ?></span><br>
                                         <?php esc_html_e('Cool Formkit','cool-formkit'); ?>
@@ -420,11 +420,11 @@ $updated_elements = array('');
                         <?php foreach ($form_elements as $key => $element): ?>
                         <div class="cfkef-form-element-card">
                             <div class="cfkef-form-element-info">
-                                <img src="<?php echo $element['icon']?>" alt="Color Field">
+                                <img src="<?php echo esc_url($element['icon'])?>" alt="Color Field">
                                 <h4>
                                     <?php echo esc_html($element['label']); ?>
                                     <?php if (!empty($element['pro'])): ?>
-                                        <span class="cfkef-label-popular"><a href="<?php echo $element['pro_link'] ?>" target="_blank"><?php esc_html_e('Pro', 'cool-formkit'); ?></a></span>
+                                        <span class="cfkef-label-popular"><a href="<?php echo esc_url($element['pro_link']) ?>" target="_blank"><?php esc_html_e('Pro', 'cool-formkit'); ?></a></span>
                                     <?php endif; ?>
 
                                     <?php if (in_array($key, $popular_elements)): ?>
@@ -436,7 +436,7 @@ $updated_elements = array('');
                                     <?php endif; ?>
                                 </h4>
                                 <div>
-                                    <a href="<?php echo $element['how_to'] ?>" title="Documentation" target="_blank" rel="noreferrer">
+                                    <a href="<?php echo esc_url($element['how_to']) ?>" title="Documentation" target="_blank" rel="noreferrer">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="M21 11V3h-8v2h4v2h-2v2h-2v2h-2v2H9v2h2v-2h2v-2h2V9h2V7h2v4zM11 5H3v16h16v-8h-2v6H5V7h6z"/></svg>
                                     </a>
                                 </div>
@@ -446,7 +446,7 @@ $updated_elements = array('');
                                 <?php disabled(!empty($element['pro'])); ?>
                                 >
                                 <?php if(!empty($element['pro'])): ?>
-                                    <a href="<?php echo $element['pro_link'] ?>" target="_blank">
+                                    <a href="<?php echo esc_url($element['pro_link']) ?>" target="_blank">
                                         <span class="cfkef-slider round"></span>
                                     </a>
                                 <?php else:?>
@@ -483,9 +483,9 @@ $updated_elements = array('');
                 <h3><?php esc_html_e('Watch Video Tutorial', 'cool-formkit'); ?></h3>
                 <div class="cfkef-sidebar-link-group">
                     <a href="https://coolplugins.net/video/cool-formkit-pro" target="_blank">
-                        <img src="<?php echo CFL_PLUGIN_URL . 'admin/assets/icons/youtube-logo.svg'?>" class="youtube-logo">
+                        <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'admin/assets/icons/youtube-logo.svg')?>" class="youtube-logo">
                         <picture>
-                            <img src="<?php echo CFL_PLUGIN_URL . 'admin/assets/images/cool formkit-dashboard.png'?>">
+                            <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'admin/assets/images/cool formkit-dashboard.png')?>">
                         </picture>
                     </a>
                 </div>
