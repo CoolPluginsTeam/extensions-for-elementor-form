@@ -174,7 +174,7 @@ class CFKEF_Admin {
                         <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/logo-cool-formkit.png'); ?>" alt="Cool FormKit Logo">
                     </a>
                     <span>Lite</span>
-                    <a class="button button-primary upgrade-pro-btn" target="_blank" href="https://coolformkit.com/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=dashboard#pricing">
+                    <a class="button button-primary upgrade-pro-btn" target="_blank" href="https://coolformkit.com/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=dashboard">
                         <img class="crown-diamond-pro" src="<?php echo esc_url(CFL_PLUGIN_URL . 'admin/assets/images/crown-diamond-pro.png'); ?>" alt="Cool FormKit Logo">
                         <?php esc_html_e('Upgrade To Pro', 'cool-formkit'); ?>
                     </a>

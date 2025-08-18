@@ -40,7 +40,7 @@ $form_elements = array(
     ),
     'whatsapp_redirect' => array(
         'label' => __('Whatsapp Redirect', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/whatsapp-redirection-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
+        'how_to' => 'https://docs.coolplugins.net/doc/whatsapp-redirection-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
         'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/whatsapp-icon-min.svg',
         'pro' => false,
@@ -69,7 +69,7 @@ $form_elements = array(
         'popular' => true,
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/conditional-email-1-min.svg',
         'pro' => !$conditional_pro_install,
-        'pro_link' => 'https://coolformkit.com/features/conditional-emails-on-form-submission/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=dashboard'
+        'pro_link' => 'https://coolformkit.com/features/conditional-emails-on-form-submission/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'conditional_submit_button' => array(
         'label' => __('Conditional Logic For Submit Button', 'cool-formkit'),
@@ -203,7 +203,7 @@ $form_elements = array(
     ),
     'toggle_field' => array(
         'label' => __('Toggle Field', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/toggle-field-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
+        'how_to' => 'https://docs.coolplugins.net/doc/toggle-field-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
         'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/toggle-field.svg',
         'pro' => true,
@@ -211,7 +211,7 @@ $form_elements = array(
     ),
     'conditional_mailchimp' => array(
         'label' => __('Conditional MailChimp', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/conditional-mailchimp-elementor-form/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
+        'how_to' => 'https://docs.coolplugins.net/doc/conditional-mailchimp-elementor-form/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
         'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/mailchimp-logo.svg',
         'pro' => true,
@@ -493,10 +493,10 @@ $updated_elements = array('');
             <div class="cfkef-sidebar-block">
                 <h3><?php esc_html_e('Important Links', 'cool-formkit'); ?></h3>
                 <div class="cfkef-sidebar-link-group">
-                    <a href="https://coolplugins.net/support/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=support&utm_content=setting_page_sidebar" class="button" target="_blank"><?php esc_html_e('Contact Support', 'cool-formkit'); ?></a>
+                    <a href="https://coolformkit.com/support/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=support&utm_content=setting_page_sidebar" class="button" target="_blank"><?php esc_html_e('Contact Support', 'cool-formkit'); ?></a>
                     <a href="https://coolplugins.net/about-us/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=about_us&utm_content=setting_page_sidebar" class="button button-secondary" target="_blank"><?php esc_html_e('Meet Cool Plugins Developers', 'cool-formkit'); ?></a>
                     <a href="https://x.com/cool_plugins" class="button button-secondary" target="_blank"><?php esc_html_e('Follow On X', 'cool-formkit'); ?></a>
-                    <a href="https://coolplugins.net/products/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-plugin&utm_content=setting-page-sidebar" class="button button-secondary" target="_blank"><?php esc_html_e('View Plugins', 'cool-formkit'); ?></a>
+                    <a href="https://coolplugins.net/products-list/elementor-form-addons/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view_plugins&utm_content=setting_page_sidebar" class="button button-secondary" target="_blank"><?php esc_html_e('View Plugins', 'cool-formkit'); ?></a>
 
                 </div>
             </div>

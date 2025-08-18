@@ -168,7 +168,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	}
 
 	public function EEF_get_pro_link($links){
-		$get_pro = '<a target="_blank" style="font-weight:bold;color:green;" href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugins_list#pricing">Get Pro</a>';
+		$get_pro = '<a target="_blank" style="font-weight:bold;color:green;" href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugins_list">Get Pro</a>';
 		array_push($links, $get_pro);
 		return $links;	
 	}
