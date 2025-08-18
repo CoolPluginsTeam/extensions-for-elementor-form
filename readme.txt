@@ -172,25 +172,24 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= Version 2.5.2| 18/08/2025 = 
-* **Optimization:- Bug fixes and security code improvements.
-* **Tested upto:** Elementor Version 3.31.2 and Elementor Pro Version 3.31.2
-* **Updated:- UTM Links.
+= Version 2.5.2| 18/08/2025 =
+* **Optimization:-** Bug fixes and security code improvements.
+* **Tested upto:-** Elementor Version 3.31.2 and Elementor Pro Version 3.31.2
+* **Updated:-** UTM Links.
 
-= Version 2.5.1| 25/07/2025 = 
-* **Optimization:- Bug fixes and code improvements.
-* **Tested upto:** Elementor Version 3.30.3 and Elementor Pro Version 3.30.0 
-* **Tested upto:** WordPress 6.8.2
+= Version 2.5.1| 25/07/2025 =
+* **Optimization:-** Bug fixes and code improvements.
+* **Tested upto:** Elementor Version 3.30.3 and Elementor Pro Version 3.30.0
 
-= Version 2.5.0| 17/07/2025 = 
-* **Added:- Support for Hello Plus Form Lite and Elementor Form widget.
-* **Updated:- Admin Dashboard enhancements.
-* **Tested upto:** Elementor Version 3.30.2 and Elementor Pro Version 3.30.0 
+= Version 2.5.0| 17/07/2025 =
+* **Added:-** Support for Hello Plus Form Lite and Elementor Form widget.
+* **Updated:-** Admin Dashboard enhancements.
+* **Tested upto:** Elementor Version 3.30.2 and Elementor Pro Version 3.30.0
 
-= Version 2.4.5| 26/05/2025 = 
+= Version 2.4.5| 26/05/2025 =
 * **Improvements:** Enhanced user opt-in options for better customization.
 * **Fixed:** All fields visible on load.
-* **Tested upto:** Elementor Version 3.29.0 and Elementor Pro Version 3.29.0 
+* **Tested upto:** Elementor Version 3.29.0 and Elementor Pro Version 3.29.0
 
 =  Version 2.4.4 | 11/04/2025 =
 * **Fixed:** Critical error occurring during plugin activation on certain server configurations.
