@@ -175,6 +175,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 = Version 2.5.2| 18/08/2025 = 
 * **Optimization:- Bug fixes and security code improvements.
 * **Tested upto:** Elementor Version 3.31.2 and Elementor Pro Version 3.31.2 
+* **Updated:- UTM Links.
 
 = Version 2.5.1| 25/07/2025 = 
 * **Optimization:- Bug fixes and code improvements.
