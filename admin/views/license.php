@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
             </div>
             <div class="cfkef-save-controls">
                 <span><?php esc_html_e('Free', 'cool-formkit'); ?></span>
-                <a class="button button-primary upgrade-pro-btn" target="_blank" href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboard#pricing">
+                <a class="button button-primary upgrade-pro-btn" target="_blank" href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=license_dashboard#pricing">
                     <img class="crown-diamond-pro" src="<?php echo esc_url(CFL_PLUGIN_URL . 'admin/assets/images/crown-diamond-pro.png'); ?>" alt="Cool FormKit Logo">
                     <?php esc_html_e('Upgrade To Pro', 'cool-formkit'); ?>
                 </a>
@@ -25,7 +25,7 @@ if (!defined('ABSPATH')) {
         <p><?php esc_html_e('Your license key provides access to pro version updates and support.', 'cool-formkit'); ?></p>
         <p><?php esc_html_e('You\'re using ', 'cool-formkit'); ?><strong><?php esc_html_e('Cool Formkit Lite (Free) ', 'cool-formkit'); ?></strong><?php esc_html_e('- no license needed. Enjoy! 😊', 'cool-formkit'); ?></p>
         <div class="cfkef-license-upgrade-box">
-            <p><?php esc_html_e('To unlock more features, consider ', 'cool-formkit'); ?><a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboard#pricing" target="_blank"><?php esc_html_e('upgrading to Pro', 'cool-formkit'); ?></a>.
+            <p><?php esc_html_e('To unlock more features, consider ', 'cool-formkit'); ?><a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=license_dashboard#pricing" target="_blank"><?php esc_html_e('upgrading to Pro', 'cool-formkit'); ?></a>.
             </p>
             <em><?php esc_html_e('As a valued user, you automatically receive an exclusive discount on the Annual License and an even greater discount on the POPULAR Lifetime License at checkout!', 'cool-formkit'); ?></em>
         </div>
@@ -39,17 +39,17 @@ if (!defined('ABSPATH')) {
 
             <div class="pro-plugin-buy-buttons-con">
 
-                <a class="button button-primary pro-bought-btn" target="_blank" href="https://my.coolplugins.net/account/downloads/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=plugin-zip&utm_content=plugins-dashboard">
+                <a class="button button-primary pro-bought-btn" target="_blank" href="https://my.coolplugins.net/account/downloads">
                     <?php esc_html_e('Yes', 'cool-formkit'); ?>
                 </a>
 
 
-                <a class="button button-primary no-pro-buy-btn" target="_blank" href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboard#pricing">
+                <a class="button button-primary no-pro-buy-btn" target="_blank" href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=license_dashboard#pricing">
                     <?php esc_html_e('No', 'cool-formkit'); ?>
                 </a>
             </div>
 
-            <em>If you've purchased the Pro plugin, download it from <a href="https://my.coolplugins.net/account/downloads/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=plugin-zip&utm_content=plugins-dashboard">my.coolplugins.net</a>, deactivate the free plugin, then install and activate the Pro version along with the license.</em>
+            <em><?php esc_html_e("If you've purchased the Pro plugin, download it from ", 'cool-formkit'); ?><a href="https://my.coolplugins.net/account/downloads" target="_blank"><?php esc_html_e('my.coolplugins.net', 'cool-formkit'); ?></a><?php esc_html_e(', deactivate the free plugin, then install and activate the Pro version along with the license.', 'cool-formkit'); ?></em>
 
         </div>
 

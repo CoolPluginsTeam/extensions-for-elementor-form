@@ -24,198 +24,198 @@ $conditional_pro_install = is_plugin_active('conditional-fields-for-elementor-fo
 $form_elements = array(
     'conditional_logic' => array(
         'label' => __('Conditional Logic', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/elementor-form-conditional-fields/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/product/conditional-fields-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#view-demo-forms',
+        'how_to' => 'https://docs.coolplugins.net/doc/elementor-form-conditional-fields/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/product/conditional-fields-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard/#view-demo-forms',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/conditional-logic-1-min.svg',
         'pro' => false,
-        'pro_link' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboard/#pricing'
+        'pro_link' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=dashboard/#pricing'
     ),
     'country_code' => array(
         'label' => __('Country Code for Tel Field', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/country-code-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#country-code',
+        'how_to' => 'https://docs.coolplugins.net/doc/country-code-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard/#country-code',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/country-code-min.svg',
         'pro' => false,
-        'pro_link' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboard/#pricing'
+        'pro_link' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=dashboard/#pricing'
     ),
     'whatsapp_redirect' => array(
         'label' => __('Whatsapp Redirect', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/whatsapp-redirection-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard',
+        'how_to' => 'https://docs.coolplugins.net/doc/whatsapp-redirection-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/whatsapp-icon-min.svg',
         'pro' => false,
-        'pro_link' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboard/#pricing'
+        'pro_link' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=dashboard/#pricing'
     ),
     'form_input_mask' => array(
         'label' => __('Form Input Mask', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/input-masks-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/add-input-masks-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#input-masks-demos',
+        'how_to' => 'https://docs.coolplugins.net/doc/input-masks-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/add-input-masks-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard/#input-masks-demos',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/input-mask-min.svg',
         'pro' => false,
-        'pro_link' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboard/#pricing'
+        'pro_link' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=dashboard/#pricing'
     ),
     'conditional_redirect' => array(
         'label' => __('Redirect Conditionally After Submit', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/conditional-redirect-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/product/conditional-fields-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#conditional-redirect',
+        'how_to' => 'https://docs.coolplugins.net/doc/conditional-redirect-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/product/conditional-fields-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard/#conditional-redirect',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/redirect-conditionally-min.svg',
         'pro' => !$conditional_pro_install,
-        'pro_link' => 'https://coolformkit.com/features/conditional-redirect-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=plugins-dashboard'
+        'pro_link' => 'https://coolformkit.com/features/conditional-redirect-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'conditional_email' => array(
         'label' => __('Conditional Email After Submit', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/conditional-email-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/product/conditional-fields-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#conditional-email',
+        'how_to' => 'https://docs.coolplugins.net/doc/conditional-email-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/product/conditional-fields-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard/#conditional-email',
         'popular' => true,
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/conditional-email-1-min.svg',
         'pro' => !$conditional_pro_install,
-        'pro_link' => 'https://coolformkit.com/features/conditional-emails-on-form-submission/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=plugins-dashboard'
+        'pro_link' => 'https://coolformkit.com/features/conditional-emails-on-form-submission/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=dashboard'
     ),
     'conditional_submit_button' => array(
         'label' => __('Conditional Logic For Submit Button', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/submit-button-conditions-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/product/conditional-fields-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#view-demo-forms',
+        'how_to' => 'https://docs.coolplugins.net/doc/submit-button-conditions-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/product/conditional-fields-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard/#view-demo-forms',
         'popular' => true,
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/conditional-button-min.svg',
         'pro' => !$conditional_pro_install,
-        'pro_link' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboard/#pricing'
+        'pro_link' => 'https://coolformkit.com/features/conditional-submit-button-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'range_slider' => array(
         'label' => __('Range Slider', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/range-slider-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#range-field',
+        'how_to' => 'https://docs.coolplugins.net/doc/range-slider-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard/#range-field',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/range-slider-min.svg',
         'pro' => true,
-        'pro_link' => 'https://coolformkit.com/features/range-slider-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=plugins-dashboard'
+        'pro_link' => 'https://coolformkit.com/features/range-slider-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'calculator_field' => array(
         'label' => __('Calculator Field', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/calculator-field-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#calculator-field',
+        'how_to' => 'https://docs.coolplugins.net/doc/calculator-field-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard/#calculator-field',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/calculator-field-min.svg',
         'pro' => true,
-        'pro_link' => 'https://coolformkit.com/features/calculator-for-elementor/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=plugins-dashboard'
+        'pro_link' => 'https://coolformkit.com/features/calculator-for-elementor/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'rating_field' => array(
         'label' => __('Rating Field', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/rating-field-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#rating-field',
+        'how_to' => 'https://docs.coolplugins.net/doc/rating-field-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard/#rating-field',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/rating-field-min.svg',
         'pro' => true,
-        'pro_link' => 'https://coolformkit.com/features/rating-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=plugins-dashboard'
+        'pro_link' => 'https://coolformkit.com/features/rating-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'signature_field' => array(
         'label' => __('Signature Field', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/signature-field-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#signature-field',
+        'how_to' => 'https://docs.coolplugins.net/doc/signature-field-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard/#signature-field',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/signature.svg',
         'pro' => true,
-        'pro_link' => 'https://coolformkit.com/features/signature-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=plugins-dashboard'
+        'pro_link' => 'https://coolformkit.com/features/signature-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'image_radio' => array(
         'label' => __('Image Radio', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/add-image-radio-field/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#image-radio-checkbox',
+        'how_to' => 'https://docs.coolplugins.net/doc/add-image-radio-field/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard/#image-radio-checkbox',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/image-radio-min.svg',
         'pro' => true,
-        'pro_link' => 'https://coolformkit.com/features/image-radio-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=plugins-dashboard'
+        'pro_link' => 'https://coolformkit.com/features/image-radio-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'radio_checkbox_styler' => array(
         'label' => __('Radio & Checkbox Styler', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/style-radio-checkbox-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#button-radio-checkbox',
+        'how_to' => 'https://docs.coolplugins.net/doc/style-radio-checkbox-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard/#button-radio-checkbox',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/radio-styler-min.svg',
         'pro' => true,
-        'pro_link' => 'https://coolformkit.com/features/checkbox-radio-styles-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=plugins-dashboard'
+        'pro_link' => 'https://coolformkit.com/features/checkbox-radio-styles-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'label_styler' => array(
         'label' => __('Label Styler', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/label-styler-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard/#label-styler',
+        'how_to' => 'https://docs.coolplugins.net/doc/label-styler-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard/#label-styler',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/label-style-min.svg',
         'pro' => true,
-        'pro_link' => 'https://coolformkit.com/features/label-styler-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=plugins-dashboard'
+        'pro_link' => 'https://coolformkit.com/features/label-styler-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'select2' => array(
         'label' => __('Select2', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/select-field-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard',
+        'how_to' => 'https://docs.coolplugins.net/doc/select-field-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/select2-field-min.svg',
         'pro' => true,
-        'pro_link' => 'https://coolformkit.com/features/select2-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=plugins-dashboard'
+        'pro_link' => 'https://coolformkit.com/features/select2-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'WYSIWYG' => array(
         'label' => __('WYSIWYG', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/add-wysiwyg-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard',
+        'how_to' => 'https://docs.coolplugins.net/doc/add-wysiwyg-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/WYSIWYG-min.svg',
         'pro' => true,
-        'pro_link' => 'https://coolformkit.com/features/wysiwyg-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=plugins-dashboard'
+        'pro_link' => 'https://coolformkit.com/features/wysiwyg-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'confirm_dialog' => array(
         'label' => __('Confirm Dialog Box', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/elementor-form-confirm-dialog-popup/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard',
+        'how_to' => 'https://docs.coolplugins.net/doc/elementor-form-confirm-dialog-popup/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/dialog-box-min.svg',
         'pro' => true,
-        'pro_link' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboard/#pricing'
+        'pro_link' => 'https://coolformkit.com/features/confirm-dialog-box-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'restrict_date' => array(
         'label' => __('Restrict Date', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/restrict-date-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard',
+        'how_to' => 'https://docs.coolplugins.net/doc/restrict-date-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/restrict-date-min.svg',
         'pro' => true,
-        'pro_link' => 'https://coolformkit.com/features/restrict-date-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=plugins-dashboard'
+        'pro_link' => 'https://coolformkit.com/features/restrict-date-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'currency_field' => array(
         'label' => __('Currency Field', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/add-currency-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard',
+        'how_to' => 'https://docs.coolplugins.net/doc/add-currency-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/currency-field-min.svg',
         'pro' => true,
-        'pro_link' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboard/#pricing'
+        'pro_link' => 'https://coolformkit.com/features/currency-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'month_week_field' => array(
         'label' => __('Month/Week Field', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/add-month-week/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard',
+        'how_to' => 'https://docs.coolplugins.net/doc/add-month-week/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/month-week-field-min.svg',
         'pro' => true,
-        'pro_link' => 'https://coolformkit.com/features/month-week-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=plugins-dashboard'
+        'pro_link' => 'https://coolformkit.com/features/month-week-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'cloudflare_recaptcha' => array(
         'label' => __('Cloudflare Turnstile', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/add-cloudflare-turnstile-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard',
+        'how_to' => 'https://docs.coolplugins.net/doc/add-cloudflare-turnstile-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/cloudflare-icon-min.svg',
         'pro' => true,
-        'pro_link' => 'https://coolformkit.com/features/cloudflare-turnstile-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=plugins-dashboard'
+        'pro_link' => 'https://coolformkit.com/features/cloudflare-turnstile-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
 
     'h_recaptcha' => array(
         'label' => __('hCAPTCHA', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/add-hcaptcha-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard',
+        'how_to' => 'https://docs.coolplugins.net/doc/add-hcaptcha-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/hcaptcha-icon-min.svg',
         'pro' => true,
-        'pro_link' => 'https://coolformkit.com/features/hcaptcha-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=plugins-dashboard'
+        'pro_link' => 'https://coolformkit.com/features/hcaptcha-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'toggle_field' => array(
         'label' => __('Toggle Field', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/toggle-field-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard',
+        'how_to' => 'https://docs.coolplugins.net/doc/toggle-field-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/toggle-field.svg',
         'pro' => true,
-        'pro_link' => 'https://coolformkit.com/features/toggle-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=plugins-dashboard'
+        'pro_link' => 'https://coolformkit.com/features/toggle-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
     'conditional_mailchimp' => array(
         'label' => __('Conditional MailChimp', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/conditional-mailchimp-elementor-form/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=demo&utm_content=plugins-dashboard',
+        'how_to' => 'https://docs.coolplugins.net/doc/conditional-mailchimp-elementor-form/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
         'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/mailchimp-logo.svg',
         'pro' => true,
-        'pro_link' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboard/#pricing'
+        'pro_link' => 'https://coolformkit.com/features/conditional-mailchimp-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     )
 );
 
@@ -493,8 +493,8 @@ $updated_elements = array('');
             <div class="cfkef-sidebar-block">
                 <h3><?php esc_html_e('Important Links', 'cool-formkit'); ?></h3>
                 <div class="cfkef-sidebar-link-group">
-                    <a href="https://coolplugins.net/support/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-support&utm_content=setting-page-sidebar" class="button" target="_blank"><?php esc_html_e('Contact Support', 'cool-formkit'); ?></a>
-                    <a href="https://coolplugins.net/about-us/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=about-us&utm_content=setting-page-sidebar" class="button button-secondary" target="_blank"><?php esc_html_e('Meet Cool Plugins Developers', 'cool-formkit'); ?></a>
+                    <a href="https://coolplugins.net/support/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=support&utm_content=setting_page_sidebar" class="button" target="_blank"><?php esc_html_e('Contact Support', 'cool-formkit'); ?></a>
+                    <a href="https://coolplugins.net/about-us/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=about_us&utm_content=setting_page_sidebar" class="button button-secondary" target="_blank"><?php esc_html_e('Meet Cool Plugins Developers', 'cool-formkit'); ?></a>
                     <a href="https://x.com/cool_plugins" class="button button-secondary" target="_blank"><?php esc_html_e('Follow On X', 'cool-formkit'); ?></a>
                     <a href="https://coolplugins.net/products/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-plugin&utm_content=setting-page-sidebar" class="button button-secondary" target="_blank"><?php esc_html_e('View Plugins', 'cool-formkit'); ?></a>
 

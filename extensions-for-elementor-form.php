@@ -5,7 +5,7 @@
  * Plugin URI: https://coolplugins.net/
  * Description: Build advanced forms in Elementor Free using Cool FormKit Lite. It also enhances Elementor Pro and Hello Plus Form Widget with conditional logic and advanced field options.
  * Author: Cool Plugins
- * Author URI: https://coolplugins.net/
+ * Author URI: https://coolplugins.net/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
  * Text Domain: extensions-for-elementor-form
  * Version: 2.5.1
  * Requires at least: 6.2
@@ -159,7 +159,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	public function cfkef_plugin_row_meta( $plugin_meta, $plugin_file ) {
 		if ( plugin_basename( CFL_PLUGIN_MAIN_FILE ) === $plugin_file ) {
 			$row_meta = array(
-				'docs' => '<a href="' . esc_url('https://docs.coolplugins.net/plugin/cool-formkit-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-list') . '" aria-label="' . esc_attr(esc_html__('View CoolFomkit Documentation', 'cool-formkit')) . '" target="_blank">' . esc_html__('View Documentation', 'cool-formkit') . '</a>',
+				'docs' => '<a href="' . esc_url('https://docs.coolplugins.net/plugin/cool-formkit-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins_list') . '" aria-label="' . esc_attr(esc_html__('View CoolFomkit Documentation', 'cool-formkit')) . '" target="_blank">' . esc_html__('View Documentation', 'cool-formkit') . '</a>',
 			);
 
 			$plugin_meta = array_merge( $plugin_meta, $row_meta );
@@ -168,7 +168,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	}
 
 	public function EEF_get_pro_link($links){
-		$get_pro = '<a target="_blank" style="font-weight:bold;color:green;" href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-list#pricing">Get Pro</a>';
+		$get_pro = '<a target="_blank" style="font-weight:bold;color:green;" href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugins_list#pricing">Get Pro</a>';
 		array_push($links, $get_pro);
 		return $links;	
 	}
