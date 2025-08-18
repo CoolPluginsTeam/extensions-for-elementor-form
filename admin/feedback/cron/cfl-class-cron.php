@@ -88,8 +88,10 @@ if (!class_exists('CFL_cronjob')) {
                   ));
               
                   if (is_wp_error($response)) {
-                      error_log('CFL Feedback Send Failed: ' . $response->get_error_message());
-                      return;
+                    if ( defined( 'WP_DEBUG' ) && WP_DEBUG ){
+                        error_log('CFL Feedback Send Failed: ' . $response->get_error_message());
+                        return;
+                    }
                   }
               
                   $response_body = wp_remote_retrieve_body($response);

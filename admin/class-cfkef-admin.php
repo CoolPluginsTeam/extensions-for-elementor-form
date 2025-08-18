@@ -165,7 +165,7 @@ class CFKEF_Admin {
      * @since    1.0.0
      */
     public function display_plugin_admin_page() {
-        $tab = isset($_GET['tab']) ? $_GET['tab'] : 'form-elements';
+        $tab = isset($_GET['tab']) ? sanitize_key($_GET['tab']) : 'form-elements';
         ?>
         <div class="cfkef-wrapper">
             <div class="cfkef-header">
@@ -174,15 +174,15 @@ class CFKEF_Admin {
                         <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/logo-cool-formkit.png'); ?>" alt="Cool FormKit Logo">
                     </a>
                     <span>Lite</span>
-                    <a class="button button-primary upgrade-pro-btn" target="_blank" href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboard#pricing">
+                    <a class="button button-primary upgrade-pro-btn" target="_blank" href="https://coolformkit.com/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=dashboard">
                         <img class="crown-diamond-pro" src="<?php echo esc_url(CFL_PLUGIN_URL . 'admin/assets/images/crown-diamond-pro.png'); ?>" alt="Cool FormKit Logo">
                         <?php esc_html_e('Upgrade To Pro', 'cool-formkit'); ?>
                     </a>
                 </div>
                 <div class="cfkef-header-buttons">
                     <p><?php esc_html_e('Advanced Elementor Form Builder.', 'cool-formkit'); ?></p>
-                    <a href="https://docs.coolplugins.net/plugin/cool-formkit-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=doc&utm_content=setting-page-header" class="button" target="_blank"><?php esc_html_e('Check Docs', 'cool-formkit'); ?></a>
-                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=view-demo&utm_content=setting-page-header" class="button button-secondary" target="_blank"><?php esc_html_e('View Form Demos', 'cool-formkit'); ?></a>
+                    <a href="https://docs.coolplugins.net/plugin/cool-formkit-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=setting_page_header" class="button" target="_blank"><?php esc_html_e('Check Docs', 'cool-formkit'); ?></a>
+                    <a href="https://coolformkit.com/features/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=setting_page_header" class="button button-secondary" target="_blank"><?php esc_html_e('View Form Demos', 'cool-formkit'); ?></a>
                 </div>
             </div>
             <h2 class="nav-tab-wrapper">

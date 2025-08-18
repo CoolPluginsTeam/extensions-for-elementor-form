@@ -105,6 +105,10 @@ class CFKEF_Post_Bulk_Actions {
 	private function process() {
 
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended
+		if ( ! current_user_can( 'manage_options' )) {
+			return;
+		}
+		
 		$this->ids    = isset( $_GET['entry_id'] ) ? array_map( 'absint', (array) $_GET['entry_id'] ) : [];
 
 		$action=isset($_REQUEST['action']) ? str_replace(' ', '_', strtolower($_REQUEST['action'])) : false;
