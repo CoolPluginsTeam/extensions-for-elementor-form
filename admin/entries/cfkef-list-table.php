@@ -53,7 +53,7 @@ class CFKEF_List_Table extends WP_List_Table {
             return;
         }
 
-        $current_view = isset($_GET['view']) ? $_GET['view'] : 'all';
+        $current_view = isset($_GET['view']) ? sanitize_key($_GET['view']) : 'all';
 
         // Get counts for all and trash
         $post_counts = wp_count_posts($this->post_type);
@@ -101,7 +101,7 @@ class CFKEF_List_Table extends WP_List_Table {
     }
 
     public function column_cb($item) {
-        return sprintf('<input type="checkbox" name="entry_id[]" value="%s" />', $item->ID);
+        return sprintf('<input type="checkbox" name="entry_id[]" value="%s" />', esc_attr($item->ID));
     }
 
     public function column_user_email($item) {
@@ -112,7 +112,7 @@ class CFKEF_List_Table extends WP_List_Table {
             $email = 'N/A';
         }
 
-        return sprintf('<a href="%s">%s</a>', $edit_url, $email);
+        return sprintf('<a href="%s">%s</a>', esc_url($edit_url), esc_html($email));
     }
 
     public function column_form_url($item) {
@@ -124,10 +124,10 @@ class CFKEF_List_Table extends WP_List_Table {
         $form_name = empty($form_name) ? 'N/A' : $form_name;
 
         if($form_post_id && !empty($form_post_id)){
-            return sprintf('<a href="%s" target="_blank">%s</a>', $page_editor_url, $form_name);
+            return sprintf('<a href="%s" target="_blank">%s</a>', esc_url($page_editor_url), esc_html($form_name));
         }
 
-        return $form_name;
+        return esc_html($form_name);
     }
 
     public function column_id($item) {
@@ -145,14 +145,14 @@ class CFKEF_List_Table extends WP_List_Table {
         $page_url= isset($meta_details['page_url']['value']) ? $meta_details['page_url']['value'] : '';
 
         if(!empty($value)){
-            return sprintf('<a href="%s" target="_blank">%s</a>', $page_url, $value);
+            return sprintf('<a href="%s" target="_blank">%s</a>', esc_url($page_url), esc_html($value));
         }
 
-        return $value;
+        return esc_html($value);
     }
     
     public function column_actions($item) {
-        return sprintf('<a href="%s" class="button button-primary">View</a>', $item->ID);
+        return sprintf('<a href="%s" class="button button-primary">View</a>', esc_url($item->ID));
     }
 
     protected function handle_row_actions( $item, $column_name, $primary ) {
@@ -236,7 +236,9 @@ class CFKEF_List_Table extends WP_List_Table {
         $page     = $this->get_pagenum();
 		$order    = isset( $_GET['order'] ) && sanitize_text_field($_GET['order']) === 'asc' ? 'ASC' : 'DESC';
         $search= isset($_GET['cfkef-entries-search']) ? sanitize_text_field($_GET['cfkef-entries-search']) : '';
-		$orderby  = isset( $_GET['orderby'] ) ? sanitize_key( $_GET['orderby'] ) : 'ID';
+		$allowed_orderby = ['ID','post_title','post_date','post_modified','post_status'];
+        $orderby = isset($_GET['orderby']) ? sanitize_key($_GET['orderby']) : 'ID';
+        $orderby = in_array($orderby, $allowed_orderby, true) ? $orderby : 'ID';
         $per_page = $this->get_items_per_page( $this->get_per_page_option_name() , 20 );
         $date_filter= isset($_GET['date_filter']) && isset($_GET['m']) && !empty($_GET['m']) ? sanitize_text_field($_GET['m']) : '';
         $view = CFKEF_Entries_Posts::get_view();
@@ -248,6 +250,12 @@ class CFKEF_List_Table extends WP_List_Table {
 				'date'     => $order,
 			];
 		};
+
+        $orderby = esc_sql($orderby);
+        $order = esc_sql($order);
+        $page = esc_sql($page);
+        $view = esc_sql($view);
+        $search = esc_sql($search);
 
         $args = [
             'post_type'      => $this->post_type,

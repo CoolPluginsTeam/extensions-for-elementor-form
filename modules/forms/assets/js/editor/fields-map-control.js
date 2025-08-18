@@ -68,7 +68,7 @@ module.exports = elementor.modules.controls.Repeater.extend( {
 				} );
 		} );
 
-		self.$el.find( '.elementor-button-wrapper' ).remove();
+		self.$el.find( '.elementor-repeater-add' ).remove();
 
 		if ( self.children.length ) {
 			self.$el.show();

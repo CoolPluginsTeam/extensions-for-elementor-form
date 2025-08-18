@@ -5,16 +5,16 @@
  * Plugin URI: https://coolplugins.net/
  * Description: Build advanced forms in Elementor Free using Cool FormKit Lite. It also enhances Elementor Pro and Hello Plus Form Widget with conditional logic and advanced field options.
  * Author: Cool Plugins
- * Author URI: https://coolplugins.net/
+ * Author URI: https://coolplugins.net/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
  * Text Domain: extensions-for-elementor-form
- * Version: 2.5.1
+ * Version: 2.5.2
  * Requires at least: 6.2
  * Requires PHP: 6.2
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Requires Plugins: elementor
- * Elementor tested up to: 3.30.3
- * Elementor Pro tested up to: 3.30.0
+ * Elementor tested up to: 3.31.2
+ * Elementor Pro tested up to: 3.31.2
  */
 
 namespace Cool_FormKit;
@@ -31,7 +31,7 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 
-define('CFL_VERSION','2.5.1');
+define('CFL_VERSION','2.5.2');
 define('PHP_MINIMUM_VERSION','7.4');
 define('WP_MINIMUM_VERSION','5.5');
 define( 'CFL_PLUGIN_MAIN_FILE', __FILE__ );
@@ -159,7 +159,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	public function cfkef_plugin_row_meta( $plugin_meta, $plugin_file ) {
 		if ( plugin_basename( CFL_PLUGIN_MAIN_FILE ) === $plugin_file ) {
 			$row_meta = array(
-				'docs' => '<a href="' . esc_url('https://docs.coolplugins.net/plugin/cool-formkit-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins-list') . '" aria-label="' . esc_attr(esc_html__('View CoolFomkit Documentation', 'cool-formkit')) . '" target="_blank">' . esc_html__('View Documentation', 'cool-formkit') . '</a>',
+				'docs' => '<a href="' . esc_url('https://docs.coolplugins.net/plugin/cool-formkit-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins_list') . '" aria-label="' . esc_attr(esc_html__('View CoolFomkit Documentation', 'cool-formkit')) . '" target="_blank">' . esc_html__('View Documentation', 'cool-formkit') . '</a>',
 			);
 
 			$plugin_meta = array_merge( $plugin_meta, $row_meta );
@@ -168,7 +168,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	}
 
 	public function EEF_get_pro_link($links){
-		$get_pro = '<a target="_blank" style="font-weight:bold;color:green;" href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-list#pricing">Get Pro</a>';
+		$get_pro = '<a target="_blank" style="font-weight:bold;color:green;" href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugins_list">Get Pro</a>';
 		array_push($links, $get_pro);
 		return $links;	
 	}
@@ -179,7 +179,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			return false;
 		}
 		if ($plugin == plugin_basename(CFL_PLUGIN_MAIN_FILE)) {
-			exit(wp_redirect(admin_url('admin.php?page=cool-formkit')));
+			exit(wp_safe_redirect(admin_url('admin.php?page=cool-formkit')));
 		}
 	}
 	/**
@@ -336,7 +336,9 @@ class Cool_Formkit_Lite_For_Elementor_Form
 				$class_name::instance();
 			} else {
 				// Optional: Log or debug if the module class isn't found.
-				error_log('Module class not found or not active: ' . $class_name);
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log('Module class not found or not active: ' . $class_name);
+				}
 			}
 		}
 	}

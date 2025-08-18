@@ -277,7 +277,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                             <label for="cfl_site_key_v2" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?></label>
                         </th>
                         <td class="cool-formkit-table-td site-key-td">
-                            <input type="password" id="cfl_site_key_v2" name="cfl_site_key_v2" min="4" value="<?php echo get_option('cfl_site_key_v2'); ?>" class="regular-text cool-formkit-input"/>
+                            <input type="password" id="cfl_site_key_v2" name="cfl_site_key_v2" min="4" value="<?php echo esc_attr(get_option('cfl_site_key_v2')); ?>" class="regular-text cool-formkit-input"/>
                             
                             <span class="site-key-show-hide-icon-recaptcha">
                                 <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
@@ -289,7 +289,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                             <label for="cfl_secret_key_v2" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?></label>
                         </th>
                         <td class="cool-formkit-table-td secret-key-td">
-                            <input type="password" id="cfl_secret_key_v2" name="cfl_secret_key_v2" min="4" value="<?php echo get_option('cfl_secret_key_v2'); ?>" class="regular-text cool-formkit-input" />
+                            <input type="password" id="cfl_secret_key_v2" name="cfl_secret_key_v2" min="4" value="<?php echo esc_attr(get_option('cfl_secret_key_v2')); ?>" class="regular-text cool-formkit-input" />
         
                             <span class="secret-key-show-hide-icon-recaptcha">
                                 <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
@@ -306,7 +306,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                             <label for="cfl_site_key_v3" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?></label>
                         </th>
                         <td class="cool-formkit-table-td site-key-td">
-                            <input type="password" id="cfl_site_key_v3" name="cfl_site_key_v3" min="4" value="<?php echo get_option('cfl_site_key_v3'); ?>" class="regular-text cool-formkit-input"/>
+                            <input type="password" id="cfl_site_key_v3" name="cfl_site_key_v3" min="4" value="<?php echo esc_attr(get_option('cfl_site_key_v3')); ?>" class="regular-text cool-formkit-input"/>
                             
                             <span class="site-key-show-hide-icon-recaptcha_v3">
                                 <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
@@ -318,7 +318,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                             <label for="cfl_secret_key_v3" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?></label>
                         </th>
                         <td class="cool-formkit-table-td secret-key-td">
-                            <input type="password" id="cfl_secret_key_v3" name="cfl_secret_key_v3" min="4" value="<?php echo get_option('cfl_secret_key_v3'); ?>" class="regular-text cool-formkit-input" />
+                            <input type="password" id="cfl_secret_key_v3" name="cfl_secret_key_v3" min="4" value="<?php echo esc_attr(get_option('cfl_secret_key_v3')); ?>" class="regular-text cool-formkit-input" />
         
                             <span class="secret-key-show-hide-icon-recaptcha_v3">
                                 <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
@@ -331,7 +331,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                             <label for="threshold_v3" class="cool-formkit-label"><?php esc_html_e('Score Threshold', 'cool-formkit'); ?></label>
                         </th>
                         <td class="cool-formkit-table-td">
-                            <input type="number" id="threshold_v3" name="cfl_threshold_v3" class="regular-text cool-formkit-input" value="<?php echo get_option('cfl_threshold_v3')?>" min="0" max="1"  step="0.1"/>
+                            <input type="number" id="threshold_v3" name="cfl_threshold_v3" class="regular-text cool-formkit-input" value="<?php echo esc_attr(get_option('cfl_threshold_v3'))?>" min="0" max="1"  step="0.1"/>
                             <p class="description cool-formkit-description"><?php esc_html_e('Score threshold should be a value between 0 and 1, default: 0.5', 'cool-formkit'); ?></p>
                         </td>
                     </tr>
@@ -343,7 +343,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                         <th scope="row" class="cool-formkit-table-th">
                             <label for="cfefp_email_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Emails', 'cool-formkit'); ?>
                                 <span class="cfkef-pro-feature">
-                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=settings_dashboard" target="_blank">
                                     <?php echo $conditional_pro_install ? '' : '(Pro)'?>
                                     </a>
                                 </span>
@@ -359,7 +359,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                         <th scope="row" class="cool-formkit-table-th">
                             <label for="cfefp_redirect_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Redirections', 'cool-formkit'); ?>
                                 <span class="cfkef-pro-feature">
-                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
                                     <?php echo $conditional_pro_install ? '' : '(Pro)'?>
                                     </a>
                                 </span>
@@ -380,7 +380,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                         <th scope="row" class="cool-formkit-table-th">
                             <label for="cfkef_geo_provider" class="cool-formkit-label"><?php esc_html_e('Geo-IP Provider', 'cool-formkit'); ?>
                                 <span class="cfkef-pro-feature">
-                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
                                     (Pro)
                                     </a>
                                 </span>
@@ -402,7 +402,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                         <th scope="row" class="cool-formkit-table-th">
                             <label for="cfkef_country_code_api_key" class="cool-formkit-label"><?php esc_html_e('Enter ipapi.co API Key', 'cool-formkit'); ?>
                                 <span class="cfkef-pro-feature">
-                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
                                     (Pro)
                                     </a>
                                 </span>
@@ -418,7 +418,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                         <th scope="row" class="cool-formkit-table-th">
                             <label for="cfkef_country_code_non_ipapi_api_key" class="cool-formkit-label"><?php esc_html_e('Enter Geo API Key', 'cool-formkit'); ?>
                                 <span class="cfkef-pro-feature">
-                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
                                     (Pro)
                                     </a>
                                 </span>
@@ -433,7 +433,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                         <th scope="row" class="cool-formkit-table-th">
                             <label class="cool-formkit-label"><?php esc_html_e('CDN Image', 'cool-formkit'); ?>
                                     <span class="cfkef-pro-feature">
-                                        <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                        <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
                                         (Pro)
                                     </a>
                                 </span>
@@ -460,14 +460,14 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                         <th scope="row" class="cool-formkit-table-th">
                             <label for="cfefp_cloudflare_site_key" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?>
                                 <span class="cfkef-pro-feature">
-                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
                                     (Pro)
                                     </a>
                                 </span>
                             </label>
                         </th>
                         <td class="cool-formkit-table-td site-key-td">
-                            <input type="password" id="cfefp_cloudflare_site_key" name="cfefp_cloudflare_site_key" min="4" value="<?php echo get_option('cfefp_cloudflare_site_key'); ?>" class="regular-text cool-formkit-input" disabled="disabled"/>    
+                            <input type="password" id="cfefp_cloudflare_site_key" name="cfefp_cloudflare_site_key" min="4" value="<?php echo esc_attr(get_option('cfefp_cloudflare_site_key')); ?>" class="regular-text cool-formkit-input" disabled="disabled"/>    
                             <span class="site-key-show-hide-icon">
                                 <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
                             </span>
@@ -477,14 +477,14 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                         <th scope="row" class="cool-formkit-table-th">
                             <label for="cfefp_cloudflare_secret_key" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?>
                                 <span class="cfkef-pro-feature">
-                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
                                     (Pro)
                                     </a>
                                 </span>
                             </label>
                         </th>
                         <td class="cool-formkit-table-td secret-key-td">
-                            <input type="password" id="cfefp_cloudflare_secret_key" name="cfefp_cloudflare_secret_key" min="4" value="<?php echo get_option('cfefp_cloudflare_secret_key'); ?>" class="regular-text cool-formkit-input" disabled="disabled"/>
+                            <input type="password" id="cfefp_cloudflare_secret_key" name="cfefp_cloudflare_secret_key" min="4" value="<?php echo esc_attr(get_option('cfefp_cloudflare_secret_key')); ?>" class="regular-text cool-formkit-input" disabled="disabled"/>
                             <span class="secret-key-show-hide-icon">
                                 <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
                             </span>
@@ -500,7 +500,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                         <th scope="row" class="cool-formkit-table-th">
                             <label for="cfefp_h_site_key" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?>
                                 <span class="cfkef-pro-feature">
-                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
                                     (Pro)
                                     </a>
                                 </span>
@@ -518,14 +518,14 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                         <th scope="row" class="cool-formkit-table-th">
                             <label for="cfefp_h_secret_key" class="cool-formkit-label"><?php esc_html_e('Secret Key', 'cool-formkit'); ?>
                                 <span class="cfkef-pro-feature">
-                                    <a href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=plugins-dashboarsd#pricing" target="_blank">
+                                    <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
                                     (Pro)
                                     </a>
                                 </span>
                             </label>
                         </th>
                         <td class="cool-formkit-table-td secret-key-td">
-                            <input type="password" id="cfefp_h_secret_key" name="cfefp_h_secret_key" min="4" value="<?php echo get_option('cfefp_h_secret_key'); ?>" class="regular-text cool-formkit-input" 
+                            <input type="password" id="cfefp_h_secret_key" name="cfefp_h_secret_key" min="4" value="<?php echo esc_attr(get_option('cfefp_h_secret_key')); ?>" class="regular-text cool-formkit-input" 
                             disabled="disabled"/>
                             <span class="secret-key-show-hide-icon-h-captcha">
                                 <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">

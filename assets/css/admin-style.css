@@ -627,6 +627,20 @@ span.cfkef-pro-feature a{
     color: #555;
 }
 
+
+.pro-plugin-buy p{
+  margin: 8px 0px !important;
+}
+
+.no-pro-buy-btn{
+  margin-left: 10px !important;
+}
+
+.pro-plugin-buy-buttons-con{
+  margin-bottom: 8px;
+}
+
+
 .highlight-description{
     font-size: 15px;
     font-weight: bold;
