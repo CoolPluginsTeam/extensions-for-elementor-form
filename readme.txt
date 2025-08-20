@@ -75,21 +75,21 @@ We’re actively improving Cool FormKit Lite. Future updates will include condit
 ### A PLUGIN BY COOL PLUGINS
 — —————————————- —
 
-This plugin is created and supported by **[Cool Plugins](https://coolplugins.net/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=homepage)**, a team of expert WordPress developers who have already developed 20+ free and premium WordPress plugins. Explore some of their cool solutions and plugins below:
+This plugin is created and supported by **[Cool Plugins](https://coolplugins.net/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=author_page&utm_content=more_plugins)**, a team of expert WordPress developers who have already developed 20+ free and premium WordPress plugins. Explore some of their cool solutions and plugins below:
 
-**[Cool FormKit For Elementor Forms](https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=get-pro&utm_content=buy-coolformkit)**
+**[Cool FormKit For Elementor Forms](https://coolformkit.com/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=cfkef_more_plugins)**
 Add advanced fields and features to Elementor form widget, like **conditional fields**, **range sliders** and **country code**. Upgrade your form building experience with **Cool FormKit**.
 
 **[Country Code For Elementor Form Telephone Field](https://coolplugins.short.gy/country-code)**
 *Guide your visitors to select their country code while entering their mobile number, ensuring accurate and properly formatted data submissions.*
 
-**[Timeline Widget for Elementor](https://cooltimeline.com/plugin/timeline-widget-pro/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=timeline-widget)**
+**[Timeline Widget for Elementor](https://cooltimeline.com/plugin/elementor-timeline-widget-pro/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=twae_more_plugins)**
 *Use this plugin to showcase your history in a stylish vertical or horizontal timeline layout on Elementor pages.*
 
-**[Events Widgets for Elementor](https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=events-widgets)**
+**[Events Widgets for Elementor](https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=ectbe_more_plugins)**
 *This provides **The Events Calendar** plugin widgets for Elementor, allowing you to easily display events in a grid, list, or carousel format on Elementor pages.*
 
-**[Loco Translate Addon](https://locoaddon.com/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=homepage)**
+**[Loco Translate Addon](https://locoaddon.com/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=atlt_more_plugins)**
 *Automatically translate WordPress plugin and theme strings with a single click.*
 
 **[Loop Grid Extender for Elementor Pro](https://wordpress.org/plugins/loop-grid-extender-for-elementor-pro/)**
