@@ -35,12 +35,10 @@ class Review_notice
 
 		add_action('admin_notices', array($this, 'cfl_admin_notice_for_review'));
 
-		// add_action('wp_ajax_cfl_elementor_review_notice', array($this, 'cfl_elementor_review_notice'));
-
 		add_action('wp_ajax_' . sanitize_key($this->plugin_slug) . '_dismiss_notice', array($this, 'cfl_review_notice'));
 	}
 
-	public function add_review_notice($widget)
+	public function add_review_notice($widget,$args)
 	{
 		if (! get_option('cfl_review_notice_dismiss')) {
 			// Create nonce for security
@@ -64,13 +62,12 @@ class Review_notice
 
 			// Add review notice field control
 			$widget->add_control(
-				'cfl_review_notice',
+				'cfl_review_notice_html',
 				array(
 					'label' => __('Review Notice', 'cfl'),
 					'type' => \Elementor\Controls_Manager::RAW_HTML,
 					'raw' => $html,
 					'content_classes' => 'cfl_elementor_review_notice',
-					'tab' => 'content',
 				)
 			);
 
@@ -238,9 +235,9 @@ class Review_notice
 
 	public function editor_assets()
 	{
-		wp_register_script('cfl_logic_editor', CFL_PLUGIN_URL . 'assets/js/cfl_editor.min.js', array('jquery'), CFL_VERSION, true);
-		wp_enqueue_style('cfl_logic_editor', CFL_PLUGIN_URL . 'assets/css/cfl_editor.min.css', null, CFL_VERSION);
-		wp_enqueue_script('cfl_logic_editor');
+		wp_register_script('cfl_reivew_notice', CFL_PLUGIN_URL . 'assets/js/cfl_editor.min.js', array('jquery'), CFL_VERSION, true);
+		wp_enqueue_style('cfl_reivew_notice', CFL_PLUGIN_URL . 'assets/css/cfl_editor.min.css', null, CFL_VERSION);
+		wp_enqueue_script('cfl_reivew_notice');
 	}
 
 	public function cfl_review_notice()

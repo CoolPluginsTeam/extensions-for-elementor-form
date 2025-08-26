@@ -4,7 +4,7 @@ Contributors: coolplugins, narinder-singh, satindersingh
 Tags: form builder, elementor form, elementor, contact form, custom form
 Requires at least: 6.2
 Tested up to: 6.8.2
-Stable tag: 2.5.2
+Stable tag: 2.5.3
 Requires PHP: 8.2
 Elementor tested up to: 3.31.2
 Elementor Pro tested up to: 3.31.2
@@ -171,6 +171,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
    - Save and publish the page to display the form on your site.
 
 == Changelog ==
+
+= Version 2.5.3| 26/08/2025 =
+* **Fixed:** Editor side warning and undismissable review notice button issue.
 
 = Version 2.5.2| 18/08/2025 =
 * **Optimization:-** Bug fixes and security code improvements.
