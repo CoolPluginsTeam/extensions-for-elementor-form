@@ -187,6 +187,14 @@ You can report vulnerabilities through the [Patchstack Vulnerability Disclosure 
 
 == Changelog ==
 
+= 2.5.3 - 2025-08-26 =
+* Fixed: Editor side warning and undismissable review notice button issue.
+
+= 2.5.2 - 2025-08-18 =
+* Optimization: Bug fixes and security code improvements.
+* Tested upto: Elementor Version 3.31.2 and Elementor Pro Version 3.31.2
+* Updated: UTM Links.
+
 = 2.5.1 - 2025-07-25 =
 * Optimization: Bug fixes and code improvements.  
 * Tested up to: Elementor 3.30.3 and Elementor Pro 3.30.0.  
