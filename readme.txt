@@ -193,7 +193,7 @@ You can report vulnerabilities through the [Patchstack Vulnerability Disclosure 
 = 2.5.2 - 2025-08-18 =
 * Optimization: Bug fixes and security code improvements.
 * Tested upto: Elementor Version 3.31.2 and Elementor Pro Version 3.31.2
-* Updated: UTM Links.
+* Updated: Dashboard Links.
 
 = 2.5.1 - 2025-07-25 =
 * Optimization: Bug fixes and code improvements.  
