@@ -1,4 +1,4 @@
-=== Cool FormKit Lite - Advanced Elementor Form Builder ===
+=== Cool FormKit Lite - Advanced Form Builder for Elementor ===
 Contributors: coolplugins, narinder-singh, satindersingh
 Donate link: https://donate.stripe.com/5kQdR92iBevO75WbPm6c00i
 Tags: form builder, contact form, elementor form, elementor, elementor form builder
@@ -8,38 +8,38 @@ Stable tag: 2.5.3
 Requires PHP: 8.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Elementor tested up to: 3.31.2
-Elementor Pro tested up to: 3.31.2
+Elementor tested up to: 3.31.5
+Elementor Pro tested up to: 3.31.3
 
-Advanced form builder for Elementor Free. Also extends Elementor Pro form widget with conditional logic, country code and many extra fields.
+Contact form addon for Elementor. Create forms in Elementor Free or extend Elementor Pro forms with conditional logic, country code and extra fields.
 
 == Description ==
 
-**[Cool FormKit](https://coolformkit.com/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=top_name)** is an advanced form builder for Elementor. It provides a form widget for Elementor Free and also extends the Elementor Pro form widget with additional fields and advanced features.
+**[Cool FormKit](https://coolformkit.com/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=top_name)** is an advanced contact form builder for Elementor. It provides a form widget for Elementor Free and also extends the default Elementor Pro form widget with additional fields and smart features.
 
-If you already use **Elementor Pro**, you can extend its default form widget using **Cool FormKit** (aka coolformkit) to unlock advanced features. For example, you can enhance phone fields with a [Country Code](https://coolformkit.com/features/country-code-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=country_code) and apply [Conditional Logic](https://coolformkit.com/features/conditional-logic-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=conditional_logic) to show or hide fields dynamically based on user input. You can also add a [Range Slider](https://docs.coolplugins.net/doc/range-slider-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=docs&utm_content=range_slider) for interactive input, a [Signature Field](https://docs.coolplugins.net/doc/signature-field-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=docs&utm_content=signature_field) for collecting e-signatures, or a [Calculator Field](https://docs.coolplugins.net/doc/calculator-field-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=docs&utm_content=calculator_field) for creating instant estimates and quotes.  
+If you already use **Elementor Pro**, you can extend default Elementor form widget using **Cool FormKit** (aka coolformkit) to unlock advanced features. For example, you can enhance phone fields with a [Country Code](https://coolformkit.com/features/country-code-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=country_code) and apply [Conditional Logic](https://coolformkit.com/features/conditional-logic-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=conditional_logic) to show or hide fields dynamically based on user input. You can also add a [Range Slider](https://docs.coolplugins.net/doc/range-slider-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=docs&utm_content=range_slider) for interactive input, a [Signature Field](https://docs.coolplugins.net/doc/signature-field-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=docs&utm_content=signature_field) for collecting e-signatures, or a [Calculator Field](https://docs.coolplugins.net/doc/calculator-field-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=docs&utm_content=calculator_field) for creating instant estimates and quotes. Means aside from building simple contact forms, Cool FormKit helps you create advanced forms in Elementor. 
 
 Not just that — if you are using the **Hello Plus** plugin with its form widget, **Cool FormKit** also extends it with the same advanced options, making it a truly all-in-one form builder for Elementor Free, Pro, and Hello Plus.  
 
 ---  
 
-👉 **[VIEW ELEMENTOR FORMS EXAMPLES](https://coolformkit.com/elementor-forms/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=demo&utm_content=view_elementor_forms)**  
+👉 **[VIEW FORM EXAMPLES](https://coolformkit.com/elementor-forms/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=demo&utm_content=view_elementor_forms)**  
 
 https://youtu.be/gJ2ON1-oJhM
 
-With Cool FormKit, you can create contact forms, registration forms, booking forms, feedback forms, survey forms, and more — all with a drag-and-drop builder and no coding required. It makes building forms in Elementor fast, flexible, and user-friendly.
+With Cool FormKit, you can create contact forms, registration forms, booking forms, feedback forms, survey forms, calculator forms, and more — all with a drag-and-drop form builder and no coding required. It makes building forms in Elementor fast, flexible, and user-friendly.
 
 ---
 
 ### Cool FormKit Lite Features
 
-* **Form Widget for Elementor Free**: Build forms directly in Elementor Free with a drag-and-drop form widget.  
+* **Form Widget for Elementor Free**: Build forms directly in Elementor Free with a drag-and-drop contact form widget.  
 * **Form Extender for Elementor Pro**: Already using Elementor Pro forms? Extend them with extra options like conditional logic and country code.  
 * **Form Extender for Hello Plus**: Create forms with the Hello Plus form widget and extend them with advanced fields and logic.  
 * **Save Form Entries**: Automatically save form submissions in your WordPress dashboard for records management.  
-* **[WhatsApp Redirect](https://coolformkit.com/features/whatsapp-redirect-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_whatsapp_redirect)**: Redirect users to WhatsApp after submitting a form — perfect for instant lead follow-ups.  
-* **[Conditional Logic for Fields](https://coolformkit.com/features/conditional-logic-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_conditional_logic)**: Show or hide fields dynamically based on other field values for smarter forms.  
-* **[Country Code for Tel Field](https://coolformkit.com/features/country-code-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_country_code)**: Add an international country code dropdown with flags inside the `Tel field`.  
+* **[WhatsApp Redirect Form](https://coolformkit.com/features/whatsapp-redirect-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_whatsapp_redirect)**: Redirect users to WhatsApp after submitting a form — perfect for instant lead follow-ups.  
+* **[Conditional Fields](https://coolformkit.com/features/conditional-logic-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_conditional_logic)**: Show or hide fields dynamically based on other field values for smarter forms.  
+* **[Country Code Field](https://coolformkit.com/features/country-code-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_country_code)**: Add an international country code dropdown with flags inside the `Tel field`.  
 * **[Form Input Masks](https://coolformkit.com/features/input-mask-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_input_masks)**: Help users enter properly formatted data like dates, phone numbers, and credit cards.  
 
 ---
@@ -48,7 +48,7 @@ With Cool FormKit, you can create contact forms, registration forms, booking for
 
 * **[Range Slider](https://coolformkit.com/features/range-slider-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_range_slider)**: Add interactive range sliders to capture numeric values in a visual way.  
 * **[Signature Field](https://coolformkit.com/features/signature-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_signature_field)**: Let users sign electronically with a responsive signature pad.  
-* **[Rating Field](https://coolformkit.com/features/rating-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_rating_field)**: Collect star ratings and feedback in your Elementor forms.  
+* **[Rating Field](https://coolformkit.com/features/rating-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_rating_field)**: Collect star ratings and feedback in your Elementer forms.  
 * **[Select2 Field](https://coolformkit.com/features/select2-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_select2_field)**: Enhance dropdowns with search, AJAX, and multi-select options.  
 * **[Checkbox & Radio Styles](https://coolformkit.com/features/checkbox-radio-styles-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_checkbox_radio)**: Apply modern styles on checkboxes and radio buttons.  
 * **[Image Radio Field](https://coolformkit.com/features/image-radio-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_image_radio)**: Replace boring radio buttons with images as selectable options.  
@@ -57,9 +57,9 @@ With Cool FormKit, you can create contact forms, registration forms, booking for
 * **[hCaptcha](https://coolformkit.com/features/hcaptcha-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_hcaptcha)**: Add hCaptcha verification to Elementor forms for anti-spam security.  
 * **[Country & State Field](https://coolformkit.com/features/country-and-state-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_country_state)**: Add a Country + State selector in Elementor form.  
 * **[WYSIWYG Field](https://coolformkit.com/features/wysiwyg-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_wysiwyg)**: Insert a rich-text editor field so users can enter formatted content.  
-* **[Calculator Fields](https://coolformkit.com/features/calculator-for-elementor/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_calculator)**: Create calculators like **BMI**, **EMI**, and **Interest Calculator** directly in Elementor 👉 Examples: [BMI Calculator](https://coolformkit.com/elementor-forms/bmi-calculator/), [EMI Calculator](https://coolformkit.com/elementor-forms/emi-calculator/), [Interest Calculator](https://coolformkit.com/elementor-forms/interest-calculator/)  
+* **[Calculator Forms](https://coolformkit.com/features/calculator-for-elementor/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=features_calculator)**: Create calculators like **BMI**, **EMI**, and **Interest Calculator** directly in Elementor 👉 Examples: [BMI Calculator](https://coolformkit.com/elementor-forms/bmi-calculator/), [EMI Calculator](https://coolformkit.com/elementor-forms/emi-calculator/), [Interest Calculator](https://coolformkit.com/elementor-forms/interest-calculator/)  
 * **Spam Protection**: Secure your Elementor forms by blocking submissions that contain restricted or spam words in form fields.  
-* **Advanced Conditional Logics**: Apply advanced conditional logic in Elementor forms to trigger automatic workflows like:  
+* **Smart Conditional Logic**: Apply advanced conditional logic in Elementor forms to trigger automatic workflows like:  
    - [Conditional Redirects](https://docs.coolplugins.net/doc/conditional-redirect-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=docs&utm_content=features_conditional_redirect)  
    - [Conditional Emails](https://docs.coolplugins.net/doc/conditional-email-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=docs&utm_content=features_conditional_email)  
    - [Conditional Mailchimp Integration](https://docs.coolplugins.net/doc/conditional-mailchimp-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=docs&utm_content=features_conditional_mailchimp)  
@@ -70,15 +70,16 @@ With Cool FormKit, you can create contact forms, registration forms, booking for
 
 #### Cool FormKit – Exclusive Features for Elementor Pro Forms  
 
-* **Register Posts & Custom Post Types**: Enable users to submit content from the frontend and instantly create WordPress posts. 👉 [Watch Demo](https://www.youtube.com/watch?v=fNIoWyXF9js)  
+* **Frontend Post Submission Forms**: Enable users to submit content from the frontend and instantly create WordPress posts. 👉 [Watch Demo](https://www.youtube.com/watch?v=fNIoWyXF9js)  
 
 * **Hide Form After Submission & Show Custom Message**: Hide the form after successful submission and show a custom success message. 👉 [Watch Demo](https://www.youtube.com/watch?v=CMN32j4hGlA)  
 
 ---
 
-### More Elementor Form Extensions 
+### More Form Extensions For Elementor
 
-Looking to enhance your Elementor forms even further? The **Cool Plugins** team has built several lightweight addons that work perfectly with Elementor Pro form widget.
+Using the default Elementor form builder widget from Elementor Pro?  
+Now enhance your Elementor forms with these lightweight form addons developed by **Cool Plugins**.
 
 * **[Conditional Fields for Elementor Form](https://coolplugins.net/product/conditional-fields-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=elementor_form_addons)**  
    Add advanced if/else logic to your forms. Show, hide, enable, or disable fields dynamically depending on user selections.  
@@ -104,6 +105,12 @@ Cool Plugins team has also built several other popular addons that extend Elemen
 * **[LocoAI – Auto Translate for Loco Translate](https://locoaddon.com/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=other_addons)**: Instantly translate WordPress plugins and themes with AI with One-click.  
 
 * **[Loop Grid Extender for Elementor Pro](https://wordpress.org/plugins/loop-grid-extender-for-elementor-pro/)**: Supercharge Elementor Pro loop grids with support for ACF repeater fields and advanced taxonomy filters.
+
+---
+
+#### Disclaimer
+
+Cool FormKit is an independent product developed by **Cool Plugins**. It is *not affiliated with, endorsed, or sponsored by Elementor*. Elementor is a registered trademark of Elementor Ltd. All references to *Elementor* in this plugin are strictly for descriptive purposes, to indicate that it works as an addon/extension for the Elementor page builder.
 
 ---
 
@@ -136,7 +143,7 @@ For advanced usage, visit the [Cool FormKit Documentation](https://docs.coolplug
 == Frequently Asked Questions ==
 
 = What is Cool FormKit and who can use it? =  
-Cool FormKit is an advanced form builder addon for Elementor. It allows Elementor Free users to create forms directly inside the page builder, and also extends Elementor Pro and Hello Plus forms with extra fields and advanced features. Anyone building websites with Elementor can use Cool FormKit.  
+Cool FormKit is an advanced form builder addon for Elementor. It allows Elementor Free users to create forms directly inside the page builder, and also enhances Elementor Pro and Hello Plus form widgets with extra fields and advanced options. Anyone building websites with Elementor can use Cool FormKit.
 
 = Can I extend Elementor Pro forms using Cool FormKit? =  
 Yes. If you already use Elementor Pro, you can extend its default form widget with advanced features such as [conditional logic](https://coolformkit.com/features/conditional-logic-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=faqs), [country code dropdown](https://coolformkit.com/features/country-code-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=faqs), and [WhatsApp redirect](https://coolformkit.com/features/whatsapp-redirect-elementor-form/?utm_source=cfkl_plugin&utm_medium=readme&utm_campaign=features&utm_content=faqs).  
