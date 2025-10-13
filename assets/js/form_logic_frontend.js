@@ -564,9 +564,6 @@
 
                     conditionalStepfield.find(".elementor-field-type-previous button").removeClass('cfef-ran');
 
-                    console.log('next btn clicked');
-
-
                     conditionalStepfield.find(".elementor-field-type-next button").addClass('cfef-ran');
 
                     conditionalStepfield.find(".elementor-field-type-next button").trigger('click');
@@ -612,9 +609,6 @@
                     conditionalStepfield.find(".elementor-field-type-next button").removeClass('cfef-ran');
 
                     conditionalStepfield.find(".elementor-field-type-previous button").addClass('cfef-ran');
-
-                    console.log('next btn clicked');
-
 
                     conditionalStepfield.find(".elementor-field-type-previous button").trigger('click');
 
