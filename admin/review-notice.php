@@ -29,7 +29,6 @@ class Review_notice
 	public function __construct()
 	{
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_review_notice_scripts' ) );
 		add_action('elementor/element/cool-form/section_form_options/after_section_end', array($this, 'add_review_notice'), 10, 2);
 
 		add_action('elementor/editor/before_enqueue_styles', array($this, 'editor_assets'));
@@ -103,6 +102,9 @@ class Review_notice
 		// check if installation days is greator then week
 		if (isset($diff_days) && $diff_days >= 3) {
 			echo $this->cfl_create_notice_content();
+			wp_enqueue_style( 'cfl-admin-review-notice-css', CFL_PLUGIN_URL . 'admin/feedback/css/cfl-admin-review-notice.css', null, CFL_VERSION );
+	
+			wp_enqueue_script( 'cfl-admin-review-notice-js', CFL_PLUGIN_URL . 'admin/feedback/js/cfl-admin-review-notice.js', array( 'jquery' ), CFL_VERSION );
 		}
 	}
 
@@ -123,43 +125,6 @@ class Review_notice
 		';
 		
 		return $html;
-	}
-
-	function enqueue_review_notice_scripts() {
-
-
-		if (! current_user_can('update_plugins')) {
-			return;
-		}
-
-		// get installation dates and rated settings
-		$installation_date = get_option($this->installation_date_option);
-		$alreadyRated      = get_option($this->review_option) != false ? get_option($this->review_option) : 'no';
-
-		// check user already rated
-		if ($alreadyRated == 'yes') {
-			return;
-		}
-
-		// grab plugin installation date and compare it with current date
-		$display_date = date('Y-m-d h:i:s');
-		$install_date = new DateTime($installation_date);
-		$current_date = new DateTime($display_date);
-		$difference   = $install_date->diff($current_date);
-		$diff_days    = $difference->days;
-
-
-		// check if installation days is greator then week
-		if (isset($diff_days) && $diff_days >= 3) {
-			wp_enqueue_style( 'cfl-admin-review-notice-css', CFL_PLUGIN_URL . 'admin/feedback/css/cfl-admin-review-notice.css', null, CFL_VERSION );
-	
-			wp_enqueue_script( 'cfl-admin-review-notice-js', CFL_PLUGIN_URL . 'admin/feedback/js/cfl-admin-review-notice.js', array( 'jquery' ), CFL_VERSION );
-		}
-
-
-
-
-
 	}
 
 
