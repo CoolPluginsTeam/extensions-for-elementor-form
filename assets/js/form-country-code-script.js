@@ -28,6 +28,7 @@ class FormCCFEF extends elementorModules.frontend.handlers.Base {
             $textArea: this.$element.find(selectors.inputTelTextArea),
             $intlSpanElement: this.$element.find(selectors.intlInputSpan),
             $submitButton: this.$element.find(selectors.submitButton),
+            $form: this.$element.find(selectors.form),
         };
     }
 
@@ -492,6 +493,7 @@ class FormCCFEF extends elementorModules.frontend.handlers.Base {
                         this.elements.$submitButton.removeClass('cfkef-prevent-submit')
                     } else {
                         this.elements.$submitButton.addClass('cfkef-prevent-submit')
+
                         const errorType = iti.getValidationError();
                         if (errorType !== undefined && errorMap[errorType]) {
                             // Remove dial code from input field if validation fails
@@ -506,6 +508,9 @@ class FormCCFEF extends elementorModules.frontend.handlers.Base {
                             jQuery(inputTelElement).closest('.cfefp-intl-container').addClass('elementor-error');
                             jQuery(inputTelElement).after(errorMsgHtml);
                             e.preventDefault();
+                            if(this.elements.$form.find('.elementor-field-type-recaptcha_v3').length > 0){
+                                e.stopImmediatePropagation()
+                            }
                         }
                     }
                 });

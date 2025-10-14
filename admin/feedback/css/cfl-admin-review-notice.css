@@ -1,0 +1,75 @@
+/* review notice css start */
+
+#wpbody .cfl-review-notice-wrapper.notice {
+    padding: 5px;
+    display: table;
+    width: calc(100% - 10px);
+    max-width: 870px;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.cfl-review-notice-wrapper .logo_container {
+    width: 80px;
+    display: table-cell;
+    padding: 5px;
+    vertical-align: middle;
+}
+
+.cfl-review-notice-wrapper .logo_container a,
+.cfl-review-notice-wrapper .logo_container img {
+    width: 80px;
+    height: auto;
+    display: inline-block;
+}
+
+.cfl-review-notice-wrapper .message_container {
+    display: table-cell;
+    padding: 0px 22px 5px 5px;
+    vertical-align: middle;
+}
+
+.cfl-review-notice-wrapper p,
+.cfl-review-notice-wrapper ul {
+    padding: 0;
+    margin: 0;
+    line-height: 1.25em;
+    display: flow-root;
+}
+
+.cfl-review-notice-wrapper ul {
+    margin-top: 10px;
+}
+
+.cfl-review-notice-wrapper ul li {
+    float: left;
+    margin: 0px 10px 0 0;
+}
+
+.cfl-review-notice-wrapper ul li .button-secondary.already-rated-btn:before {
+    color: #f12945;
+    content: "\f153";
+    display: inline-block;
+    vertical-align: middle;
+    margin: -1px 5px 0 0px;
+    font-size: 14px;
+    line-height: 14px;
+    font-family: dashicons;
+}
+
+
+/* review notice css end */
+
+
+/* review notce reponsive start */
+
+@media screen and (max-width: 660px) {
+    .cfl-review-notice-wrapper .logo_container {
+        display: none;
+    }
+    .cfl-review-notice-wrapper .message_container {
+        display: flow-root;
+    }
+}
+
+/* review notce reponsive end */
