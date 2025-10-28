@@ -446,86 +446,6 @@ class FormCCFEF extends elementorModules.frontend.handlers.Base {
         });
     }
 
-    validateCountryInputs(e, trigger = 'submit') {
-        const itiArr = this.iti;
-        const errorMap = CCFEFCustomData.errorMap;
-
-        if (!itiArr || Object.keys(itiArr).length === 0) return;
-
-        for (const key of Object.keys(itiArr)) {
-            const iti = itiArr[key];
-            const input = iti.telInput;
-            const $input = jQuery(input);
-            const $fieldWrapper = $input.closest('.elementor-field-type-tel');
-            const $container = $input.closest('.cfefp-intl-container');
-
-            // Skip hidden fields
-            if ($fieldWrapper.hasClass('cfef-hidden')) {
-                input.value = '+1234567890';
-                continue;
-            }
-
-            // Clean and normalize input value
-            if (input.value) {
-                input.value = input.value.replace(/[^0-9+]/g, '');
-                const { dialCode } = iti.getSelectedCountryData();
-                const dialPrefix = `+${dialCode}`;
-                const visibility = this.dialCodeVisibility[key];
-
-                if ((visibility === 'separate' || visibility === 'hide') && !input.value.startsWith('+')) {
-                    input.value = dialPrefix + input.value;
-                }
-            }
-
-            // Adjust CSS variable for button height
-            const parentGroup = input.closest('.elementor-field-group');
-            const telContainer = parentGroup?.querySelector('.cfefp-intl-container');
-            if (telContainer && input.offsetHeight) {
-                telContainer.style.setProperty('--cfefp-intl-tel-button-height', `${input.offsetHeight}px`);
-            }
-
-            // Remove old errors
-            const $errorContainer = $input.parent();
-            $errorContainer.find('span.elementor-message').remove();
-
-            if (!input.value) continue;
-
-            // Validate number
-            if (iti.isValidNumber()) {
-                $container.removeClass('elementor-error');
-                if (trigger === 'submit') {
-                    this.elements.$form[0].classList.remove('elementor-form-waiting');
-                }
-                continue;
-            }
-
-            // Handle error
-            const errorType = iti.getValidationError();
-            if (errorType !== undefined && errorMap[errorType]) {
-                const { dialCode } = iti.getSelectedCountryData();
-                const dialPrefix = `+${dialCode}`;
-                const visibility = this.dialCodeVisibility[key];
-
-                if ((visibility === 'separate' || visibility === 'hide') && input.value.startsWith(dialPrefix)) {
-                    input.value = input.value.substring(dialPrefix.length);
-                }
-
-                const errorMsg = `<span class="elementor-message elementor-message-danger elementor-help-inline elementor-form-help-inline" role="alert">${errorMap[errorType]}</span>`;
-                $container.addClass('elementor-error');
-                $input.after(errorMsg);
-
-                // Prevent form submission
-                e.preventDefault();
-                if (trigger === 'submit') {
-                    this.elements.$form[0].classList.add('elementor-form-waiting');
-                }
-                if(this.elements.$form.find('.elementor-field-type-recaptcha_v3').length > 0){
-                    e.stopImmediatePropagation()
-                }
-            }
-        }
-    }
-
 
 
     /**
@@ -534,12 +454,71 @@ class FormCCFEF extends elementorModules.frontend.handlers.Base {
      */
     intlInputValidation() {
         this.elements.$submitButton.on('click', (e) => {
-            this.validateCountryInputs(e, 'button');
-        });
+            const itiArr = this.iti;
 
+            if (Object.keys(itiArr).length > 0) {
+                Object.keys(itiArr).forEach(data => {
+                    const iti = itiArr[data];
+              
+                    const inputTelElement = iti.telInput;                    
 
-        this.elements.$form.on('submit', (e) => {
-            this.validateCountryInputs(e, 'submit');
+                    if('' !== inputTelElement.value){
+                        inputTelElement.value=inputTelElement.value.replace(/[^0-9+]/g, '');
+                                                
+                        // Always ensure dial code is present in the value before validation
+                        const currentCountryData = iti.getSelectedCountryData();
+                        const dialCode = `+${currentCountryData.dialCode}`;
+                        
+                        // If using separate or hide mode, ensure dial code is in the value
+                        if (this.dialCodeVisibility[data] === 'separate' || this.dialCodeVisibility[data] === 'hide') {
+                            if (!inputTelElement.value.startsWith('+')) {
+                                inputTelElement.value = dialCode + inputTelElement.value;
+                            }
+                        }
+                    }
+
+                    const parentWrp = inputTelElement.closest('.elementor-field-group');
+                    const telContainer=parentWrp.querySelector('.cfefp-intl-container');
+
+                    if (telContainer && inputTelElement.offsetHeight) {
+                        telContainer.style.setProperty('--cfefp-intl-tel-button-height', `${inputTelElement.offsetHeight}px`);
+                    }
+
+                    const errorContainer = jQuery(inputTelElement).parent();
+                    errorContainer.find('span.elementor-message').remove();
+
+                    const errorMap = CCFEFCustomData.errorMap;
+                    let errorMsgHtml = '<span class="elementor-message elementor-message-danger elementor-help-inline elementor-form-help-inline" role="alert">';
+                    if('' === inputTelElement.value){
+                        return;
+                    };
+                    if (iti.isValidNumber()) {
+                        jQuery(inputTelElement).closest('.cfefp-intl-container').removeClass('elementor-error');
+                        this.elements.$submitButton.removeClass('cfkef-prevent-submit')
+                    } else {
+                        this.elements.$submitButton.addClass('cfkef-prevent-submit')
+
+                        const errorType = iti.getValidationError();
+                        if (errorType !== undefined && errorMap[errorType]) {
+                            // Remove dial code from input field if validation fails
+                            if (this.dialCodeVisibility[data] === 'separate' || this.dialCodeVisibility[data] === 'hide') {
+                                const currentCountryData = iti.getSelectedCountryData();
+                                const dialCode = `+${currentCountryData.dialCode}`;
+                                if (inputTelElement.value.startsWith(dialCode)) {
+                                    inputTelElement.value = inputTelElement.value.substring(dialCode.length);
+                                }
+                            }
+                            errorMsgHtml += errorMap[errorType] + '</span>';
+                            jQuery(inputTelElement).closest('.cfefp-intl-container').addClass('elementor-error');
+                            jQuery(inputTelElement).after(errorMsgHtml);
+                            e.preventDefault();
+                            if(this.elements.$form.find('.elementor-field-type-recaptcha_v3').length > 0){
+                                e.stopImmediatePropagation()
+                            }
+                        }
+                    }
+                });
+            }
         });
     }
     
