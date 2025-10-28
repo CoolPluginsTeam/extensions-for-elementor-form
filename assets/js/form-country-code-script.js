@@ -447,6 +447,92 @@ class FormCCFEF extends elementorModules.frontend.handlers.Base {
     }
 
 
+    // Helper: Validate all telephone fields
+    validateTelInputs(e, trigger = 'submit') {
+
+        if(trigger !== 'submit'){
+            e.preventDefault();
+        }
+        const itiArr = this.iti;
+
+        if (Object.keys(itiArr).length > 0) {
+                Object.keys(itiArr).forEach(data => {
+                const iti = itiArr[data];
+              
+                const inputTelElement = iti.telInput;                    
+
+                if('' !== inputTelElement.value){
+                    inputTelElement.value=inputTelElement.value.replace(/[^0-9+]/g, '');
+                                                
+                    // Always ensure dial code is present in the value before validation
+                    const currentCountryData = iti.getSelectedCountryData();
+                    const dialCode = `+${currentCountryData.dialCode}`;
+                        
+                    // If using separate or hide mode, ensure dial code is in the value
+                    if (this.dialCodeVisibility[data] === 'separate' || this.dialCodeVisibility[data] === 'hide') {
+                        if (!inputTelElement.value.startsWith('+')) {
+                            inputTelElement.value = dialCode + inputTelElement.value;
+                        }
+                    }
+                }
+
+                const parentWrp = inputTelElement.closest('.elementor-field-group');
+                const telContainer=parentWrp.querySelector('.cfefp-intl-container');
+
+                if (telContainer && inputTelElement.offsetHeight) {
+                    telContainer.style.setProperty('--cfefp-intl-tel-button-height', `${inputTelElement.offsetHeight}px`);
+                }
+
+                const errorContainer = jQuery(inputTelElement).parent();
+                errorContainer.find('span.elementor-message').remove();
+
+                const errorMap = CCFEFCustomData.errorMap;
+                let errorMsgHtml = '<span class="elementor-message elementor-message-danger elementor-help-inline elementor-form-help-inline" role="alert">';
+                if('' === inputTelElement.value){
+                        return;
+                };
+                if (iti.isValidNumber()) {
+                    jQuery(inputTelElement).closest('.cfefp-intl-container').removeClass('elementor-error');
+                    this.elements.$submitButton.removeClass('cfkef-prevent-submit');
+                    const $visibleFlexErrors = this.elements.$form.find('.mask-error').filter(function() {
+                        return jQuery(this).css('display') === 'flex';
+                    });
+
+                    if(!$visibleFlexErrors){
+
+                        this.elements.$form[0].classList.remove('elementor-form-waiting');
+                    }
+                } else {
+                    this.elements.$submitButton.addClass('cfkef-prevent-submit')
+
+                    const errorType = iti.getValidationError();
+                    if (errorType !== undefined && errorMap[errorType]) {
+                        // Remove dial code from input field if validation fails
+                        if (this.dialCodeVisibility[data] === 'separate' || this.dialCodeVisibility[data] === 'hide') {
+                            const currentCountryData = iti.getSelectedCountryData();
+                            const dialCode = `+${currentCountryData.dialCode}`;
+                            if (inputTelElement.value.startsWith(dialCode)) {
+                                inputTelElement.value = inputTelElement.value.substring(dialCode.length);
+                            }
+                        }
+                        errorMsgHtml += errorMap[errorType] + '</span>';
+                        jQuery(inputTelElement).closest('.cfefp-intl-container').addClass('elementor-error');
+                        jQuery(inputTelElement).after(errorMsgHtml);
+                        e.preventDefault();
+                        if(this.elements.$form.find('.elementor-field-type-recaptcha_v3').length > 0){
+                            e.stopImmediatePropagation()
+                        }
+
+                        if (trigger === 'submit') {
+                            this.elements.$form[0].classList.add('elementor-form-waiting');
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+
 
     /**
      * Validates the international telephone input fields when the submit button is clicked.
@@ -454,71 +540,11 @@ class FormCCFEF extends elementorModules.frontend.handlers.Base {
      */
     intlInputValidation() {
         this.elements.$submitButton.on('click', (e) => {
-            const itiArr = this.iti;
+            this.validateTelInputs(e, 'button');
+        });
 
-            if (Object.keys(itiArr).length > 0) {
-                Object.keys(itiArr).forEach(data => {
-                    const iti = itiArr[data];
-              
-                    const inputTelElement = iti.telInput;                    
-
-                    if('' !== inputTelElement.value){
-                        inputTelElement.value=inputTelElement.value.replace(/[^0-9+]/g, '');
-                                                
-                        // Always ensure dial code is present in the value before validation
-                        const currentCountryData = iti.getSelectedCountryData();
-                        const dialCode = `+${currentCountryData.dialCode}`;
-                        
-                        // If using separate or hide mode, ensure dial code is in the value
-                        if (this.dialCodeVisibility[data] === 'separate' || this.dialCodeVisibility[data] === 'hide') {
-                            if (!inputTelElement.value.startsWith('+')) {
-                                inputTelElement.value = dialCode + inputTelElement.value;
-                            }
-                        }
-                    }
-
-                    const parentWrp = inputTelElement.closest('.elementor-field-group');
-                    const telContainer=parentWrp.querySelector('.cfefp-intl-container');
-
-                    if (telContainer && inputTelElement.offsetHeight) {
-                        telContainer.style.setProperty('--cfefp-intl-tel-button-height', `${inputTelElement.offsetHeight}px`);
-                    }
-
-                    const errorContainer = jQuery(inputTelElement).parent();
-                    errorContainer.find('span.elementor-message').remove();
-
-                    const errorMap = CCFEFCustomData.errorMap;
-                    let errorMsgHtml = '<span class="elementor-message elementor-message-danger elementor-help-inline elementor-form-help-inline" role="alert">';
-                    if('' === inputTelElement.value){
-                        return;
-                    };
-                    if (iti.isValidNumber()) {
-                        jQuery(inputTelElement).closest('.cfefp-intl-container').removeClass('elementor-error');
-                        this.elements.$submitButton.removeClass('cfkef-prevent-submit')
-                    } else {
-                        this.elements.$submitButton.addClass('cfkef-prevent-submit')
-
-                        const errorType = iti.getValidationError();
-                        if (errorType !== undefined && errorMap[errorType]) {
-                            // Remove dial code from input field if validation fails
-                            if (this.dialCodeVisibility[data] === 'separate' || this.dialCodeVisibility[data] === 'hide') {
-                                const currentCountryData = iti.getSelectedCountryData();
-                                const dialCode = `+${currentCountryData.dialCode}`;
-                                if (inputTelElement.value.startsWith(dialCode)) {
-                                    inputTelElement.value = inputTelElement.value.substring(dialCode.length);
-                                }
-                            }
-                            errorMsgHtml += errorMap[errorType] + '</span>';
-                            jQuery(inputTelElement).closest('.cfefp-intl-container').addClass('elementor-error');
-                            jQuery(inputTelElement).after(errorMsgHtml);
-                            e.preventDefault();
-                            if(this.elements.$form.find('.elementor-field-type-recaptcha_v3').length > 0){
-                                e.stopImmediatePropagation()
-                            }
-                        }
-                    }
-                });
-            }
+        this.elements.$form.on('submit', (e) => {
+            this.validateTelInputs(e, 'submit');
         });
     }
     
