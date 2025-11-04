@@ -346,6 +346,15 @@ class FormCCFEF extends elementorModules.frontend.handlers.Base {
             value = value.replace(/\+/g, '');
             element.value = dialCodeVisibility === 'separate' || dialCodeVisibility === 'hide' ? value : currentCode + value;
         }
+
+        else if (value.length > 12) {
+            const plainCode = currentCode.replace('+', '');
+            const doublePrefix = `+${plainCode}${plainCode}`;
+
+            if (value.startsWith(doublePrefix)) {
+                element.value = `+${value.slice(currentCode.length)}`;
+            }
+        }
     }
 
     customFlags() {
@@ -450,16 +459,20 @@ class FormCCFEF extends elementorModules.frontend.handlers.Base {
     // Helper: Validate all telephone fields
     validateTelInputs(e, trigger = 'submit') {
 
-        if(trigger !== 'submit'){
-            e.preventDefault();
-        }
         const itiArr = this.iti;
 
         if (Object.keys(itiArr).length > 0) {
-                Object.keys(itiArr).forEach(data => {
+            Object.keys(itiArr).forEach(data => {
                 const iti = itiArr[data];
               
-                const inputTelElement = iti.telInput;                    
+                const inputTelElement = iti.telInput;
+                
+                if(jQuery(inputTelElement).closest('.elementor-field-type-tel').hasClass('cfef-hidden')){
+
+                    inputTelElement.value = '+1234567890';
+
+                    return;
+                }
 
                 if('' !== inputTelElement.value){
                     inputTelElement.value=inputTelElement.value.replace(/[^0-9+]/g, '');
@@ -489,7 +502,7 @@ class FormCCFEF extends elementorModules.frontend.handlers.Base {
                 const errorMap = CCFEFCustomData.errorMap;
                 let errorMsgHtml = '<span class="elementor-message elementor-message-danger elementor-help-inline elementor-form-help-inline" role="alert">';
                 if('' === inputTelElement.value){
-                        return;
+                    return;
                 };
                 if (iti.isValidNumber()) {
                     jQuery(inputTelElement).closest('.cfefp-intl-container').removeClass('elementor-error');
@@ -498,7 +511,7 @@ class FormCCFEF extends elementorModules.frontend.handlers.Base {
                         return jQuery(this).css('display') === 'flex';
                     });
 
-                    if(!$visibleFlexErrors){
+                    if($visibleFlexErrors.length === 0){
 
                         this.elements.$form[0].classList.remove('elementor-form-waiting');
                     }
@@ -519,12 +532,11 @@ class FormCCFEF extends elementorModules.frontend.handlers.Base {
                         jQuery(inputTelElement).closest('.cfefp-intl-container').addClass('elementor-error');
                         jQuery(inputTelElement).after(errorMsgHtml);
                         e.preventDefault();
-                        if(this.elements.$form.find('.elementor-field-type-recaptcha_v3').length > 0){
-                            e.stopImmediatePropagation()
-                        }
-
                         if (trigger === 'submit') {
                             this.elements.$form[0].classList.add('elementor-form-waiting');
+                        }
+                        if(this.elements.$form.find('.elementor-field-type-recaptcha_v3').length > 0){
+                            e.stopImmediatePropagation()
                         }
                     }
                 }
@@ -539,6 +551,7 @@ class FormCCFEF extends elementorModules.frontend.handlers.Base {
      * It checks if the number is valid and displays appropriate error messages next to the input field.
      */
     intlInputValidation() {
+
         this.elements.$submitButton.on('click', (e) => {
             this.validateTelInputs(e, 'button');
         });
