@@ -113,8 +113,12 @@ class HelloPlusCCFEF extends elementorModules.frontend.handlers.Base {
                     previousCountryData = currentCountryData;
                 }
 
-                this.updateCountryCodeHandler(e.currentTarget, currentCode, previousCode, this.dialCodeVisibility[key]);
-                previousCode = currentCode;
+                if(e.currentTarget.value.startsWith(currentCode.replace('+',''))){
+                    this.updateCountryCodeHandler(e.currentTarget, '+', previousCode, this.dialCodeVisibility[key]);
+                }else{
+                    this.updateCountryCodeHandler(e.currentTarget, currentCode, previousCode, this.dialCodeVisibility[key]);
+                    previousCode = currentCode;
+                }
             };
 
             // Attach event listeners for both keyup and country change events
@@ -339,6 +343,15 @@ class HelloPlusCCFEF extends elementorModules.frontend.handlers.Base {
         if (!value.startsWith(currentCode)) {
             value = value.replace(/\+/g, '');
             element.value = dialCodeVisibility === 'separate' || dialCodeVisibility === 'hide' ? value : currentCode + value;
+        }
+
+        else if (value.length > 12) {
+            const plainCode = currentCode.replace('+', '');
+            const doublePrefix = `+${plainCode}${plainCode}`;
+
+            if (value.startsWith(doublePrefix)) {
+                element.value = `+${value.slice(currentCode.length)}`;
+            }
         }
     }
 
