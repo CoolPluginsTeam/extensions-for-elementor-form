@@ -129,6 +129,10 @@ class Module extends Module_Base {
 		);
 
 		wp_enqueue_script('Cool_FormKit-forms-editor', true);
+
+		wp_localize_script( 'Cool_FormKit-forms-editor', 'cfkef_plugin_none_label', [
+                'none_label' => sprintf( '- %s -', __( 'None', 'elementor' ) ),
+        ] );
 	}
 
 	public function register_scripts() {

@@ -36,7 +36,7 @@ module.exports = elementor.modules.controls.Repeater.extend( {
 		self.children.each( function( view ) {
 			const localFieldsControl = view.children.last(),
 				options = {
-					'': '- ' + __( 'None', 'elementor' ) + ' -',
+					'': cfkef_plugin_none_label.none_label,
 				};
 			let label = view.model.get( 'remote_label' );
 
