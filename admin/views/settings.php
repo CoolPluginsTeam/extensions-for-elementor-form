@@ -310,6 +310,8 @@ $whatsapp_redirect_conditionally = get_option('cfefp_whatsapp_conditionally', 5)
 
 $conditional_pro_install = is_plugin_active('conditional-fields-for-elementor-form-pro/class-conditional-fields-for-elementor-form-pro.php');
 
+$cool_formkit_pro_install = is_plugin_active('cool-formkit-for-elementor-forms/cool-formkit-for-elementor-forms.php');
+
 // Get CDN Image key values
 $cdn_image = get_option('cfefp_cdn_image', '');
 ?>
@@ -400,6 +402,88 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                     </tr>
                 </table>
                 <hr>
+
+                <h3><?php esc_html_e('MailChimp Settings', 'cool-formkit'); ?>
+                    <span class="cfkef-pro-feature">
+                        <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=settings_dashboard" target="_blank">
+                        <?php echo $cool_formkit_pro_install ? '' : '(Pro)'?>
+                        </a>
+                    </span>
+                </h3>
+
+                <?php if ( $conditional_pro_install ) : ?>
+                    <p class="description cool-formkit-description">
+                        <?php
+                        /* translators: Description shown when Conditional Pro is active */
+                        echo wp_kses_post(
+                            sprintf(
+                                __('If you have activated Conditional Pro, go to the Elementor settings to use the MailChimp API: <a href="%s" target="_blank">Click here</a>', 'cool-formkit'),
+                                esc_url('admin.php?page=elementor-settings#tab-integrations')
+                            )
+                        );
+                        ?>
+                    </p>
+                <?php endif; ?>
+
+                <table class="form-table cool-formkit-table">
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfl_mailchimp_api_key" class="cool-formkit-label"><?php esc_html_e('API Key', 'cool-formkit'); ?></label>
+                        </th>
+                        <td class="cool-formkit-table-td site-key-td">
+                            <input type="password" id="cfl_mailchimp_api_key" name="cfl_mailchimp_api_key" min="4" value="<?php echo esc_attr(get_option('cfl_mailchimp_api_key')); ?>" class="regular-text cool-formkit-input" <?php echo !$cool_formkit_pro_install ? 'disabled' : ''; ?>/>
+                            
+                            <span class="mailchimp-show-hide-icon">
+                                <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+                <p class="description cool-formkit-description"><?php _e('To integrate with our forms you need an <a href="https://mailchimp.com/help/about-api-keys/" target="_blank">API Key</a>.', 'cool-formkit'); ?></p>
+                <hr>
+
+                <h3><?php esc_html_e('Getresponse Settings', 'cool-formkit'); ?>
+                    <span class="cfkef-pro-feature">
+                        <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=settings_dashboard" target="_blank">
+                        <?php echo $cool_formkit_pro_install ? '' : '(Pro)'?>
+                        </a>
+                    </span>
+                </h3>
+
+                <?php if ( $conditional_pro_install ) : ?>
+                    <p class="description cool-formkit-description">
+                        <?php
+                        /* translators: Description shown when Conditional Pro is active */
+                        echo wp_kses_post(
+                            sprintf(
+                                __('If you have activated Conditional Pro, go to the Elementor settings to use the GetResponse API: <a href="%s" target="_blank">Click here</a>', 'cool-formkit'),
+                                esc_url('admin.php?page=elementor-settings#tab-integrations')
+                            )
+                        );
+                        ?>
+                    </p>
+                <?php endif; ?>
+
+
+                <table class="form-table cool-formkit-table">
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfl_getresponse_api_key" class="cool-formkit-label"><?php esc_html_e('API Key', 'cool-formkit'); ?>
+                            </label>
+                        </th>
+                        <td class="cool-formkit-table-td site-key-td">
+                            <input type="password" id="cfl_getresponse_api_key" name="cfl_getresponse_api_key" min="4" value="<?php echo esc_attr(get_option('cfl_getresponse_api_key')); ?>" class="regular-text cool-formkit-input" <?php echo !$cool_formkit_pro_install ? 'disabled' : ''; ?>/>
+                            
+                            <span class="getresponse-show-hide-icon">
+                                <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+                <p class="description cool-formkit-description"><?php _e('To integrate with our forms you need an <a href="https://app.getresponse.com/api" target="_blank">API Key</a>.', 'cool-formkit'); ?></p>
+                    
+                <hr>
+
                 <p class="cool-formkit-description highlight-description"><?php esc_html_e('Configure the settings for conditional fields\' action after submit.', 'cool-formkit'); ?></p>
                 <table class="form-table cool-formkit-table">
                     <tr>
