@@ -194,7 +194,7 @@ You can report vulnerabilities through the [Patchstack Vulnerability Disclosure 
 
 == Changelog ==
 
-= 2.5.6 - 2025-12-02 =
+= 2.5.6 - 2025-12-03 =
 * Fixed: Compatiblity improvements with conditional fields pro.
 
 = 2.5.5 - 2025-11-04 =
