@@ -80,6 +80,41 @@ $form_elements = array(
         'pro' => !$conditional_pro_install,
         'pro_link' => 'https://coolformkit.com/features/conditional-submit-button-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
+
+    'conditional_mailchimp' => array(
+        'label' => __('Conditional MailChimp', 'cool-formkit'),
+        'how_to' => 'https://docs.coolplugins.net/doc/conditional-mailchimp-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
+        'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/mailchimp-logo.svg',
+        'pro' => !$conditional_pro_install,
+        'pro_link' => 'https://coolformkit.com/features/conditional-mailchimp-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
+    ),
+
+    'conditional_getresponse' => array(
+        'label' => __('Conditional GetResponse', 'cool-formkit'),
+        'how_to' => 'https://docs.coolplugins.net/doc/conditional-getresponse-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
+        'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/getresponse-icon.svg',
+        'pro' => !$conditional_pro_install,
+        'pro_link' => ''
+    ),
+    'conditional_webhook' => array(
+        'label' => __('Conditional Webhook', 'cool-formkit'),
+        'how_to' => 'https://docs.coolplugins.net/doc/conditional-webhook-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
+        'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/webhooks-logo.svg',
+        'pro' => !$conditional_pro_install,
+        'pro_link' => ''
+    ),
+    'conditional_whatsapp_redirect' => array(
+        'label' => __('Conditional Whatsapp Redirect', 'cool-formkit'),
+        'how_to' => 'https://docs.coolplugins.net/doc/conditional-whatsapp-redirect-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
+        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
+        'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/conditional-whatsapp-redirect.svg',
+        'pro' => !$conditional_pro_install,
+        'pro_link' => 'https://coolformkit.com/features/whatsapp-redirect-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
+    ),
+
     'range_slider' => array(
         'label' => __('Range Slider', 'cool-formkit'),
         'how_to' => 'https://docs.coolplugins.net/doc/range-slider-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
@@ -209,14 +244,6 @@ $form_elements = array(
         'pro' => true,
         'pro_link' => 'https://coolformkit.com/features/toggle-field-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
     ),
-    'conditional_mailchimp' => array(
-        'label' => __('Conditional MailChimp', 'cool-formkit'),
-        'how_to' => 'https://docs.coolplugins.net/doc/conditional-mailchimp-elementor-form/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard',
-        'demo' => 'https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=cfkef_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard',
-        'icon' => CFL_PLUGIN_URL . 'admin/assets/icons/mailchimp-logo.svg',
-        'pro' => true,
-        'pro_link' => 'https://coolformkit.com/features/conditional-mailchimp-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard'
-    )
 );
 
 $popular_elements = array('');

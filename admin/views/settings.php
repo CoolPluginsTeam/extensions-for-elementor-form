@@ -97,6 +97,38 @@ function handle_form_submit() {
         }
     }
 
+    if(isset($_POST['cfefp_mailchimp_conditionally'])){
+
+        if (preg_match($pattern, $_POST['cfefp_mailchimp_conditionally'])) {
+
+            return false;
+        }
+    }
+
+    if(isset($_POST['cfefp_webhook_conditionally'])){
+
+        if (preg_match($pattern, $_POST['cfefp_webhook_conditionally'])) {
+
+            return false;
+        }
+    }
+
+    if(isset($_POST['cfefp_whatsapp_conditionally'])){
+
+        if (preg_match($pattern, $_POST['cfefp_whatsapp_conditionally'])) {
+
+            return false;
+        }
+    }
+
+    if(isset($_POST['cfefp_getresponse_conditionally'])){
+
+        if (preg_match($pattern, $_POST['cfefp_getresponse_conditionally'])) {
+
+            return false;
+        }
+    }
+
     if(isset($_POST['cfkef_country_code_api_key'])){
 
         if (preg_match($pattern, $_POST['cfkef_country_code_api_key'])) {
@@ -205,6 +237,20 @@ if (isset($_POST['cfl_site_key_v2']) || isset($_POST['cfl_secret_key_v2']) || is
     
     $email_conditionally = isset($_POST['cfefp_email_conditionally']) ? sanitize_text_field($_POST['cfefp_email_conditionally']) : '';
 
+    // Mailchimp conditionally
+    $cfefp_mailchimp_conditionally = isset($_POST['cfefp_mailchimp_conditionally']) ? sanitize_text_field($_POST['cfefp_mailchimp_conditionally']) : '';
+
+    // GetResponse conditionally
+    $cfefp_getresponse_conditionally = isset($_POST['cfefp_getresponse_conditionally']) ? sanitize_text_field($_POST['cfefp_getresponse_conditionally']) : '';
+
+    // Webhook conditionally
+    $cfefp_webhook_conditionally = isset($_POST['cfefp_webhook_conditionally']) ? sanitize_text_field($_POST['cfefp_webhook_conditionally']) : '';
+
+    // WhatsApp redirect conditionally
+    $cfefp_whatsapp_conditionally = isset($_POST['cfefp_whatsapp_conditionally']) ? sanitize_text_field($_POST['cfefp_whatsapp_conditionally']) : '';
+
+
+
     $recaptcha_site_key  = isset($_POST['cfl_site_key_v2']) ? sanitize_text_field($_POST['cfl_site_key_v2']) : '';
     $recaptcha_secret_key = isset($_POST['cfl_secret_key_v2']) ? sanitize_text_field($_POST['cfl_secret_key_v2']) : '';
 
@@ -222,6 +268,10 @@ if (isset($_POST['cfl_site_key_v2']) || isset($_POST['cfl_secret_key_v2']) || is
     update_option( "cfef_usage_share_data",  $cfef_usage_share_data);
     update_option('cfefp_redirect_conditionally', $redirect_conditionally);
     update_option('cfefp_email_conditionally', $email_conditionally);
+    update_option( "cfefp_mailchimp_conditionally",  $cfefp_mailchimp_conditionally);
+    update_option( "cfefp_getresponse_conditionally",  $cfefp_getresponse_conditionally);
+    update_option( "cfefp_webhook_conditionally",  $cfefp_webhook_conditionally);
+    update_option( "cfefp_whatsapp_conditionally",  $cfefp_whatsapp_conditionally);
 
 
     cfkef_handle_unchecked_checkbox();
@@ -245,7 +295,22 @@ $redirect_conditionally = get_option('cfefp_redirect_conditionally', 5);
 // Get Conditional Email key values
 $email_conditionally = get_option('cfefp_email_conditionally', 5);
 
+// Get Conditional Mailchimp key values
+$mailchimp_conditionally = get_option('cfefp_mailchimp_conditionally', 5);
+
+// Get Conditional GetResponse key values
+$getresponse_conditionally = get_option('cfefp_getresponse_conditionally', 5);
+
+// Get Conditional Webhook key values
+$webhook_conditionally = get_option('cfefp_webhook_conditionally', 5);
+
+// Get Conditional Whatsapp Redirect key values
+$whatsapp_redirect_conditionally = get_option('cfefp_whatsapp_conditionally', 5);
+
+
 $conditional_pro_install = is_plugin_active('conditional-fields-for-elementor-form-pro/class-conditional-fields-for-elementor-form-pro.php');
+
+$cool_formkit_pro_install = is_plugin_active('cool-formkit-for-elementor-forms/cool-formkit-for-elementor-forms.php');
 
 // Get CDN Image key values
 $cdn_image = get_option('cfefp_cdn_image', '');
@@ -271,7 +336,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
 
                 <p class="highlight-description"><?php esc_html_e('reCAPTCHA and reCAPTCHA V3 for Cool Form builder', 'cool-formkit'); ?></p>
                 <h3><?php esc_html_e('reCAPTCHA Settings', 'cool-formkit'); ?></h3>
-                <table class="form-table cool-formkit-table">
+                <table class="form-table cool-formkit-table recaptcha-table">
                     <tr>
                         <th scope="row" class="cool-formkit-table-th">
                             <label for="cfl_site_key_v2" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?></label>
@@ -300,7 +365,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                 </table>
 
                 <h3><?php esc_html_e('reCAPTCHA V3 Settings', 'cool-formkit'); ?></h3>
-                <table class="form-table cool-formkit-table">
+                <table class="form-table cool-formkit-table recaptcha-table">
                     <tr>
                         <th scope="row" class="cool-formkit-table-th">
                             <label for="cfl_site_key_v3" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?></label>
@@ -337,6 +402,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                     </tr>
                 </table>
                 <hr>
+
                 <p class="cool-formkit-description highlight-description"><?php esc_html_e('Configure the settings for conditional fields\' action after submit.', 'cool-formkit'); ?></p>
                 <table class="form-table cool-formkit-table">
                     <tr>
@@ -370,6 +436,75 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                             <p class="description cool-formkit-description"><?php esc_html_e('Set the no. of conditional redirects for the Elementor form.', 'cool-formkit'); ?></p>
                         </td>
                     </tr>
+
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfefp_mailchimp_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Mailchimp', 'cool-formkit'); ?>
+                                <span class="cfkef-pro-feature">
+                                    <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
+                                    <?php echo $conditional_pro_install ? '' : '(Pro)'?>
+                                    </a>
+                                </span>
+                            </label>
+                        </th>
+                        <td class="cool-formkit-table-td">
+                            <input type="number" id="cfefp_mailchimp_conditionally" name="cfefp_mailchimp_conditionally" min="4" value="<?php echo esc_attr($mailchimp_conditionally); ?>" class="regular-text cool-formkit-input" 
+                            <?php echo !$conditional_pro_install ? 'disabled' : ''; ?>/>
+                            <p class="description cool-formkit-description"><?php esc_html_e('Set the no. of conditional mailchimp for the Elementor form.', 'cool-formkit'); ?></p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfefp_getresponse_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Getresponse', 'cool-formkit'); ?>
+                                <span class="cfkef-pro-feature">
+                                    <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
+                                    <?php echo $conditional_pro_install ? '' : '(Pro)'?>
+                                    </a>
+                                </span>
+                            </label>
+                        </th>
+                        <td class="cool-formkit-table-td">
+                            <input type="number" id="cfefp_getresponse_conditionally" name="cfefp_getresponse_conditionally" min="4" value="<?php echo esc_attr($getresponse_conditionally); ?>" class="regular-text cool-formkit-input" 
+                            <?php echo !$conditional_pro_install ? 'disabled' : ''; ?>/>
+                            <p class="description cool-formkit-description"><?php esc_html_e('Set the no. of conditional getresponse for the Elementor form.', 'cool-formkit'); ?></p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfefp_webhook_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Webhook', 'cool-formkit'); ?>
+                                <span class="cfkef-pro-feature">
+                                    <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
+                                    <?php echo $conditional_pro_install ? '' : '(Pro)'?>
+                                    </a>
+                                </span>
+                            </label>
+                        </th>
+                        <td class="cool-formkit-table-td">
+                            <input type="number" id="cfefp_webhook_conditionally" name="cfefp_webhook_conditionally" min="4" value="<?php echo esc_attr($webhook_conditionally); ?>" class="regular-text cool-formkit-input" 
+                            <?php echo !$conditional_pro_install ? 'disabled' : ''; ?>/>
+                            <p class="description cool-formkit-description"><?php esc_html_e('Set the no. of conditional webhook for the Elementor form.', 'cool-formkit'); ?></p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfefp_whatsapp_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Whatsapp Redirect', 'cool-formkit'); ?>
+                                <span class="cfkef-pro-feature">
+                                    <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
+                                    <?php echo $conditional_pro_install ? '' : '(Pro)'?>
+                                    </a>
+                                </span>
+                            </label>
+                        </th>
+                        <td class="cool-formkit-table-td">
+                            <input type="number" id="cfefp_whatsapp_conditionally" name="cfefp_whatsapp_conditionally" min="4" value="<?php echo esc_attr($whatsapp_redirect_conditionally); ?>" class="regular-text cool-formkit-input" 
+                            <?php echo !$conditional_pro_install ? 'disabled' : ''; ?>/>
+                            <p class="description cool-formkit-description"><?php esc_html_e('Set the no. of conditional whatsapp redirect for the Elementor form.', 'cool-formkit'); ?></p>
+                        </td>
+                    </tr>
+
                 </table>
                 <hr>
 
@@ -455,7 +590,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                 <h3><?php esc_html_e('Cloudflare Turnstile Settings', 'cool-formkit'); ?></h3>
                 <p class="description cool-formkit-description"><?php _e('You can get your site key and secret key from here: <a href="https://www.cloudflare.com/en-au/application-services/products/turnstile/" target="_blank">https://www.cloudflare.com/en-au/application-services/products/turnstile/</a>', 'cool-formkit'); ?></p>
 
-                <table class="form-table cool-formkit-table">
+                <table class="form-table cool-formkit-table turnstile-table">
                     <tr>
                         <th scope="row" class="cool-formkit-table-th">
                             <label for="cfefp_cloudflare_site_key" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?>
@@ -495,7 +630,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                 <h3><?php esc_html_e('hCAPTCHA Settings', 'cool-formkit'); ?></h3>
                 <p class="description cool-formkit-description"><?php _e('To use <a href="https://www.hcaptcha.com/" target="_blank">hCaptcha</a>, please register <a href="https://www.hcaptcha.com/signup-interstitial" target="_blank">here</a> to get your site and secret keys.', 'cool-formkit'); ?></p>
 
-                <table class="form-table cool-formkit-table">
+                <table class="form-table cool-formkit-table hcaptcha-table">
                     <tr>
                         <th scope="row" class="cool-formkit-table-th">
                             <label for="cfefp_h_site_key" class="cool-formkit-label"><?php esc_html_e('Site Key', 'cool-formkit'); ?>
@@ -533,6 +668,103 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                         </td>
                     </tr>
                 </table>
+                <hr>
+
+                
+                <div class="cfkef-mailchimp-head-con">
+                    <h3 class="mailchimp-h3"><?php esc_html_e('MailChimp Settings', 'cool-formkit'); ?></h3>
+                    <span class="cfkef-pro-feature">
+                        <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=settings_dashboard" target="_blank">
+                        <?php echo $cool_formkit_pro_install ? '' : '(Pro)'?>
+                        </a>
+                    </span>
+                </div>
+                
+
+                <?php if ( $conditional_pro_install ) : ?>
+                    <p class="description cool-formkit-description">
+                        <?php
+                        /* translators: Description shown when Conditional Pro is active */
+                        echo wp_kses_post(
+                            sprintf(
+                                __('If you have activated Conditional Pro, go to the Elementor settings to use the MailChimp API: <a href="%s" target="_blank">Click here</a>', 'cool-formkit'),
+                                esc_url('admin.php?page=elementor-settings#tab-integrations')
+                            )
+                        );
+                        ?>
+                    </p>
+                <?php endif; ?>
+
+                <table class="form-table cool-formkit-table mailchimp-table">
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfl_mailchimp_api_key" class="cool-formkit-label"><?php esc_html_e('API Key', 'cool-formkit'); ?></label>
+                        </th>
+                        <td>
+
+                            <div class="cool-formkit-table-td site-key-td">
+                                <input type="password" id="cfl_mailchimp_api_key" name="cfl_mailchimp_api_key" min="4" value="" class="regular-text cool-formkit-input" <?php echo !$cool_formkit_pro_install ? 'disabled' : ''; ?>/>
+                                
+                                <span class="mailchimp-show-hide-icon">
+                                    <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
+                                </span>
+                            </div>
+                            <div class="cool-formkit-table-td api-div">
+                                <p class="description cool-formkit-description"><?php _e('To integrate with our forms you need an <a href="https://mailchimp.com/help/about-api-keys/" target="_blank">API Key</a>.', 'cool-formkit'); ?></p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                
+                <hr>
+
+                <div class="cfkef-getresponse-head-con">
+                    <h3 class="getresponse-h3"><?php esc_html_e('GetResponse Settings', 'cool-formkit'); ?></h3>
+                    <span class="cfkef-pro-feature">
+                            <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=settings_dashboard" target="_blank">
+                            <?php echo $cool_formkit_pro_install ? '' : '(Pro)'?>
+                            </a>
+                    </span>
+                </div>
+
+                <?php if ( $conditional_pro_install ) : ?>
+                    <p class="description cool-formkit-description">
+                        <?php
+                        /* translators: Description shown when Conditional Pro is active */
+                        echo wp_kses_post(
+                            sprintf(
+                                __('If you have activated Conditional Pro, go to the Elementor settings to use the GetResponse API: <a href="%s" target="_blank">Click here</a>', 'cool-formkit'),
+                                esc_url('admin.php?page=elementor-settings#tab-integrations')
+                            )
+                        );
+                        ?>
+                    </p>
+                <?php endif; ?>
+
+
+                <table class="form-table cool-formkit-table getresponse-table">
+                    <tr>
+                        <th scope="row" class="cool-formkit-table-th">
+                            <label for="cfl_getresponse_api_key" class="cool-formkit-label"><?php esc_html_e('API Key', 'cool-formkit'); ?>
+                            </label>
+                        </th>
+
+                        <td >
+                            <div class="cool-formkit-table-td site-key-td">
+                                <input type="password" id="cfl_getresponse_api_key" name="cfl_getresponse_api_key" min="4" value="" class="regular-text cool-formkit-input" <?php echo !$cool_formkit_pro_install ? 'disabled' : ''; ?>/>
+                                
+                                <span class="getresponse-show-hide-icon">
+                                    <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'assets/images/hide.svg'); ?>" alt="show">
+                                </span>
+                            </div>
+                            <div class="cool-formkit-table-td api-div">
+                                <p class="description cool-formkit-description"><?php _e('To integrate with our forms you need an <a href="https://app.getresponse.com/api" target="_blank">API Key</a>.', 'cool-formkit'); ?></p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                
+                    
                 <hr>
                             
                 <table class="form-table cool-formkit-table">
