@@ -3,7 +3,7 @@ Contributors: coolplugins, narinder-singh, satindersingh
 Donate link: https://donate.stripe.com/5kQdR92iBevO75WbPm6c00i
 Tags: form builder, contact form, elementor form, elementor, elementor form builder
 Requires at least: 6.2
-Tested up to: 6.8.3
+Tested up to: 6.9
 Stable tag: 2.5.6
 Requires PHP: 8.2
 License: GPLv2 or later
