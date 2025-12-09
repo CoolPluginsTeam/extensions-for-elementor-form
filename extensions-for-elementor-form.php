@@ -84,9 +84,25 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			add_action( 'activated_plugin', array( $this, 'EEF_plugin_redirection' ) );
 			add_action('wp_enqueue_scripts', array($this, 'my_enqueue_scripts'));	
 			add_action( 'elementor/editor/before_enqueue_scripts', array( $this, 'add_global_editor_js' ) );		
-
+			add_action('wp_head', array( $this, 'stop_format_detection_in_safari' ));
 
 		}
+	}
+
+	public function stop_format_detection_in_safari() {
+
+			$ua = $_SERVER['HTTP_USER_AGENT'];
+			$is_safari = strpos($ua, 'Safari') !== false
+						&& strpos($ua, 'Mobile') !== false        // ensures mobile Safari
+						&& (strpos($ua, 'iPhone') !== false 
+							|| strpos($ua, 'iPad') !== false
+							|| strpos($ua, 'iPod') !== false)
+						&& !preg_match('/Chrome|CriOS|Chromium|OPR|Edg/i', $ua);
+
+			if($is_safari){
+
+				echo '<meta name="format-detection" content="telephone=no">' . "\n";
+			}
 	}
 
 
