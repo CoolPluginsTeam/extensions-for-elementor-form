@@ -7,7 +7,7 @@
  * Author: Cool Plugins
  * Author URI: https://coolplugins.net/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
  * Text Domain: extensions-for-elementor-form
- * Version: 2.5.6
+ * Version: 2.5.7
  * Requires at least: 6.2
  * Requires PHP: 6.2
  * License: GPL-2.0+
@@ -31,7 +31,7 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 
-define('CFL_VERSION','2.5.6');
+define('CFL_VERSION','2.5.7');
 define('PHP_MINIMUM_VERSION','7.4');
 define('WP_MINIMUM_VERSION','5.5');
 define( 'CFL_PLUGIN_MAIN_FILE', __FILE__ );
