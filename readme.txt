@@ -4,11 +4,11 @@ Donate link: https://donate.stripe.com/5kQdR92iBevO75WbPm6c00i
 Tags: form builder, contact form, elementor form, elementor, elementor form builder
 Requires at least: 6.2
 Tested up to: 6.9
-Stable tag: 2.5.6
+Stable tag: 2.5.7
 Requires PHP: 8.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Elementor tested up to: 3.33.2
+Elementor tested up to: 3.33.4
 Elementor Pro tested up to: 3.33.1
 
 Contact form addon for Elementor. Create forms in Elementor Free or extend Elementor Pro forms with conditional logic, country code and extra fields.
@@ -193,6 +193,9 @@ You can open a support ticket on the [WordPress.org support forum](https://wordp
 You can report vulnerabilities through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/extensions-for-elementor-form). The Patchstack team helps validate, triage, and handle reported issues responsibly.  
 
 == Changelog ==
+
+= 2.5.7 - 2025-12-09 =
+* Fixed: Fix iOS Safari Telephone Number Auto-Detection.
 
 = 2.5.6 - 2025-12-03 =
 * Improved: Compatiblity improvements with conditional fields pro.

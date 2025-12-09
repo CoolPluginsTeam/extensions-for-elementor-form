@@ -7,7 +7,7 @@
  * Author: Cool Plugins
  * Author URI: https://coolplugins.net/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
  * Text Domain: extensions-for-elementor-form
- * Version: 2.5.6
+ * Version: 2.5.7
  * Requires at least: 6.2
  * Requires PHP: 6.2
  * License: GPL-2.0+
@@ -31,7 +31,7 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 
-define('CFL_VERSION','2.5.6');
+define('CFL_VERSION','2.5.7');
 define('PHP_MINIMUM_VERSION','7.4');
 define('WP_MINIMUM_VERSION','5.5');
 define( 'CFL_PLUGIN_MAIN_FILE', __FILE__ );
@@ -84,9 +84,25 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			add_action( 'activated_plugin', array( $this, 'EEF_plugin_redirection' ) );
 			add_action('wp_enqueue_scripts', array($this, 'my_enqueue_scripts'));	
 			add_action( 'elementor/editor/before_enqueue_scripts', array( $this, 'add_global_editor_js' ) );		
-
+			add_action('wp_head', array( $this, 'stop_format_detection_in_safari' ));
 
 		}
+	}
+
+	public function stop_format_detection_in_safari() {
+
+			$ua = $_SERVER['HTTP_USER_AGENT'];
+			$is_safari = strpos($ua, 'Safari') !== false
+						&& strpos($ua, 'Mobile') !== false        // ensures mobile Safari
+						&& (strpos($ua, 'iPhone') !== false 
+							|| strpos($ua, 'iPad') !== false
+							|| strpos($ua, 'iPod') !== false)
+						&& !preg_match('/Chrome|CriOS|Chromium|OPR|Edg/i', $ua);
+
+			if($is_safari){
+
+				echo '<meta name="format-detection" content="telephone=no">' . "\n";
+			}
 	}
 
 
