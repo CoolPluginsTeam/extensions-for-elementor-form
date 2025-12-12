@@ -1,0 +1,76 @@
+{
+  "landingPage": "/wp-admin/post.php?post=13&action=elementor",
+  "preferredVersions": {
+    "php": "8.2",
+    "wp": "latest"
+  },
+  "siteOptions": {
+    "elementor_onboarded": "1"
+  },
+  "phpExtensionBundles": [
+    "kitchen-sink"
+  ],
+  "steps": [
+    {
+      "step": "login",
+      "username": "admin",
+      "password": "password"
+    },
+    {
+      "step": "installTheme",
+      "themeData": {
+        "resource": "wordpress.org/themes",
+        "slug": "hello-elementor"
+      },
+      "options": {
+        "activate": true
+      }
+    },
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "wordpress.org/plugins",
+        "slug": "elementor"
+      },
+      "options": {
+        "activate": true
+      }
+    },
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "wordpress.org/plugins",
+        "slug": "extensions-for-elementor-form"
+      },
+      "options": {
+        "activate": true
+      }
+    },
+    {
+      "step": "importWxr",
+      "file": {
+        "resource": "url",
+        "url": "https://raw.githubusercontent.com/CoolPluginsTeam/wp-playground-repo/main/coolform/cool-formkit-lite.xml"
+      }
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php\nob_start();\nrequire_once '/wordpress/wp-load.php';\nob_end_clean();\n\n// Set 'Cool FormKit Lite' as homepage\n$page = get_page_by_title('Cool FormKit Lite');\nif ($page) {\n  update_option('show_on_front', 'page');\n  update_option('page_on_front', $page->ID);\n  echo \"✅ 'Cool FormKit Lite' page set as homepage.\";\n} else {\n  echo \"❌ 'Cool FormKit Lite' page not found.\";\n}"
+    },
+    {
+      "step": "writeFile",
+      "path": "/wordpress/wp-content/mu-plugins/hide-notices.php",
+      "data": "<?php\nadd_action('admin_head', function() {\n    echo '<style>\n        .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1, .notice.e-notice.e-notice--cta.e-notice--dismissible.e-notice--extended{\n            display: none !important;\n        }\n    </style>';\n});"
+    },
+    {
+      "step": "writeFile",
+      "path": "/wordpress/wp-content/mu-plugins/elementor-force-close-popup.php",
+      "data": "<?php\nif (!defined('ABSPATH')) { exit; }\n\n// Elementor Editor ke andar JS inject karo\nfunction elementor_editor_force_close() {\n    echo '<script>\n        // Editor ready hone ka wait\n        var checkInterval = setInterval(function() {\n            // Elementor global object check\n            if (window.elementor !== undefined) {\n\n                // Ab popup close logic run karo\n                var closeInterval = setInterval(function() {\n                    var btn = document.querySelector(\"#e-announcements-root .close-button\");\n                    if (btn) {\n                        btn.click();\n                    }\n                }, 300);\n\n                clearInterval(checkInterval);\n            }\n        }, 200);\n    </script>';\n}\nadd_action('elementor/editor/footer', 'elementor_editor_force_close');\n"
+    },
+    {
+      "step": "writeFile",
+      "path": "/wordpress/wp-content/mu-plugins/events-widget-notice.php",
+      "data": "<?php\nadd_action('admin_notices', function () {\n    $demo_page = get_page_by_title('Cool FormKit Lite');\n    $demo_edit_url = $demo_page ? admin_url('post.php?post=' . $demo_page->ID . '&action=edit') : admin_url('edit.php?post_type=page');\n    $site_url = get_home_url();\n\n    echo '<style>div#cpfNoticePanel,.tribe-dismiss-notice { display: none !important; }</style>';\n\n    echo '<div class=\"notice notice-info is-dismissible\" style=\"padding: 25px; font-family: sans-serif; margin-top: 25px; border-left: 5px solid #00a0d2;\">\n        <h2 style=\"margin-top: 0; display: flex; align-items: center; gap: 10px;\">\n             Display Your Forms Anywhere Using a Simple Elementor Widget\n        </h2>\n        <p style=\"margin-bottom: 15px; font-size: 15px;\">\n            Cool FormKit is a powerful form builder addon for Elementor users. It allows you to add advanced features to Elementor Free, Elementor Pro, and Hello Plus form widgets — all without any coding!\n        </p>\n        <div style=\"display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px;\">\n            <a href=\"' . esc_url($site_url) . '\" class=\"button button-primary\" target=\"_blank\" style=\"padding: 10px 24px; font-size: 14px;\">🔍 View Demo</a>\n    <a href=\"https://coolformkit.com/pricing/?utm_source=cfkef_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=wp_preview_get_pro\" target=\"_blank\" class=\"button\" style=\"padding: 10px 24px; font-size: 14px; background: linear-gradient(90deg, #d54e21, #ff851b); color: white; border: none;\">⭐ Get PRO — Unlock All Features</a>\n        </div>\n        <p style=\"font-size: 13px; margin-top: 15px; color: #555;\">🧩 The Pro version of Cool FormKit unlocks a complete set of advanced fields, smarter logic, and powerful design options—helping you build more interactive, professional, and dynamic forms inside Elementor.</p>\n    </div>';\n});"
+    }
+  ]
+}
