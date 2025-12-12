@@ -102,6 +102,9 @@ class Review_notice
 		// check if installation days is greator then week
 		if (isset($diff_days) && $diff_days >= 3) {
 			echo $this->cfl_create_notice_content();
+			wp_enqueue_style( 'cfl-admin-review-notice-css', CFL_PLUGIN_URL . 'admin/feedback/css/cfl-admin-review-notice.css', null, CFL_VERSION );
+	
+			wp_enqueue_script( 'cfl-admin-review-notice-js', CFL_PLUGIN_URL . 'admin/feedback/js/cfl-admin-review-notice.js', array( 'jquery' ), CFL_VERSION );
 		}
 	}
 
@@ -110,9 +113,6 @@ class Review_notice
 	{
 		$html = '
 		<div data-ajax-url="' . admin_url('admin-ajax.php') . '" data-nonce="' . wp_create_nonce('cfl_elementor_review') . '" data-ajax-callback="' . esc_attr($this->plugin_slug) . '_dismiss_notice" class="' . esc_attr($this->plugin_slug) . '-review-notice-wrapper notice">
-			<div class="logo_container">
-				<a href="' . esc_url($this->review_link) . '" target="_blank"><img src="' . $this->plugin_url . $this->plugin_logo . '" alt="' . esc_attr($this->plugin_name) . '"></a>
-			</div>
 			<div class="message_container">
 				<p>Thanks for using <b>' . esc_html($this->plugin_name) . '</b> WordPress plugin. We hope it meets your expectations!<br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href="https://coolplugins.net" target="_blank"><strong>Cool Plugins</strong></a>!</p>
 				<ul>
@@ -123,112 +123,7 @@ class Review_notice
 			</div>
 		</div>
 		';
-
-		// css styles
-		$style = '
-		<style>
-		#wpbody .' . esc_attr($this->plugin_slug) . '-review-notice-wrapper.notice {
-			padding: 5px;
-			margin: 5px 0;
-			display: table;
-			max-width: 820px;
-			border-radius: 5px;
-			border: 1px solid #ced3d6;
-			box-sizing: border-box;
-			box-shadow: 2px 4px 8px -2px rgba(0, 0, 0, 0.1)
-		}
-		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper .logo_container {
-			width: 80px;
-			display: table-cell;
-			padding: 5px;
-			vertical-align: middle;
-		}
-		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper .logo_container a,
-		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper .logo_container img {
-			width:80px;
-			height:auto;
-			display:inline-block;
-		}
-		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper .message_container {
-			display: table-cell;
-			padding: 5px;
-			vertical-align: middle;
-		}
-		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper p,
-		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper ul {
-			padding: 0;
-			margin: 0;
-			line-height: 1.25em;
-			display: flow-root;
-		}
-		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper ul {
-			margin-top: 10px;
-		}
-		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper ul li {
-			float: left;
-			margin: 0px 10px 0 0;
-		}
-		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper ul li .button-primary {
-			background: #772ec9;
-			text-shadow: none;
-			border-color: #a69516;
-			box-shadow: none;
-			color: #fff;
-		}
-		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper ul li .button-secondary {
-			background: #fff;
-			background-color: #fff;
-			border: 1px solid #757575;
-			color: #757575;
-		}
-		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper ul li .button-secondary.already-rated-btn:after {
-			color: #f12945;
-			content: "\f153";
-			display: inline-block;
-			vertical-align: middle;
-			margin: -1px 0 0 5px;
-			font-size: 14px;
-			line-height: 14px;
-			font-family: dashicons;
-		}
-		.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper ul li .button-primary:hover {
-			background: #222;
-			border-color: #000;
-		}
-		@media screen and (max-width: 660px) {
-			.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper .logo_container{
-				display:none;
-			}
-			.' . esc_attr($this->plugin_slug) . '-review-notice-wrapper .message_container {
-				display: flow-root;
-			}
-		}
-		</style>
-		';
-
-		// close notice script
-		$script = '
-		<script>
-		jQuery(document).ready(function ($) {
-			$(".' . esc_js($this->plugin_slug) . '_dismiss_notice").on("click", function (event) {
-				var $this = $(this);
-				var wrapper=$this.parents(".' . esc_js($this->plugin_slug) . '-review-notice-wrapper");
-				var ajaxURL=wrapper.data("ajax-url");
-				var nonce = wrapper.data("nonce");
-				var ajaxCallback=wrapper.data("ajax-callback");         
-				$.post(ajaxURL, { "action":ajaxCallback, cfl_notice_dismiss: true, nonce: nonce }, function( data ) {
-					console.log("hello");
-					wrapper.slideUp("fast");
-				}, "json");
-			});
-		});
-		</script>
-		';
-
-		$html .= '
-		' . $style . '
-		' . $script;
-
+		
 		return $html;
 	}
 
@@ -242,8 +137,6 @@ class Review_notice
 
 	public function cfl_review_notice()
 	{
-
-
 		if (! check_ajax_referer('cfl_elementor_review', 'nonce', false)) {
 			wp_send_json_error(__('Invalid security token sent.', 'cfl'));
 			wp_die('0', 400);

@@ -53,7 +53,7 @@ class CFL_Create_Conditional_Fields {
 	public function add_assets_files() {
 		wp_register_script( 'cfl_logic', CFL_PLUGIN_URL . 'assets//js/form_logic_frontend.js', array( 'jquery' ), CFL_VERSION, true );
 
-		wp_localize_script('cfl_logic', 'my_script_vars', array(
+		wp_localize_script('cfl_logic', 'my_script_vars_elementor', array(
 			'pluginConstant' => CFL_VERSION,
 			'pluginUrl' => CFL_PLUGIN_URL,
 			'no_input_step' => __('No input is required on this step. Just click "%s" to proceed.', 'cool-formkit'),
@@ -65,7 +65,7 @@ class CFL_Create_Conditional_Fields {
 		wp_enqueue_style( 'hide_field_class_style' );
 		wp_add_inline_style(
 			'hide_field_class_style',
-				'.cfef-hidden {
+				'.cfef-hidden , .cfef-hidden-step-field {
 					display: none !important;
 			 	}'
 		);
@@ -391,6 +391,58 @@ class CFL_Create_Conditional_Fields {
 			echo '<template id="' . esc_attr( $textarea_id ) . '" class="cfef_logic_data_js cfef-hidden" data-form-id="' . esc_attr( $form_id ) . '">' . esc_html( $condition ) . '</template>';
 		}
 	}
+
+
+
+	// delete fields of hidden step field
+
+	public function delete_fields_of_hidden_step($form_fields, $hidden_step, $disallowed_values, $form_record) {
+
+		// Make sure inputs are usable
+		if (!is_array($form_fields) || empty($form_fields)) {
+			return;
+		}
+		if (!is_string($hidden_step) || $hidden_step === '') {
+			return;
+		}
+		if (!is_array($disallowed_values)) {
+			$disallowed_values = [];
+		}
+		if (!is_object($form_record) || !method_exists($form_record, 'remove_field')) {
+			return;
+		}
+
+		// Get all keys of the original array
+		$keys = array_keys($form_fields);
+
+		// Check if hidden step exists
+		if (!in_array($hidden_step, $keys, true)) {
+			return;
+		}
+
+		$index = array_search($hidden_step, $keys, true);
+
+		// Slice array after the hidden step
+		$sliced_array = array_slice($form_fields, $index + 1, null, true);
+
+		foreach ($sliced_array as $key => $value) {
+			// Skip invalid field data
+			if (!is_array($value) || !isset($value['type'])) {
+				continue;
+			}
+
+			if ($value['type'] !== 'step') {
+				// Only check if 'value' exists
+				if (isset($value['value']) && in_array($value['value'], $disallowed_values, true)) {
+					$form_record->remove_field($key);
+				}
+			} else {
+				// Stop at the next step
+				break;
+			}
+		}
+	}
+
 	/**
 	 * Function to validate form before submit and remove hidden fields
 	 *s
@@ -398,6 +450,21 @@ class CFL_Create_Conditional_Fields {
 	 * @param  object $ajax_handler get form all fields.
 	 */
 	public function check_validation( $form_record, $ajax_handler ) {
+
+		$disallowed_values = array(
+			'^newOptionTest',
+			'newchkTest',
+			'1003-01-01',
+			'11:59',
+			'+1234567890',
+			'https://testing.com',
+			'cool_plugins@abc.com',
+			'cool_plugins',
+			'000',
+			'premium1@',
+			'cool23plugins',
+		);
+
 		if ( false === $this->validate_form ) {
 			$submitted_form_settings = $form_record->get( 'form_settings' );
 			$form_fields   = $form_record->get( 'fields' );
@@ -445,8 +512,10 @@ class CFL_Create_Conditional_Fields {
 					}
 
 					if ( 'show' === $display_mode && ! $action_type ) {
+						$this->delete_fields_of_hidden_step($form_fields, $field['custom_id'], $disallowed_values, $form_record);
 						$form_record->remove_field( $field['custom_id'] );
 					} elseif ( 'hide' == $display_mode && $action_type ) {
+						$this->delete_fields_of_hidden_step($form_fields, $field['custom_id'], $disallowed_values, $form_record);
 						$form_record->remove_field( $field['custom_id'] );
 					} 
 				}

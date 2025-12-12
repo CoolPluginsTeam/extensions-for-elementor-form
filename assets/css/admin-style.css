@@ -598,6 +598,11 @@ span.cfkef-pro-feature a{
     font-style:italic;
 }
 
+.cfkef-getresponse-head-con a , .cfkef-mailchimp-head-con a {
+    font-size: 14px;
+    font-weight: bold;
+}
+
 /* License Page */
 .cfkef-license-box{
     width: 50%;
@@ -648,7 +653,7 @@ span.cfkef-pro-feature a{
 }
 
 .form-table .cool-formkit-table-td #cfefp_cloudflare_site_key, .form-table .cool-formkit-table-td #cfefp_cloudflare_secret_key, .form-table .cool-formkit-table-td #cfefp_h_site_key, .form-table .cool-formkit-table-td #cfefp_h_secret_key
-,.form-table .cool-formkit-table-td #cfl_site_key_v2,.form-table .cool-formkit-table-td #cfl_secret_key_v2,.form-table .cool-formkit-table-td #cfl_site_key_v3,.form-table .cool-formkit-table-td #cfl_secret_key_v3{
+,.form-table .cool-formkit-table-td #cfl_site_key_v2,.form-table .cool-formkit-table-td #cfl_secret_key_v2,.form-table .cool-formkit-table-td #cfl_site_key_v3,.form-table .cool-formkit-table-td #cfl_secret_key_v3, #cfl_mailchimp_api_key, #cfl_getresponse_api_key{
     outline: none !important;
     border: none !important;
     margin: 0px 5px;
@@ -687,8 +692,27 @@ span.cfkef-pro-feature a{
 
 .site-key-show-hide-icon img, .secret-key-show-hide-icon img, .site-key-show-hide-icon-h-captcha img, .secret-key-show-hide-icon-h-captcha img
 ,.site-key-show-hide-icon-recaptcha img,.secret-key-show-hide-icon-recaptcha img
-,.site-key-show-hide-icon-recaptcha_v3 img,.secret-key-show-hide-icon-recaptcha_v3 img{
+,.site-key-show-hide-icon-recaptcha_v3 img,.secret-key-show-hide-icon-recaptcha_v3 img,     .mailchimp-show-hide-icon img, .getresponse-show-hide-icon img{
     width: 25px;
+}
+
+.mailchimp-table tr, .getresponse-table tr, .turnstile-table tr, .hcaptcha-table tr, .recaptcha-table tr{
+    display: flex;
+    align-items: center;
+}
+
+.getresponse-table td, .mailchimp-table td{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.getresponse-table .api-div, .mailchimp-table .api-div{
+   margin-left: 10px;
+}
+
+.getresponse-h3, .mailchimp-h3{
+
+    display: inline-block;
 }
 
 .cfkef-toggle-wrapper-div{
