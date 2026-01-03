@@ -1,0 +1,30 @@
+a[href="admin.php?page=elementor-forms-addons"] {
+    display: none !important;
+}
+li a[href="admin.php?page=cfkef-entries"]{
+    display: none !important;
+}
+
+div[data-notice_id="formdb-marketing-elementor-form-submissions"] {
+    display: none;
+}
+
+div[data-notice_id="formdb-marketing-elementor-form-submissions"] .e-notice__aside{
+    display: none;
+}
+
+#wpcontent #e-admin-top-bar-root ~ #wpbody div[data-notice_id="formdb-marketing-elementor-form-submissions"]{
+    display: block;
+}
+
+div[data-notice_id="formdb-marketing-elementor-form-submissions"] div.e-notice__content{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+div[data-notice_id="formdb-marketing-elementor-form-submissions"] div.e-notice__actions{
+    margin-block-start: 0px;
+}

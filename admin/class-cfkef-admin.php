@@ -276,6 +276,9 @@ class CFKEF_Admin {
     public function enqueue_admin_styles() {
         wp_enqueue_script('cfkef-global-admin', CFL_PLUGIN_URL . 'assets/js/global-admin.js', array('jquery'), $this->version, true);
 
+        wp_enqueue_style('fdbgp-admin-global-style', CFL_PLUGIN_URL . 'assets/css/global-admin-style.css', array(), $this->version, 'all');
+
+
         if (isset($_GET['page']) &&(strpos($_GET['page'], 'cool-formkit') !== false || strpos($_GET['page'], 'cfkef-entries') !== false)) {
             wp_enqueue_style('cfkef-admin-style', CFL_PLUGIN_URL . 'assets/css/admin-style.css', array(), $this->version, 'all');
             wp_enqueue_style('dashicons');
