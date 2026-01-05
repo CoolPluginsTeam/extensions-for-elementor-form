@@ -277,6 +277,7 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 					'ajax_url' => admin_url('admin-ajax.php'),
 					'formdb_type' => 'formdb_notice',
 					'formdb_dismiss_nonce' => wp_create_nonce('cfl_dismiss_nonce_formdb_notice'),
+					'redirect_to_formdb' => true
 				]
 			);
 		}

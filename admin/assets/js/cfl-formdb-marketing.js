@@ -1,3 +1,4 @@
+
 jQuery(document).ready(function($) {
 
     $(document).on('click', '.cfl-dismiss-notice, .cfl-dismiss-cross, .cfl-tec-notice .notice-dismiss, .e-notice__dismiss', function(e) {
@@ -35,7 +36,7 @@ jQuery(document).ready(function($) {
         const slug = getPluginSlug(plugin);
         if (!slug) return;
         // Get the nonce from the button data attribute
-        let nonce = button.data('nonce');
+        let nonce = button.data('nonce') || cflFormDBMarketing.nonce;
 
         button.text('Installing...').prop('disabled', true);
 
@@ -43,7 +44,7 @@ jQuery(document).ready(function($) {
 
                 action: 'cfl_install_plugin',
                 slug: slug,
-                _wpnonce:  nonce || cflFormDBMarketing.nonce
+                _wpnonce:  nonce
             },
 
             function(response) {
@@ -53,6 +54,12 @@ jQuery(document).ready(function($) {
 
                 if (responseContainsPlugin) {
                     handlePluginActivation(button, slug, $wrapper);
+
+                    if(cflFormDBMarketing.redirect_to_formdb){
+
+                        window.location.href = 'admin.php?page=formsdb';
+                    }
+
                 } else if (!responseContainsPlugin) {
                     showNotActivatedMessage($wrapper);
                 } else {

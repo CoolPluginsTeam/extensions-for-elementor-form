@@ -71,7 +71,29 @@ class Sheet_Action extends Form_To_Sheet_Helper
     }
 
     public function enqueue_editor_scripts() {
-        wp_enqueue_script('cfl-formdb-marketing-script', CFL_PLUGIN_URL . 'admin/marketing/js/cfl-formdb-marketing.js', array('jquery'), CFL_VERSION, true);
+
+        wp_register_script(
+				'cfl-formdb-marketing-script',
+				CFL_PLUGIN_URL . 'admin/assets/js/cfl-formdb-marketing.js',
+				['jquery'],
+				CFL_VERSION,
+				true
+			);
+
+			wp_enqueue_script('cfl-formdb-marketing-script');
+
+			wp_localize_script(
+				'cfl-formdb-marketing-script',
+				'cflFormDBMarketing',
+				[
+					'nonce'    => wp_create_nonce('cfl_install_nonce'),
+					'plugin'   => 'form-db',
+					'ajax_url' => admin_url('admin-ajax.php'),
+					'formdb_type' => 'formdb_notice',
+					'formdb_dismiss_nonce' => wp_create_nonce('cfl_dismiss_nonce_formdb_notice'),
+				]
+			);
+
     }
 
 
@@ -120,7 +142,7 @@ class Sheet_Action extends Form_To_Sheet_Helper
 												
 												<div class="elementor-control-notice-main-content">Save Form Submissions to Google Sheets.</div>
 												<div class="elementor-control-notice-main-actions">
-												<button type="button" class="elementor-button e-btn e-info e-btn-1 cfl-install-plugin"  data-plugin="form-db" data-nonce="' . esc_attr(wp_create_nonce('cfl_install_nonce')) . '">Install FormsDB</button>
+												<button type="button" class="elementor-button e-btn e-info e-btn-1 cfl-install-plugin">Install FormsDB</button>
 											</div></div>
 											</div></div>',
 
