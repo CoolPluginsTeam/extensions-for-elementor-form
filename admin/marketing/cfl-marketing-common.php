@@ -47,14 +47,14 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 
 				define("formdb_marketing_submission", true);
 
-				if(!in_array( 'sb-elementor-contact-form-db/sb_elementor_contact_form_db.php', $active_plugins ) && !get_option('cfl_formdb_marketing_dismissed', false)) {
+				if(!in_array( 'sb-elementor-contact-form-db/sb_elementor_contact_form_db.php', $active_plugins ) && !get_option('cfef_formdb_marketing_dismissed', false)) {
 	
 					add_action('admin_enqueue_scripts', [$this, 'cfl_formdb_marketing_script']);
 		
 					add_action('in_admin_header', array($this, 'cfl_admin_notice_for_formsdb'));
 				}
 	
-				if(!in_array( 'sb-elementor-contact-form-db/sb_elementor_contact_form_db.php', $active_plugins ) && get_option('cfl_formdb_marketing_dismissed', false)){
+				if(!in_array( 'sb-elementor-contact-form-db/sb_elementor_contact_form_db.php', $active_plugins ) && get_option('cfef_formdb_marketing_dismissed', false)){
 	
 					add_action('admin_enqueue_scripts', [$this, 'cfl_formdb_marketing_script']);
 	
@@ -79,7 +79,7 @@ if (! class_exists('CFL_Marketing_Controllers')) {
             wp_send_json_error([ 'message' => 'Invalid nonce' ]);
          }
 			if ($type === 'formdb_notice') {
-				update_option('cfl_formdb_marketing_dismissed', true);
+				update_option('cfef_formdb_marketing_dismissed', true);
 				wp_send_json_success();
 
 			}
