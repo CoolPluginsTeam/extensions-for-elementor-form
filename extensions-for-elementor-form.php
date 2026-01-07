@@ -7,14 +7,14 @@
  * Author: Cool Plugins
  * Author URI: https://coolplugins.net/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
  * Text Domain: extensions-for-elementor-form
- * Version: 2.5.7
+ * Version: 2.5.8
  * Requires at least: 6.2
  * Requires PHP: 6.2
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Requires Plugins: elementor
- * Elementor tested up to: 3.33.2
- * Elementor Pro tested up to: 3.33.1
+ * Elementor tested up to: 3.34.0
+ * Elementor Pro tested up to: 3.34.0
  */
 
 namespace Cool_FormKit;
@@ -31,27 +31,27 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 
-define('CFL_VERSION','2.5.7');
-define('PHP_MINIMUM_VERSION','7.4');
-define('WP_MINIMUM_VERSION','5.5');
-define( 'CFL_PLUGIN_MAIN_FILE', __FILE__ );
-define( 'CFL_PLUGIN_PATH', plugin_dir_path( CFL_PLUGIN_MAIN_FILE ) );
-define( 'CFL_PLUGIN_URL', plugin_dir_url( CFL_PLUGIN_MAIN_FILE ) );
-define( 'CFL_ASSETS_PATH', CFL_PLUGIN_PATH . 'build/' );
-define( 'CFL_ASSETS_URL', CFL_PLUGIN_URL . '/build/' );
-define( 'CFL_SCRIPTS_PATH', CFL_ASSETS_PATH . 'js/' );
-define( 'CFL_SCRIPTS_URL', CFL_ASSETS_URL . 'js/' );
-define( 'CFL_STYLE_PATH', CFL_ASSETS_PATH . 'css/' );
-define( 'CFL_STYLE_URL', CFL_ASSETS_URL . 'css/' );
-define( 'CFL_IMAGES_PATH', CFL_ASSETS_PATH . 'images/' );
-define( 'CFL_IMAGES_URL', CFL_ASSETS_URL . 'images/' );
-define( 'CFL__MIN_ELEMENTOR_VERSION', '3.26.4' );
-define( 'CFL_FEEDBACK_URL', 'https://feedback.coolplugins.net/' );
+define('CFL_VERSION', '2.5.8');
+define('PHP_MINIMUM_VERSION', '7.4');
+define('WP_MINIMUM_VERSION', '5.5');
+define('CFL_PLUGIN_MAIN_FILE', __FILE__);
+define('CFL_PLUGIN_PATH', plugin_dir_path(CFL_PLUGIN_MAIN_FILE));
+define('CFL_PLUGIN_URL', plugin_dir_url(CFL_PLUGIN_MAIN_FILE));
+define('CFL_ASSETS_PATH', CFL_PLUGIN_PATH . 'build/');
+define('CFL_ASSETS_URL', CFL_PLUGIN_URL . '/build/');
+define('CFL_SCRIPTS_PATH', CFL_ASSETS_PATH . 'js/');
+define('CFL_SCRIPTS_URL', CFL_ASSETS_URL . 'js/');
+define('CFL_STYLE_PATH', CFL_ASSETS_PATH . 'css/');
+define('CFL_STYLE_URL', CFL_ASSETS_URL . 'css/');
+define('CFL_IMAGES_PATH', CFL_ASSETS_PATH . 'images/');
+define('CFL_IMAGES_URL', CFL_ASSETS_URL . 'images/');
+define('CFL__MIN_ELEMENTOR_VERSION', '3.26.4');
+define('CFL_FEEDBACK_URL', 'https://feedback.coolplugins.net/');
 
 
 
-if ( ! function_exists( 'is_plugin_active' ) ) {
-    include_once ABSPATH . 'wp-admin/includes/plugin.php';
+if (! function_exists('is_plugin_active')) {
+	include_once ABSPATH . 'wp-admin/includes/plugin.php';
 }
 
 class Cool_Formkit_Lite_For_Elementor_Form
@@ -74,35 +74,57 @@ class Cool_Formkit_Lite_For_Elementor_Form
 				$autoloader_registered = spl_autoload_register([$this, 'autoload']);
 			}
 
-			if(get_option('cfkef_enable_formkit_builder',true)){
+			if (get_option('cfkef_enable_formkit_builder', true)) {
 				$this->initialize_modules();
 			}
 
 			$this->initialize_plugin();
 			$this->deactivate_child_plugins();
-			
-			add_action( 'activated_plugin', array( $this, 'EEF_plugin_redirection' ) );
-			add_action('wp_enqueue_scripts', array($this, 'my_enqueue_scripts'));	
-			add_action( 'elementor/editor/before_enqueue_scripts', array( $this, 'add_global_editor_js' ) );		
-			add_action('wp_head', array( $this, 'stop_format_detection_in_safari' ));
 
+			add_action('activated_plugin', array($this, 'EEF_plugin_redirection'));
+			add_action('wp_enqueue_scripts', array($this, 'my_enqueue_scripts'));
+			add_action('elementor/editor/before_enqueue_scripts', array($this, 'add_global_editor_js'));
+			add_action('wp_head', array($this, 'stop_format_detection_in_safari'));
+			add_action('elementor_pro/forms/actions/register', array($this, 'cfl_register_new_form_actions'));
+			add_action( 'plugins_loaded',array($this,'formdb_elementor_marketing'));
 		}
 	}
 
-	public function stop_format_detection_in_safari() {
+	public function formdb_elementor_marketing() {
 
-			$ua = $_SERVER['HTTP_USER_AGENT'];
-			$is_safari = strpos($ua, 'Safari') !== false
-						&& strpos($ua, 'Mobile') !== false        // ensures mobile Safari
-						&& (strpos($ua, 'iPhone') !== false 
-							|| strpos($ua, 'iPad') !== false
-							|| strpos($ua, 'iPod') !== false)
-						&& !preg_match('/Chrome|CriOS|Chromium|OPR|Edg/i', $ua);
+		if ( did_action( 'elementor/loaded' ) && class_exists( '\Elementor\Plugin' ) ) {
 
-			if($is_safari){
-
-				echo '<meta name="format-detection" content="telephone=no">' . "\n";
+				require_once CFL_PLUGIN_PATH . '/admin/marketing/cfl-marketing-common.php';
 			}
+	}
+
+	public function cfl_register_new_form_actions($form_actions_registrar)
+	{
+
+		if (!is_plugin_active('sb-elementor-contact-form-db/sb_elementor_contact_form_db.php') && !defined("formdb_elementor_marketing_editor")) {
+
+			define("formdb_elementor_marketing_editor", true);
+
+			include_once(__DIR__ .  '/includes/class-form-to-sheet.php');
+			$form_actions_registrar->register(new \Sheet_Action());
+		}
+	}
+
+	public function stop_format_detection_in_safari()
+	{
+
+		$ua = $_SERVER['HTTP_USER_AGENT'];
+		$is_safari = strpos($ua, 'Safari') !== false
+			&& strpos($ua, 'Mobile') !== false        // ensures mobile Safari
+			&& (strpos($ua, 'iPhone') !== false
+				|| strpos($ua, 'iPad') !== false
+				|| strpos($ua, 'iPod') !== false)
+			&& !preg_match('/Chrome|CriOS|Chromium|OPR|Edg/i', $ua);
+
+		if ($is_safari) {
+
+			echo '<meta name="format-detection" content="telephone=no">' . "\n";
+		}
 	}
 
 
@@ -136,57 +158,59 @@ class Cool_Formkit_Lite_For_Elementor_Form
 
 		CFL_Loader::get_instance();
 
-		if(get_option('cfkef_enable_formkit_builder',true)){
-			require_once CFL_PLUGIN_PATH . 'widgets/coolform-addons-loader.php';		
+		if (get_option('cfkef_enable_formkit_builder', true)) {
+			require_once CFL_PLUGIN_PATH . 'widgets/coolform-addons-loader.php';
 			CoolForm_Addons_Loader::get_instance();
 		}
 
-		if(get_option('cfkef_enable_hello_plus',true)){
-			require_once CFL_PLUGIN_PATH . 'widgets/helloplus-addons-loader.php';		
+		if (get_option('cfkef_enable_hello_plus', true)) {
+			require_once CFL_PLUGIN_PATH . 'widgets/helloplus-addons-loader.php';
 			HelloPlus_Addons_Loader::get_instance();
 		}
-		
+
 		if (is_admin()) {
 
 			require_once CFL_PLUGIN_PATH . 'admin/review-notice.php';
 			new Review_notice();
 
 			require_once CFL_PLUGIN_PATH . 'admin/feedback/admin-feedback-form.php';
-			if(!class_exists('CPFM_Feedback_Notice')){
+			if (!class_exists('CPFM_Feedback_Notice')) {
 				require_once CFL_PLUGIN_PATH . 'admin/feedback/cpfm-feedback-notice.php';
 			}
-			if (!get_option( 'CFL_initial_save_version' ) ) {
-				add_option( 'CFL_initial_save_version', CFL_VERSION );
+			if (!get_option('CFL_initial_save_version')) {
+				add_option('CFL_initial_save_version', CFL_VERSION);
 			}
-		
-			if(!get_option( 'cfl-install-date' ) ) {
-				add_option( 'cfl-install-date', gmdate('Y-m-d h:i:s') );
-        	}
+
+			if (!get_option('cfl-install-date')) {
+				add_option('cfl-install-date', gmdate('Y-m-d h:i:s'));
+			}
 		}
 
-		add_filter( 'plugin_action_links_' . plugin_basename( CFL_PLUGIN_MAIN_FILE ), array( $this, 'EEF_plugin_dashboard_link' ) );
-		add_filter( 'plugin_action_links_' . plugin_basename( CFL_PLUGIN_MAIN_FILE ), array( $this, 
-		'EEF_get_pro_link' ) );
-		add_filter( 'plugin_row_meta', array( $this, 'cfkef_plugin_row_meta' ), 10, 2 );
-
-
+		add_filter('plugin_action_links_' . plugin_basename(CFL_PLUGIN_MAIN_FILE), array($this, 'EEF_plugin_dashboard_link'));
+		add_filter('plugin_action_links_' . plugin_basename(CFL_PLUGIN_MAIN_FILE), array(
+			$this,
+			'EEF_get_pro_link'
+		));
+		add_filter('plugin_row_meta', array($this, 'cfkef_plugin_row_meta'), 10, 2);
 	}
 
-	public function cfkef_plugin_row_meta( $plugin_meta, $plugin_file ) {
-		if ( plugin_basename( CFL_PLUGIN_MAIN_FILE ) === $plugin_file ) {
+	public function cfkef_plugin_row_meta($plugin_meta, $plugin_file)
+	{
+		if (plugin_basename(CFL_PLUGIN_MAIN_FILE) === $plugin_file) {
 			$row_meta = array(
 				'docs' => '<a href="' . esc_url('https://docs.coolplugins.net/plugin/cool-formkit-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins_list') . '" aria-label="' . esc_attr(esc_html__('View CoolFomkit Documentation', 'cool-formkit')) . '" target="_blank">' . esc_html__('View Documentation', 'cool-formkit') . '</a>',
 			);
 
-			$plugin_meta = array_merge( $plugin_meta, $row_meta );
+			$plugin_meta = array_merge($plugin_meta, $row_meta);
 		}
 		return $plugin_meta;
 	}
 
-	public function EEF_get_pro_link($links){
+	public function EEF_get_pro_link($links)
+	{
 		$get_pro = '<a target="_blank" style="font-weight:bold;color:green;" href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugins_list">Get Pro</a>';
 		array_push($links, $get_pro);
-		return $links;	
+		return $links;
 	}
 
 	public function EEF_plugin_redirection($plugin)
@@ -229,9 +253,9 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		return true;
 	}
 
-	public function add_global_editor_js() {
-		wp_enqueue_script( 'cfl-global-editor-script', CFL_PLUGIN_URL . 'assets/addons/js/global.js', array( 'jquery' ), CFL_VERSION, true );
-
+	public function add_global_editor_js()
+	{
+		wp_enqueue_script('cfl-global-editor-script', CFL_PLUGIN_URL . 'assets/addons/js/global.js', array('jquery'), CFL_VERSION, true);
 	}
 
 	public function EEF_plugin_dashboard_link($links)
@@ -242,14 +266,15 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	}
 
 	// Define a helper function for plugin deactivation and admin notice
-	private function deactivate_plugin_with_notice( $plugin_path, $plugin_name ) {
-		if ( file_exists( plugin_dir_path( __DIR__ ) . $plugin_path ) ) {
-			if ( is_plugin_active( $plugin_path ) ) {
-				deactivate_plugins( $plugin_path );
+	private function deactivate_plugin_with_notice($plugin_path, $plugin_name)
+	{
+		if (file_exists(plugin_dir_path(__DIR__) . $plugin_path)) {
+			if (is_plugin_active($plugin_path)) {
+				deactivate_plugins($plugin_path);
 				add_action(
 					'admin_notices',
-					function() use ( $plugin_name ) {
-						$this->admin_notice_deactivating_conditional_field_plugin( $plugin_name );
+					function () use ($plugin_name) {
+						$this->admin_notice_deactivating_conditional_field_plugin($plugin_name);
 					}
 				);
 			}
@@ -257,7 +282,8 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	}
 
 	// Method to deactivate child plugins
-	public function deactivate_child_plugins() {
+	public function deactivate_child_plugins()
+	{
 		// Array of plugins to deactivate
 		$plugins_to_deactivate = array(
 			'conditional-fields-for-elementor-form/class-conditional-fields-for-elementor-form.php' => 'Conditional Fields for Elementor Form',
@@ -268,17 +294,18 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		);
 
 		// Loop through the plugins and deactivate them if necessary
-		foreach ( $plugins_to_deactivate as $plugin_path => $plugin_name ) {
-			$this->deactivate_plugin_with_notice( $plugin_path, $plugin_name );
+		foreach ($plugins_to_deactivate as $plugin_path => $plugin_name) {
+			$this->deactivate_plugin_with_notice($plugin_path, $plugin_name);
 		}
 	}
 
-	public function admin_notice_deactivating_conditional_field_plugin( $plugin_name ) {
-		?>
+	public function admin_notice_deactivating_conditional_field_plugin($plugin_name)
+	{
+?>
 		<div class="notice notice-error">
-			<p><?php echo esc_html( "{$plugin_name} is deactivated because Cool FormKit is installed and activated." ); ?></p>
+			<p><?php echo esc_html("{$plugin_name} is deactivated because Cool FormKit is installed and activated."); ?></p>
 		</div>
-		<?php
+<?php
 	}
 	/**
 	 * Show notice to enable elementor pro
@@ -352,7 +379,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 				$class_name::instance();
 			} else {
 				// Optional: Log or debug if the module class isn't found.
-				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				if (defined('WP_DEBUG') && WP_DEBUG) {
 					error_log('Module class not found or not active: ' . $class_name);
 				}
 			}
@@ -403,24 +430,23 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		update_option('eef-v', CFL_VERSION);
 		update_option('eef-type', 'FREE');
 		update_option('eef-installDate', gmdate('Y-m-d h:i:s'));
-		
-		if (!get_option( 'CFL_initial_save_version' ) ) {
-			add_option( 'CFL_initial_save_version', CFL_VERSION );
+
+		if (!get_option('CFL_initial_save_version')) {
+			add_option('CFL_initial_save_version', CFL_VERSION);
 		}
-		
-		if(!get_option( 'cfl-install-date' ) ) {
-			add_option( 'cfl-install-date', gmdate('Y-m-d h:i:s') );
-        }
+
+		if (!get_option('cfl-install-date')) {
+			add_option('cfl-install-date', gmdate('Y-m-d h:i:s'));
+		}
 
 		$settings       = get_option('cfef_usage_share_data');
-           
-        if (!empty($settings) || $settings === 'on'){
-			
+
+		if (!empty($settings) || $settings === 'on') {
+
 			self::cfl_cron_job_init();
-        }
-		
+		}
 	}
-		
+
 	public static function cfl_cron_job_init()
 	{
 		if (!wp_next_scheduled('cfl_extra_data_update')) {
@@ -428,11 +454,12 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		}
 	}
 
-	public static function eef_deactivate() {
+	public static function eef_deactivate()
+	{
 
-        if (wp_next_scheduled('cfl_extra_data_update')) {
-            wp_clear_scheduled_hook('cfl_extra_data_update');
-        }
+		if (wp_next_scheduled('cfl_extra_data_update')) {
+			wp_clear_scheduled_hook('cfl_extra_data_update');
+		}
 	}
 }
 
