@@ -112,8 +112,8 @@ class Cool_Formkit_Lite_For_Elementor_Form
 
 	public function stop_format_detection_in_safari()
 	{
-
-		$ua = $_SERVER['HTTP_USER_AGENT'];
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+		$ua = sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT']));
 		$is_safari = strpos($ua, 'Safari') !== false
 			&& strpos($ua, 'Mobile') !== false        // ensures mobile Safari
 			&& (strpos($ua, 'iPhone') !== false
@@ -198,7 +198,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	{
 		if (plugin_basename(CFL_PLUGIN_MAIN_FILE) === $plugin_file) {
 			$row_meta = array(
-				'docs' => '<a href="' . esc_url('https://docs.coolplugins.net/plugin/cool-formkit-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins_list') . '" aria-label="' . esc_attr(esc_html__('View CoolFomkit Documentation', 'cool-formkit')) . '" target="_blank">' . esc_html__('View Documentation', 'cool-formkit') . '</a>',
+				'docs' => '<a href="' . esc_url('https://docs.coolplugins.net/plugin/cool-formkit-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins_list') . '" aria-label="' . esc_attr(esc_html__('View CoolFomkit Documentation', 'extensions-for-elementor-form')) . '" target="_blank">' . esc_html__('View Documentation', 'extensions-for-elementor-form') . '</a>',
 			);
 
 			$plugin_meta = array_merge($plugin_meta, $row_meta);
@@ -219,7 +219,8 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			return false;
 		}
 		if ($plugin == plugin_basename(CFL_PLUGIN_MAIN_FILE)) {
-			exit(wp_safe_redirect(admin_url('admin.php?page=cool-formkit')));
+			wp_safe_redirect( admin_url( 'admin.php?page=cool-formkit' ) );
+			exit;
 		}
 	}
 	/**
@@ -339,6 +340,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	public function admin_notice_php_version_fail()
 	{
 		$message = sprintf(
+			/* translators: 1: Plugin name, 2: Required PHP version */
 			esc_html__('%1$s requires PHP version %2$s or greater.', 'extensions-for-elementor-form'),
 			'<strong>Cool Formkit Lite</strong>',
 			PHP_MINIMUM_VERSION
@@ -353,6 +355,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	public function admin_notice_wp_version_fail()
 	{
 		$message = sprintf(
+			/* translators: 1: Plugin name, 2: Required WordPress version */
 			esc_html__('%1$s requires WordPress version %2$s or greater.', 'extensions-for-elementor-form'),
 			'<strong>Cool Formkit Lite</strong>',
 			WP_MINIMUM_VERSION
@@ -380,7 +383,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			} else {
 				// Optional: Log or debug if the module class isn't found.
 				if (defined('WP_DEBUG') && WP_DEBUG) {
-					error_log('Module class not found or not active: ' . $class_name);
+					// error_log('Module class not found or not active: ' . $class_name);
 				}
 			}
 		}

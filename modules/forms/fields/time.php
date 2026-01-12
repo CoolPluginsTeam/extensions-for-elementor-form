@@ -26,7 +26,7 @@ class Time extends Field_Base {
 	}
 
 	public function get_name() {
-		return esc_html__( 'Time', 'elementor-pro' );
+		return esc_html__( 'Time', 'extensions-for-elementor-form' );
 	}
 
 
@@ -42,7 +42,7 @@ class Time extends Field_Base {
 		$field_controls = [
 			'use_native_time' => [
 				'name' => 'use_native_time',
-				'label' => esc_html__( 'Native HTML5', 'elementor-pro' ),
+				'label' => esc_html__( 'Native HTML5', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SWITCHER,
 				'condition' => [
 					'field_type' => $this->get_type(),
@@ -82,7 +82,7 @@ class Time extends Field_Base {
 			$form->add_render_attribute( 'input' . $item_index, 'class', 'cool-form-use-native' );
 		}
 		?>
-		<label class="cool-form-text mdc-text-field mdc-text-field--outlined <?php echo ($item['field_label'] === '' || empty($settings['show_labels'])) ? 'mdc-text-field--no-label' : '' ?> cool-field-size-<?php echo $settings['input_size'] ?>">
+		<label class="cool-form-text mdc-text-field mdc-text-field--outlined <?php echo ($item['field_label'] === '' || empty($settings['show_labels'])) ? 'mdc-text-field--no-label' : '' ?> cool-field-size-<?php echo esc_attr($settings['input_size']); ?>">
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">
@@ -111,7 +111,7 @@ class Time extends Field_Base {
 		}
 
 		if ( preg_match( '/^(([0-1][0-9])|(2[0-3])):[0-5][0-9]$/', $field['value'] ) !== 1 ) {
-			$ajax_handler->add_error( $field['id'], esc_html__( 'The field should be in HH:MM format.', 'elementor-pro' ) );
+			$ajax_handler->add_error( $field['id'], esc_html__( 'The field should be in HH:MM format.', 'extensions-for-elementor-form' ) );
 		}
 	}
 }

@@ -13,7 +13,7 @@ use Cool_FormKit\Widgets\HelloPlusAddons\HelloPlus_COUNTRY_CODE_FIELD;
 use Cool_FormKit\Widgets\HelloPlusAddons\HelloPlus_FME_Plugin;
 use Cool_FormKit\Widgets\HelloPlusAddons\Sheet_HelloPlus_Action;
 
-
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound  
 
 if (!defined('ABSPATH')) {
     die;
@@ -135,12 +135,12 @@ class HelloPlus_Addons_Loader {
         $element->start_controls_section(
             'cool_formkit_conditional_actions_section',
             [
-                'label' => esc_html__( 'Cool Actions After Submit', 'cool-formkit' ),
+                'label' => esc_html__( 'Cool Actions After Submit', 'extensions-for-elementor-form' ),
             ]
         );
 
         $element->add_control( 'cool_formkit_submit_actions', [
-            'label'       => __( 'Actions After Submit', 'cool-formkit' ),
+            'label'       => __( 'Actions After Submit', 'extensions-for-elementor-form' ),
             'type'        => \Elementor\Controls_Manager::SELECT2,
             'multiple'    => true,
             'label_block' => true,

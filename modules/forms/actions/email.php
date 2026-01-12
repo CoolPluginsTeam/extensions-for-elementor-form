@@ -18,7 +18,7 @@ class Email extends Action_Base {
 	}
 
 	public function get_label(): string {
-		return esc_html__( 'Email', 'cool-formkit' );
+		return esc_html__( 'Email', 'extensions-for-elementor-form' );
 	}
 
 	public function register_settings_section( $widget ) {
@@ -36,7 +36,7 @@ class Email extends Action_Base {
 		$widget->add_control(
 			$this->get_control_id( 'email_to' ),
 			[
-				'label' => esc_html__( 'To', 'cool-formkit' ),
+				'label' => esc_html__( 'To', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => get_option( 'admin_email' ),
 				'ai' => [
@@ -44,7 +44,7 @@ class Email extends Action_Base {
 				],
 				'placeholder' => get_option( 'admin_email' ),
 				'label_block' => true,
-				'title' => esc_html__( 'Separate emails with commas', 'cool-formkit' ),
+				'title' => esc_html__( 'Separate emails with commas', 'extensions-for-elementor-form' ),
 				'render_type' => 'none',
 				'dynamic' => [
 					'active' => true,
@@ -53,12 +53,12 @@ class Email extends Action_Base {
 		);
 
 		/* translators: %s: Site title. */
-		$default_message = sprintf( esc_html__( 'New message from [%s]', 'cool-formkit' ), get_bloginfo( 'name' ) );
+		$default_message = sprintf( esc_html__( 'New message from [%s]', 'extensions-for-elementor-form' ), get_bloginfo( 'name' ) );
 
 		$widget->add_control(
 			$this->get_control_id( 'email_subject' ),
 			[
-				'label' => esc_html__( 'Subject', 'cool-formkit' ),
+				'label' => esc_html__( 'Subject', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => $default_message,
 				'ai' => [
@@ -76,7 +76,7 @@ class Email extends Action_Base {
 		$widget->add_control(
 			$this->get_control_id( 'email_content' ),
 			[
-				'label' => esc_html__( 'Message', 'cool-formkit' ),
+				'label' => esc_html__( 'Message', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXTAREA,
 				'default' => '[all-fields]',
 				'ai' => [
@@ -85,7 +85,7 @@ class Email extends Action_Base {
 				'placeholder' => '[all-fields]',
 				'description' => sprintf(
 					/* translators: %s: The [all-fields] shortcode. */
-					esc_html__( 'By default, all form fields are sent via %s shortcode. To customize sent fields, copy the shortcode that appears inside each field and paste it above.', 'cool-formkit' ),
+					esc_html__( 'By default, all form fields are sent via %s shortcode. To customize sent fields, copy the shortcode that appears inside each field and paste it above.', 'extensions-for-elementor-form' ),
 					'<code>[all-fields]</code>'
 				),
 				'render_type' => 'none',
@@ -100,7 +100,7 @@ class Email extends Action_Base {
 		$widget->add_control(
 			$this->get_control_id( 'email_from' ),
 			[
-				'label' => esc_html__( 'From Email', 'cool-formkit' ),
+				'label' => esc_html__( 'From Email', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => 'email@' . $site_domain,
 				'ai' => [
@@ -116,7 +116,7 @@ class Email extends Action_Base {
 		$widget->add_control(
 			$this->get_control_id( 'email_from_name' ),
 			[
-				'label' => esc_html__( 'From Name', 'cool-formkit' ),
+				'label' => esc_html__( 'From Name', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => get_bloginfo( 'name' ),
 				'ai' => [
@@ -132,7 +132,7 @@ class Email extends Action_Base {
 		$widget->add_control(
 			$this->get_control_id( 'email_reply_to' ),
 			[
-				'label' => esc_html__( 'Reply-To', 'cool-formkit' ),
+				'label' => esc_html__( 'Reply-To', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
 					'' => '',
@@ -144,13 +144,13 @@ class Email extends Action_Base {
 		$widget->add_control(
 			$this->get_control_id( 'email_to_cc' ),
 			[
-				'label' => esc_html__( 'Cc', 'cool-formkit' ),
+				'label' => esc_html__( 'Cc', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'ai' => [
 					'active' => false,
 				],
-				'title' => esc_html__( 'Separate emails with commas', 'cool-formkit' ),
+				'title' => esc_html__( 'Separate emails with commas', 'extensions-for-elementor-form' ),
 				'render_type' => 'none',
 				'dynamic' => [
 					'active' => true,
@@ -161,13 +161,13 @@ class Email extends Action_Base {
 		$widget->add_control(
 			$this->get_control_id( 'email_to_bcc' ),
 			[
-				'label' => esc_html__( 'Bcc', 'cool-formkit' ),
+				'label' => esc_html__( 'Bcc', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'ai' => [
 					'active' => false,
 				],
-				'title' => esc_html__( 'Separate emails with commas', 'cool-formkit' ),
+				'title' => esc_html__( 'Separate emails with commas', 'extensions-for-elementor-form' ),
 				'render_type' => 'none',
 				'dynamic' => [
 					'active' => true,
@@ -178,7 +178,7 @@ class Email extends Action_Base {
 		$widget->add_control(
 			$this->get_control_id( 'form_metadata' ),
 			[
-				'label' => esc_html__( 'Meta Data', 'cool-formkit' ),
+				'label' => esc_html__( 'Meta Data', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SELECT2,
 				'multiple' => true,
 				'label_block' => true,
@@ -192,12 +192,12 @@ class Email extends Action_Base {
 					'credit',
 				],
 				'options' => [
-					'date' => esc_html__( 'Date', 'cool-formkit' ),
-					'time' => esc_html__( 'Time', 'cool-formkit' ),
-					'page_url' => esc_html__( 'Page URL', 'cool-formkit' ),
-					'user_agent' => esc_html__( 'User Agent', 'cool-formkit' ),
-					'remote_ip' => esc_html__( 'Remote IP', 'cool-formkit' ),
-					'credit' => esc_html__( 'Credit', 'cool-formkit' ),
+					'date' => esc_html__( 'Date', 'extensions-for-elementor-form' ),
+					'time' => esc_html__( 'Time', 'extensions-for-elementor-form' ),
+					'page_url' => esc_html__( 'Page URL', 'extensions-for-elementor-form' ),
+					'user_agent' => esc_html__( 'User Agent', 'extensions-for-elementor-form' ),
+					'remote_ip' => esc_html__( 'Remote IP', 'extensions-for-elementor-form' ),
+					'credit' => esc_html__( 'Credit', 'extensions-for-elementor-form' ),
 				],
 				'render_type' => 'none',
 			]
@@ -206,13 +206,13 @@ class Email extends Action_Base {
 		$widget->add_control(
 			$this->get_control_id( 'email_content_type' ),
 			[
-				'label' => esc_html__( 'Send As', 'cool-formkit' ),
+				'label' => esc_html__( 'Send As', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'html',
 				'render_type' => 'none',
 				'options' => [
-					'html' => esc_html__( 'HTML', 'cool-formkit' ),
-					'plain' => esc_html__( 'Plain', 'cool-formkit' ),
+					'html' => esc_html__( 'HTML', 'extensions-for-elementor-form' ),
+					'plain' => esc_html__( 'Plain', 'extensions-for-elementor-form' ),
 				],
 			]
 		);
@@ -247,7 +247,7 @@ class Email extends Action_Base {
 		$fields = [
 			'email_to' => get_option( 'admin_email' ),
 			/* translators: %s: Site title. */
-			'email_subject' => sprintf( esc_html__( 'New message from [%s]', 'cool-formkit' ), get_bloginfo( 'name' ) ),
+			'email_subject' => sprintf( esc_html__( 'New message from [%s]', 'extensions-for-elementor-form' ), get_bloginfo( 'name' ) ),
 			'email_content' => '[all-fields]',
 			'email_from_name' => get_bloginfo( 'name' ),
 			'email_from' => get_bloginfo( 'admin_email' ),

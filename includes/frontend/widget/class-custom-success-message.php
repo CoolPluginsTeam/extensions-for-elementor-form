@@ -20,7 +20,8 @@ class Custom_Success_Message {
 	}
 
 	public function enqueue_frondend_scripts(){
-		wp_register_style( 'eef-frontend-style',  CFL_PLUGIN_URL . 'assets/css/style.min.css', array(), CFL_VERSION );	
+		wp_register_style( 'eef-frontend-style',  CFL_PLUGIN_URL . 'assets/css/style.min.css', array(), CFL_VERSION );
+		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
 		wp_register_script( 'eef-frontend-script', CFL_PLUGIN_URL . 'assets/js/frontend-scripts.min.js', array( 'jquery' ), CFL_VERSION );
 	}
 	/**
@@ -32,33 +33,33 @@ class Custom_Success_Message {
 		$element->start_controls_section(
 			'evcode_message_template',
 			[
-				'label' => \esc_html__( 'Custom Success Message', 'extensions_elementor_form' ),
+				'label' => \esc_html__( 'Custom Success Message', 'extensions-for-elementor-form' ),
 			]
 		);
 
 		$element->add_control(
 			'hide_form_after_submit',
 			[
-				'label' => \esc_html__( 'Hide form after submit?', 'extensions_elementor_form' ),
+				'label' => \esc_html__( 'Hide form after submit?', 'extensions-for-elementor-form' ),
 				'type' => \Elementor\Controls_Manager::SWITCHER,
-				'label_on' => \esc_html__( 'Hide', 'extensions_elementor_form' ),
-				'label_off' => \esc_html__( 'Show', 'extensions_elementor_form' ),
+				'label_on' => \esc_html__( 'Hide', 'extensions-for-elementor-form' ),
+				'label_off' => \esc_html__( 'Show', 'extensions-for-elementor-form' ),
 				'return_value' => 'yes',
 				'default' => 'yes',
-				'description' => \esc_html__( 'This option hide the form after sucess submit.', 'extensions_elementor_form' ),
+				'description' => \esc_html__( 'This option hide the form after sucess submit.', 'extensions-for-elementor-form' ),
 			]
 		);
 
 		$element->add_control(
 			'template-custom-sucess-message',
 			[
-				'label' => \esc_html__( 'Message Template', 'extensions_elementor_form' ),
+				'label' => \esc_html__( 'Message Template', 'extensions-for-elementor-form' ),
 				'type' => \Elementor\Controls_Manager::TEXT,
-				'placeholder' => \esc_html__( '[your-shortcode-here]', 'extensions_elementor_form' ),
+				'placeholder' => \esc_html__( '[your-shortcode-here]', 'extensions-for-elementor-form' ),
 				'label_block' => true,
 				'render_type' => 'none',
 				'classes' => 'elementor_control_message_control-ltr',
-				'description' => \esc_html__( 'Paste shortcode for your sucess message template.', 'extensions_elementor_form' ),
+				'description' => \esc_html__( 'Paste shortcode for your sucess message template.', 'extensions-for-elementor-form' ),
 				'condition' => array(
 					'hide_form_after_submit' => 'yes'
 				)

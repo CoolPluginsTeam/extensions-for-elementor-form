@@ -15,7 +15,7 @@ class Tel extends Field_Base {
 	}
 
 	public function get_name() {
-		return esc_html__( 'Tel', 'cool-formkit' );
+		return esc_html__( 'Tel', 'extensions-for-elementor-form' );
 	}
 
 	public function render( $item, $item_index, $form ) {
@@ -25,9 +25,9 @@ class Tel extends Field_Base {
 		// Use the Material Design input class.
 		$form->add_render_attribute( 'input' . $item_index, 'class', 'mdc-text-field__input' );
 		$form->add_render_attribute( 'input' . $item_index, 'pattern', '[0-9()#&+\*\-\.=]+' );
-		$form->add_render_attribute( 'input' . $item_index, 'title', esc_html__( 'Only numbers and phone characters (#, -, *, etc) are accepted.', 'cool-formkit' ) );
+		$form->add_render_attribute( 'input' . $item_index, 'title', esc_html__( 'Only numbers and phone characters (#, -, *, etc) are accepted.', 'extensions-for-elementor-form' ) );
 		?>
-		<label class="cool-form-text mdc-text-field mdc-text-field--outlined <?php echo ($item['field_label'] === '' || empty($settings['show_labels'])) ? 'mdc-text-field--no-label' : '' ?> cool-field-size-<?php echo $settings['input_size'] ?>">
+		<label class="cool-form-text mdc-text-field mdc-text-field--outlined <?php echo ($item['field_label'] === '' || empty($settings['show_labels'])) ? 'mdc-text-field--no-label' : '' ?> cool-field-size-<?php echo esc_attr($settings['input_size']); ?>">
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">
@@ -56,7 +56,7 @@ class Tel extends Field_Base {
 			return;
 		}
 		if ( preg_match( '/^[0-9()#&+*-=.]+$/', $field['value'] ) !== 1 ) {
-			// $ajax_handler->add_error( $field['id'], esc_html__( 'The field accepts only numbers and phone characters (#, -, *, etc).', 'cool-formkit' ) );
+			// $ajax_handler->add_error( $field['id'], esc_html__( 'The field accepts only numbers and phone characters (#, -, *, etc).', 'extensions-for-elementor-form' ) );
 		}
 	}
 }

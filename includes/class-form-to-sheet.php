@@ -66,7 +66,7 @@ class Sheet_Action extends Form_To_Sheet_Helper
 
     public function __construct()
     {
-		add_action('elementor/editor/after_enqueue_scripts', [$this, 'enqueue_editor_scripts']);
+		add_action('elementor/editor/after_enqueue_scripts', [$this, 'enqueue_editor_scripts'], 1);
 
     }
 
@@ -110,7 +110,7 @@ class Sheet_Action extends Form_To_Sheet_Helper
      */
     public function get_label()
     {
-        return esc_html__('Save Submissions in Google Sheet', 'cfl');
+        return esc_html__('Save Submissions in Google Sheet', 'extensions-for-elementor-form');
     }
 
     /**
@@ -122,7 +122,7 @@ class Sheet_Action extends Form_To_Sheet_Helper
         $widget->start_controls_section(
             $this->add_prefix('section_google_sheets'),
             [
-                'label' => esc_html__('Save Submissions in Google Sheet', 'cfl'),
+                'label' => esc_html__('Save Submissions in Google Sheet', 'extensions-for-elementor-form'),
                 'tab'   => 'connect_google_sheets_tab',
                 'condition' => [
                     'submit_actions' => $this->get_name(),

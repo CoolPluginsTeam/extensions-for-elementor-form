@@ -18,7 +18,7 @@ class Acceptance extends Field_Base {
 		return 'acceptance';
 	}
 	public function get_name() {
-		return esc_html__( 'Acceptance', 'cool-formkit' );
+		return esc_html__( 'Acceptance', 'extensions-for-elementor-form' );
 	}
 
 	public function update_controls( $widget ) {
@@ -33,7 +33,7 @@ class Acceptance extends Field_Base {
 		$field_controls = [
 			'acceptance_text' => [
 				'name' => 'acceptance_text',
-				'label' => esc_html__( 'Acceptance Text', 'cool-formkit' ),
+				'label' => esc_html__( 'Acceptance Text', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXTAREA,
 				'condition' => [
 					'field_type' => $this->get_type(),
@@ -44,7 +44,7 @@ class Acceptance extends Field_Base {
 			],
 			'checked_by_default' => [
 				'name' => 'checked_by_default',
-				'label' => esc_html__( 'Checked by Default', 'cool-formkit' ),
+				'label' => esc_html__( 'Checked by Default', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SWITCHER,
 				'condition' => [
 					'field_type' => $this->get_type(),

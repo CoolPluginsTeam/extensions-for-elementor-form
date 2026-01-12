@@ -29,11 +29,11 @@ abstract class Form_Base extends Widget_Base {
 
 	public static function get_button_sizes(): array {
 		return [
-			'xs' => esc_html__( 'Extra Small', 'cool-formkit' ),
-			'sm' => esc_html__( 'Small', 'cool-formkit' ),
-			'md' => esc_html__( 'Medium', 'cool-formkit' ),
-			'lg' => esc_html__( 'Large', 'cool-formkit' ),
-			'xl' => esc_html__( 'Extra Large', 'cool-formkit' ),
+			'xs' => esc_html__( 'Extra Small', 'extensions-for-elementor-form' ),
+			'sm' => esc_html__( 'Small', 'extensions-for-elementor-form' ),
+			'md' => esc_html__( 'Medium', 'extensions-for-elementor-form' ),
+			'lg' => esc_html__( 'Large', 'extensions-for-elementor-form' ),
+			'xl' => esc_html__( 'Extra Large', 'extensions-for-elementor-form' ),
 		];
 	}
 
@@ -57,8 +57,8 @@ abstract class Form_Base extends Widget_Base {
 			<span class="mdc-text-field__resizer">
 				<textarea
 					class="mdc-text-field__input cool-form__field"
-					id="<?php echo $this->get_attribute_id( $item ); ?>"
-					name="<?php echo $this->get_attribute_name( $item ); ?>"
+					id="<?php echo esc_attr( $this->get_attribute_id( $item ) ); ?>"
+					name="<?php echo esc_attr( $this->get_attribute_name( $item ) ); ?>"
 					rows="<?php echo esc_attr( $item['rows'] ); ?>"
 					<?php echo ( ! empty( $item['placeholder'] ) ) ? 'placeholder="' . esc_attr( $item['placeholder'] ) . '"' : ''; ?>
 					<?php echo ( ! empty( $item['required'] ) ) ? 'required' : ''; ?>
@@ -133,8 +133,8 @@ abstract class Form_Base extends Widget_Base {
 	public function make_select_field_md( $item, $i ,$instance): string {
 		ob_start();		
 		?>
-		<div class="mdc-select mdc-select--outlined cool-field-size-<?php echo $instance['input_size'] ?>">
-			<div class="mdc-select__anchor cool-field-size-<?php echo $instance['input_size'] ?>" aria-labelledby="select-label-<?php echo esc_attr( $i ); ?>">
+		<div class="mdc-select mdc-select--outlined cool-field-size-<?php echo esc_attr( $instance['input_size'] ); ?>">
+			<div class="mdc-select__anchor cool-field-size-<?php echo esc_attr( $instance['input_size'] ); ?>" aria-labelledby="select-label-<?php echo esc_attr( $i ); ?>">
 				<span class="mdc-notched-outline">
 					<span class="mdc-notched-outline__leading"></span>
 					<span class="mdc-notched-outline__notch">
@@ -175,7 +175,7 @@ abstract class Form_Base extends Widget_Base {
 								$selected = array('class' => 'mdc-list-item--selected', 'selected' => 'aria-selected="true"');
 							}
 							?>
-							<li class="mdc-list-item <?php echo $selected['class']; ?>" role="option" data-value="<?php echo esc_attr( $option_value ); ?>" <?php echo $selected['selected']; ?>>
+							<li class="mdc-list-item <?php echo esc_attr( $selected['class'] ); ?>" role="option" data-value="<?php echo esc_attr( $option_value ); ?>" <?php echo esc_attr( $selected['selected'] ); ?>>
 								<span class="mdc-list-item__ripple"></span>
 								<span class="mdc-list-item__text"><?php echo esc_html( $option_label ); ?></span>
 							</li>
@@ -183,7 +183,7 @@ abstract class Form_Base extends Widget_Base {
 					} ?>
 				</ul>
 			</div>
-			<select name="form_fields[<?php echo $item['custom_id'] ?>]" id="form-field-<?php echo $item['custom_id'] ?>" style="display: none;">
+			<select name="form_fields[<?php echo esc_attr( $item['custom_id'] ) ?>]" id="form-field-<?php echo esc_attr( $item['custom_id'] ) ?>" style="display: none;">
 				<?php
 				if($options){
 					$default_option = isset($item['field_value']) ? $item['field_value'] : '';
@@ -198,7 +198,7 @@ abstract class Form_Base extends Widget_Base {
 							$selected = 'selected';
 						}
 						?>
-						<option value="<?php echo esc_attr( $option_value ); ?>" <?php echo $selected; ?>><?php echo esc_html( $option_label ); ?></option>
+						<option value="<?php echo esc_attr( $option_value ); ?>" <?php echo esc_attr($selected); ?>><?php echo esc_html( $option_label ); ?></option>
 						<?php
 					}
 				}
@@ -233,7 +233,11 @@ abstract class Form_Base extends Widget_Base {
 								class="<?php echo ( 'radio' === $type ? 'mdc-radio__native-control' : 'mdc-checkbox__native-control' ); ?>"
 								type="<?php echo esc_attr( $type ); ?>"
 								id="<?php echo esc_attr( $input_id ); ?>"
-								name="<?php echo $this->get_attribute_name( $item ) . ( ( 'checkbox' === $type && count( $options ) > 1 ) ? '[]' : '' ); ?>"
+								name="<?php
+									echo esc_attr(
+										$this->get_attribute_name( $item ) . ( ( 'checkbox' === $type && count( $options ) > 1 ) ? '[]' : '' )
+									);
+									?>"
 								value="<?php echo esc_attr( $option_value ); ?>"
 								<?php echo ( ! empty( $item['field_value'] ) && $option_value === $item['field_value'] ) ? 'checked' : ''; ?>
 								<?php echo ( ! empty( $item['required'] ) && 'radio' === $type ) ? 'required' : ''; ?>

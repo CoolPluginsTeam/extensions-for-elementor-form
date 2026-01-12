@@ -72,8 +72,9 @@ if (! class_exists('CFL_Marketing_Controllers')) {
                  wp_send_json_error([ 'message' => 'Permission denied' ]);
 			}
 
-			$type  = sanitize_text_field($_POST['notice_type'] ?? '');
-           $nonce = isset($_POST['nonce']) ? $_POST['nonce'] : '';
+			$type  = sanitize_text_field(wp_unslash($_POST['notice_type'] ?? ''));
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+           $nonce = isset($_POST['nonce']) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
           
 		    if ( empty( $nonce ) || empty( $type ) || ! wp_verify_nonce( $nonce, "cfl_dismiss_nonce_{$type}" ) ) {
             wp_send_json_error([ 'message' => 'Invalid nonce' ]);
@@ -91,7 +92,7 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 
 
         if (! current_user_can('install_plugins')) {
-			$status['errorMessage'] = __('Sorry, you are not allowed to install plugins on this site.');
+			$status['errorMessage'] = __('Sorry, you are not allowed to install plugins on this site.', 'extensions-for-elementor-form');
 			wp_send_json_error($status);
 		}
 
@@ -101,7 +102,7 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 			wp_send_json_error(array(
 				'slug'         => '',
 				'errorCode'    => 'no_plugin_specified',
-				'errorMessage' => __('No plugin specified.'),
+				'errorMessage' => __('No plugin specified.', 'extensions-for-elementor-form'),
 			));
 		}
 
@@ -201,7 +202,7 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 				global $wp_filesystem;
 
 				$status['errorCode']    = 'unable_to_connect_to_filesystem';
-				$status['errorMessage'] = __('Unable to connect to the filesystem. Please confirm your credentials.');
+				$status['errorMessage'] = __('Unable to connect to the filesystem. Please confirm your credentials.', 'extensions-for-elementor-form');
 
 				if ($wp_filesystem instanceof WP_Filesystem_Base && is_wp_error($wp_filesystem->errors) && $wp_filesystem->errors->has_errors()) {
 					$status['errorMessage'] = esc_html($wp_filesystem->errors->get_error_message());
@@ -237,7 +238,7 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 
             if ( $screen && 'elementor_page_e-form-submissions' === $screen->id ) {
 
-                $button_text = __('Save To Google Sheet - Install Plugin', 'cfl');
+                $button_text = __('Save To Google Sheet - Install Plugin', 'extensions-for-elementor-form');
 				$nonce = wp_create_nonce('cfl_install_nonce');
                 
                 $custom_js = "
@@ -285,7 +286,7 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 
 		public function cfl_admin_notice_for_formsdb()
 		{
-
+			// phpcs:ignore	WordPress.Security.NonceVerification.Recommended
 			if ( ! isset($_GET['page']) || $_GET['page'] !== 'e-form-submissions' ) {
 				return;
 			}	
@@ -294,7 +295,7 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 
 			$notice_options = [
 				'button_secondary' => [
-					'text' => esc_html__('Install Plugin', 'cfl'),
+					'text' => esc_html__('Install Plugin', 'extensions-for-elementor-form'),
 					'classes' => ['cfl-install-plugin'],
 					'url' => '',
 					'type' => 'cta',
@@ -315,7 +316,7 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 
 		public function cfl_init_hooks() {
 
-			add_action('elementor/editor/after_enqueue_scripts', [$this, 'enqueue_editor_scripts']);
+			add_action('elementor/editor/after_enqueue_scripts', [$this, 'enqueue_editor_scripts'], 0);
 		}
 
 		/**
@@ -332,10 +333,10 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 					array(
 						'name'            => 'cfl_mkt_country_notice',
 						'type'            => \Elementor\Controls_Manager::SWITCHER,
-						'label'        => esc_html__('Use ACF Repeater', 'cfl'),
+						'label'        => esc_html__('Use ACF Repeater', 'extensions-for-elementor-form'),
 						'type'         => \Elementor\Controls_Manager::SWITCHER,
-						'label_on'     => esc_html__('Yes', 'cfl'),
-						'label_off'    => esc_html__('No', 'cfl'),
+						'label_on'     => esc_html__('Yes', 'extensions-for-elementor-form'),
+						'label_off'    => esc_html__('No', 'extensions-for-elementor-form'),
 
 					),
 			);

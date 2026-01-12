@@ -18,7 +18,7 @@ class Form_Record {
 
 	public function get_formatted_data( $with_meta = false ): array {
 		$formatted = [];
-		$no_label = esc_html__( 'No Label', 'cool-formkit' );
+		$no_label = esc_html__( 'No Label', 'extensions-for-elementor-form' );
 		$fields = $this->fields;
 
 		if ( $with_meta ) {
@@ -163,14 +163,14 @@ class Form_Record {
 			switch ( $metadata_type ) {
 				case 'date':
 					$result['date'] = [
-						'title' => esc_html__( 'Date', 'cool-formkit' ),
+						'title' => esc_html__( 'Date', 'extensions-for-elementor-form' ),
 						'value' => date_i18n( get_option( 'date_format' ) ),
 					];
 					break;
 
 				case 'time':
 					$result['time'] = [
-						'title' => esc_html__( 'Time', 'cool-formkit' ),
+						'title' => esc_html__( 'Time', 'extensions-for-elementor-form' ),
 						'value' => date_i18n( get_option( 'time_format' ) ),
 					];
 					break;
@@ -178,7 +178,7 @@ class Form_Record {
 				case 'page_url':
 					$referrer = filter_input( INPUT_POST, 'referrer', FILTER_SANITIZE_URL );
 					$result['page_url'] = [
-						'title' => esc_html__( 'Page URL', 'cool-formkit' ),
+						'title' => esc_html__( 'Page URL', 'extensions-for-elementor-form' ),
 						'value' => $referrer ? esc_url_raw( wp_unslash( $referrer ) ) : '',
 					];
 					break;
@@ -186,7 +186,7 @@ class Form_Record {
 				case 'page_title':
 					$referrer_title = filter_input( INPUT_POST, 'referer_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 					$result['page_title'] = [
-						'title' => esc_html__( 'Page Title', 'cool-formkit' ),
+						'title' => esc_html__( 'Page Title', 'extensions-for-elementor-form' ),
 						'value' => $referrer_title ? sanitize_text_field( wp_unslash( $referrer_title ) ) : '',
 					];
 					break;
@@ -194,21 +194,21 @@ class Form_Record {
 				case 'user_agent':
 					$user_agent = filter_input( INPUT_SERVER, 'HTTP_USER_AGENT', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 					$result['user_agent'] = [
-						'title' => esc_html__( 'User Agent', 'cool-formkit' ),
+						'title' => esc_html__( 'User Agent', 'extensions-for-elementor-form' ),
 						'value' => $user_agent ? sanitize_textarea_field( wp_unslash( $user_agent ) ) : '',
 					];
 					break;
 
 				case 'remote_ip':
 					$result['remote_ip'] = [
-						'title' => esc_html__( 'Remote IP', 'cool-formkit' ),
+						'title' => esc_html__( 'Remote IP', 'extensions-for-elementor-form' ),
 						'value' => Utils::get_client_ip(),
 					];
 					break;
 				case 'credit':
 					$result['credit'] = [
-						'title' => esc_html__( 'Powered by', 'cool-formkit' ),
-						'value' => esc_html__( 'Elementor', 'cool-formkit' ),
+						'title' => esc_html__( 'Powered by', 'extensions-for-elementor-form' ),
+						'value' => esc_html__( 'Elementor', 'extensions-for-elementor-form' ),
 					];
 					break;
 			}

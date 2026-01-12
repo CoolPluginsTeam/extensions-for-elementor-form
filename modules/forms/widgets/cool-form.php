@@ -26,7 +26,7 @@ class Cool_Form extends Form_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Cool Form', 'cool-formkit' );
+		return esc_html__( 'Cool Form', 'extensions-for-elementor-form' );
 	}
 
 	public function get_icon() {
@@ -387,17 +387,17 @@ class Cool_Form extends Form_Base {
 		$repeater = new Repeater();
 
 		$field_types = [
-			'text' => esc_html__( 'Text', 'cool-formkit' ),
-			'email' => esc_html__( 'Email', 'cool-formkit' ),
-			'textarea' => esc_html__( 'Textarea', 'cool-formkit' ),
-			'tel' => esc_html__( 'Tel', 'cool-formkit' ),
-			'select' => esc_html__( 'Select', 'cool-formkit' ),
-			'acceptance' => esc_html__( 'Acceptance', 'cool-formkit' ),
-			'number' => esc_html__( 'Number', 'cool-formkit' ),
-			'date' => esc_html__( 'Date', 'cool-formkit' ),
-			'time' => esc_html__( 'Time', 'cool-formkit' ),
-			'checkbox' => esc_html__( 'Checkbox', 'cool-formkit' ),
-			'radio' => esc_html__( 'Radio', 'cool-formkit' ),
+			'text' => esc_html__( 'Text', 'extensions-for-elementor-form' ),
+			'email' => esc_html__( 'Email', 'extensions-for-elementor-form' ),
+			'textarea' => esc_html__( 'Textarea', 'extensions-for-elementor-form' ),
+			'tel' => esc_html__( 'Tel', 'extensions-for-elementor-form' ),
+			'select' => esc_html__( 'Select', 'extensions-for-elementor-form' ),
+			'acceptance' => esc_html__( 'Acceptance', 'extensions-for-elementor-form' ),
+			'number' => esc_html__( 'Number', 'extensions-for-elementor-form' ),
+			'date' => esc_html__( 'Date', 'extensions-for-elementor-form' ),
+			'time' => esc_html__( 'Time', 'extensions-for-elementor-form' ),
+			'checkbox' => esc_html__( 'Checkbox', 'extensions-for-elementor-form' ),
+			'radio' => esc_html__( 'Radio', 'extensions-for-elementor-form' ),
 		];
 
 		$field_types = apply_filters( 'cool_formkit/forms/field_types', $field_types );
@@ -405,13 +405,13 @@ class Cool_Form extends Form_Base {
 		$repeater->start_controls_tabs( 'form_fields_tabs' );
 
 		$repeater->start_controls_tab( 'form_fields_content_tab', [
-			'label' => esc_html__( 'Content', 'cool-formkit' ),
+			'label' => esc_html__( 'Content', 'extensions-for-elementor-form' ),
 		] );
 
 		$repeater->add_control(
 			'field_type',
 			[
-				'label' => esc_html__( 'Type', 'cool-formkit' ),
+				'label' => esc_html__( 'Type', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => $field_types,
 				'default' => 'text',
@@ -421,7 +421,7 @@ class Cool_Form extends Form_Base {
 		$repeater->add_control(
 			'field_label',
 			[
-				'label' => esc_html__( 'Label', 'cool-formkit' ),
+				'label' => esc_html__( 'Label', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'dynamic' => [
@@ -433,7 +433,7 @@ class Cool_Form extends Form_Base {
 		$repeater->add_control(
 			'placeholder',
 			[
-				'label' => esc_html__( 'Placeholder', 'cool-formkit' ),
+				'label' => esc_html__( 'Placeholder', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'conditions' => [
@@ -462,7 +462,7 @@ class Cool_Form extends Form_Base {
 		$repeater->add_control(
 			'required',
 			[
-				'label' => esc_html__( 'Required', 'cool-formkit' ),
+				'label' => esc_html__( 'Required', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SWITCHER,
 				'return_value' => 'true',
 				'default' => '',
@@ -488,10 +488,10 @@ class Cool_Form extends Form_Base {
 		$repeater->add_control(
 			'field_options',
 			[
-				'label' => esc_html__( 'Options', 'cool-formkit' ),
+				'label' => esc_html__( 'Options', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXTAREA,
 				'default' => '',
-				'description' => esc_html__( 'Enter each option in a separate line. To differentiate between label and value, separate them with a pipe char ("|"). For example: First Name|f_name', 'cool-formkit' ),
+				'description' => esc_html__( 'Enter each option in a separate line. To differentiate between label and value, separate them with a pipe char ("|"). For example: First Name|f_name', 'extensions-for-elementor-form' ),
 				'conditions' => [
 					'terms' => [
 						[
@@ -512,7 +512,7 @@ class Cool_Form extends Form_Base {
 		$repeater->add_control(
 			'inline_list',
 			[
-				'label' => esc_html__( 'Inline List', 'cool-formkit' ),
+				'label' => esc_html__( 'Inline List', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SWITCHER,
 				'return_value' => 'elementor-subgroup-inline',
 				'default' => '',
@@ -534,7 +534,7 @@ class Cool_Form extends Form_Base {
 		$repeater->add_responsive_control(
 			'width',
 			[
-				'label' => esc_html__( 'Column Width', 'cool-formkit' ),
+				'label' => esc_html__( 'Column Width', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
 					'100' => '100%',
@@ -563,12 +563,12 @@ class Cool_Form extends Form_Base {
 
 		$repeater->add_control(
 			'recaptcha_size', [
-				'label' => esc_html__( 'Size', 'cool-formkit' ),
+				'label' => esc_html__( 'Size', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'normal',
 				'options' => [
-					'normal' => esc_html__( 'Normal', 'cool-formkit' ),
-					'compact' => esc_html__( 'Compact', 'cool-formkit' ),
+					'normal' => esc_html__( 'Normal', 'extensions-for-elementor-form' ),
+					'compact' => esc_html__( 'Compact', 'extensions-for-elementor-form' ),
 				],
 				'conditions' => [
 					'terms' => [
@@ -584,12 +584,12 @@ class Cool_Form extends Form_Base {
 		$repeater->add_control(
 			'recaptcha_style',
 			[
-				'label' => esc_html__( 'Style', 'cool-formkit' ),
+				'label' => esc_html__( 'Style', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'light',
 				'options' => [
-					'light' => esc_html__( 'Light', 'cool-formkit' ),
-					'dark' => esc_html__( 'Dark', 'cool-formkit' ),
+					'light' => esc_html__( 'Light', 'extensions-for-elementor-form' ),
+					'dark' => esc_html__( 'Dark', 'extensions-for-elementor-form' ),
 				],
 				'conditions' => [
 					'terms' => [
@@ -604,15 +604,15 @@ class Cool_Form extends Form_Base {
 
 		$repeater->add_control(
 			'recaptcha_badge', [
-				'label' => esc_html__( 'Badge', 'cool-formkit' ),
+				'label' => esc_html__( 'Badge', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'bottomright',
 				'options' => [
-					'bottomright' => esc_html__( 'Bottom Right', 'cool-formkit' ),
-					'bottomleft' => esc_html__( 'Bottom Left', 'cool-formkit' ),
-					'inline' => esc_html__( 'Inline', 'cool-formkit' ),
+					'bottomright' => esc_html__( 'Bottom Right', 'extensions-for-elementor-form' ),
+					'bottomleft' => esc_html__( 'Bottom Left', 'extensions-for-elementor-form' ),
+					'inline' => esc_html__( 'Inline', 'extensions-for-elementor-form' ),
 				],
-				'description' => esc_html__( 'To view the validation badge, switch to preview mode', 'cool-formkit' ),
+				'description' => esc_html__( 'To view the validation badge, switch to preview mode', 'extensions-for-elementor-form' ),
 				'conditions' => [
 					'terms' => [
 						[
@@ -627,7 +627,7 @@ class Cool_Form extends Form_Base {
 		$repeater->add_control(
 			'rows',
 			[
-				'label' => esc_html__( 'Rows', 'cool-formkit' ),
+				'label' => esc_html__( 'Rows', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::NUMBER,
 				'default' => 4,
 				'conditions' => [
@@ -644,10 +644,10 @@ class Cool_Form extends Form_Base {
 		$repeater->add_control(
 			'css_classes',
 			[
-				'label' => esc_html__( 'CSS Classes', 'cool-formkit' ),
+				'label' => esc_html__( 'CSS Classes', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::HIDDEN,
 				'default' => '',
-				'title' => esc_html__( 'Add your custom class WITHOUT the dot. e.g: my-class', 'cool-formkit' ),
+				'title' => esc_html__( 'Add your custom class WITHOUT the dot. e.g: my-class', 'extensions-for-elementor-form' ),
 			]
 		);
 
@@ -656,7 +656,7 @@ class Cool_Form extends Form_Base {
 		$repeater->start_controls_tab(
 			'form_fields_advanced_tab',
 			[
-				'label' => esc_html__( 'Advanced', 'cool-formkit' ),
+				'label' => esc_html__( 'Advanced', 'extensions-for-elementor-form' ),
 				'condition' => [
 					'field_type!' => 'html',
 				],
@@ -666,7 +666,7 @@ class Cool_Form extends Form_Base {
 		$repeater->add_control(
 			'field_value',
 			[
-				'label' => esc_html__( 'Default Value', 'cool-formkit' ),
+				'label' => esc_html__( 'Default Value', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'dynamic' => [
@@ -699,11 +699,11 @@ class Cool_Form extends Form_Base {
 		$repeater->add_control(
 			'custom_id',
 			[
-				'label' => esc_html__( 'ID', 'cool-formkit' ),
+				'label' => esc_html__( 'ID', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'description' => sprintf(
 					/* translators: %1$s: Opening code tag, %2$s: Closing code tag. */
-					esc_html__( 'Please make sure the ID is unique and not used elsewhere on the page. This field allows %1$sA-z 0-9%2$s & underscore chars without spaces.', 'cool-formkit' ),
+					esc_html__( 'Please make sure the ID is unique and not used elsewhere on the page. This field allows %1$sA-z 0-9%2$s & underscore chars without spaces.', 'extensions-for-elementor-form' ),
 					'<code>',
 					'</code>'
 				),
@@ -723,7 +723,7 @@ class Cool_Form extends Form_Base {
 		$repeater->add_control(
 			'shortcode',
 			[
-				'label' => esc_html__( 'Shortcode', 'cool-formkit' ),
+				'label' => esc_html__( 'Shortcode', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::RAW_HTML,
 				'classes' => 'forms-field-shortcode',
 				'raw' => '<input class="elementor-form-field-shortcode" value=\'[field id="' . $shortcode_template . '"]\' readonly />',
@@ -737,17 +737,17 @@ class Cool_Form extends Form_Base {
 		$this->start_controls_section(
 			'section_form_fields',
 			[
-				'label' => esc_html__( 'Form Fields', 'cool-formkit' ),
+				'label' => esc_html__( 'Form Fields', 'extensions-for-elementor-form' ),
 			]
 		);
 
 		$this->add_control(
 			'form_name',
 			[
-				'label' => esc_html__( 'Form Name', 'cool-formkit' ),
+				'label' => esc_html__( 'Form Name', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => esc_html__( 'New Form', 'cool-formkit' ),
-				'placeholder' => esc_html__( 'Form Name', 'cool-formkit' ),
+				'default' => esc_html__( 'New Form', 'extensions-for-elementor-form' ),
+				'placeholder' => esc_html__( 'Form Name', 'extensions-for-elementor-form' ),
 			]
 		);
 
@@ -760,8 +760,8 @@ class Cool_Form extends Form_Base {
 					[
 						'custom_id' => 'name',
 						'field_type' => 'text',
-						'field_label' => esc_html__( 'Name', 'cool-formkit' ),
-						'placeholder' => esc_html__( 'Name', 'cool-formkit' ),
+						'field_label' => esc_html__( 'Name', 'extensions-for-elementor-form' ),
+						'placeholder' => esc_html__( 'Name', 'extensions-for-elementor-form' ),
 						'width' => '100',
 						'dynamic' => [
 							'active' => true,
@@ -771,15 +771,15 @@ class Cool_Form extends Form_Base {
 						'custom_id' => 'email',
 						'field_type' => 'email',
 						'required' => 'true',
-						'field_label' => esc_html__( 'Email', 'cool-formkit' ),
-						'placeholder' => esc_html__( 'Email', 'cool-formkit' ),
+						'field_label' => esc_html__( 'Email', 'extensions-for-elementor-form' ),
+						'placeholder' => esc_html__( 'Email', 'extensions-for-elementor-form' ),
 						'width' => '100',
 					],
 					[
 						'custom_id' => 'message',
 						'field_type' => 'textarea',
-						'field_label' => esc_html__( 'Message', 'cool-formkit' ),
-						'placeholder' => esc_html__( 'Message', 'cool-formkit' ),
+						'field_label' => esc_html__( 'Message', 'extensions-for-elementor-form' ),
+						'placeholder' => esc_html__( 'Message', 'extensions-for-elementor-form' ),
 						'width' => '100',
 					],
 				],
@@ -790,10 +790,10 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'show_labels',
 			[
-				'label' => esc_html__( 'Label', 'cool-formkit' ),
+				'label' => esc_html__( 'Label', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SWITCHER,
-				'label_on' => esc_html__( 'Show', 'cool-formkit' ),
-				'label_off' => esc_html__( 'Hide', 'cool-formkit' ),
+				'label_on' => esc_html__( 'Show', 'extensions-for-elementor-form' ),
+				'label_off' => esc_html__( 'Hide', 'extensions-for-elementor-form' ),
 				'return_value' => 'true',
 				'default' => 'true',
 				'separator' => 'before',
@@ -803,10 +803,10 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'mark_required',
 			[
-				'label' => esc_html__( 'Required Mark', 'cool-formkit' ),
+				'label' => esc_html__( 'Required Mark', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SWITCHER,
-				'label_on' => esc_html__( 'Show', 'cool-formkit' ),
-				'label_off' => esc_html__( 'Hide', 'cool-formkit' ),
+				'label_on' => esc_html__( 'Show', 'extensions-for-elementor-form' ),
+				'label_off' => esc_html__( 'Hide', 'extensions-for-elementor-form' ),
 				'default' => '',
 				'condition' => [
 					'show_labels!' => '',
@@ -821,14 +821,14 @@ class Cool_Form extends Form_Base {
 		$this->start_controls_section(
 			'section_buttons',
 			[
-				'label' => esc_html__( 'Button', 'cool-formkit' ),
+				'label' => esc_html__( 'Button', 'extensions-for-elementor-form' ),
 			]
 		);
 
 		$this->add_responsive_control(
 			'button_width',
 			[
-				'label' => esc_html__( 'Column Width', 'cool-formkit' ),
+				'label' => esc_html__( 'Column Width', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
 					'100' => '100%',
@@ -844,10 +844,10 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'button_text',
 			[
-				'label' => esc_html__( 'Submit', 'cool-formkit' ),
+				'label' => esc_html__( 'Submit', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => esc_html__( 'Send', 'cool-formkit' ),
-				'placeholder' => esc_html__( 'Send', 'cool-formkit' ),
+				'default' => esc_html__( 'Send', 'extensions-for-elementor-form' ),
+				'placeholder' => esc_html__( 'Send', 'extensions-for-elementor-form' ),
 				'dynamic' => [
 					'active' => true,
 				],
@@ -860,7 +860,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'selected_button_icon',
 			[
-				'label' => esc_html__( 'Icon', 'cool-formkit' ),
+				'label' => esc_html__( 'Icon', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::ICONS,
 				'skin' => 'inline',
 				'label_block' => false,
@@ -870,16 +870,16 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'button_css_id',
 			[
-				'label' => esc_html__( 'Button ID', 'cool-formkit' ),
+				'label' => esc_html__( 'Button ID', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'ai' => [
 					'active' => false,
 				],
-				'title' => esc_html__( 'Add your custom id WITHOUT the Pound key. e.g: my-id', 'cool-formkit' ),
+				'title' => esc_html__( 'Add your custom id WITHOUT the Pound key. e.g: my-id', 'extensions-for-elementor-form' ),
 				'description' => sprintf(
 					/* translators: %1$s: Opening code tag, %2$s: Closing code tag. */
-					esc_html__( 'Please make sure the ID is unique and not used elsewhere on the page. This field allows %1$sA-z 0-9%2$s & underscore chars without spaces.', 'cool-formkit' ),
+					esc_html__( 'Please make sure the ID is unique and not used elsewhere on the page. This field allows %1$sA-z 0-9%2$s & underscore chars without spaces.', 'extensions-for-elementor-form' ),
 					'<code>',
 					'</code>'
 				),
@@ -897,7 +897,7 @@ class Cool_Form extends Form_Base {
 		$this->start_controls_section(
 			'section_integration',
 			[
-				'label' => esc_html__( 'Actions After Submit', 'cool-formkit' ),
+				'label' => esc_html__( 'Actions After Submit', 'extensions-for-elementor-form' ),
 			]
 		);
 
@@ -926,14 +926,14 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'submit_actions',
 			[
-				'label' => esc_html__( 'Add Action', 'elementor-pro' ),
+				'label' => esc_html__( 'Add Action', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SELECT2,
 				'multiple' => true,
 				'options' => $actions_options,
 				'render_type' => 'none',
 				'label_block' => true,
 				'default' => $default_submit_actions,
-				'description' => esc_html__( 'Add actions that will be performed after a visitor submits the form (e.g. send an email notification). Choosing an action will add its setting below.', 'elementor-pro' ),
+				'description' => esc_html__( 'Add actions that will be performed after a visitor submits the form (e.g. send an email notification). Choosing an action will add its setting below.', 'extensions-for-elementor-form' ),
 			]
 		);
 
@@ -950,7 +950,7 @@ class Cool_Form extends Form_Base {
 		$this->start_controls_section(
 			'section_form_options',
 			[
-				'label' => esc_html__( 'Additional Options', 'cool-formkit' ),
+				'label' => esc_html__( 'Additional Options', 'extensions-for-elementor-form' ),
 				'tab' => Controls_Manager::TAB_CONTENT,
 			]
 		);
@@ -958,7 +958,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'form_id',
 			[
-				'label' => esc_html__( 'Form ID', 'cool-formkit' ),
+				'label' => esc_html__( 'Form ID', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'ai' => [
 					'active' => false,
@@ -966,7 +966,7 @@ class Cool_Form extends Form_Base {
 				'placeholder' => 'new_form_id',
 				'description' => sprintf(
 					/* translators: %1$s: Opening code tag, %2$s: Closing code tag. */
-					esc_html__( 'Please make sure the ID is unique and not used elsewhere on the page. This field allows %1$sA-z 0-9%2$s & underscore chars without spaces.', 'cool-formkit' ),
+					esc_html__( 'Please make sure the ID is unique and not used elsewhere on the page. This field allows %1$sA-z 0-9%2$s & underscore chars without spaces.', 'extensions-for-elementor-form' ),
 					'<code>',
 					'</code>'
 				),
@@ -980,7 +980,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'custom_messages',
 			[
-				'label' => esc_html__( 'Custom Messages', 'cool-formkit' ),
+				'label' => esc_html__( 'Custom Messages', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SWITCHER,
 				'default' => '',
 				'separator' => 'before',
@@ -993,7 +993,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'success_message',
 			[
-				'label' => esc_html__( 'Success Message', 'cool-formkit' ),
+				'label' => esc_html__( 'Success Message', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => $default_messages[ Ajax_Handler::SUCCESS ],
 				'placeholder' => $default_messages[ Ajax_Handler::SUCCESS ],
@@ -1011,7 +1011,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'error_message',
 			[
-				'label' => esc_html__( 'Form Error', 'cool-formkit' ),
+				'label' => esc_html__( 'Form Error', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => $default_messages[ Ajax_Handler::ERROR ],
 				'placeholder' => $default_messages[ Ajax_Handler::ERROR ],
@@ -1029,7 +1029,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'server_message',
 			[
-				'label' => esc_html__( 'Server Error', 'cool-formkit' ),
+				'label' => esc_html__( 'Server Error', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => $default_messages[ Ajax_Handler::SERVER_ERROR ],
 				'placeholder' => $default_messages[ Ajax_Handler::SERVER_ERROR ],
@@ -1047,7 +1047,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'invalid_message',
 			[
-				'label' => esc_html__( 'Invalid Form', 'cool-formkit' ),
+				'label' => esc_html__( 'Invalid Form', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => $default_messages[ Ajax_Handler::INVALID_FORM ],
 				'placeholder' => $default_messages[ Ajax_Handler::INVALID_FORM ],
@@ -1069,7 +1069,7 @@ class Cool_Form extends Form_Base {
 		$this->start_controls_section(
 			'section_form_style',
 			[
-				'label' => esc_html__( 'Form', 'cool-formkit' ),
+				'label' => esc_html__( 'Form', 'extensions-for-elementor-form' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -1077,7 +1077,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'column_gap',
 			[
-				'label' => esc_html__( 'Columns Gap', 'cool-formkit' ),
+				'label' => esc_html__( 'Columns Gap', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'default' => [
@@ -1104,7 +1104,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'row_gap',
 			[
-				'label' => esc_html__( 'Rows Gap', 'cool-formkit' ),
+				'label' => esc_html__( 'Rows Gap', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'default' => [
@@ -1131,7 +1131,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'heading_label',
 			[
-				'label' => esc_html__( 'Label', 'cool-formkit' ),
+				'label' => esc_html__( 'Label', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
@@ -1140,7 +1140,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'label_spacing',
 			[
-				'label' => esc_html__( 'Spacing', 'cool-formkit' ),
+				'label' => esc_html__( 'Spacing', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'default' => [
@@ -1167,7 +1167,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'label_color',
 			[
-				'label' => esc_html__( 'Text Color', 'cool-formkit' ),
+				'label' => esc_html__( 'Text Color', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .cool-form' => '--cool-form-label-color: {{VALUE}};',
@@ -1181,7 +1181,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'mark_required_color',
 			[
-				'label' => esc_html__( 'Mark Color', 'cool-formkit' ),
+				'label' => esc_html__( 'Mark Color', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '#FF0000',
 				'selectors' => [
@@ -1211,7 +1211,7 @@ class Cool_Form extends Form_Base {
 		$this->start_controls_section(
 			'section_field_style',
 			[
-				'label' => esc_html__( 'Fields', 'cool-formkit' ),
+				'label' => esc_html__( 'Fields', 'extensions-for-elementor-form' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -1219,14 +1219,14 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'input_size',
 			[
-				'label' => esc_html__( 'Input Size', 'cool-formkit' ),
+				'label' => esc_html__( 'Input Size', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'xs' => esc_html__( 'Extra Small', 'cool-formkit' ),
-					'sm' => esc_html__( 'Small', 'cool-formkit' ),
-					'md' => esc_html__( 'Medium', 'cool-formkit' ),
-					'lg' => esc_html__( 'Large', 'cool-formkit' ),
-					'xl' => esc_html__( 'Extra Large', 'cool-formkit' ),
+					'xs' => esc_html__( 'Extra Small', 'extensions-for-elementor-form' ),
+					'sm' => esc_html__( 'Small', 'extensions-for-elementor-form' ),
+					'md' => esc_html__( 'Medium', 'extensions-for-elementor-form' ),
+					'lg' => esc_html__( 'Large', 'extensions-for-elementor-form' ),
+					'xl' => esc_html__( 'Extra Large', 'extensions-for-elementor-form' ),
 				],
 				'default' => 'sm',
 				'separator' => 'after',
@@ -1236,7 +1236,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'field_text_color',
 			[
-				'label' => esc_html__( 'Text Color', 'cool-formkit' ),
+				'label' => esc_html__( 'Text Color', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .cool-form' => '--cool-form-field-text-color: {{VALUE}};',
@@ -1261,7 +1261,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'field_background_color',
 			[
-				'label' => esc_html__( 'Background Color', 'cool-formkit' ),
+				'label' => esc_html__( 'Background Color', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '#ffffff',
 				'selectors' => [
@@ -1274,11 +1274,11 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'field_border_switcher',
 			[
-				'label' => esc_html__( 'Border', 'cool-formkit' ),
+				'label' => esc_html__( 'Border', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SWITCHER,
 				'options' => [
-					'yes' => esc_html__( 'Yes', 'cool-formkit' ),
-					'no' => esc_html__( 'No', 'cool-formkit' ),
+					'yes' => esc_html__( 'Yes', 'extensions-for-elementor-form' ),
+					'no' => esc_html__( 'No', 'extensions-for-elementor-form' ),
 				],
 				'default' => 'yes',
 				'separator' => 'before',
@@ -1288,7 +1288,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'field_border_width',
 			[
-				'label' => esc_html__( 'Border Width', 'cool-formkit' ),
+				'label' => esc_html__( 'Border Width', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
@@ -1318,7 +1318,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'field_border_color',
 			[
-				'label' => esc_html__( 'Border Color', 'cool-formkit' ),
+				'label' => esc_html__( 'Border Color', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .cool-form' => '--cool-form-field-border-color: {{VALUE}};',
@@ -1336,7 +1336,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'fields_shape',
 			[
-				'label' => esc_html__( 'Shape', 'cool-formkit' ),
+				'label' => esc_html__( 'Shape', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
 					'default' => 'Default',
@@ -1367,7 +1367,7 @@ class Cool_Form extends Form_Base {
 		$this->start_controls_section(
 			'section_button_style',
 			[
-				'label' => esc_html__( 'Button', 'cool-formkit' ),
+				'label' => esc_html__( 'Button', 'extensions-for-elementor-form' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -1375,11 +1375,11 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'button_type',
 			[
-				'label' => esc_html__( 'Type', 'cool-formkit' ),
+				'label' => esc_html__( 'Type', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'button' => esc_html__( 'Button', 'cool-formkit' ),
-					'link' => esc_html__( 'Link', 'cool-formkit' ),
+					'button' => esc_html__( 'Button', 'extensions-for-elementor-form' ),
+					'link' => esc_html__( 'Link', 'extensions-for-elementor-form' ),
 				],
 				'default' => 'button',
 			]
@@ -1388,19 +1388,19 @@ class Cool_Form extends Form_Base {
 		$this->add_responsive_control(
 			'button_align',
 			[
-				'label' => esc_html__( 'Position', 'cool-formkit' ),
+				'label' => esc_html__( 'Position', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'flex-start' => [
-						'title' => esc_html__( 'Start', 'cool-formkit' ),
+						'title' => esc_html__( 'Start', 'extensions-for-elementor-form' ),
 						'icon' => 'eicon-h-align-left',
 					],
 					'center' => [
-						'title' => esc_html__( 'Center', 'cool-formkit' ),
+						'title' => esc_html__( 'Center', 'extensions-for-elementor-form' ),
 						'icon' => 'eicon-h-align-center',
 					],
 					'flex-end' => [
-						'title' => esc_html__( 'End', 'cool-formkit' ),
+						'title' => esc_html__( 'End', 'extensions-for-elementor-form' ),
 						'icon' => 'eicon-h-align-right',
 					],
 				],
@@ -1431,16 +1431,16 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'button_icon_align',
 			[
-				'label' => esc_html__( 'Icon Position', 'cool-formkit' ),
+				'label' => esc_html__( 'Icon Position', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::CHOOSE,
 				'default' => is_rtl() ? 'row-reverse' : 'row',
 				'options' => [
 					'row' => [
-						'title' => esc_html__( 'Start', 'cool-formkit' ),
+						'title' => esc_html__( 'Start', 'extensions-for-elementor-form' ),
 						'icon' => "eicon-h-align-{$start}",
 					],
 					'row-reverse' => [
-						'title' => esc_html__( 'End', 'cool-formkit' ),
+						'title' => esc_html__( 'End', 'extensions-for-elementor-form' ),
 						'icon' => "eicon-h-align-{$end}",
 					],
 				],
@@ -1460,7 +1460,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'button_icon_indent',
 			[
-				'label' => esc_html__( 'Icon Spacing', 'cool-formkit' ),
+				'label' => esc_html__( 'Icon Spacing', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
@@ -1492,14 +1492,14 @@ class Cool_Form extends Form_Base {
 		$this->start_controls_tab(
 			'tab_button_normal',
 			[
-				'label' => esc_html__( 'Normal', 'cool-formkit' ),
+				'label' => esc_html__( 'Normal', 'extensions-for-elementor-form' ),
 			]
 		);
 
 		$this->add_control(
 			'button_text_color',
 			[
-				'label' => esc_html__( 'Text Color', 'cool-formkit' ),
+				'label' => esc_html__( 'Text Color', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::COLOR,
 				'global' => [
 					'default' => Global_Colors::COLOR_SECONDARY,
@@ -1515,6 +1515,7 @@ class Cool_Form extends Form_Base {
 			[
 				'name' => 'button_background',
 				'types' => [ 'classic', 'gradient' ],
+				// phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
 				'exclude' => [ 'image' ],
 				'selector' => '{{WRAPPER}} .is-type-button.cool-form__button',
 				'fields_options' => [
@@ -1538,14 +1539,14 @@ class Cool_Form extends Form_Base {
 		$this->start_controls_tab(
 			'tab_button_hover',
 			[
-				'label' => esc_html__( 'Hover', 'cool-formkit' ),
+				'label' => esc_html__( 'Hover', 'extensions-for-elementor-form' ),
 			]
 		);
 
 		$this->add_control(
 			'button_text_color_hover',
 			[
-				'label' => esc_html__( 'Text Color', 'cool-formkit' ),
+				'label' => esc_html__( 'Text Color', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::COLOR,
 				'global' => [
 					'default' => Global_Colors::COLOR_TEXT,
@@ -1560,7 +1561,9 @@ class Cool_Form extends Form_Base {
 			Group_Control_Background::get_type(),
 			[
 				'name' => 'button_background_hover',
+				// phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
 				'types' => [ 'classic', 'gradient' ],
+				// phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude	
 				'exclude' => [ 'image' ],
 				'selector' => '{{WRAPPER}} .is-type-button.cool-form__button:hover, {{WRAPPER}} .is-type-button.cool-form__button:focus',
 				'fields_options' => [
@@ -1582,7 +1585,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'button_hover_animation',
 			[
-				'label' => esc_html__( 'Animation', 'cool-formkit' ),
+				'label' => esc_html__( 'Animation', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::HOVER_ANIMATION,
 			]
 		);
@@ -1594,11 +1597,11 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'button_border_switcher',
 			[
-				'label' => esc_html__( 'Border', 'cool-formkit' ),
+				'label' => esc_html__( 'Border', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SWITCHER,
 				'options' => [
-					'yes' => esc_html__( 'Yes', 'cool-formkit' ),
-					'no' => esc_html__( 'No', 'cool-formkit' ),
+					'yes' => esc_html__( 'Yes', 'extensions-for-elementor-form' ),
+					'no' => esc_html__( 'No', 'extensions-for-elementor-form' ),
 				],
 				'default' => '',
 				'separator' => 'before',
@@ -1608,7 +1611,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'button_border_width',
 			[
-				'label' => esc_html__( 'Border Width', 'cool-formkit' ),
+				'label' => esc_html__( 'Border Width', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
@@ -1638,7 +1641,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'button_border_color',
 			[
-				'label' => esc_html__( 'Border Color', 'cool-formkit' ),
+				'label' => esc_html__( 'Border Color', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::COLOR,
 				'global' => [
 					'default' => Global_Colors::COLOR_TEXT,
@@ -1655,7 +1658,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'button_shape',
 			[
-				'label' => esc_html__( 'Shape', 'cool-formkit' ),
+				'label' => esc_html__( 'Shape', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
 					'default' => 'Default',
@@ -1670,7 +1673,7 @@ class Cool_Form extends Form_Base {
 		$this->add_responsive_control(
 			'button_text_padding',
 			[
-				'label' => esc_html__( 'Padding', 'cool-formkit' ),
+				'label' => esc_html__( 'Padding', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'default' => [
@@ -1708,7 +1711,7 @@ class Cool_Form extends Form_Base {
 		$this->start_controls_section(
 			'section_messages_style',
 			[
-				'label' => esc_html__( 'Messages', 'cool-formkit' ),
+				'label' => esc_html__( 'Messages', 'extensions-for-elementor-form' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -1727,7 +1730,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'success_message_color',
 			[
-				'label' => esc_html__( 'Success Message Color', 'cool-formkit' ),
+				'label' => esc_html__( 'Success Message Color', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-message.elementor-message-success' => 'color: {{COLOR}};',
@@ -1738,7 +1741,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'error_message_color',
 			[
-				'label' => esc_html__( 'Error Message Color', 'cool-formkit' ),
+				'label' => esc_html__( 'Error Message Color', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-message.elementor-message-danger' => 'color: {{COLOR}};',
@@ -1749,7 +1752,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'inline_message_color',
 			[
-				'label' => esc_html__( 'Inline Message Color', 'cool-formkit' ),
+				'label' => esc_html__( 'Inline Message Color', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-message.elementor-help-inline' => 'color: {{COLOR}};',
@@ -1761,10 +1764,11 @@ class Cool_Form extends Form_Base {
 	}
 
 	protected function add_style_box_section(): void {
+		// phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude	
 		$this->start_controls_section(
 			'section_box_style',
 			[
-				'label' => esc_html__( 'Box', 'cool-formkit' ),
+				'label' => esc_html__( 'Box', 'extensions-for-elementor-form' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -1772,7 +1776,7 @@ class Cool_Form extends Form_Base {
 		$this->add_control(
 			'box_heading',
 			[
-				'label' => esc_html__( 'Background', 'cool-formkit' ),
+				'label' => esc_html__( 'Background', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::HEADING,
 			]
 		);
@@ -1780,8 +1784,11 @@ class Cool_Form extends Form_Base {
 		$this->add_group_control(
 			Group_Control_Background::get_type(),
 			[
+				// phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
 				'name' => 'box_background',
+				// phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
 				'types' => [ 'classic', 'gradient' ],
+				// phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
 				'exclude' => [ 'image' ],
 				'selector' => '{{WRAPPER}} .cool-form',
 				'fields_options' => [
@@ -1795,7 +1802,7 @@ class Cool_Form extends Form_Base {
 		$this->add_responsive_control(
 			'content_width',
 			[
-				'label' => esc_html__( 'Content Width', 'cool-formkit' ),
+				'label' => esc_html__( 'Content Width', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', 'em', 'rem', '%', 'custom' ],
 				'range' => [
@@ -1828,7 +1835,7 @@ class Cool_Form extends Form_Base {
 		$this->add_responsive_control(
 			'box_padding',
 			[
-				'label' => esc_html__( 'Padding', 'cool-formkit' ),
+				'label' => esc_html__( 'Padding', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%', 'em', 'rem' ],
 				'selectors' => [

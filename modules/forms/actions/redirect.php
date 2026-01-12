@@ -17,14 +17,14 @@ class Redirect extends Action_Base {
 	}
 
 	public function get_label(): string {
-		return esc_html__( 'Redirect', 'cool-formkit' );
+		return esc_html__( 'Redirect', 'extensions-for-elementor-form' );
 	}
 
 	public function register_settings_section( $widget ) {
 		$widget->start_controls_section(
 			'section_redirect',
 			[
-				'label' => esc_html__( 'Redirect', 'cool-formkit' ),
+				'label' => esc_html__( 'Redirect', 'extensions-for-elementor-form' ),
 				'condition' => [
 					'submit_actions' => $this->get_name(),
 				],
@@ -34,10 +34,10 @@ class Redirect extends Action_Base {
 		$widget->add_control(
 			'should_redirect',
 			[
-				'label' => esc_html__( 'Redirect To Thank You Page', 'hello-plus' ),
+				'label' => esc_html__( 'Redirect To Thank You Page', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SWITCHER,
-				'label_on' => esc_html__( 'Yes', 'hello-plus' ),
-				'label_off' => esc_html__( 'No', 'hello-plus' ),
+				'label_on' => esc_html__( 'Yes', 'extensions-for-elementor-form' ),
+				'label_off' => esc_html__( 'No', 'extensions-for-elementor-form' ),
 				'return_value' => 'true',
 				'default' => '',
 			]
@@ -45,9 +45,9 @@ class Redirect extends Action_Base {
 		$widget->add_control(
 			'redirect_to',
 			[
-				'label' => esc_html__( 'Redirect To', 'cool-formkit' ),
+				'label' => esc_html__( 'Redirect To', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
-				'placeholder' => esc_html__( 'https://your-link.com', 'cool-formkit' ),
+				'placeholder' => esc_html__( 'https://your-link.com', 'extensions-for-elementor-form' ),
 				'ai' => [
 					'active' => false,
 				],

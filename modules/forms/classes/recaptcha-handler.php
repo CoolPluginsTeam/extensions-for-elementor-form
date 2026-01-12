@@ -10,6 +10,10 @@ if (! defined('ABSPATH')) {
 	exit; // Exit if accessed directly
 }
 
+// phpcs:disable WordPress.WP.EnqueuedResourceParameters.MissingVersion
+// phpcs:disable WordPress.WP.EnqueuedResourceParameters.NotInFooter
+
+
 /**
  * Integration with Google reCAPTCHA
  */
@@ -50,7 +54,7 @@ class Recaptcha_Handler
 
 	public static function get_setup_message()
 	{
-		return esc_html__('To use reCAPTCHA, you need to add the API Key and complete the setup process in Dashboard > Elementor > Cool FormKit Lite > Settings > reCAPTCHA', 'cool-formkit');
+		return esc_html__('To use reCAPTCHA, you need to add the API Key and complete the setup process in Dashboard > Elementor > Cool FormKit Lite > Settings > reCAPTCHA', 'extensions-for-elementor-form');
 	}
 
 	protected static function get_script_render_param()
@@ -94,16 +98,16 @@ class Recaptcha_Handler
 
 
 		if (empty($recaptcha_response)) {
-			$ajax_handler->add_error($field['id'], esc_html__('The Captcha field cannot be blank.', 'cool-formkit'));
+			$ajax_handler->add_error($field['id'], esc_html__('The Captcha field cannot be blank.', 'extensions-for-elementor-form'));
 
 			return;
 		}
 
 		$recaptcha_errors = [
-			'missing-input-secret' => esc_html__('The secret parameter is missing.', 'cool-formkit'),
-			'invalid-input-secret' => esc_html__('The secret parameter is invalid or malformed.', 'cool-formkit'),
-			'missing-input-response' => esc_html__('The response parameter is missing.', 'cool-formkit'),
-			'invalid-input-response' => esc_html__('The response parameter is invalid or malformed.', 'cool-formkit'),
+			'missing-input-secret' => esc_html__('The secret parameter is missing.', 'extensions-for-elementor-form'),
+			'invalid-input-secret' => esc_html__('The secret parameter is invalid or malformed.', 'extensions-for-elementor-form'),
+			'missing-input-response' => esc_html__('The response parameter is missing.', 'extensions-for-elementor-form'),
+			'invalid-input-response' => esc_html__('The response parameter is invalid or malformed.', 'extensions-for-elementor-form'),
 		];
 
 		$recaptcha_secret = static::get_secret_key();
@@ -123,7 +127,7 @@ class Recaptcha_Handler
 
 		if (200 !== (int) $response_code) {
 			/* translators: %d: Response code. */
-			$ajax_handler->add_error($field['id'], sprintf(esc_html__('Can not connect to the reCAPTCHA server (%d).', 'cool-formkit'), $response_code));
+			$ajax_handler->add_error($field['id'], sprintf(esc_html__('Can not connect to the reCAPTCHA server (%d).', 'extensions-for-elementor-form'), $response_code));
 
 			return;
 		}
@@ -133,7 +137,7 @@ class Recaptcha_Handler
 		$result = json_decode($body, true);
 
 		if (! $this->validate_result($result, $field)) {
-			$message = esc_html__('Invalid form, reCAPTCHA validation failed.', 'cool-formkit');
+			$message = esc_html__('Invalid form, reCAPTCHA validation failed.', 'extensions-for-elementor-form');
 
 			if (isset($result['error-codes'])) {
 				$result_errors = array_flip($result['error-codes']);
@@ -208,7 +212,7 @@ class Recaptcha_Handler
 
 		$recaptcha_html .= '</div>';
 
-
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $recaptcha_html;
 	}
 
@@ -228,7 +232,7 @@ class Recaptcha_Handler
 
 	public function add_field_type($field_types)
 	{
-		$field_types['recaptcha'] = esc_html__('reCAPTCHA', 'cool-formkit');
+		$field_types['recaptcha'] = esc_html__('reCAPTCHA', 'extensions-for-elementor-form');
 
 		return $field_types;
 	}
@@ -245,7 +249,7 @@ class Recaptcha_Handler
 	public function my_plugin_register_frontend_scripts()
 	{
 
-		wp_register_script('cool-formkit-recaptcha-api', 'https://www.google.com/recaptcha/api.js?onload=recaptchaLoaded&render=explicit', [], null, true);
+		wp_register_script('cool-formkit-recaptcha-api', 'https://www.google.com/recaptcha/api.js?onload=recaptchaLoaded&render=explicit', [], CFL_VERSION, true);
 
 		wp_register_script(
 				'cool-formkit-recaptcha-handler',

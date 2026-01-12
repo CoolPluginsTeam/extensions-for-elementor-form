@@ -6,6 +6,8 @@ use WP_List_Table;
 use Cool_FormKit\Admin\Entries\CFKEF_Entries_Posts;
 use Cool_FormKit\Admin\Entries\CFKEF_Post_Bulk_Actions;
 
+// phpcs:disable PluginCheck.Security.DirectDB.UnescapedDBParameter	
+
 if(!class_exists('CFKEF_List_Table')) { 
 class CFKEF_List_Table extends WP_List_Table {
 
@@ -52,7 +54,7 @@ class CFKEF_List_Table extends WP_List_Table {
         if ( empty( $views ) ) {
             return;
         }
-
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $current_view = isset($_GET['view']) ? sanitize_key($_GET['view']) : 'all';
 
         // Get counts for all and trash
@@ -71,8 +73,23 @@ class CFKEF_List_Table extends WP_List_Table {
             }
 
             if ( $count > 0 || $view === 'all') {
-                echo "<li class='$class'><a href='?page=cfkef-entries&view=$view'>$label</a></li>";
-                echo "<span class='count'>($count)</span>";
+                printf(
+                    '<li class="%s"><a href="%s">%s</a></li>',
+                    esc_attr( $class ),
+                    esc_url( add_query_arg(
+                        array(
+                            'page' => 'cfkef-entries',
+                            'view' => $view,
+                        )
+                    ) ),
+                    esc_html( $label )
+                );
+
+                printf(
+                    '<span class="count">(%s)</span>',
+                    esc_html( $count )
+                );
+
             }
             
 
@@ -206,7 +223,7 @@ class CFKEF_List_Table extends WP_List_Table {
     
         $output .= '<button type="button" class="toggle-row"><span class="screen-reader-text">' .
             /* translators: Hidden accessibility text. */
-            __( 'Show more details' ) .
+            __( 'Show more details', 'extensions-for-elementor-form' ) .
         '</span></button>';
     
         return $output;
@@ -234,13 +251,13 @@ class CFKEF_List_Table extends WP_List_Table {
 
         // phpcs:disable WordPress.Security.NonceVerification.Recommended
         $page     = $this->get_pagenum();
-		$order    = isset( $_GET['order'] ) && sanitize_text_field($_GET['order']) === 'asc' ? 'ASC' : 'DESC';
-        $search= isset($_GET['cfkef-entries-search']) ? sanitize_text_field($_GET['cfkef-entries-search']) : '';
+		$order    = isset( $_GET['order'] ) && sanitize_text_field(wp_unslash($_GET['order'])) === 'asc' ? 'ASC' : 'DESC';
+        $search= isset($_GET['cfkef-entries-search']) ? sanitize_text_field(wp_unslash($_GET['cfkef-entries-search'])) : '';
 		$allowed_orderby = ['ID','post_title','post_date','post_modified','post_status'];
         $orderby = isset($_GET['orderby']) ? sanitize_key($_GET['orderby']) : 'ID';
         $orderby = in_array($orderby, $allowed_orderby, true) ? $orderby : 'ID';
         $per_page = $this->get_items_per_page( $this->get_per_page_option_name() , 20 );
-        $date_filter= isset($_GET['date_filter']) && isset($_GET['m']) && !empty($_GET['m']) ? sanitize_text_field($_GET['m']) : '';
+        $date_filter= isset($_GET['date_filter']) && isset($_GET['m']) && !empty($_GET['m']) ? sanitize_text_field(wp_unslash($_GET['m'])) : '';
         $view = CFKEF_Entries_Posts::get_view();
         // phpcs:enable WordPress.Security.NonceVerification.Recommended
 
@@ -272,16 +289,21 @@ class CFKEF_List_Table extends WP_List_Table {
             
         $post_placeholders=implode(',', array_fill(0, count($args['post_status']), "%s"));
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare 
         $post_status_query = $wpdb->prepare("post_status IN ($post_placeholders)", array_map('esc_sql', $args['post_status']));
 
-
         $query = $wpdb->prepare(
-            "SELECT * FROM $wpdb->posts WHERE post_type = '%s' AND $post_status_query",
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            "SELECT * FROM $wpdb->posts WHERE post_type = %s AND $post_status_query",
             $this->post_type,
         );
 
         if(!empty($search)){
-            $query .= $wpdb->prepare(" AND post_title LIKE '%%%s%%'", $wpdb->esc_like($search));
+            $query .= $wpdb->prepare(
+                " AND post_title LIKE %s",
+                '%' . $wpdb->esc_like( $search ) . '%'
+            );
+
         }
 
         
@@ -305,9 +327,10 @@ class CFKEF_List_Table extends WP_List_Table {
            }
 
         }
-
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $query .= $wpdb->prepare(" ORDER BY {$args['orderby']} {$args['order']} LIMIT %d OFFSET %d", $args['posts_per_page'], ($args['paged'] - 1) * $args['posts_per_page']);
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $this->items = $wpdb->get_results($query);
 
         $total_posts=wp_count_posts($this->post_type);
@@ -328,7 +351,7 @@ class CFKEF_List_Table extends WP_List_Table {
         $view = CFKEF_Entries_Posts::get_view();
         if($which === 'top'){
             $this->months_dropdown( CFKEF_Entries_Posts::$post_type );
-            echo "<input type='submit' name='date_filter' id='".CFKEF_Entries_Posts::$post_type."-date-filter' class='button' value='Filter'>";
+            echo "<input type='submit' name='date_filter' id='".esc_attr(CFKEF_Entries_Posts::$post_type)."-date-filter' class='button' value='Filter'>";
 
             if($view === 'trash'){
                 echo '<div class="alignleft actions bulkactions">
@@ -386,7 +409,7 @@ class CFKEF_List_Table extends WP_List_Table {
 			'<div class="tablenav-pages one-page">
 				<span class="displaying-num">%s</span>
 			</div>',
-			esc_html__( '0 items', 'wpforms-lite' )
+			esc_html__( '0 items', 'extensions-for-elementor-form' )
 		);
 	}
 
