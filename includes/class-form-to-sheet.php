@@ -165,6 +165,5 @@ class Sheet_Action extends Form_To_Sheet_Helper
      */
     public function run($record, $ajax_handler)
     {
-        parent::run($record, $ajax_handler);
     }
 }
