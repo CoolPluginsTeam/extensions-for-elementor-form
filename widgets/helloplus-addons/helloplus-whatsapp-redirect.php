@@ -52,7 +52,7 @@ class HelloPlus_Whatsapp_Redirect extends Action_Base {
 		$widget->start_controls_section(
 			'section_whatsapp-redirect',
 			[
-				'label' => \esc_html__( 'WhatsApp Redirect', 'cool-formkit' ),
+				'label' => \esc_html__( 'WhatsApp Redirect', 'extensions-for-elementor-form' ),
 				'condition' => [
 					'cool_formkit_submit_actions' => $this->get_name(),
 				],
@@ -62,13 +62,13 @@ class HelloPlus_Whatsapp_Redirect extends Action_Base {
 		$widget->add_control(
 			'whatsapp_to',
 			[
-				'label' => \esc_html__( 'WhatsApp Phone', 'cool-formkit' ),
+				'label' => \esc_html__( 'WhatsApp Phone', 'extensions-for-elementor-form' ),
 				'type' => \Elementor\Controls_Manager::TEXT,
-				'placeholder' => \esc_html__( '13459999999', 'cool-formkit' ),
+				'placeholder' => \esc_html__( '13459999999', 'extensions-for-elementor-form' ),
 				'label_block' => true,
 				'render_type' => 'none',
 				'classes' => 'elementor-control-whats-phone-direction-ltr',
-				'description' => \esc_html__( 'Phone with country code, like: 5551999999999', 'cool-formkit' ),
+				'description' => \esc_html__( 'Phone with country code, like: 5551999999999', 'extensions-for-elementor-form' ),
 				'dynamic' => [
 					'active' => true,
 				],
@@ -78,13 +78,14 @@ class HelloPlus_Whatsapp_Redirect extends Action_Base {
 		$widget->add_control(
 			'whatsapp_message',
 			[
-				'label' => \esc_html__( 'WhatsApp Message', 'cool-formkit' ),
+				'label' => \esc_html__( 'WhatsApp Message', 'extensions-for-elementor-form' ),
 				'type' => \Elementor\Controls_Manager::TEXTAREA,
-				'placeholder' => \esc_html__( 'Write yout text or use fields shortcode', 'cool-formkit' ),
+				'placeholder' => \esc_html__( 'Write yout text or use fields shortcode', 'extensions-for-elementor-form' ),
 				'label_block' => true,
 				'render_type' => 'none',
 				'classes' => 'elementor-control-whats-direction-ltr',
-				'description' => \esc_html__( 'Use fields shortcodes for send form data or write your custom text.<br>=> To add break line use token: %break%', 'cool-formkit' ),
+				/* translators: %break% is a literal token used to insert a line break. */
+				'description' => \esc_html__( 'Use fields shortcodes for send form data or write your custom text.<br>=> To add break line use token: %break%', 'extensions-for-elementor-form' ),
 				'dynamic' => [
 					'active' => true,
 				],

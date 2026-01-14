@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound	
+
 /**
  * Form Mask Elementor Class
  *
@@ -75,25 +77,25 @@ final class HelloPlus_FME_Plugin {
 		wp_register_script( 'helloplus-fme-new-input-mask', CFL_PLUGIN_URL . 'assets/helloplus-addons/js/helloplus-new-input-mask.js', array('elementor-frontend','jquery'), CFL_VERSION, true );
 
 		$error_messages = [
-			'mask-cnpj'   => __("Invalid CNPJ.", "cool-formkit"),
-			'mask-cpf'    => __("Invalid CPF.", "cool-formkit"),
-			'mask-cep'    => __("Invalid CEP (XXXXX-XXX).", "cool-formkit"),
-			'mask-phus'   => __("Invalid number: (123) 456-7890", "cool-formkit"),
-			'mask-ph8'    => __("Invalid number: 1234-5678", "cool-formkit"),
-			'mask-ddd8'   => __("Invalid number: (DDD) 1234-5678", "cool-formkit"),
-			'mask-ddd9'   => __("Invalid number: (DDD) 91234-5678", "cool-formkit"),
-			'mask-dmy'    => __("Invalid date: dd/mm/yyyy", "cool-formkit"),
-			'mask-mdy'    => __("Invalid date: mm/dd/yyyy", "cool-formkit"),
-			'mask-hms'    => __("Invalid time: hh:mm:ss", "cool-formkit"),
-			'mask-hm'     => __("Invalid time: hh:mm", "cool-formkit"),
-			'mask-dmyhm'  => __("Invalid date: dd/mm/yyyy hh:mm", "cool-formkit"),
-			'mask-mdyhm'  => __("Invalid date: mm/dd/yyyy hh:mm", "cool-formkit"),
-			'mask-my'     => __("Invalid date: mm/yyyy", "cool-formkit"),
-			'mask-ccs'    => __("Invalid credit card number.", "cool-formkit"),
-			'mask-cch'    => __("Invalid credit card number.", "cool-formkit"),
-			'mask-ccmy'   => __("Invalid date.", "cool-formkit"),
-			'mask-ccmyy'  => __("Invalid date.", "cool-formkit"),
-			'mask-ipv4'   => __("Invalid IPv4 address.", "cool-formkit")
+			'mask-cnpj'   => __("Invalid CNPJ.", "extensions-for-elementor-form"),
+			'mask-cpf'    => __("Invalid CPF.", "extensions-for-elementor-form"),
+			'mask-cep'    => __("Invalid CEP (XXXXX-XXX).", "extensions-for-elementor-form"),
+			'mask-phus'   => __("Invalid number: (123) 456-7890", "extensions-for-elementor-form"),
+			'mask-ph8'    => __("Invalid number: 1234-5678", "extensions-for-elementor-form"),
+			'mask-ddd8'   => __("Invalid number: (DDD) 1234-5678", "extensions-for-elementor-form"),
+			'mask-ddd9'   => __("Invalid number: (DDD) 91234-5678", "extensions-for-elementor-form"),
+			'mask-dmy'    => __("Invalid date: dd/mm/yyyy", "extensions-for-elementor-form"),
+			'mask-mdy'    => __("Invalid date: mm/dd/yyyy", "extensions-for-elementor-form"),
+			'mask-hms'    => __("Invalid time: hh:mm:ss", "extensions-for-elementor-form"),
+			'mask-hm'     => __("Invalid time: hh:mm", "extensions-for-elementor-form"),
+			'mask-dmyhm'  => __("Invalid date: dd/mm/yyyy hh:mm", "extensions-for-elementor-form"),
+			'mask-mdyhm'  => __("Invalid date: mm/dd/yyyy hh:mm", "extensions-for-elementor-form"),
+			'mask-my'     => __("Invalid date: mm/yyyy", "extensions-for-elementor-form"),
+			'mask-ccs'    => __("Invalid credit card number.", "extensions-for-elementor-form"),
+			'mask-cch'    => __("Invalid credit card number.", "extensions-for-elementor-form"),
+			'mask-ccmy'   => __("Invalid date.", "extensions-for-elementor-form"),
+			'mask-ccmyy'  => __("Invalid date.", "extensions-for-elementor-form"),
+			'mask-ipv4'   => __("Invalid IPv4 address.", "extensions-for-elementor-form")
 		];
 
 		wp_localize_script( 'helloplus-fme-custom-mask-script', 'fmeData', array(

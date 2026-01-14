@@ -10,6 +10,7 @@ use Cool_FormKit\Includes\Frontend\CFKEF_Frontend;
 
 use Cool_FormKit\Includes\Frontend\Widget\Custom_Success_Message;
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 /**
  * The file that defines the core plugin class

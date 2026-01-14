@@ -32,12 +32,12 @@ class Ajax_Handler {
 
 	public static function get_default_messages(): array {
 		return [
-			self::SUCCESS => esc_html__( 'Your submission was successful.', 'cool-formkit' ),
-			self::ERROR => esc_html__( 'Your submission failed because of an error.', 'cool-formkit' ),
-			self::FIELD_REQUIRED => esc_html__( 'This field is required.', 'cool-formkit' ),
-			self::INVALID_FORM => esc_html__( 'Your submission failed because the form is invalid.', 'cool-formkit' ),
-			self::SERVER_ERROR => esc_html__( 'Your submission failed because of a server error.', 'cool-formkit' ),
-			self::SUBSCRIBER_ALREADY_EXISTS => esc_html__( 'Subscriber already exists.', 'cool-formkit' ),
+			self::SUCCESS => esc_html__( 'Your submission was successful.', 'extensions-for-elementor-form' ),
+			self::ERROR => esc_html__( 'Your submission failed because of an error.', 'extensions-for-elementor-form' ),
+			self::FIELD_REQUIRED => esc_html__( 'This field is required.', 'extensions-for-elementor-form' ),
+			self::INVALID_FORM => esc_html__( 'Your submission failed because the form is invalid.', 'extensions-for-elementor-form' ),
+			self::SERVER_ERROR => esc_html__( 'Your submission failed because of a server error.', 'extensions-for-elementor-form' ),
+			self::SUBSCRIBER_ALREADY_EXISTS => esc_html__( 'Subscriber already exists.', 'extensions-for-elementor-form' ),
 		];
 	}
 
@@ -51,7 +51,7 @@ class Ajax_Handler {
 
 		$default_messages = self::get_default_messages();
 
-		return $default_messages[ $id ] ?? esc_html__( 'Unknown error.', 'cool-formkit' );
+		return $default_messages[ $id ] ?? esc_html__( 'Unknown error.', 'extensions-for-elementor-form' );
 	}
 
 	public function ajax_send_form() {
@@ -216,7 +216,7 @@ class Ajax_Handler {
 		$error_msg = implode( '<br>', $this->messages['error'] );
 
 		if ( current_user_can( 'edit_post', $post_id ) && ! empty( $this->messages['admin_error'] ) ) {
-			$this->add_admin_error_message( esc_html__( 'This message is not visible to site visitors.', 'cool-formkit' ) );
+			$this->add_admin_error_message( esc_html__( 'This message is not visible to site visitors.', 'extensions-for-elementor-form' ) );
 			$error_msg .= '<div class="elementor-forms-admin-errors">' . implode( '<br>', $this->messages['admin_error'] ) . '</div>';
 		}
 

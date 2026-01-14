@@ -18,7 +18,7 @@ class Number extends Field_Base {
 	}
 
 	public function get_name() {
-		return esc_html__( 'Number', 'cool-formkit' );
+		return esc_html__( 'Number', 'extensions-for-elementor-form' );
 	}
 
 	public function render( $item, $item_index, $form ) {
@@ -38,7 +38,7 @@ class Number extends Field_Base {
 
 		<?php		
 		?>
-		<label class="cool-form-text mdc-text-field mdc-text-field--outlined <?php echo ($item['field_label'] === '' || empty($settings['show_labels'])) ? 'mdc-text-field--no-label' : '' ?> cool-field-size-<?php echo $settings['input_size'] ?>">
+		<label class="cool-form-text mdc-text-field mdc-text-field--outlined <?php echo ($item['field_label'] === '' || empty($settings['show_labels'])) ? 'mdc-text-field--no-label' : '' ?> cool-field-size-<?php echo esc_attr($settings['input_size']); ?>">
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">
@@ -52,7 +52,7 @@ class Number extends Field_Base {
 				</span>
 				<span class="mdc-notched-outline__trailing"></span>
 			</span>
-			<input type="number" <?php $form->print_render_attribute_string( 'input' . $item_index ); ?> data-index="<?php echo $item_index ?>" />
+			<input type="number" <?php $form->print_render_attribute_string( 'input' . $item_index ); ?> data-index="<?php echo esc_attr($item_index); ?>" />
 			<i aria-hidden="true" class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing cool-number-error-icon" style="display:none">error</i>
 		</label>
 		<div class="mdc-text-field-helper-line">
@@ -78,7 +78,7 @@ class Number extends Field_Base {
 		$field_controls = [
 			'num_field_min' => [
 				'name' => 'num_field_min',
-				'label' => esc_html__( 'Min. Value', 'cool-formkit' ),
+				'label' => esc_html__( 'Min. Value', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::NUMBER,
 				'condition' => [
 					'field_type' => $this->get_type(),
@@ -89,7 +89,7 @@ class Number extends Field_Base {
 			],
 			'num_field_max' => [
 				'name' => 'num_field_max',
-				'label' => esc_html__( 'Max. Value', 'cool-formkit' ),
+				'label' => esc_html__( 'Max. Value', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::NUMBER,
 				'condition' => [
 					'field_type' => $this->get_type(),

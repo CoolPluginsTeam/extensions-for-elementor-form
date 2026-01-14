@@ -104,6 +104,7 @@ class Widget_Form_Render {
 
 							switch ( $item['field_type'] ){
 								case 'textarea':
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									echo $this->widget->make_textarea_field_md( $item, $item_index, $this->settings );
 									break;
 								case 'text':
@@ -112,13 +113,16 @@ class Widget_Form_Render {
 								case 'password':
 								case 'hidden':
 								case 'search':
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									echo $this->widget->make_text_field_md( $item, $item_index, $this->settings );
 									break;
 								case 'select':
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									echo $this->widget->make_select_field_md( $item, $item_index ,$this->settings);
 									break;
 								case 'radio':
 								case 'checkbox':
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									echo $this->widget->make_radio_checkbox_field_md( $item, $item_index, $item['field_type'] );
 									break;	
 								default:

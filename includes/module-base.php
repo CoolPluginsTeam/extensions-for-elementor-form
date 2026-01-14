@@ -256,7 +256,7 @@ abstract class Module_Base {
 	 */
 	public function __clone() {
 		// Cloning instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Something went wrong.', 'cool-formkit' ), '0.0.1' ); // @codeCoverageIgnore
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Something went wrong.', 'extensions-for-elementor-form' ), '0.0.1' ); // @codeCoverageIgnore
 	}
 
 	/**
@@ -267,7 +267,7 @@ abstract class Module_Base {
 	 */
 	public function __wakeup() {
 		// Un-serializing instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Something went wrong.', 'cool-formkit' ), '0.0.1' ); // @codeCoverageIgnore
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Something went wrong.', 'extensions-for-elementor-form' ), '0.0.1' ); // @codeCoverageIgnore
 	}
 
 	/**

@@ -58,7 +58,7 @@ class Sheet_HelloPlus_Action extends Action_Base
      * Label shown in UI
      */
     public function get_label(): string {
-        return esc_html__('Save Submissions in Google Sheet', 'cfl');
+        return esc_html__('Save Submissions in Google Sheet', 'extensions-for-elementor-form');
     }
 
     public function add_prefix( $id ) {
@@ -72,7 +72,7 @@ class Sheet_HelloPlus_Action extends Action_Base
         $widget->start_controls_section(
              $this->add_prefix('section_google_sheets'),
             [
-                'label'     => esc_html__('Save Submissions in Google Sheet', 'cfl'),
+                'label'     => esc_html__('Save Submissions in Google Sheet', 'extensions-for-elementor-form'),
                 'condition' => [
                     'cool_formkit_submit_actions' => $this->get_name(),
                 ],

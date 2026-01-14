@@ -3,6 +3,8 @@
 namespace Cool_FormKit\Includes\Cron;
 use Cool_FormKit\feedback\cfl_feedback;
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+
 if (!defined('ABSPATH')) {
     exit();
 }
@@ -26,7 +28,7 @@ if (!class_exists('CFL_cronjob')) {
 
                 $schedules['every_30_days'] = array(
                     'interval' => 30 * 24 * 60 * 60, // 2,592,000 seconds
-                    'display'  => __('Once every 30 days'),
+                    'display'  => __('Once every 30 days', 'extensions-for-elementor-form'),
                 );
             }
             return $schedules;
@@ -89,7 +91,7 @@ if (!class_exists('CFL_cronjob')) {
               
                   if (is_wp_error($response)) {
                     if ( defined( 'WP_DEBUG' ) && WP_DEBUG ){
-                        error_log('CFL Feedback Send Failed: ' . $response->get_error_message());
+                        // error_log('CFL Feedback Send Failed: ' . $response->get_error_message());
                         return;
                     }
                   }

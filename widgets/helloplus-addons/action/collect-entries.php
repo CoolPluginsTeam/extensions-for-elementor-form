@@ -13,7 +13,7 @@ class HelloPlus_Collect_Entries extends Action_Base {
     }
 
     public function get_label(): string {
-        return esc_html__('Collect Entries', 'cool-formkit-for-elementor-forms');
+        return esc_html__('Collect Entries','extensions-for-elementor-form');
     }
 
     public function register_settings_section($widget): void {
@@ -34,8 +34,8 @@ class HelloPlus_Collect_Entries extends Action_Base {
                 'type' => \Elementor\Controls_Manager::ALERT,
                 'alert_type' => 'info',
                 'content' => sprintf(
-                    esc_html__('This action will collect the entries and store it in a variable. You can use this variable in the next action or in the same form.', 'cool-formkit-for-elementor-forms'),
-                    sprintf('<a href="%s" target="_blank">%s</a>', get_admin_url() . 'admin.php?page=cool-formkit-for-elementor-forms', esc_html__('Learn More', 'cool-formkit-for-elementor-forms')),
+                    esc_html__('This action will collect the entries and store it in a variable. You can use this variable in the next action or in the same form.','extensions-for-elementor-form'),
+                    sprintf('<a href="%s" target="_blank">%s</a>', get_admin_url() . 'admin.php?page=cool-formkit-for-elementor-forms', esc_html__('Learn More','extensions-for-elementor-form')),
                 ),
             ]
         );
@@ -43,11 +43,11 @@ class HelloPlus_Collect_Entries extends Action_Base {
         $widget->add_control(
             'collect_entries_field',
             [
-                'label' => esc_html__('Collect Entries Field', 'cool-formkit-for-elementor-forms'),
+                'label' => esc_html__('Collect Entries Field','extensions-for-elementor-form'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'options' => [
-                    'all' => esc_html__('All', 'cool-formkit-for-elementor-forms'),
-                    'selected' => esc_html__('Selected', 'cool-formkit-for-elementor-forms'),
+                    'all' => esc_html__('All','extensions-for-elementor-form'),
+                    'selected' => esc_html__('Selected','extensions-for-elementor-form'),
                 ],
             ]
         );
@@ -55,11 +55,11 @@ class HelloPlus_Collect_Entries extends Action_Base {
         $widget->add_control(
             'collect_entries_meta_data',
             [
-                'label' => esc_html__('Collect Entries Meta Data', 'cool-formkit-for-elementor-forms'),
+                'label' => esc_html__('Collect Entries Meta Data','extensions-for-elementor-form'),
                 'type' => \Elementor\Controls_Manager::SELECT2,
                 'options' => [
-                    'remote_ip' => esc_html__('User IP', 'cool-formkit-for-elementor-forms'),
-                    'user_agent' => esc_html__('User Agent', 'cool-formkit-for-elementor-forms')
+                    'remote_ip' => esc_html__('User IP','extensions-for-elementor-form'),
+                    'user_agent' => esc_html__('User Agent','extensions-for-elementor-form')
                 ],
                 'render_type' => 'none',
                 'multiple' => true,

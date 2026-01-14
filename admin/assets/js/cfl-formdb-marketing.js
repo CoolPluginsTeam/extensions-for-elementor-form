@@ -1,7 +1,7 @@
 
 jQuery(document).ready(function($) {
 
-    $(document).on('click', '.cfl-dismiss-notice, .cfl-dismiss-cross, .cfl-tec-notice .notice-dismiss, .e-notice__dismiss', function(e) {
+    $(document).on('click', '.cfl-dismiss-notice, .cfl-dismiss-cross, .cfl-tec-notice .notice-dismiss, [data-notice_id="formdb-marketing-elementor-form-submissions"] .e-notice__dismiss', function(e) {
 
         e.preventDefault();
         var noticeType = cflFormDBMarketing.formdb_type;

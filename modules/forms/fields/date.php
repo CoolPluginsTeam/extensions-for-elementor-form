@@ -23,7 +23,7 @@ class Date extends Field_Base {
 	}
 
 	public function get_name() {
-		return esc_html__( 'Date', 'elementor-pro' );
+		return esc_html__( 'Date', 'extensions-for-elementor-form' );
 	}
 
 
@@ -43,7 +43,7 @@ class Date extends Field_Base {
 			$form->add_render_attribute( 'input' . $item_index, 'max', esc_attr( $item['max_date'] ) );
 		}
 		?>
-		<label class="cool-form-text mdc-text-field mdc-text-field--outlined <?php echo ($item['field_label'] === '' || empty($settings['show_labels'])) ? 'mdc-text-field--no-label' : '' ?> cool-field-size-<?php echo $settings['input_size'] ?>">
+		<label class="cool-form-text mdc-text-field mdc-text-field--outlined <?php echo ($item['field_label'] === '' || empty($settings['show_labels'])) ? 'mdc-text-field--no-label' : '' ?> cool-field-size-<?php echo esc_attr($settings['input_size']); ?>">
 			<span class="mdc-notched-outline">
 				<span class="mdc-notched-outline__leading"></span>
 				<span class="mdc-notched-outline__notch">
@@ -79,7 +79,7 @@ class Date extends Field_Base {
 		$field_controls = [
 			'min_date' => [
 				'name' => 'min_date',
-				'label' => esc_html__( 'Min. Date', 'elementor-pro' ),
+				'label' => esc_html__( 'Min. Date', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::DATE_TIME,
 				'condition' => [
 					'field_type' => $this->get_type(),
@@ -94,7 +94,7 @@ class Date extends Field_Base {
 			],
 			'max_date' => [
 				'name' => 'max_date',
-				'label' => esc_html__( 'Max. Date', 'elementor-pro' ),
+				'label' => esc_html__( 'Max. Date', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::DATE_TIME,
 				'condition' => [
 					'field_type' => $this->get_type(),
@@ -109,7 +109,7 @@ class Date extends Field_Base {
 			],
 			'use_native_date' => [
 				'name' => 'use_native_date',
-				'label' => esc_html__( 'Native HTML5', 'elementor-pro' ),
+				'label' => esc_html__( 'Native HTML5', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::SWITCHER,
 				'condition' => [
 					'field_type' => $this->get_type(),

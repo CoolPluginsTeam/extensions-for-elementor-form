@@ -73,7 +73,7 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
 
     public static function get_setup_message()
     {
-        return esc_html__('To use reCAPTCHA V3, you need to add the API Key and complete the setup process in Dashboard > Elementor > Cool FormKit Lite > Settings > reCAPTCHA V3.', 'cool-formkit');
+        return esc_html__('To use reCAPTCHA V3, you need to add the API Key and complete the setup process in Dashboard > Elementor > Cool FormKit Lite > Settings > reCAPTCHA V3.', 'extensions-for-elementor-form');
     }
 
     public function render_field($item, $item_index, $widget)
@@ -106,12 +106,13 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
         }
 
         $recaptcha_html .= '</div>';
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $recaptcha_html;
     }
 
     public function add_field_type($field_types)
     {
-        $field_types['recaptcha_v3'] = esc_html__('reCAPTCHA V3', 'cool-formkit');
+        $field_types['recaptcha_v3'] = esc_html__('reCAPTCHA V3', 'extensions-for-elementor-form');
 
         return $field_types;
     }
@@ -138,17 +139,18 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
         $field = current($fields);
     
         // Get the reCAPTCHA token from the submitted form data
-        $recaptcha_response = sanitize_text_field($_POST['g-recaptcha-response'] ?? '');
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+        $recaptcha_response = sanitize_text_field(wp_unslash($_POST['g-recaptcha-response'])) ?? '';
     
         if (empty($recaptcha_response)) {
-            $ajax_handler->add_error($field['id'], esc_html__('Captcha validation failed. Please try again.', 'cool-formkit'));
+            $ajax_handler->add_error($field['id'], esc_html__('Captcha validation failed. Please try again.', 'extensions-for-elementor-form'));
             return;
         }
     
         // Get reCAPTCHA secret key
         $recaptcha_secret = static::get_secret_key(); 
         if (empty($recaptcha_secret)) {
-            $ajax_handler->add_error($field['id'], esc_html__('Missing reCAPTCHA secret key.', 'cool-formkit'));
+            $ajax_handler->add_error($field['id'], esc_html__('Missing reCAPTCHA secret key.', 'extensions-for-elementor-form'));
             return;
         }
     
@@ -169,7 +171,7 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
         
         // Check for HTTP request errors
         if (is_wp_error($response)) {
-            $ajax_handler->add_error($field['id'], esc_html__('Error verifying reCAPTCHA. Please try again.', 'cool-formkit'));
+            $ajax_handler->add_error($field['id'], esc_html__('Error verifying reCAPTCHA. Please try again.', 'extensions-for-elementor-form'));
             return;
         }
     
@@ -178,7 +180,7 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
         $response_data = json_decode($response_body, true);
     
         if ($response_code !== 200 || empty($response_data['success'])) {
-            $ajax_handler->add_error($field['id'], esc_html__('Captcha verification failed. Please try again.', 'cool-formkit'));
+            $ajax_handler->add_error($field['id'], esc_html__('Captcha verification failed. Please try again.', 'extensions-for-elementor-form'));
             return;
         }
     
@@ -192,7 +194,7 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
 
         
         if (isset($response_data['score']) && $response_data['score'] < $thres_hold) {
-            $ajax_handler->add_error($field['id'], esc_html__('Suspicious activity detected. Please try again.', 'cool-formkit'));
+            $ajax_handler->add_error($field['id'], esc_html__('Suspicious activity detected. Please try again.', 'extensions-for-elementor-form'));
             return;
         }
     

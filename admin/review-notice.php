@@ -49,14 +49,14 @@ class Review_notice
 
 			$html         = '<div class="cfl_elementor_review_wrapper">';
 			$html        .= '<div id="cfl_elementor_review_dismiss" data-url="' . esc_url($url) . '" data-nonce="' . esc_attr($review_nonce) . '">Close Notice X</div>
-								<div class="cfl_elementor_review_msg">' . __('Hope this addon solved your problem!', 'cfl') . '<br><a href="https://wordpress.org/support/plugin/extensions-for-elementor-form/reviews/#new-post" target="_blank"">Share the love with a ⭐⭐⭐⭐⭐ rating.</a><br><br></div>
+								<div class="cfl_elementor_review_msg">' . __('Hope this addon solved your problem!', 'extensions-for-elementor-form') . '<br><a href="https://wordpress.org/support/plugin/extensions-for-elementor-form/reviews/#new-post" target="_blank"">Share the love with a ⭐⭐⭐⭐⭐ rating.</a><br><br></div>
 								<div class="cfl_elementor_demo_btn"><a href="https://wordpress.org/support/plugin/extensions-for-elementor-form/reviews/#new-post" target="_blank">Submit Review</a></div>
 								</div>'; // Close main wrapper 
 
 			$widget->start_controls_section(
 				'cfl_review_notice_section',
 				array(
-					'label' => __('Review Notice', 'cfl'),
+					'label' => __('Review Notice', 'extensions-for-elementor-form'),
 				)
 			);
 
@@ -64,7 +64,7 @@ class Review_notice
 			$widget->add_control(
 				'cfl_review_notice_html',
 				array(
-					'label' => __('Review Notice', 'cfl'),
+					'label' => __('Review Notice', 'extensions-for-elementor-form'),
 					'type' => \Elementor\Controls_Manager::RAW_HTML,
 					'raw' => $html,
 					'content_classes' => 'cfl_elementor_review_notice',
@@ -92,7 +92,7 @@ class Review_notice
 		}
 
 		// grab plugin installation date and compare it with current date
-		$display_date = date('Y-m-d h:i:s');
+		$display_date = gmdate('Y-m-d h:i:s');
 		$install_date = new DateTime($installation_date);
 		$current_date = new DateTime($display_date);
 		$difference   = $install_date->diff($current_date);
@@ -101,10 +101,11 @@ class Review_notice
 
 		// check if installation days is greator then week
 		if (isset($diff_days) && $diff_days >= 3) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $this->cfl_create_notice_content();
 			wp_enqueue_style( 'cfl-admin-review-notice-css', CFL_PLUGIN_URL . 'admin/feedback/css/cfl-admin-review-notice.css', null, CFL_VERSION );
 	
-			wp_enqueue_script( 'cfl-admin-review-notice-js', CFL_PLUGIN_URL . 'admin/feedback/js/cfl-admin-review-notice.js', array( 'jquery' ), CFL_VERSION );
+			wp_enqueue_script( 'cfl-admin-review-notice-js', CFL_PLUGIN_URL . 'admin/feedback/js/cfl-admin-review-notice.js', array( 'jquery' ), CFL_VERSION, false );
 		}
 	}
 
@@ -138,11 +139,11 @@ class Review_notice
 	public function cfl_review_notice()
 	{
 		if (! check_ajax_referer('cfl_elementor_review', 'nonce', false)) {
-			wp_send_json_error(__('Invalid security token sent.', 'cfl'));
+			wp_send_json_error(__('Invalid security token sent.', 'extensions-for-elementor-form'));
 			wp_die('0', 400);
 		}
 
-		if (isset($_POST['cfl_notice_dismiss']) && 'true' === sanitize_text_field($_POST['cfl_notice_dismiss'])) {
+		if (isset($_POST['cfl_notice_dismiss']) && 'true' === sanitize_text_field(wp_unslash($_POST['cfl_notice_dismiss']))) {
 			update_option('cfl_review_notice_dismiss', 'yes');
 			echo json_encode(array('success' => 'true'));
 			exit;

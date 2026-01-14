@@ -7,6 +7,11 @@ use Elementor\Core\Utils\Collection;
 use Cool_FormKit\Modules\Forms\Classes\Form_Record;
 use Cool_FormKit\Modules\Forms\Components\Ajax_Handler;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
 class CFKEF_Save_Entries {
 
     private $last_entry_key = 'cfkef_last_entry_serial_no';
