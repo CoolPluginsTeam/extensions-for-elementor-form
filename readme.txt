@@ -5,7 +5,7 @@ Tags: form builder, contact form, elementor form, elementor, elementor form buil
 Requires at least: 6.2
 Tested up to: 6.9
 Stable tag: 2.6.0
-Requires PHP: 8.2
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Elementor tested up to: 3.34.1
