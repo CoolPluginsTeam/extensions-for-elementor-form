@@ -2,6 +2,8 @@
 
 namespace Cool_FormKit\Admin\Register_Menu_Dashboard;
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class CFKEF_Dashboard
 {
     /**
@@ -157,9 +159,11 @@ class CFKEF_Dashboard
      */
     private static function cfkef_current_page($slug, $tag_slug = null)
     {
-        $current_page = isset($_REQUEST['page']) ? esc_html($_REQUEST['page']) : (isset($_REQUEST['post_type']) ? esc_html($_REQUEST['post_type']) : '');
+        // phpcs:ignore	WordPress.Security.NonceVerification.Recommended
+        $current_page = isset($_REQUEST['page']) ? sanitize_key(wp_unslash($_REQUEST['page'])) : (isset($_REQUEST['post_type']) ? sanitize_key(wp_unslash($_REQUEST['post_type'])) : '');
         $status=false;
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $slug = $slug==='cfkef-entries' && !isset($_GET['tab']) && $current_page !== 'cfkef-entries' ? 'cool-formkit' : $slug;
 
         if (in_array($current_page, self::get_allowed_pages()) && $current_page === $slug) {
@@ -176,7 +180,8 @@ class CFKEF_Dashboard
 
         if(isset($tag_slug)){
             $tag_slug = sanitize_text_field($tag_slug);
-            $tab=isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : false;
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $tab=isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : false;
 
             if(!isset($tab) || $tab !== $tag_slug){
                 $status=false;
@@ -201,13 +206,13 @@ class CFKEF_Dashboard
                     <span>Lite</span>
                     <a class="button button-primary upgrade-pro-btn" target="_blank" href="https://coolformkit.com/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=dashboard">
                         <img class="crown-diamond-pro" src="<?php echo esc_url(CFL_PLUGIN_URL . 'admin/assets/images/crown-diamond-pro.png'); ?>" alt="Cool FormKit Logo">
-                        <?php esc_html_e('Upgrade To Pro', 'cool-formkit'); ?>
+                        <?php esc_html_e('Upgrade To Pro', 'extensions-for-elementor-form'); ?>
                     </a>
                 </div>
                 <div class="cfkef-header-buttons">
-                    <p><?php esc_html_e('Advanced Elementor Form Builder.', 'cool-formkit'); ?></p>
-                    <a href="https://docs.coolplugins.net/plugin/cool-formkit-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=setting_page_header" class="button" target="_blank"><?php esc_html_e('Check Docs', 'cool-formkit'); ?></a>
-                    <a href="https://coolformkit.com/features/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=setting_page_header" class="button button-secondary" target="_blank"><?php esc_html_e('View Form Demos', 'cool-formkit'); ?></a>
+                    <p><?php esc_html_e('Advanced Elementor Form Builder.', 'extensions-for-elementor-form'); ?></p>
+                    <a href="https://docs.coolplugins.net/plugin/cool-formkit-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=setting_page_header" class="button" target="_blank"><?php esc_html_e('Check Docs', 'extensions-for-elementor-form'); ?></a>
+                    <a href="https://coolformkit.com/features/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=setting_page_header" class="button button-secondary" target="_blank"><?php esc_html_e('View Form Demos', 'extensions-for-elementor-form'); ?></a>
                 </div>
             </div>
         <?php
@@ -219,11 +224,11 @@ class CFKEF_Dashboard
         if ( defined( 'ELEMENTOR_PRO_VERSION' ) ) {
             ?>
             <p>
-                <?php esc_html_e( 'Form submissions submitted through', 'cool-formkit' ); ?> 
-                <strong><?php esc_html_e( 'Elementor Pro Form Widget', 'cool-formkit' ); ?></strong> 
-                <?php esc_html_e( 'are not shown here. You can view them in the', 'cool-formkit' ); ?>
+                <?php esc_html_e( 'Form submissions submitted through', 'extensions-for-elementor-form' ); ?> 
+                <strong><?php esc_html_e( 'Elementor Pro Form Widget', 'extensions-for-elementor-form' ); ?></strong> 
+                <?php esc_html_e( 'are not shown here. You can view them in the', 'extensions-for-elementor-form' ); ?>
                 <a href="<?php echo esc_url( admin_url( 'admin.php?page=e-form-submissions' ) ); ?>" target="_blank" rel="noopener noreferrer">
-                    <?php esc_html_e( 'Elementor Form Submissions section', 'cool-formkit' ); ?>
+                    <?php esc_html_e( 'Elementor Form Submissions section', 'extensions-for-elementor-form' ); ?>
                 </a>.
             </p>
             <?php
@@ -289,7 +294,8 @@ class CFKEF_Dashboard
      * @since    1.0.0
      */
     public function enqueue_admin_styles() {
-        if (isset($_GET['page']) && self::current_screen($_GET['page'])) {
+        // phpcs:ignore	WordPress.Security.NonceVerification.Recommended
+        if (isset($_GET['page']) && self::current_screen(sanitize_text_field(wp_unslash($_GET['page'])))) {
             wp_enqueue_style('cfkef-admin-style', CFL_PLUGIN_URL . 'assets/css/admin-style.css', array(), $this->version, 'all');
             wp_enqueue_style('dashicons');
             wp_enqueue_script('cfkef-admin-script', CFL_PLUGIN_URL . 'assets/js/admin-script.js', array('jquery'), $this->version, true);

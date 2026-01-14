@@ -197,8 +197,9 @@ abstract class Module_Base {
 	 *
 	 * @param ?array $components_ids => component's class name.
 	 * @return void
-	 */
-	protected function register_components( array $components_ids = null ): void {
+	 */	
+	protected function register_components( ?array $components_ids = null ): void {
+
 		if ( empty( $components_ids ) ) {
 			$components_ids = $this->get_component_ids();
 		}
@@ -255,7 +256,7 @@ abstract class Module_Base {
 	 */
 	public function __clone() {
 		// Cloning instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Something went wrong.', 'cool-formkit' ), '0.0.1' ); // @codeCoverageIgnore
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Something went wrong.', 'extensions-for-elementor-form' ), '0.0.1' ); // @codeCoverageIgnore
 	}
 
 	/**
@@ -266,7 +267,7 @@ abstract class Module_Base {
 	 */
 	public function __wakeup() {
 		// Un-serializing instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Something went wrong.', 'cool-formkit' ), '0.0.1' ); // @codeCoverageIgnore
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Something went wrong.', 'extensions-for-elementor-form' ), '0.0.1' ); // @codeCoverageIgnore
 	}
 
 	/**

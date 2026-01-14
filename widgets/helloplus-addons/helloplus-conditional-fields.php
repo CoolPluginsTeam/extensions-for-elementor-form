@@ -14,6 +14,11 @@ use Elementor\Controls_Manager;
 use Elementor\Repeater;
 use HelloPlus\Includes\Utils;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
 	/**
 	 * Class for creating conditional fields and varify logic comparision before send
 	 */
@@ -53,6 +58,7 @@ class HelloPlus_Create_Conditional_Fields {
 		));
 	
 		// Add hidden class CSS
+		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion	
 		wp_register_style( 'hide_field_class_style', false );
 		wp_enqueue_style( 'hide_field_class_style' );
 		wp_add_inline_style(
@@ -108,7 +114,7 @@ class HelloPlus_Create_Conditional_Fields {
 			'form_fields_conditions_tab' => array(
 				'type'         => 'tab',
 				'tab'          => 'content', 
-				'label'        => esc_html__( 'Conditions', 'cool-formkit' ),
+				'label'        => esc_html__( 'Conditions', 'extensions-for-elementor-form' ),
 				'tabs_wrapper' => 'form_fields_tabs',
 				'name'         => 'form_fields_conditions_tab',
 				'condition'    => array(
@@ -117,7 +123,7 @@ class HelloPlus_Create_Conditional_Fields {
 			),
 			'cfef_logic' => array(
 				'name'         => 'cfef_logic',
-				'label'        => esc_html__( 'Enable Conditions', 'cool-formkit' ),
+				'label'        => esc_html__( 'Enable Conditions', 'extensions-for-elementor-form' ),
 				'type'         => Controls_Manager::SWITCHER,
 				'tab'          => 'content',
 				'inner_tab'    => 'form_fields_conditions_tab',
@@ -125,15 +131,15 @@ class HelloPlus_Create_Conditional_Fields {
 			),
 				'cfef_logic_mode' => array(
 				'name'    => 'cfef_logic_mode',
-				'label'   => esc_html__( 'Show / Hide Field', 'cool-formkit' ),
+				'label'   => esc_html__( 'Show / Hide Field', 'extensions-for-elementor-form' ),
 				'type'    => Controls_Manager::CHOOSE,
 				'options' => array(
 					'show' => array(
-						'title' => esc_html__( 'Show', 'cool-formkit' ),
+						'title' => esc_html__( 'Show', 'extensions-for-elementor-form' ),
 						'icon'  => 'far fa-eye',
 					),
 					'hide' => array(
-						'title' => esc_html__( 'Hide', 'cool-formkit' ),
+						'title' => esc_html__( 'Hide', 'extensions-for-elementor-form' ),
 						'icon'  => 'far fa-eye-slash',
 					),
 				),
@@ -147,11 +153,11 @@ class HelloPlus_Create_Conditional_Fields {
 			),
              'cfef_logic_meet' => array(
 				'name'         => 'cfef_logic_meet',
-				'label'        => esc_html__( 'Conditions Trigger', 'cool-formkit' ),
+				'label'        => esc_html__( 'Conditions Trigger', 'extensions-for-elementor-form' ),
 				'type'         => Controls_Manager::SELECT,
 				'options'      => array(
-					'All' => esc_html__('All - AND Conditions','cool-formkit'),
-					'Any' => esc_html__('Any - OR Conditions','cool-formkit'),
+					'All' => esc_html__('All - AND Conditions','extensions-for-elementor-form'),
+					'Any' => esc_html__('Any - OR Conditions','extensions-for-elementor-form'),
 				),
 				'default'      => 'All',
 				'tab'          => 'content',
@@ -163,7 +169,7 @@ class HelloPlus_Create_Conditional_Fields {
 			),
 			'cfef_repeater_data' => array(
 				'name'           => 'cfef_repeater_data',
-				'label'          => esc_html__( 'Show / Hide Fields If', 'cool-formkit' ),
+				'label'          => esc_html__( 'Show / Hide Fields If', 'extensions-for-elementor-form' ),
 				'type'           => Controls_Manager::REPEATER,
 				'tab'            => 'content',
 				'inner_tab'      => 'form_fields_conditions_tab',
@@ -171,7 +177,7 @@ class HelloPlus_Create_Conditional_Fields {
 				'fields'         => array(
 					array(
 						'name'        => 'cfef_logic_field_id',
-						'label'       => esc_html__( 'Field ID', 'cool-formkit' ),
+						'label'       => esc_html__( 'Field ID', 'extensions-for-elementor-form' ),
 						'type'        => Controls_Manager::TEXT,
 						'label_block' => true,
 						'default'     => '',
@@ -181,28 +187,28 @@ class HelloPlus_Create_Conditional_Fields {
 					),
 					array(
 						'name'        => 'cfef_logic_field_is',
-						'label'       => esc_html__( 'Operator', 'cool-formkit' ),
+						'label'       => esc_html__( 'Operator', 'extensions-for-elementor-form' ),
 						'type'        => Controls_Manager::SELECT,
 						'label_block' => true,
 						'options'     => array(
-							'==' => esc_html__( 'is equal ( == )', 'cool-formkit' ),
-							'!=' => esc_html__( 'is not equal (!=)', 'cool-formkit' ),
-							'>'  => esc_html__( 'greater than (>)', 'cool-formkit' ),
-							'<'  => esc_html__( 'less than (<)', 'cool-formkit' ),
-							'>='  => esc_html__( 'greater than equal (>=)', 'cool-formkit' ),
-							'<='  => esc_html__( 'less than equal (<=)', 'cool-formkit' ),
-							'e'  => esc_html__( "empty ('')", 'cool-formkit' ),
-							'!e' => esc_html__( 'not empty', 'cool-formkit' ),
-							'c'  => esc_html__( 'contains', 'cool-formkit' ),
-							'!c' => esc_html__( 'does not contain', 'cool-formkit' ),
-							'^'  => esc_html__( 'starts with', 'cool-formkit' ),
-							'~'  => esc_html__( 'ends with', 'cool-formkit' ),
+							'==' => esc_html__( 'is equal ( == )', 'extensions-for-elementor-form' ),
+							'!=' => esc_html__( 'is not equal (!=)', 'extensions-for-elementor-form' ),
+							'>'  => esc_html__( 'greater than (>)', 'extensions-for-elementor-form' ),
+							'<'  => esc_html__( 'less than (<)', 'extensions-for-elementor-form' ),
+							'>='  => esc_html__( 'greater than equal (>=)', 'extensions-for-elementor-form' ),
+							'<='  => esc_html__( 'less than equal (<=)', 'extensions-for-elementor-form' ),
+							'e'  => esc_html__( "empty ('')",'extensions-for-elementor-form' ),
+							'!e' => esc_html__( 'not empty', 'extensions-for-elementor-form' ),
+							'c'  => esc_html__( 'contains', 'extensions-for-elementor-form' ),
+							'!c' => esc_html__( 'does not contain', 'extensions-for-elementor-form' ),
+							'^'  => esc_html__( 'starts with', 'extensions-for-elementor-form' ),
+							'~'  => esc_html__( 'ends with', 'extensions-for-elementor-form' ),
 						),
 						'default'     => '==',
 					),
 					array(
 						'name'        => 'cfef_logic_compare_value',
-						'label'       => esc_html__( 'Value to compare', 'cool-formkit' ),
+						'label'       => esc_html__( 'Value to compare', 'extensions-for-elementor-form' ),
 						'type'        => Controls_Manager::TEXT,
 						'label_block' => true,
 						'default'     => '',
@@ -457,7 +463,7 @@ class HelloPlus_Create_Conditional_Fields {
 	public function cfef_elementor_review_notice() {
 		
 		if ( ! check_ajax_referer( 'cfef_elementor_review', 'nonce', false ) ) {
-			wp_send_json_error( __( 'Invalid security token sent.', 'cool-formkit' ) );
+			wp_send_json_error( __( 'Invalid security token sent.', 'extensions-for-elementor-form' ) );
 			wp_die( '0', 400 );
 		}
 

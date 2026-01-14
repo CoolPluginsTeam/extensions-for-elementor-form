@@ -6,6 +6,8 @@ use WPForms\Admin\Notice;
 use Cool_FormKit\Admin\Entries\CFKEF_Entries_Posts;
 use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Bulk actions on All Forms page.
  *
@@ -111,7 +113,7 @@ class CFKEF_Post_Bulk_Actions {
 		
 		$this->ids    = isset( $_GET['entry_id'] ) ? array_map( 'absint', (array) $_GET['entry_id'] ) : [];
 
-		$action=isset($_REQUEST['action']) ? str_replace(' ', '_', strtolower($_REQUEST['action'])) : false;
+		$action=isset($_REQUEST['action']) ? str_replace(' ', '_', strtolower(sanitize_text_field(wp_unslash($_REQUEST['action'])))) : false;
 
 		$this->action = isset( $_REQUEST['action'] ) ? sanitize_key( $action ) : false;
 
@@ -302,7 +304,7 @@ class CFKEF_Post_Bulk_Actions {
 		]);
 
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended
-        $search= isset($_GET['cfkef-entries-search']) ? sanitize_text_field($_GET['cfkef-entries-search']) : '';
+        $search= isset($_GET['cfkef-entries-search']) ? sanitize_text_field(wp_unslash($_GET['cfkef-entries-search'])) : '';
         // phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		$args = [
@@ -315,18 +317,25 @@ class CFKEF_Post_Bulk_Actions {
 
 		$post_placeholders=implode(',', array_fill(0, count($args['post_status']), "%s"));
 
+		//phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $post_status_query = $wpdb->prepare("post_status IN ($post_placeholders)", array_map('esc_sql', $args['post_status']));
 
-
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $query = $wpdb->prepare(
-            "SELECT * FROM $wpdb->posts WHERE post_type = '%s' AND $post_status_query",
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared	
+            "SELECT * FROM $wpdb->posts WHERE post_type = %s AND $post_status_query",
             $this->posts_type,
         );
 
         if(!empty($search)){
-            $query .= $wpdb->prepare(" AND post_title LIKE '%%%s%%'", $wpdb->esc_like($search));
+            $query .= $wpdb->prepare(
+				" AND post_title LIKE %s",
+				'%' . $wpdb->esc_like( $search ) . '%'
+			);
+
         }
 
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
 		$posts=$wpdb->get_results($wpdb->prepare($query));
 		
 		foreach($posts as $post){
@@ -352,12 +361,12 @@ class CFKEF_Post_Bulk_Actions {
 
 		if ( $this->view === 'trash' ) {
 			$items = [
-				'restore' => esc_html__( 'Restore', 'wpforms-lite' ),
-				'delete'  => esc_html__( 'Delete Permanently', 'wpforms-lite' ),
+				'restore' => esc_html__( 'Restore', 'extensions-for-elementor-form' ),
+				'delete'  => esc_html__( 'Delete Permanently', 'extensions-for-elementor-form' ),
 			];
 		} else {
 			$items = [
-				'trash' => esc_html__( 'Move to Trash', 'wpforms-lite' ),
+				'trash' => esc_html__( 'Move to Trash', 'extensions-for-elementor-form' ),
 			];
 		}
 
@@ -404,7 +413,7 @@ class CFKEF_Post_Bulk_Actions {
 		// Display notice in case of error.
 		if ( in_array( 'error', $results, true ) ) {
 			add_action( 'cfkef_admin_notices', function() {
-				echo '<div class="notice notice-error"><p>' . esc_html__( 'Security check failed. Please try again.', 'cool-formkit' ) . '</p></div>';
+				echo '<div class="notice notice-error"><p>' . esc_html__( 'Security check failed. Please try again.', 'extensions-for-elementor-form' ) . '</p></div>';
 			});
 
 			return;
@@ -485,17 +494,17 @@ class CFKEF_Post_Bulk_Actions {
 		switch ( $action ) {
 			case 'restored':
 				/* translators: %1$d - restored forms count. */
-				$notice = _n( '%1$d form has been restored successfully.', '%1$d forms have been restored successfully.', $count, 'cool-formkit' );
+				$notice = _n( '%1$d form has been restored successfully.', '%1$d forms have been restored successfully.', $count, 'extensions-for-elementor-form' );
 				break;
 
 			case 'deleted':
 				/* translators: %1$d - deleted forms count. */
-				$notice = _n( '%1$d form has been permanently deleted.', '%1$d forms have been permanently deleted.', $count, 'cool-formkit' );
+				$notice = _n( '%1$d form has been permanently deleted.', '%1$d forms have been permanently deleted.', $count, 'extensions-for-elementor-form' );
 				break;
 
 			case 'trashed':
 				/* translators: %1$d - trashed forms count. */
-				$notice = _n( '%1$d form has been moved to Trash.', '%1$d forms have been moved to Trash.', $count, 'cool-formkit' );
+				$notice = _n( '%1$d form has been moved to Trash.', '%1$d forms have been moved to Trash.', $count, 'extensions-for-elementor-form' );
 				break;
 
 			default:

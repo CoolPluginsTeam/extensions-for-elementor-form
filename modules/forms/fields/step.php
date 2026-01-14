@@ -16,7 +16,7 @@ class Step extends Field_Base {
 	}
 
 	public function get_name() {
-		return esc_html__( 'Step', 'elementor-pro' );
+		return esc_html__( 'Step', 'extensions-for-elementor-form' );
 	}
 
 
@@ -62,7 +62,7 @@ class Step extends Field_Base {
 		$field_controls = [
 			'previous_button' => [
 				'name' => 'previous_button',
-				'label' => esc_html__( 'Previous Button', 'elementor-pro' ),
+				'label' => esc_html__( 'Previous Button', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'dynamic' => [
 					'active' => true,
@@ -79,7 +79,7 @@ class Step extends Field_Base {
 			],
 			'next_button' => [
 				'name' => 'next_button',
-				'label' => esc_html__( 'Next Button', 'elementor-pro' ),
+				'label' => esc_html__( 'Next Button', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::TEXT,
 				'dynamic' => [
 					'active' => true,
@@ -96,10 +96,10 @@ class Step extends Field_Base {
 			],
 			'selected_icon' => [
 				'name' => 'selected_icon',
-				'label' => esc_html__( 'Icon', 'elementor-pro' ),
+				'label' => esc_html__( 'Icon', 'extensions-for-elementor-form' ),
 				'type' => Controls_Manager::ICONS,
 				'fa4compatibility' => 'icon',
-				'description' => esc_html__( 'Visible only if selected step type contains "Icon"', 'elementor-pro' ),
+				'description' => esc_html__( 'Visible only if selected step type contains "Icon"', 'extensions-for-elementor-form' ),
 				'default' => [
 					'value' => 'fas fa-star',
 					'library' => 'fa-solid',

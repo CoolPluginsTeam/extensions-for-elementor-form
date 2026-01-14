@@ -6,6 +6,8 @@ use Cool_FormKit\Admin\Entries\CFKEF_List_Table;
 use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
 use Cool_FormKit\Admin\Entries\CFKEF_Post_Bulk_Actions;
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Entries Posts
  */     
@@ -70,38 +72,38 @@ class CFKEF_Entries_Posts {
     public function register_post_type() {
         
         $labels = array(
-            'name'                  => esc_html_x( 'Entries', 'Post Type General Name', 'cool-formkit' ),
-            'singular_name'         => esc_html_x( 'Entrie', 'Post Type Singular Name', 'cool-formkit' ),
-            'menu_name'             => esc_html__( 'Entrie', 'cool-formkit' ),
-            'name_admin_bar'        => esc_html__( 'Entrie', 'cool-formkit' ),
-            'archives'              => esc_html__( 'Entrie Archives', 'cool-formkit' ),
-            'attributes'            => esc_html__( 'Entrie Attributes', 'cool-formkit' ),
-            'parent_item_colon'     => esc_html__( 'Parent Item:', 'cool-formkit' ),
-            'all_items'             => esc_html__( 'Entries', 'cool-formkit' ),
-            'add_new_item'          => esc_html__( 'Add New Item', 'cool-formkit' ),
-            'add_new'               => esc_html__( 'Add New', 'cool-formkit' ),
-            'new_item'              => esc_html__( 'New Item', 'cool-formkit' ),
-            'edit_item'             => esc_html__( 'View Entry', 'cool-formkit' ),
-            'update_item'           => esc_html__( 'Update Item', 'cool-formkit' ),
-            'view_item'             => esc_html__( 'View Item', 'cool-formkit' ),
-            'view_items'            => esc_html__( 'View Items', 'cool-formkit' ),
-            'search_items'          => esc_html__( 'Search Item', 'cool-formkit' ),
-            'not_found'             => esc_html__( 'Not found', 'cool-formkit' ),
-            'not_found_in_trash'    => esc_html__( 'Not found in Trash', 'cool-formkit' ),
-            'featured_image'        => esc_html__( 'Featured Image', 'cool-formkit' ),
-            'set_featured_image'    => esc_html__( 'Set featured image', 'cool-formkit' ),
-            'remove_featured_image' => esc_html__( 'Remove featured image', 'cool-formkit' ),
-            'use_featured_image'    => esc_html__( 'Use as featured image', 'cool-formkit' ),
-            'insert_into_item'      => esc_html__( 'Insert into item', 'cool-formkit' ),
-            'uploaded_to_this_item' => esc_html__( 'Uploaded to this item', 'cool-formkit' ),
-            'items_list'            => esc_html__( 'Form entries list', 'cool-formkit' ),
-            'items_list_navigation' => esc_html__( 'Form entries list navigation', 'cool-formkit' ),
-            'filter_items_list'     => esc_html__( 'Filter from entry list', 'cool-formkit' ),
+            'name'                  => esc_html_x( 'Entries', 'Post Type General Name', 'extensions-for-elementor-form' ),
+            'singular_name'         => esc_html_x( 'Entrie', 'Post Type Singular Name', 'extensions-for-elementor-form' ),
+            'menu_name'             => esc_html__( 'Entrie', 'extensions-for-elementor-form' ),
+            'name_admin_bar'        => esc_html__( 'Entrie', 'extensions-for-elementor-form' ),
+            'archives'              => esc_html__( 'Entrie Archives', 'extensions-for-elementor-form' ),
+            'attributes'            => esc_html__( 'Entrie Attributes', 'extensions-for-elementor-form' ),
+            'parent_item_colon'     => esc_html__( 'Parent Item:', 'extensions-for-elementor-form' ),
+            'all_items'             => esc_html__( 'Entries', 'extensions-for-elementor-form' ),
+            'add_new_item'          => esc_html__( 'Add New Item', 'extensions-for-elementor-form' ),
+            'add_new'               => esc_html__( 'Add New', 'extensions-for-elementor-form' ),
+            'new_item'              => esc_html__( 'New Item', 'extensions-for-elementor-form' ),
+            'edit_item'             => esc_html__( 'View Entry', 'extensions-for-elementor-form' ),
+            'update_item'           => esc_html__( 'Update Item', 'extensions-for-elementor-form' ),
+            'view_item'             => esc_html__( 'View Item', 'extensions-for-elementor-form' ),
+            'view_items'            => esc_html__( 'View Items', 'extensions-for-elementor-form' ),
+            'search_items'          => esc_html__( 'Search Item', 'extensions-for-elementor-form' ),
+            'not_found'             => esc_html__( 'Not found', 'extensions-for-elementor-form' ),
+            'not_found_in_trash'    => esc_html__( 'Not found in Trash', 'extensions-for-elementor-form' ),
+            'featured_image'        => esc_html__( 'Featured Image', 'extensions-for-elementor-form' ),
+            'set_featured_image'    => esc_html__( 'Set featured image', 'extensions-for-elementor-form' ),
+            'remove_featured_image' => esc_html__( 'Remove featured image', 'extensions-for-elementor-form' ),
+            'use_featured_image'    => esc_html__( 'Use as featured image', 'extensions-for-elementor-form' ),
+            'insert_into_item'      => esc_html__( 'Insert into item', 'extensions-for-elementor-form' ),
+            'uploaded_to_this_item' => esc_html__( 'Uploaded to this item', 'extensions-for-elementor-form' ),
+            'items_list'            => esc_html__( 'Form entries list', 'extensions-for-elementor-form' ),
+            'items_list_navigation' => esc_html__( 'Form entries list navigation', 'extensions-for-elementor-form' ),
+            'filter_items_list'     => esc_html__( 'Filter from entry list', 'extensions-for-elementor-form' ),
         );
 
         $args = array(
-            'label'                 => esc_html__( 'Form Entries', 'cool-formkit' ),
-            'description'           => esc_html__( 'cool-formkit-entry', 'cool-formkit' ),
+            'label'                 => esc_html__( 'Form Entries', 'extensions-for-elementor-form' ),
+            'description'           => esc_html__( 'cool-formkit-entry', 'extensions-for-elementor-form' ),
             'labels'                => $labels,
             'supports'              => false,
             'capabilities'          => ['create_posts' => 'do_not_allow'],
@@ -126,22 +128,23 @@ class CFKEF_Entries_Posts {
     }
 
     public static function get_view() {
-        return isset($_GET['view']) && in_array($_GET['view'], ['all', 'trash']) ? sanitize_text_field($_GET['view']) : 'all';
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        return isset($_GET['view']) && in_array($_GET['view'], ['all', 'trash']) ? sanitize_text_field(wp_unslash($_GET['view'])) : 'all';
     }
 
     public function output_entries_list(CFKEF_Dashboard $dashboard) {
         if($dashboard->current_screen(self::$post_type)){
             echo "<div class='wrap'>";
-            echo "<h1 class='wp-heading-inline cfkef-entries-list-title'>" . esc_html__( 'Entries', 'cool-formkit' ) . "</h1>";
+            echo "<h1 class='wp-heading-inline cfkef-entries-list-title'>" . esc_html__( 'Entries', 'extensions-for-elementor-form' ) . "</h1>";
             echo "<div id='cfkef-entries-list-wrapper'>";
             $list_table = CFKEF_List_Table::get_instance(self::$post_type);
             $list_table->prepare_items();
             $list_table->views();
             // echo '<form method="get">';
             echo '<form method="get" action="'.esc_url( admin_url( 'admin.php?page=cfkef-entries' ) ).'">';
-            echo '<input type="hidden" name="page" value="'.self::$post_type.'">';
-            echo '<input type="hidden" name="view" value="'.self::get_view().'">';
-            $list_table->search_box( esc_html__( 'Search Forms', 'wpforms-lite' ), 'cfkef-entries-search' );
+            echo '<input type="hidden" name="page" value="' . esc_attr( self::$post_type ) . '">';
+            echo '<input type="hidden" name="view" value="' . esc_attr( self::get_view() ) . '">';
+            $list_table->search_box( esc_html__( 'Search Forms', 'extensions-for-elementor-form' ), 'cfkef-entries-search' );
             $list_table->display();
             echo "</form>";
             echo "</div>";

@@ -11,7 +11,9 @@ use Cool_FormKit\Widgets\HelloPlusAddons\Action\Save_Form_Data;
 use Cool_FormKit\Widgets\HelloPlusAddons\HelloPlus_Create_Conditional_Fields;
 use Cool_FormKit\Widgets\HelloPlusAddons\HelloPlus_COUNTRY_CODE_FIELD;
 use Cool_FormKit\Widgets\HelloPlusAddons\HelloPlus_FME_Plugin;
+use Cool_FormKit\Widgets\HelloPlusAddons\Sheet_HelloPlus_Action;
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound  
 
 if (!defined('ABSPATH')) {
     die;
@@ -113,24 +115,32 @@ class HelloPlus_Addons_Loader {
 
     public function show_actions_on_editor_side( $element, $args ) {
         require_once CFL_PLUGIN_PATH . 'widgets/helloplus-addons/helloplus-whatsapp-redirect.php';
-        
-        $custom_actions   = [];
-        $action_instances = [];
+
+        if(!is_plugin_active('sb-elementor-contact-form-db/sb_elementor_contact_form_db.php') && !defined("formdb_hello_plus_marketing_editor")){
+            
+            define("formdb_hello_plus_marketing_editor", true);
+            require_once CFL_PLUGIN_PATH . 'includes/helloplus-form-to-sheet.php';
+    
+            $instance = new Sheet_HelloPlus_Action();
+            $custom_actions[ $instance->get_name() ] = $instance->get_label();
+            $action_instances[] = $instance;        
+        }
+
 
         $instance = new HelloPlus_Whatsapp_Redirect();
         $custom_actions[ $instance->get_name() ] = $instance->get_label();
-        $action_instances[] = $instance;
+        $action_instances[] = $instance; 
 
         // === 3. Add Dropdown in Editor
         $element->start_controls_section(
             'cool_formkit_conditional_actions_section',
             [
-                'label' => esc_html__( 'Cool Actions After Submit', 'cool-formkit' ),
+                'label' => esc_html__( 'Cool Actions After Submit', 'extensions-for-elementor-form' ),
             ]
         );
 
         $element->add_control( 'cool_formkit_submit_actions', [
-            'label'       => __( 'Actions After Submit', 'cool-formkit' ),
+            'label'       => __( 'Actions After Submit', 'extensions-for-elementor-form' ),
             'type'        => \Elementor\Controls_Manager::SELECT2,
             'multiple'    => true,
             'label_block' => true,

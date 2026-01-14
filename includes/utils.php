@@ -56,7 +56,7 @@ class Utils {
 		if ( ! isset( $super_global[ $key ] ) ) {
 			return null;
 		}
-
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( $_FILES === $super_global ) {
 			return isset( $super_global[ $key ]['name'] ) ?
 				static::sanitize_file_name( $super_global[ $key ] ) :
@@ -102,7 +102,7 @@ class Utils {
 	public static function get_update_elementor_message(): string {
 		return sprintf(
 		/* translators: %s: Elementor version number. */
-			__( 'Elementor plugin version needs to be at least %s for Cool Formkit to Work. Please update.', 'cool-formkit' ),
+			__( 'Elementor plugin version needs to be at least %s for Cool Formkit to Work. Please update.', 'extensions-for-elementor-form' ),
 			Cool_FormKit_MIN_ELEMENTOR_VERSION,
 		);
 	}

@@ -7,6 +7,7 @@ use \Elementor\Controls_Manager as ElementorControls;
 use \Elementor\Repeater as ElementorRepeater;
 use Elementor\Controls_Manager;
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound	
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -40,20 +41,20 @@ class FME_Elementor_Forms_Mask {
 
 		$controls_to_register = [
 			'fme_mask_control' => [
-				'label' => esc_html__( 'Mask Control', 'cool-formkit' ),
+				'label' => esc_html__( 'Mask Control', 'extensions-for-elementor-form' ),
 				'type' => ElementorControls::SELECT,
 				'tab' => 'content',
 				'tabs_wrapper' => 'form_fields_tabs',
 				'inner_tab' => 'form_fields_advanced_tab',
 				'default' => 'mask',
 				'options' => [
-					'mask' => esc_html__( 'Select Mask', 'cool-formkit' ),
-					'ev-phone' => esc_html__( 'Phone', 'cool-formkit' ),
-					'ev-time' => esc_html__( 'Date & Time', 'cool-formkit' ),
-					'ev-money' => esc_html__( 'Money', 'cool-formkit' ),
-					'ev-ccard' => esc_html__( 'Credit Card', 'cool-formkit' ),
-					'ev-br_fr' => esc_html__( 'Brazilian Formats', 'cool-formkit' ),
-					'ev-ip-address' => esc_html__( 'IP Address', 'cool-formkit' ),
+					'mask' => esc_html__( 'Select Mask', 'extensions-for-elementor-form' ),
+					'ev-phone' => esc_html__( 'Phone', 'extensions-for-elementor-form' ),
+					'ev-time' => esc_html__( 'Date & Time', 'extensions-for-elementor-form' ),
+					'ev-money' => esc_html__( 'Money', 'extensions-for-elementor-form' ),
+					'ev-ccard' => esc_html__( 'Credit Card', 'extensions-for-elementor-form' ),
+					'ev-br_fr' => esc_html__( 'Brazilian Formats', 'extensions-for-elementor-form' ),
+					'ev-ip-address' => esc_html__( 'IP Address', 'extensions-for-elementor-form' ),
 				],
 				'conditions' => [
 					'terms' => [
@@ -66,14 +67,14 @@ class FME_Elementor_Forms_Mask {
 				],
 			],
 			'fme_mask_auto_placeholders' => [
-				'label' => esc_html__( 'Mask Placeholders', 'cool-formkit' ),
+				'label' => esc_html__( 'Mask Placeholders', 'extensions-for-elementor-form' ),
 				'type' => ElementorControls::SWITCHER,
 				'tab' => 'content',
 				'tabs_wrapper' => 'form_fields_tabs',
 				'inner_tab' => 'form_fields_advanced_tab',
 				'default' => '',
-				'label_on' => esc_html__( 'On', 'cool-formkit' ),
-				'label_off' => esc_html__( 'Off', 'cool-formkit' ),
+				'label_on' => esc_html__( 'On', 'extensions-for-elementor-form' ),
+				'label_off' => esc_html__( 'Off', 'extensions-for-elementor-form' ),
 				'conditions' => [
 					'terms' => [
 						[
@@ -90,15 +91,15 @@ class FME_Elementor_Forms_Mask {
 				],
 			],
 			'fme_money_mask_format' => [
-				'label' => esc_html__( 'Thousand separator', 'cool-formkit' ),
+				'label' => esc_html__( 'Thousand separator', 'extensions-for-elementor-form' ),
 				'type' => ElementorControls::SELECT,
 				'tab' => 'content',
 				'tabs_wrapper' => 'form_fields_tabs',
 				'inner_tab' => 'form_fields_advanced_tab',
 				'default' => 'dot',
 				'options' => [
-					'dot' => esc_html__( 'Dot (.)', 'cool-formkit' ),
-					'comma' => esc_html__( 'Comma (,)', 'cool-formkit' )
+					'dot' => esc_html__( 'Dot (.)', 'extensions-for-elementor-form' ),
+					'comma' => esc_html__( 'Comma (,)', 'extensions-for-elementor-form' )
 				],
 				'conditions' => [
 						'terms' => [
@@ -116,7 +117,7 @@ class FME_Elementor_Forms_Mask {
 				],
 			],
 			'fme_money_mask_prefix' => [
-				'label' => esc_html__( 'Mask Prefix', 'cool-formkit' ),
+				'label' => esc_html__( 'Mask Prefix', 'extensions-for-elementor-form' ),
 				'type' => ElementorControls::TEXT,
 				'tab' => 'content',
 				'tabs_wrapper' => 'form_fields_tabs',
@@ -141,7 +142,7 @@ class FME_Elementor_Forms_Mask {
 				],
 			],
 			'fme_money_mask_decimal_places' => [
-				'label' => esc_html__( 'Mask Decimal Places', 'cool-formkit' ),
+				'label' => esc_html__( 'Mask Decimal Places', 'extensions-for-elementor-form' ),
 				'type' => ElementorControls::TEXT,
 				'tab' => 'content',
 				'tabs_wrapper' => 'form_fields_tabs',
@@ -166,20 +167,20 @@ class FME_Elementor_Forms_Mask {
 				],
 			],
 			'fme_time_mask_format' => [
-				'label' => esc_html__( 'Date Format', 'cool-formkit' ),
+				'label' => esc_html__( 'Date Format', 'extensions-for-elementor-form' ),
 				'type' => ElementorControls::SELECT,
 				'tab' => 'content',
 				'tabs_wrapper' => 'form_fields_tabs',
 				'inner_tab' => 'form_fields_advanced_tab',
 				'default' => 'one',
 				'options' => [
-					'three' => esc_html__( 'Date (dd/mm/yyyy)', 'cool-formkit' ),
-					'four' => esc_html__( 'Date (mm/dd/yyyy)', 'cool-formkit' ),
-					'five' => esc_html__( 'DateTime (dd/mm/yyyy hh:mm)', 'cool-formkit' ),
-					'six' => esc_html__( 'DateTime (mm/dd/yyyy hh:mm)', 'cool-formkit' ),
-					'one' => esc_html__( 'Time (hh:mm)', 'cool-formkit' ),
-					'two' => esc_html__( 'Time (hh:mm:ss)', 'cool-formkit' ),
-					'seven' => esc_html__( 'Month/Year (mm/yyyy)', 'cool-formkit' ),
+					'three' => esc_html__( 'Date (dd/mm/yyyy)', 'extensions-for-elementor-form' ),
+					'four' => esc_html__( 'Date (mm/dd/yyyy)', 'extensions-for-elementor-form' ),
+					'five' => esc_html__( 'DateTime (dd/mm/yyyy hh:mm)', 'extensions-for-elementor-form' ),
+					'six' => esc_html__( 'DateTime (mm/dd/yyyy hh:mm)', 'extensions-for-elementor-form' ),
+					'one' => esc_html__( 'Time (hh:mm)', 'extensions-for-elementor-form' ),
+					'two' => esc_html__( 'Time (hh:mm:ss)', 'extensions-for-elementor-form' ),
+					'seven' => esc_html__( 'Month/Year (mm/yyyy)', 'extensions-for-elementor-form' ),
 				],
 				'conditions' => [
 						'terms' => [
@@ -197,16 +198,16 @@ class FME_Elementor_Forms_Mask {
 				],
 			],
 			'fme_brazilian_formats' => [
-				'label' => esc_html__( 'Select Format', 'cool-formkit' ),
+				'label' => esc_html__( 'Select Format', 'extensions-for-elementor-form' ),
 				'type' => ElementorControls::SELECT,
 				'tab' => 'content',
 				'tabs_wrapper' => 'form_fields_tabs',
 				'inner_tab' => 'form_fields_advanced_tab',
 				'default' => 'fme_cpf',
 				'options' => [
-					'fme_cpf' => esc_html__( 'CPF', 'cool-formkit' ),
-					'fme_cnpj' => esc_html__( 'CNPJ', 'cool-formkit' ),
-					'fme_cep' => esc_html__( 'CEP', 'cool-formkit' ),
+					'fme_cpf' => esc_html__( 'CPF', 'extensions-for-elementor-form' ),
+					'fme_cnpj' => esc_html__( 'CNPJ', 'extensions-for-elementor-form' ),
+					'fme_cep' => esc_html__( 'CEP', 'extensions-for-elementor-form' ),
 				],
 				'conditions' => [
 						'terms' => [
@@ -224,17 +225,17 @@ class FME_Elementor_Forms_Mask {
 				],
 			],
 			'fme_credit_card_options' => [
-				'label' => esc_html__( 'Credit Card Options', 'cool-formkit' ),
+				'label' => esc_html__( 'Credit Card Options', 'extensions-for-elementor-form' ),
 				'type' => ElementorControls::SELECT,
 				'tab' => 'content',
 				'tabs_wrapper' => 'form_fields_tabs',
 				'inner_tab' => 'form_fields_advanced_tab',
 				'default' => 'hyphen',
 				'options' => [
-					'space' => esc_html__( 'Credit card with space', 'cool-formkit' ),
-					'hyphen' => esc_html__( 'Credit card with hyphen', 'cool-formkit' ),
-					'credit_card_date' => esc_html__( 'Expiry Date (MM/YY)', 'cool-formkit' ),
-					'credit_card_expiry_date' => esc_html__( 'Expiry Date (MM/YYYY)', 'cool-formkit' ),
+					'space' => esc_html__( 'Credit card with space', 'extensions-for-elementor-form' ),
+					'hyphen' => esc_html__( 'Credit card with hyphen', 'extensions-for-elementor-form' ),
+					'credit_card_date' => esc_html__( 'Expiry Date (MM/YY)', 'extensions-for-elementor-form' ),
+					'credit_card_expiry_date' => esc_html__( 'Expiry Date (MM/YYYY)', 'extensions-for-elementor-form' ),
 				],
 				'conditions' => [
 						'terms' => [
@@ -252,17 +253,17 @@ class FME_Elementor_Forms_Mask {
 				],
 			],
 			'fme_phone_format' => [
-				'label' => esc_html__( 'Phone Format', 'cool-formkit' ),
+				'label' => esc_html__( 'Phone Format', 'extensions-for-elementor-form' ),
 				'type' => ElementorControls::SELECT,
 				'tab' => 'content',
 				'tabs_wrapper' => 'form_fields_tabs',
 				'inner_tab' => 'form_fields_advanced_tab',
 				'default' => 'phone_usa',
 				'options' => [
-					'phone_usa' => esc_html__( 'Phone (USA)', 'cool-formkit' ),
-					'phone_d8' => esc_html__( 'Phone (8-digit)', 'cool-formkit' ),
-					'phone_ddd8' => esc_html__( 'Phone (DDD + 8-digit)', 'cool-formkit' ),
-					'phone_ddd9' => esc_html__( 'Phone (DDD + 9-digit)', 'cool-formkit' ),
+					'phone_usa' => esc_html__( 'Phone (USA)', 'extensions-for-elementor-form' ),
+					'phone_d8' => esc_html__( 'Phone (8-digit)', 'extensions-for-elementor-form' ),
+					'phone_ddd8' => esc_html__( 'Phone (DDD + 8-digit)', 'extensions-for-elementor-form' ),
+					'phone_ddd9' => esc_html__( 'Phone (DDD + 9-digit)', 'extensions-for-elementor-form' ),
 				],
 				'conditions' => [
 						'terms' => [

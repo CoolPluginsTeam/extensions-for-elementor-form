@@ -2,6 +2,8 @@
 namespace Cool_formkit\admin;
 use Cool_FormKit\Includes\Cron\CFL_cronjob;
 
+// phpcs:disable PluginCheck.CodeAnalysis.SettingSanitization.register_settingMissing
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -76,7 +78,7 @@ class CFKEF_Admin {
             $notice = [
 
                 'title' => __('Elementor Form Addons by Cool Plugins', 'extensions-for-elementor-form'),
-                'message' => __('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'cool-plugins-feedback'),
+                'message' => __('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'extensions-for-elementor-form'),
                 'pages' => ['cool-formkit','cfkef-entries','cool-formkit&tab=recaptcha-settings'],
                 'always_show_on' => ['cool-formkit','cfkef-entries','cool-formkit&tab=recaptcha-settings'], // This enables auto-show
                 'plugin_name'=>'cool_forms'
@@ -150,8 +152,8 @@ class CFKEF_Admin {
     public function add_plugin_admin_menu() {
         add_submenu_page(
             'elementor',
-            __('Cool FormKit', 'cool-formkit'),
-            __('Cool FormKit', 'cool-formkit'),
+            __('Cool FormKit', 'extensions-for-elementor-form'),
+            __('Cool FormKit', 'extensions-for-elementor-form'),
             'manage_options',
             'cool-formkit',
             array($this, 'display_plugin_admin_page')
@@ -165,6 +167,7 @@ class CFKEF_Admin {
      * @since    1.0.0
      */
     public function display_plugin_admin_page() {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $tab = isset($_GET['tab']) ? sanitize_key($_GET['tab']) : 'form-elements';
         ?>
         <div class="cfkef-wrapper">
@@ -176,20 +179,20 @@ class CFKEF_Admin {
                     <span>Lite</span>
                     <a class="button button-primary upgrade-pro-btn" target="_blank" href="https://coolformkit.com/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=dashboard">
                         <img class="crown-diamond-pro" src="<?php echo esc_url(CFL_PLUGIN_URL . 'admin/assets/images/crown-diamond-pro.png'); ?>" alt="Cool FormKit Logo">
-                        <?php esc_html_e('Upgrade To Pro', 'cool-formkit'); ?>
+                        <?php esc_html_e('Upgrade To Pro', 'extensions-for-elementor-form'); ?>
                     </a>
                 </div>
                 <div class="cfkef-header-buttons">
-                    <p><?php esc_html_e('Advanced Elementor Form Builder.', 'cool-formkit'); ?></p>
-                    <a href="https://docs.coolplugins.net/plugin/cool-formkit-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=setting_page_header" class="button" target="_blank"><?php esc_html_e('Check Docs', 'cool-formkit'); ?></a>
-                    <a href="https://coolformkit.com/features/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=setting_page_header" class="button button-secondary" target="_blank"><?php esc_html_e('View Form Demos', 'cool-formkit'); ?></a>
+                    <p><?php esc_html_e('Advanced Elementor Form Builder.', 'extensions-for-elementor-form'); ?></p>
+                    <a href="https://docs.coolplugins.net/plugin/cool-formkit-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=setting_page_header" class="button" target="_blank"><?php esc_html_e('Check Docs', 'extensions-for-elementor-form'); ?></a>
+                    <a href="https://coolformkit.com/features/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=demo&utm_content=setting_page_header" class="button button-secondary" target="_blank"><?php esc_html_e('View Form Demos', 'extensions-for-elementor-form'); ?></a>
                 </div>
             </div>
             <h2 class="nav-tab-wrapper">
-                <a href="?page=cool-formkit&tab=form-elements" class="nav-tab <?php echo $tab == 'form-elements' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Form Elements', 'cool-formkit'); ?></a>
-                <a href="?page=cfkef-entries" class="nav-tab <?php echo $tab == 'cfkef-entries' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Entries', 'cool-formkit'); ?></a>
-                <a href="?page=cool-formkit&tab=settings" class="nav-tab <?php echo $tab == 'settings' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Settings', 'cool-formkit'); ?></a>
-                <a href="?page=cool-formkit&tab=license" class="nav-tab <?php echo $tab == 'license' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('License', 'cool-formkit'); ?></a>
+                <a href="?page=cool-formkit&tab=form-elements" class="nav-tab <?php echo $tab == 'form-elements' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Form Elements', 'extensions-for-elementor-form'); ?></a>
+                <a href="?page=cfkef-entries" class="nav-tab <?php echo $tab == 'cfkef-entries' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Entries', 'extensions-for-elementor-form'); ?></a>
+                <a href="?page=cool-formkit&tab=settings" class="nav-tab <?php echo $tab == 'settings' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Settings', 'extensions-for-elementor-form'); ?></a>
+                <a href="?page=cool-formkit&tab=license" class="nav-tab <?php echo $tab == 'license' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('License', 'extensions-for-elementor-form'); ?></a>
             </h2>
             <div class="tab-content">
                 <?php
@@ -276,7 +279,10 @@ class CFKEF_Admin {
     public function enqueue_admin_styles() {
         wp_enqueue_script('cfkef-global-admin', CFL_PLUGIN_URL . 'assets/js/global-admin.js', array('jquery'), $this->version, true);
 
-        if (isset($_GET['page']) &&(strpos($_GET['page'], 'cool-formkit') !== false || strpos($_GET['page'], 'cfkef-entries') !== false)) {
+        wp_enqueue_style('fdbgp-admin-global-style', CFL_PLUGIN_URL . 'assets/css/global-admin-style.css', array(), $this->version, 'all');
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        if (isset($_GET['page']) &&(strpos(sanitize_text_field(wp_unslash($_GET['page'])), 'cool-formkit') !== false || strpos(sanitize_text_field(wp_unslash($_GET['page'])), 'cfkef-entries') !== false)) {
             wp_enqueue_style('cfkef-admin-style', CFL_PLUGIN_URL . 'assets/css/admin-style.css', array(), $this->version, 'all');
             wp_enqueue_style('dashicons');
             wp_enqueue_script('cfkef-admin-script', CFL_PLUGIN_URL . 'assets/js/admin-script.js', array('jquery'), $this->version, true);

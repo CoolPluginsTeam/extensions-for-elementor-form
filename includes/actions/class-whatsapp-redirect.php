@@ -75,6 +75,7 @@ class Whatsapp_Redirect extends \ElementorPro\Modules\Forms\Classes\Action_Base 
 				'label_block' => true,
 				'render_type' => 'none',
 				'classes' => 'elementor-control-whats-direction-ltr',
+				/* translators: %break% is a literal token used to insert a line break */
 				'description' => \esc_html__( 'Use fields shortcodes for send form data os write your custom text.<br>=> To add break line use token: %break%', 'extensions-for-elementor-form' ),
 				'dynamic' => [
 					'active' => true,
