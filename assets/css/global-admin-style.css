@@ -5,9 +5,9 @@ li a[href="admin.php?page=cfkef-entries"]{
     display: none !important;
 }
 
-div[data-notice_id="formdb-marketing-elementor-form-submissions"] {
+/* div[data-notice_id="formdb-marketing-elementor-form-submissions"] {
     display: none;
-}
+} */
 
 div[data-notice_id="formdb-marketing-elementor-form-submissions"] .e-notice__aside{
     display: none;

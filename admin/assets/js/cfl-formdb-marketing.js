@@ -1,5 +1,4 @@
-
-jQuery(document).ready(function($) {
+(function ($) {
 
     $(document).on('click', '.cfl-dismiss-notice, .cfl-dismiss-cross, .cfl-tec-notice .notice-dismiss, [data-notice_id="formdb-marketing-elementor-form-submissions"] .e-notice__dismiss', function(e) {
 
@@ -23,18 +22,23 @@ jQuery(document).ready(function($) {
     });
 
 
-    $(document).on('click', '.cfl-install-plugin', function(e) {
+   function installPlugin(btn, slugg){
 
-        e.preventDefault();
-
-        var $form = $(this);
-        var $wrapper = $form.closest('.cool-form-wrp');
-        let button = $(this);
-        let plugin =  button.data('plugin') || cflFormDBMarketing.plugin;
+       let button = $(btn);
+        var $wrapper = button.closest('.cool-form-wrp');
         button.next('.cfl-error-message').remove();
 
-        const slug = getPluginSlug(plugin);
+        const slug = getPluginSlug(slugg);
         if (!slug) return;
+
+        const allowedSlugs = [
+            'loop-grid-extender-for-elementor-pro',
+            'events-widgets-for-elementor-and-the-events-calendar',
+            'conditional-fields-for-elementor-form-pro',
+            'sb-elementor-contact-form-db'
+        ];
+        if (!slug || !allowedSlugs.includes(slug)) return;
+
         // Get the nonce from the button data attribute
         let nonce = button.data('nonce') || cflFormDBMarketing.nonce;
 
@@ -78,7 +82,7 @@ jQuery(document).ready(function($) {
                 }
             }
         );
-    });
+    }
 
 
     // function for activation success
@@ -123,4 +127,63 @@ jQuery(document).ready(function($) {
         return slugs[plugin];
     }
 
-});
+
+    if(typeof elementor !== 'undefined' && elementor) {
+        const callbackfunction = elementor.modules.controls.BaseData.extend({
+            onRender:(data)=>{
+
+                if(!data.el) return;
+
+                const customNotice=data.el.querySelector('.cool-form-wrp');
+
+                if(!customNotice) return;
+
+                const installBtns=data.el.querySelectorAll('button.cfl-install-plugin');
+
+                if(installBtns.length === 0) return;
+
+
+                installBtns.forEach(btn=>{
+                    const installSlug=btn.dataset.plugin;
+
+                    btn.addEventListener('click',()=>{
+                        installPlugin(jQuery(btn),installSlug)
+                    });
+                });
+            },
+        });
+
+        // Initialize when Elementor is ready
+        $(window).on('elementor:init', function () { 
+            elementor.addControlView('raw_html', callbackfunction);
+        });
+    }else{
+
+
+        $(document).ready(function ($) {
+
+            const customNotice = $('.cool-form-wrp, .cfl-tec-notice, [data-notice_id="formdb-marketing-elementor-form-submissions"], .e-form-submissions-search');
+
+            if(customNotice.length === 0) return;
+
+            const installBtns = customNotice.find('button.cfl-install-plugin, a.cfl-install-plugin');
+
+            if(installBtns.length === 0) return;  
+            
+
+            installBtns.each(function(){
+                const btn = this;
+                const installSlug = btn.dataset.plugin;
+
+                $(btn).on('click', function(){
+                    if(installSlug) {
+                        installPlugin($(btn), installSlug);
+                    } else {
+                        installPlugin($(btn), cflFormDBMarketing.plugin);
+                    }
+                });
+            });
+        })
+    }
+
+})(jQuery);
