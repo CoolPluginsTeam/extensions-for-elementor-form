@@ -4,12 +4,12 @@ Donate link: https://donate.stripe.com/5kQdR92iBevO75WbPm6c00i
 Tags: form builder, contact form, elementor form, elementor, elementor form builder
 Requires at least: 6.2
 Tested up to: 6.9
-Stable tag: 2.6.0
+Stable tag: 2.6.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Elementor tested up to: 3.34.1
-Elementor Pro tested up to: 3.34.0
+Elementor tested up to: 3.35.3
+Elementor Pro tested up to: 3.35.0
 
 Contact form addon for Elementor. Create forms in Elementor Free or extend Elementor Pro forms with conditional logic, country code and extra fields.
 
@@ -106,6 +106,8 @@ Cool Plugins team has also built several other popular addons that extend Elemen
 
 * **[Loop Grid Extender for Elementor Pro](https://wordpress.org/plugins/loop-grid-extender-for-elementor-pro/)**: Supercharge Elementor Pro loop grids with support for ACF repeater fields and advanced taxonomy filters.
 
+**Use of 3rd Party Services:** This plugin connects to the Cool Plugins feedback server only for optional usage data sharing and voluntary feedback submission (for example, during plugin deactivation). Data is transmitted solely after explicit user consent. No hidden tracking is performed, and no frontend visitor or site user data is collected.  For more details, please review our [Data Usage Policy](https://my.coolplugins.net/terms/usage-tracking/), [TOS](https://my.coolplugins.net/terms/), and [Privacy Policy](https://my.coolplugins.net/terms/privacy-policy/).
+
 ---
 
 #### Disclaimer
@@ -193,6 +195,13 @@ You can open a support ticket on the [WordPress.org support forum](https://wordp
 You can report vulnerabilities through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/extensions-for-elementor-form). The Patchstack team helps validate, triage, and handle reported issues responsibly.  
 
 == Changelog ==
+
+= 2.6.2 - 2026-02-06 =
+* Improved: Code improvements.
+* Tested up to: Elementor 3.35.3 and Elementor Pro 3.35.0.
+
+= 2.6.1 - 2026-01-14 =
+* Fixed: Textual changes.
 
 = 2.6.0 - 2026-01-14 =
 * Fixed: Fix issues reported by "Plugin Check" plugin.

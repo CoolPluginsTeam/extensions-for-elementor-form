@@ -62,6 +62,12 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 				}
 			}
 
+			if(in_array( 'elementor/elementor.php', $active_plugins )) {
+
+				add_action('elementor/init', [$this, 'cfl_init_hooks']);
+			}
+
+
 			add_action('wp_ajax_cfl_install_plugin', [$this, 'cfl_install_plugin']);
           	add_action('wp_ajax_cfl_mkt_dismiss_notice', [$this,'cfl_dismiss_notice_callback']);
 		}
@@ -108,6 +114,21 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 
 		$plugin_slug = sanitize_key(wp_unslash($_POST['slug']));
 
+		// Only allow installation of known marketing plugins (ignore client-manipulated slugs).
+		$allowed_slugs = array(
+				'loop-grid-extender-for-elementor-pro',
+				'events-widgets-for-elementor-and-the-events-calendar',
+				'conditional-fields-for-elementor-form-pro',
+				'sb-elementor-contact-form-db'
+		);
+		if ( ! in_array( $plugin_slug, $allowed_slugs, true ) ) {
+			wp_send_json_error( array(
+				'slug' => $plugin_slug,
+				'errorCode'=> 'plugin_not_allowed',
+				// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
+				'errorMessage' => __( 'This plugin cannot be installed from here.', 'mfe' ),
+			));
+		}
 
 		$status = array(
 			'install' => 'plugin',
@@ -317,6 +338,7 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 		public function cfl_init_hooks() {
 
 			add_action('elementor/editor/after_enqueue_scripts', [$this, 'enqueue_editor_scripts'], 0);
+
 		}
 
 		/**
