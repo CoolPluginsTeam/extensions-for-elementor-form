@@ -108,8 +108,7 @@ Cool Plugins team has also built several other popular addons that extend Elemen
 
 **Use of 3rd Party Services:** This plugin connects to the Cool Plugins feedback server only for optional usage data sharing and voluntary feedback submission (for example, during plugin deactivation). Data is transmitted solely after explicit user consent. No hidden tracking is performed, and no frontend visitor or site user data is collected.  For more details, please review our [Data Usage Policy](https://my.coolplugins.net/terms/usage-tracking/), [TOS](https://my.coolplugins.net/terms/), and [Privacy Policy](https://my.coolplugins.net/terms/privacy-policy/)
 and this plugin uses Google reCAPTCHA v2 and v3 to protect forms from spam. it may collect device and interaction data per [Google’s Privacy Policy](https://policies.google.com/privacy
-). It also includes the [intl-tel-input library](https://intl-tel-input.com/
-), distributed under the MIT License.
+). It also includes the [intl-tel-input library](https://intl-tel-input.com), distributed under the [MIT License](https://github.com/jackocnr/intl-tel-input/blob/master/LICENSE).
 
 #### Disclaimer
 
