@@ -194,7 +194,7 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 					$pagenow        = isset($_POST['pagenow']) ? sanitize_key($_POST['pagenow']) : '';
 
 					if (current_user_can('activate_plugin', $install_status['file'])) {
-
+						$this->cfl_set_install_by_option( $plugin_slug );
 						$network_wide = (is_multisite() && 'import' !== $pagenow);
 						$activation_result = activate_plugin($install_status['file'], '', $network_wide);
 						if (is_wp_error($activation_result)) {
@@ -235,6 +235,7 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 			$install_status = install_plugin_install_status($api);
 			$pagenow        = isset($_POST['pagenow']) ? sanitize_key($_POST['pagenow']) : '';
 
+			$this->cfl_set_install_by_option( $plugin_slug );
 			// 🔄 Auto-activate the plugin right after successful install
 			if (current_user_can('activate_plugin', $install_status['file']) && is_plugin_inactive($install_status['file'])) {
 
@@ -251,6 +252,12 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 			}
 			wp_send_json_success($status);
 		}
+	}
+
+	private function cfl_set_install_by_option( $plugin_slug ) {
+		$parts = explode('-', $plugin_slug);
+		$two_parts_plugin_slug = implode('-', array_slice($parts, 0, 2));
+		update_option( $two_parts_plugin_slug . '-install-by', 'cfkl_plugin' );
 	}
 
 		public function formdb_plugin_install_button(){
