@@ -143,15 +143,6 @@ class HelloPlus_COUNTRY_CODE_FIELD {
 		}
 		wp_enqueue_script( 'helloplus-country-code-script' );
 		wp_enqueue_style( 'helloplus-country-code-library-style' );
-		
-		if ( get_option( 'cfefp_cdn_image' ) ) {
-			$inline_css = '
-			.cfefp-intl-container .iti__country-container .iti__flag:not(.iti__globe)  {
-				background-image: url("'.esc_url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/23.8.1/img/flags@2x.png").'");
-			}';
-			wp_add_inline_style( 'helloplus-country-code-library-style', $inline_css );
-		}
-
 		wp_enqueue_style( 'helloplus-country-code-style' );
 	}
 
