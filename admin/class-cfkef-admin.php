@@ -65,7 +65,7 @@ class CFKEF_Admin {
     private function __construct($plugin_name, $version) {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
-        add_action('admin_menu', array($this, 'add_plugin_admin_menu'),999);
+        add_action('admin_menu', array($this, 'add_plugin_admin_menu'),998);
         add_action('admin_init', array($this, 'register_form_elements_settings'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_styles'));
 

@@ -1,8 +1,8 @@
 a[href="admin.php?page=elementor-forms-addons"] {
     display: none !important;
 }
-li a[href="admin.php?page=cfkef-entries"]{
-    display: none !important;
+a:not(.nav-tab)[href*="page=cfkef-entries"],  a[href*="page=cfkef-entries"] div p{
+    font-style: italic;
 }
 
 /* div[data-notice_id="formdb-marketing-elementor-form-submissions"] {
