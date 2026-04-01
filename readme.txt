@@ -199,6 +199,7 @@ You can report vulnerabilities through the [Patchstack Vulnerability Disclosure 
 = 2.6.4 - 2026-04-01 =
 * Fixed: Double submission issue with country and mask fields.
 * Tested up to: Elementor 4.0.0 and Elementor Pro 4.0.0.
+* Fixed: Admin dashboard UI fixes.
 
 = 2.6.3 - 2026-02-17 =
 * Improved: Other plugin recommendations for Elementor users.
