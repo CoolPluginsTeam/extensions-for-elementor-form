@@ -507,11 +507,13 @@ class FormCCFEF extends elementorModules.frontend.handlers.Base {
                 if (iti.isValidNumber()) {
                     jQuery(inputTelElement).closest('.cfefp-intl-container').removeClass('elementor-error');
                     this.elements.$submitButton.removeClass('cfkef-prevent-submit');
-                    const $visibleFlexErrors = this.elements.$form.find('.mask-error').filter(function() {
-                        return jQuery(this).css('display') === 'flex';
-                    });
+                    // const $visibleFlexErrors = this.elements.$form.find('.mask-error').filter(function() {
+                    //     return jQuery(this).css('display') === 'flex';
+                    // });
 
-                    if($visibleFlexErrors.length === 0){
+                    const maskInputs =this.elements.$form.find('.fme-mask-input');
+
+                    if(maskInputs.length === 0){
 
                         this.elements.$form[0].classList.remove('elementor-form-waiting');
                     }
