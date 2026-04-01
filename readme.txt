@@ -4,12 +4,12 @@ Donate link: https://donate.stripe.com/5kQdR92iBevO75WbPm6c00i
 Tags: form builder, contact form, elementor form, elementor, elementor form builder
 Requires at least: 6.2
 Tested up to: 6.9
-Stable tag: 2.6.3
+Stable tag: 2.6.4
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Elementor tested up to: 3.35.4
-Elementor Pro tested up to: 3.35.0
+Elementor tested up to: 4.0.0
+Elementor Pro tested up to: 4.0.0
 
 Contact form addon for Elementor. Create forms in Elementor Free or extend Elementor Pro forms with conditional logic, country code and extra fields.
 
@@ -195,6 +195,11 @@ You can open a support ticket on the [WordPress.org support forum](https://wordp
 You can report vulnerabilities through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/extensions-for-elementor-form). The Patchstack team helps validate, triage, and handle reported issues responsibly.  
 
 == Changelog ==
+
+= 2.6.4 - 2026-04-01 =
+* Fixed: Double submission issue with country and mask fields.
+* Fixed: Admin dashboard UI fixes.
+* Tested up to: Elementor 4.0.0 and Elementor Pro 4.0.0.
 
 = 2.6.3 - 2026-02-17 =
 * Improved: Other plugin recommendations for Elementor users.

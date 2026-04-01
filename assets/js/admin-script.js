@@ -57,12 +57,23 @@ function handleEntriesPage() {
 		helloPlusToggle.addEventListener('change', () => {
 			storeStateToLocal();
 			updateEntriesVisibility();
+			dispatchSettingsEvent();
 		});
 
 		formKitToggle.addEventListener('change', () => {
 			storeStateToLocal();
 			updateEntriesVisibility();
+			dispatchSettingsEvent();
 		});
+
+		function dispatchSettingsEvent() {
+			document.dispatchEvent(new CustomEvent('cfkef_dashboard_toggle:settings:changed', {
+				detail: {
+					helloPlus: helloPlusToggle.checked,
+					formKit: formKitToggle.checked
+				}
+			}));
+		}
 
 		storeStateToLocal();
 	}
@@ -84,8 +95,6 @@ function handleEntriesPage() {
 			if (menuItem) {
 				menuItem.style.display = bothDisabled ? 'none' : '';
 			}
-		} else {
-			setTimeout(() => handleEntriesPage(), 300);
 		}
 	}
 

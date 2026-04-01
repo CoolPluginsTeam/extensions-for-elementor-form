@@ -1,26 +1,46 @@
 jQuery(document).ready(function () {
-    function handleEntriesSubmenu(){
-        var $entriesItem = jQuery('.wp-submenu a[href="admin.php?page=cfkef-entries"]').closest('li');
-
-        if(!$entriesItem.length > 0){
+    function addCoolformAdmingPageToElementor() {
+        let $elementorEditorPage = jQuery('.wp-submenu a[href="admin.php?page=elementor"]').closest('li');
+        if (!$elementorEditorPage.length) {
             return;
         }
 
-        var $entriesClone = $entriesItem.clone();
-        $entriesItem.remove();
+        let $submenu = $elementorEditorPage.closest('ul.wp-submenu');
+        if (!$submenu.length) {
+            return;
+        }
 
-        var $formKitItem = jQuery('.wp-submenu a[href="admin.php?page=cool-formkit"]').closest('li');
+        $submenu.find('.cool-formkit-page-list').remove();
+        $submenu.find('.cfkef-entries-page-list').remove();
 
-        $formKitItem.after($entriesClone);
+        let $coolFormkitItem = jQuery('<li class="cool-formkit-page-list"><a href="admin.php?page=cool-formkit">Cool Formkit</a></li>');
+        let $coolFormEntriesItem = jQuery('<li class="cfkef-entries-page-list"><a href="admin.php?page=cfkef-entries">↳ Entries</a></li>');
 
-        jQuery('.wp-submenu a[href="admin.php?page=cfkef-entries"]').css({
-            'padding-left': '10px',
-            'font-style': 'italic',
-            'opacity': '0.85'
-        });
+
+        if($submenu.find('a[href="admin.php?page=elementor-one-upgrade"]').length > 0){
+
+            if(localStorage.getItem('cfkef_enable_hello_plus') == 1 || localStorage.getItem('cfkef_enable_formkit_builder') == 1){
+                $elementorEditorPage.after($coolFormEntriesItem)            
+            }
+
+            $elementorEditorPage.after($coolFormkitItem)            
+        }else{
+
+            $submenu.append($coolFormkitItem);
+
+            if(localStorage.getItem('cfkef_enable_hello_plus') == 1 || localStorage.getItem('cfkef_enable_formkit_builder') == 1){
+                console.log($submenu);
+                $submenu.append($coolFormEntriesItem);
+            }
+        }
+
     }
 
-    handleEntriesSubmenu();
+    addCoolformAdmingPageToElementor();
+
+    document.addEventListener('cfkef_dashboard_toggle:settings:changed', function (e) {
+        addCoolformAdmingPageToElementor()
+    });
     
     // recaptcha js
     jQuery(".site-key-show-hide-icon-recaptcha img").on("click", function () {
