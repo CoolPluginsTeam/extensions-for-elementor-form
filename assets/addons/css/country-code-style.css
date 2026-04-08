@@ -51,6 +51,11 @@
     height: 100%;
     width: 100%;
 }
+
+.ccfef-wrapper, .iti--inline-dropdown, .iti--allow-dropdown {
+    width: 100%;
+}
+
 .is-field-type-ehp-tel.has-width-100 .iti input{
     width: 100%;
 }

@@ -25,6 +25,11 @@ use Cool_FormKit\Includes\CFL_Loader;
 use Cool_FormKit\Widgets\CoolForm_Addons_Loader;
 use Cool_FormKit\Widgets\HelloPlus_Addons_Loader;
 
+use Cool_FormKit\Widgets\AtomicForm\AtomicForm_COUNTRY_CODE_FIELD;
+
+use Elementor\Widgets_Manager;
+use Cool_FormKit\Widgets\AtomicForm\Input\Input;
+
 if (! defined('ABSPATH')) {
 	header('Status: 403 Forbidden');
 	header('HTTP/1.1 403 Forbidden');
@@ -87,7 +92,20 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			add_action('wp_head', array($this, 'stop_format_detection_in_safari'));
 			add_action('elementor_pro/forms/actions/register', array($this, 'cfl_register_new_form_actions'));
 			add_action( 'plugins_loaded',array($this,'formdb_elementor_marketing'));
+
+			add_filter('elementor/widgets/register', [$this, 'register_widgets'], 999);
+
+			add_action('elementor/frontend/before_enqueue_scripts', function(){
+				wp_enqueue_script('sample-county-handle-js', CFL_PLUGIN_URL . 'assets/js/sample-country-hande.js', array('jquery'), CFL_VERSION, true);
+			});
 		}
+	}
+
+	public function register_widgets( Widgets_Manager $widgets_manager ) {
+		$widgets_manager->unregister('e-form-input');
+
+		require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/input/input.php';
+		$widgets_manager->register( new Input() );
 	}
 
 	public function formdb_elementor_marketing() {
@@ -157,6 +175,8 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		require_once CFL_PLUGIN_PATH . 'admin/feedback/cron/cfl-class-cron.php';
 
 		CFL_Loader::get_instance();
+		// require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/country-code-addon.php';
+		// AtomicForm_COUNTRY_CODE_FIELD::get_instance();
 
 		if (get_option('cfkef_enable_formkit_builder', true)) {
 			require_once CFL_PLUGIN_PATH . 'widgets/coolform-addons-loader.php';
