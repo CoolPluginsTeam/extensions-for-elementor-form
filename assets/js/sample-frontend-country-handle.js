@@ -27,8 +27,6 @@
     // 🔥 COMMON INIT FUNCTION
     function initITI(input, data, submitButton) {
 
-        console.log(data);
-    
         let includeArr = data.include ? data.include.split(',') : [];
         let excludeArr = data.exclude ? data.exclude.split(',') : [];
         const utilsPath = CCFEFCustomData.pluginDir + 'assets/addons/intl-tel-input/js/utils.min.js';
@@ -57,14 +55,8 @@
 
                 if (iti.isValidNumber()) {
                     jQuery(inputTelElement).closest('.ccfef-wrapper').removeClass('elementor-error');
-
-
-                    console.log('valid');
                 }else{
                     e.preventDefault();
-                    console.log(iti.getValidationError());
-                    console.log('invalid');
-
                     const errorContainer = jQuery(inputTelElement).parent();
                     errorContainer.find('span.elementor-message').remove();
 
@@ -86,14 +78,21 @@
     // Init function
     function init() {
 
+        // for editor c
         window.addEventListener("elementor/element/render", (event) => {
+            
             const { id, type, element } = event.detail;
 
-            if ($(element).hasClass('e-form-base')) {
-                let $form = $(element);
-                initAllPhoneFields($form);
-              }
+
+            if ($(element).hasClass('e-form-input-base') || $(element).hasClass('ccfef-wrapper')) {
+                let $form = $(element).closest('form');
+
+                if($form.length > 0) {
+                    initAllPhoneFields($form);
+                }
+            }
         });
+
   
   
       document.addEventListener("DOMContentLoaded", () => {
@@ -107,5 +106,6 @@
     }
 
     init();
-  
+
+
   })(jQuery);

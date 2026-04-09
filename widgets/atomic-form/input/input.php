@@ -135,8 +135,6 @@ class Input extends AtomicFormInput
     protected function get_templates(): array
     {
 
-        $this->load_assets();
-
         return [
             'input' => __DIR__ . '/input.html.twig',
         ];
@@ -194,27 +192,4 @@ class Input extends AtomicFormInput
 			'topDivider' => false,
 		];
 	}
-
-    public function load_assets()
-    {
-
-        wp_register_script('cfl-country-code-library-script', CFL_PLUGIN_URL . 'assets/addons/intl-tel-input/js/intlTelInput.js', array(), CFL_VERSION, true);
-        wp_register_style('cfl-country-code-library-style', CFL_PLUGIN_URL . 'assets/addons/intl-tel-input/css/intlTelInput.min.css', array(), CFL_VERSION, 'all');
-        wp_register_style('cfl-country-code-style', CFL_PLUGIN_URL . 'assets/addons/css/country-code-style.min.css', array(), CFL_VERSION, 'all');
-
-
-        if (! wp_script_is('cfl-country-code-library-script', 'enqueued') && ! wp_script_is('cfl-country-code-library-script', 'done')) {
-            wp_enqueue_script('cfl-country-code-library-script');
-        }
-
-        
-
-        if (! wp_style_is('cfl-country-code-library-style', 'enqueued') && ! wp_style_is('cfl-country-code-library-style', 'done')) {
-            wp_enqueue_style('cfl-country-code-library-style');
-        }
-
-        if (! wp_style_is('cfl-country-code-style', 'enqueued') && ! wp_style_is('cfl-country-code-style', 'done')) {
-            wp_enqueue_style('cfl-country-code-style');
-        }
-    }
 }
