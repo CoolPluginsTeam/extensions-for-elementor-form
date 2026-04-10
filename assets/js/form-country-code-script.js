@@ -459,8 +459,6 @@ class FormCCFEF extends elementorModules.frontend.handlers.Base {
     // Helper: Validate all telephone fields
     validateTelInputs(e, trigger = 'submit') {
 
-        console.log(this.iti);
-
         const itiArr = this.iti;
 
         if (Object.keys(itiArr).length > 0) {

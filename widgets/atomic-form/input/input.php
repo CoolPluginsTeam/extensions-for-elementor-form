@@ -6,19 +6,14 @@ use Elementor\Modules\AtomicWidgets\Controls\Section;
 use Elementor\Modules\AtomicWidgets\Controls\Types\Select_Control;
 use Elementor\Modules\AtomicWidgets\Controls\Types\Switch_Control;
 use Elementor\Modules\AtomicWidgets\Controls\Types\Text_Control;
-use Elementor\Modules\AtomicWidgets\Elements\Base\Atomic_Widget_Base;
 use Elementor\Modules\AtomicWidgets\Elements\Base\Has_Template;
 use Elementor\Modules\AtomicWidgets\PropTypes\Attributes_Prop_Type;
 use Elementor\Modules\AtomicWidgets\PropTypes\Classes_Prop_Type;
 use Elementor\Modules\AtomicWidgets\PropTypes\Primitives\Boolean_Prop_Type;
 use Elementor\Modules\AtomicWidgets\PropTypes\Primitives\String_Prop_Type;
-use Elementor\Modules\AtomicWidgets\Styles\Style_Definition;
-use Elementor\Modules\AtomicWidgets\Styles\Style_Variant;
-use Elementor\Modules\AtomicWidgets\PropTypes\Size_Prop_Type;
-use Elementor\Modules\AtomicWidgets\PropTypes\Color_Prop_Type;
-use Elementor\Modules\AtomicWidgets\Styles\Style_States;
 use Elementor\Modules\Components\PropTypes\Overridable_Prop_Type;
 use ElementorPro\Modules\AtomicForm\Input\Input as AtomicFormInput;
+use Elementor\Modules\AtomicWidgets\PropDependencies\Manager as Dependency_Manager;
 
 if (! defined('ABSPATH')) exit;
 
@@ -52,26 +47,42 @@ class Input extends AtomicFormInput
 
     protected static function define_props_schema(): array
     {
-        return [
-            'classes' => Classes_Prop_Type::make()
-				->default( [] ),
-			'placeholder' => String_Prop_Type::make()
-				->default( '' ),
-			'type' => String_Prop_Type::make()
-				->default( 'text' )
-				->enum( [ 'text', 'email', 'number', 'tel', 'password' ] ),
-			'required' => Boolean_Prop_Type::make()
-				->default( false ),
-			'readonly' => Boolean_Prop_Type::make()
-				->default( false ),
-			'attributes' => Attributes_Prop_Type::make()->meta( Overridable_Prop_Type::ignore() ),
-            // ✅ COUNTRY CODE FEATURE
-            'country_code' => Boolean_Prop_Type::make()->default(false),
-            'default_country' => String_Prop_Type::make()->default('in'),
-            'include' => String_Prop_Type::make()->default(''),
-            'exclude' => String_Prop_Type::make()->default(''),
-
-        ];
+        $tel_only_dependencies = Dependency_Manager::make()
+		->where( [
+			'operator' => 'eq',
+			'path' => [ 'type' ],
+			'value' => 'tel',
+			'effect' => 'hide',
+		] )
+		->get();
+	return [
+		'classes' => Classes_Prop_Type::make()->default( [] ),
+		'placeholder' => String_Prop_Type::make()->default( '' ),
+		'type' => String_Prop_Type::make()
+			->default( 'text' )
+			->enum( [ 'text', 'email', 'number', 'tel', 'password' ] ),
+		'required' => Boolean_Prop_Type::make()->default( false ),
+		'readonly' => Boolean_Prop_Type::make()->default( false ),
+		'attributes' => Attributes_Prop_Type::make()->meta( Overridable_Prop_Type::ignore() ),
+		'country_code' => Boolean_Prop_Type::make()
+			->set_dependencies( $tel_only_dependencies )
+			->default( false ),
+		'default_country' => String_Prop_Type::make()
+			->set_dependencies( $tel_only_dependencies )
+			->default( 'in' ),
+		'include' => String_Prop_Type::make()
+			->set_dependencies( $tel_only_dependencies )
+			->default( '' ),
+		'exclude' => String_Prop_Type::make()
+			->set_dependencies( $tel_only_dependencies )
+			->default( '' ),
+		'dial_code_visibility' => String_Prop_Type::make()
+			->set_dependencies( $tel_only_dependencies )
+			->default( 'show' ),
+		'strict_mode' => Boolean_Prop_Type::make()
+			->set_dependencies( $tel_only_dependencies )
+			->default( false ),
+	];
     }
 
     protected function define_atomic_controls(): array
@@ -124,6 +135,24 @@ class Input extends AtomicFormInput
 
                     Text_Control::bind_to('exclude')
                         ->set_label('Exclude Countries'),
+					Select_Control::bind_to( 'dial_code_visibility' )
+						->set_label( __( 'Dial Code Visibility', 'elementor-pro' ) )
+						->set_options( [
+							[
+								'label' => __( 'Show', 'elementor-pro' ),
+								'value' => 'show',
+							],
+							[
+								'label' => __( 'Hide', 'elementor-pro' ),
+								'value' => 'hide',
+							],
+							[
+								'label' => __( 'Separate', 'elementor-pro' ),
+								'value' => 'separate',
+							],
+						] ),
+					Switch_Control::bind_to('strict_mode')
+						->set_label('Strict Mode'),
 				] ),
 			Section::make()
 				->set_label( __( 'Settings', 'elementor-pro' ) )
@@ -140,56 +169,4 @@ class Input extends AtomicFormInput
         ];
     }
 
-    protected function define_base_styles(): array {
-		$border_radius_value = Size_Prop_Type::generate( [
-			'size' => 0,
-			'unit' => 'px',
-		] );
-
-		$height_value = Size_Prop_Type::generate( [
-			'size' => 36,
-			'unit' => 'px',
-		] );
-
-		$border_color_value = Color_Prop_Type::generate( '#D6D5D5' );
-
-		return [
-			'base' => Style_Definition::make()
-				->add_variant(
-					Style_Variant::make()
-							->add_props( [
-								'border-radius' => $border_radius_value,
-								'height' => $height_value,
-								'border-color' => $border_color_value,
-								'font-family' => String_Prop_Type::generate( 'Poppins' ),
-								'font-size' => Size_Prop_Type::generate( [
-									'size' => 12,
-									'unit' => 'px',
-								] ),
-							] ),
-				)
-				->add_variant(
-					Style_Variant::make()
-						->set_state( Style_States::FOCUS )
-						->add_props( [
-							'border-color' => Color_Prop_Type::generate( '#706F6F' ),
-							'outline-style' => String_Prop_Type::generate( 'none' ),
-						] ),
-				),
-			'base::placeholder' => Style_Definition::make() // this should be changed once we support placeholder/pseudo-elements styles in the styles system.
-				->add_variant(
-					Style_Variant::make()
-						->add_props( [
-							'color' => Color_Prop_Type::generate( '#9DA5AE' ),
-						] ),
-				),
-		];
-	}
-
-    protected function get_css_id_control_meta(): array {
-		return [
-			'layout' => 'two-columns',
-			'topDivider' => false,
-		];
-	}
 }
