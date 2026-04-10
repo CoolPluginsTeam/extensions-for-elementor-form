@@ -13,9 +13,11 @@ use Elementor\Modules\AtomicWidgets\PropTypes\Primitives\Boolean_Prop_Type;
 use Elementor\Modules\AtomicWidgets\PropTypes\Primitives\String_Prop_Type;
 use Elementor\Modules\Components\PropTypes\Overridable_Prop_Type;
 use ElementorPro\Modules\AtomicForm\Input\Input as AtomicFormInput;
-use Elementor\Modules\AtomicWidgets\PropDependencies\Manager as Dependency_Manager;
 
 if (! defined('ABSPATH')) exit;
+
+require_once __DIR__ . '/country-code-input-definition.php';
+require_once __DIR__ . '/mask-input-definition.php';
 
 class Input extends AtomicFormInput
 {
@@ -47,15 +49,7 @@ class Input extends AtomicFormInput
 
     protected static function define_props_schema(): array
     {
-        $tel_only_dependencies = Dependency_Manager::make()
-		->where( [
-			'operator' => 'eq',
-			'path' => [ 'type' ],
-			'value' => 'tel',
-			'effect' => 'hide',
-		] )
-		->get();
-	return [
+	return array_merge( [
 		'classes' => Classes_Prop_Type::make()->default( [] ),
 		'placeholder' => String_Prop_Type::make()->default( '' ),
 		'type' => String_Prop_Type::make()
@@ -64,25 +58,7 @@ class Input extends AtomicFormInput
 		'required' => Boolean_Prop_Type::make()->default( false ),
 		'readonly' => Boolean_Prop_Type::make()->default( false ),
 		'attributes' => Attributes_Prop_Type::make()->meta( Overridable_Prop_Type::ignore() ),
-		'country_code' => Boolean_Prop_Type::make()
-			->set_dependencies( $tel_only_dependencies )
-			->default( false ),
-		'default_country' => String_Prop_Type::make()
-			->set_dependencies( $tel_only_dependencies )
-			->default( 'in' ),
-		'include' => String_Prop_Type::make()
-			->set_dependencies( $tel_only_dependencies )
-			->default( '' ),
-		'exclude' => String_Prop_Type::make()
-			->set_dependencies( $tel_only_dependencies )
-			->default( '' ),
-		'dial_code_visibility' => String_Prop_Type::make()
-			->set_dependencies( $tel_only_dependencies )
-			->default( 'show' ),
-		'strict_mode' => Boolean_Prop_Type::make()
-			->set_dependencies( $tel_only_dependencies )
-			->default( false ),
-	];
+	], Country_Code_Input_Definition::props_schema(), Mask_Input_Definition::props_schema() );
     }
 
     protected function define_atomic_controls(): array
@@ -91,7 +67,7 @@ class Input extends AtomicFormInput
         return [
 			Section::make()
 				->set_label( __( 'Content', 'elementor-pro' ) )
-				->set_items( [
+				->set_items( array_merge( [
 					Text_Control::bind_to( 'placeholder' )
 					  ->set_placeholder( 'Enter placeholder text' )
 						->set_label( __( 'Input placeholder', 'elementor-pro' ) ),
@@ -123,37 +99,7 @@ class Input extends AtomicFormInput
 						->set_label( __( 'Required', 'elementor-pro' ) ),
 					Switch_Control::bind_to( 'readonly' )
 						->set_label( __( 'Read only', 'elementor-pro' ) ),
-                    // ✅ MAIN TOGGLE
-                    Switch_Control::bind_to('country_code')
-                        ->set_label('Enable Country Code'),
-                    // ✅ EXTRA SETTINGS
-                    Text_Control::bind_to('default_country')
-                        ->set_label('Default Country (e.g. in, us)'),
-
-                    Text_Control::bind_to('include')
-                        ->set_label('Only Countries (comma separated)'),
-
-                    Text_Control::bind_to('exclude')
-                        ->set_label('Exclude Countries'),
-					Select_Control::bind_to( 'dial_code_visibility' )
-						->set_label( __( 'Dial Code Visibility', 'elementor-pro' ) )
-						->set_options( [
-							[
-								'label' => __( 'Show', 'elementor-pro' ),
-								'value' => 'show',
-							],
-							[
-								'label' => __( 'Hide', 'elementor-pro' ),
-								'value' => 'hide',
-							],
-							[
-								'label' => __( 'Separate', 'elementor-pro' ),
-								'value' => 'separate',
-							],
-						] ),
-					Switch_Control::bind_to('strict_mode')
-						->set_label('Strict Mode'),
-				] ),
+				], Country_Code_Input_Definition::content_controls(), Mask_Input_Definition::content_controls() ) ),
 			Section::make()
 				->set_label( __( 'Settings', 'elementor-pro' ) )
 				->set_id( 'settings' )
