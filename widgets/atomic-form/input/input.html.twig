@@ -21,6 +21,10 @@
      data-dialCodeVisibilty={{settings.dial_code_visibility}}>
 {% endif %}
 
+{% if mask_enabled %}
+<div class="ccfef-mask-wrapper">
+{% endif %}
+
 <input 
     {{ id_attribute }}
     {{ name_attribute }}
@@ -41,6 +45,6 @@
     {% endif %}
 />
 
-{% if country_enabled %}
+{% if country_enabled or mask_enabled %}
 </div>
 {% endif %}

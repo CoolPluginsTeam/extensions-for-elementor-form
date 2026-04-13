@@ -1,8 +1,14 @@
 <?php
 
 namespace Cool_FormKit\Widgets;
+use Cool_FormKit\Widgets\AtomicForm\Atomic_Form;
 use Cool_FormKit\Widgets\AtomicForm\Input\Input;
+use Elementor\Elements_Manager;
+use Elementor\Plugin as Elementor_Plugin;
+use Elementor\Utils as Elementor_Utils;
 use Elementor\Widgets_Manager;
+use ElementorPro\Modules\AtomicForm\Actions\Action_Runner;
+use Cool_FormKit\Widgets\AtomicForm\Actions\AtomicForm_Whatsapp_Redirect;
 
 class Atomic_Form_Addon_Loader {
 
@@ -32,7 +38,21 @@ class Atomic_Form_Addon_Loader {
         ];
 
         add_filter('elementor/widgets/register', [$this, 'register_widgets'], 999);
+        add_action( 'elementor/elements/elements_registered', [ $this, 'register_extended_atomic_form' ], 20 );
         add_action('elementor/frontend/before_enqueue_scripts', [$this, 'enqueue_frontend_scripts']);
+
+        add_action('elementor_pro/atomic_forms/actions/register', [$this, 'register_new_form_actions']);
+    }
+
+    public function register_new_form_actions($action_runner_class){
+        require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/actions/atomic-form-whatsapp-redirect.php';
+
+        if (is_string($action_runner_class) && method_exists($action_runner_class, 'register_action')) {
+            $action_runner_class::register_action(new AtomicForm_Whatsapp_Redirect());
+            return;
+        }
+
+        Action_Runner::register_action(new AtomicForm_Whatsapp_Redirect());
     }
 
     public function register_widgets( Widgets_Manager $widgets_manager ) {
@@ -40,6 +60,29 @@ class Atomic_Form_Addon_Loader {
 
 		require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/input/input.php';
 		$widgets_manager->register( new Input() );
+    }
+
+	/**
+	 * Replace core e-form with an extended Atomic Form (extra controls / props).
+	 */
+	public function register_extended_atomic_form( Elements_Manager $elements_manager ) {
+		if ( ! Elementor_Utils::has_pro() ) {
+			return;
+		}
+
+		$experiments = Elementor_Plugin::$instance->experiments;
+		if ( ! $experiments || ! $experiments->is_feature_active( 'e_pro_atomic_form' ) ) {
+			return;
+		}
+
+		if ( ! $elements_manager->get_element_types( 'e-form' ) ) {
+			return;
+		}
+
+		require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/atomic-form.php';
+
+		$elements_manager->unregister_element_type( 'e-form' );
+		$elements_manager->register_element_type( new Atomic_Form() );
 	}
 
     /**
@@ -82,18 +125,6 @@ class Atomic_Form_Addon_Loader {
             );
         }
 
-        if ( ! wp_style_is( 'fme-frontend-css', 'registered' ) ) {
-            wp_register_style( 'fme-frontend-css', CFL_PLUGIN_URL . 'assets/css/inputmask/mask-frontend.css', array(), $this->version, 'all' );
-        }
-    }
-
-    public function enqueue_frontend_scripts() {
-
-        $this->ensure_fme_mask_assets_registered();
-
-        wp_register_script('sample-frontend-country-handle-js', CFL_PLUGIN_URL . 'assets/atomic-form/js/sample-frontend-country-handle.js', array('jquery'), $this->version, true);
-        wp_enqueue_script('sample-frontend-country-handle-js');
-
         wp_register_script(
             'cfl-atomic-form-mask-init',
             CFL_PLUGIN_URL . 'assets/atomic-form/js/atomic-form-mask-init.js',
@@ -101,9 +132,37 @@ class Atomic_Form_Addon_Loader {
             $this->version,
             true
         );
-        wp_enqueue_script( 'cfl-atomic-form-mask-init' );
 
-        wp_enqueue_style( 'fme-frontend-css' );
+        if ( ! wp_style_is( 'fme-frontend-css', 'registered' ) ) {
+            wp_register_style( 'fme-frontend-css', CFL_PLUGIN_URL . 'assets/css/inputmask/mask-frontend.css', array(), $this->version, 'all' );
+        }
+
+        if ( ! wp_style_is( 'atomic-form-mask-style', 'registered' ) ) {
+            wp_register_style( 'atomic-form-mask-style', CFL_PLUGIN_URL . 'assets/atomic-form/css/atomic-form-mask-style.min.css', array(), $this->version, 'all' );
+        }
+
+        if (! wp_script_is('fme-custom-mask-script', 'enqueued') && ! wp_script_is('fme-custom-mask-script', 'done')) {
+            wp_enqueue_script( 'fme-custom-mask-script' );
+        }
+
+        if (! wp_script_is('cfl-atomic-form-mask-init', 'enqueued') && ! wp_script_is('cfl-atomic-form-mask-init', 'done')) {
+            wp_enqueue_script( 'cfl-atomic-form-mask-init' );
+        }
+        if (! wp_style_is('fme-frontend-css', 'enqueued') && ! wp_style_is('fme-frontend-css', 'done')) {
+            wp_enqueue_style( 'fme-frontend-css' );
+        }
+        if (! wp_style_is('atomic-form-mask-style', 'enqueued') && ! wp_style_is('atomic-form-mask-style', 'done')) {
+            wp_enqueue_style( 'atomic-form-mask-style' );
+        }
+    }
+
+    private function ensure_atomic_form_country_code_assets_registered() {
+        wp_register_script('sample-frontend-country-handle-js', CFL_PLUGIN_URL . 'assets/atomic-form/js/sample-frontend-country-handle.js', array('jquery'), $this->version, true);
+        wp_enqueue_script('sample-frontend-country-handle-js');
+
+        wp_register_script('cfl-country-code-library-script', CFL_PLUGIN_URL . 'assets/addons/intl-tel-input/js/intlTelInput.js', array(), CFL_VERSION, true);
+        wp_register_style('cfl-country-code-library-style', CFL_PLUGIN_URL . 'assets/addons/intl-tel-input/css/intlTelInput.min.css', array(), CFL_VERSION, 'all');
+        wp_register_style('cfl-atomic-form-country-code-style', CFL_PLUGIN_URL . 'assets/atomic-form/css/atomic-form-country-code-style.min.css', array(), CFL_VERSION, 'all');
 
         wp_localize_script(
 			'sample-frontend-country-handle-js',
@@ -113,11 +172,6 @@ class Atomic_Form_Addon_Loader {
 				'errorMap'  => $this->error_map, 
 			)	
 		);
-
-        wp_register_script('cfl-country-code-library-script', CFL_PLUGIN_URL . 'assets/addons/intl-tel-input/js/intlTelInput.js', array(), CFL_VERSION, true);
-        wp_register_style('cfl-country-code-library-style', CFL_PLUGIN_URL . 'assets/addons/intl-tel-input/css/intlTelInput.min.css', array(), CFL_VERSION, 'all');
-        wp_register_style('cfl-atomic-form-country-code-style', CFL_PLUGIN_URL . 'assets/atomic-form/css/atomic-form-country-code-style.min.css', array(), CFL_VERSION, 'all');
-
 
         if (! wp_script_is('cfl-country-code-library-script', 'enqueued') && ! wp_script_is('cfl-country-code-library-script', 'done')) {
             wp_enqueue_script('cfl-country-code-library-script');
@@ -132,8 +186,36 @@ class Atomic_Form_Addon_Loader {
         }
     }
 
+    /**
+     * Follow redirect_url from atomic form action results (e.g. WhatsApp), which core JS does not handle.
+     */
+    public function register_atomic_form_redirect_script() {
+        if ( ! Elementor_Utils::has_pro() ) {
+            return;
+        }
+
+        $experiments = Elementor_Plugin::$instance->experiments;
+        if ( ! $experiments || ! $experiments->is_feature_active( 'e_pro_atomic_form' ) ) {
+            return;
+        }
+
+        wp_register_script(
+            'cfl-atomic-form-action-redirect',
+            CFL_PLUGIN_URL . 'assets/atomic-form/js/atomic-form-action-redirect.js',
+            array( 'elementor-frontend' ),
+            $this->version,
+            true
+        );
+        wp_enqueue_script( 'cfl-atomic-form-action-redirect' );
+    }
+
+    public function enqueue_frontend_scripts() {
+        $this->register_atomic_form_redirect_script();
+        $this->ensure_fme_mask_assets_registered();
+        $this->ensure_atomic_form_country_code_assets_registered();
+    }
+
     public function get_version() {
         return $this->version;
     }
-
 }
