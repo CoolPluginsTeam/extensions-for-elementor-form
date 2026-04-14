@@ -110,7 +110,7 @@ class Atomic_Form extends Core_Atomic_Form {
 
 	private function define_whatsapp_section(): Section {
 		return Section::make()
-			->set_id( 'cfl-whatsapp-redirect' )
+			->set_id( 'cfl-whatsapp' )
 			->set_label( \__( 'WhatsApp Redirect', 'extensions-for-elementor-form' ) )
 			->set_description(
 				\__( 'Shown when WhatsApp is enabled under Actions after submit.', 'extensions-for-elementor-form' )

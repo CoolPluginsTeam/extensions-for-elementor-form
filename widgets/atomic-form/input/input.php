@@ -7,6 +7,7 @@ use Elementor\Modules\AtomicWidgets\Controls\Types\Select_Control;
 use Elementor\Modules\AtomicWidgets\Controls\Types\Switch_Control;
 use Elementor\Modules\AtomicWidgets\Controls\Types\Text_Control;
 use Elementor\Modules\AtomicWidgets\Elements\Base\Has_Template;
+use Elementor\Modules\AtomicWidgets\PropDependencies\Manager as Dependency_Manager;
 use Elementor\Modules\AtomicWidgets\PropTypes\Attributes_Prop_Type;
 use Elementor\Modules\AtomicWidgets\PropTypes\Classes_Prop_Type;
 use Elementor\Modules\AtomicWidgets\PropTypes\Primitives\Boolean_Prop_Type;
@@ -30,6 +31,22 @@ class Input extends AtomicFormInput
     {
         return 'e-form-input';
     }
+
+	/**
+	 * @return array<string, mixed>|null
+	 */
+	private static function conditions_enabled_dependencies(): ?array {
+		return Dependency_Manager::make()
+			->where(
+				[
+					'operator' => 'eq',
+					'path' => [ 'cfef_logic' ],
+					'value' => true,
+					'effect' => 'hide',
+				]
+			)
+			->get();
+	}
 
     public function get_title(): string {
 		return esc_html__( 'Input', 'elementor-pro' );
@@ -57,6 +74,25 @@ class Input extends AtomicFormInput
 			->enum( [ 'text', 'email', 'number', 'tel', 'password' ] ),
 		'required' => Boolean_Prop_Type::make()->default( false ),
 		'readonly' => Boolean_Prop_Type::make()->default( false ),
+		'cfef_logic' => Boolean_Prop_Type::make()->default( false ),
+		'cfef_logic_mode' => String_Prop_Type::make()
+			->set_dependencies( self::conditions_enabled_dependencies() )
+			->default( 'show' )
+			->enum( [ 'show', 'hide' ] ),
+		'cfef_logic_meet' => String_Prop_Type::make()
+			->set_dependencies( self::conditions_enabled_dependencies() )
+			->default( 'All' )
+			->enum( [ 'All', 'Any' ] ),
+		'cfef_logic_field_id' => String_Prop_Type::make()
+			->set_dependencies( self::conditions_enabled_dependencies() )
+			->default( '' ),
+		'cfef_logic_field_is' => String_Prop_Type::make()
+			->set_dependencies( self::conditions_enabled_dependencies() )
+			->default( '==' )
+			->enum( [ '==', '!=', '>', '<', '>=', '<=', 'e', '!e', 'c', '!c', '^', '~' ] ),
+		'cfef_logic_compare_value' => String_Prop_Type::make()
+			->set_dependencies( self::conditions_enabled_dependencies() )
+			->default( '' ),
 		'attributes' => Attributes_Prop_Type::make()->meta( Overridable_Prop_Type::ignore() ),
 	], Country_Code_Input_Definition::props_schema(), Mask_Input_Definition::props_schema() );
     }
@@ -104,6 +140,69 @@ class Input extends AtomicFormInput
 				->set_label( __( 'Settings', 'elementor-pro' ) )
 				->set_id( 'settings' )
 				->set_items( $this->get_settings_controls() ),
+			Section::make()
+				->set_id( 'conditions' )
+				->set_label( __( 'Conditions', 'extensions-for-elementor-form' ) )
+				->set_items(
+					[
+						Switch_Control::bind_to( 'cfef_logic' )
+							->set_label( esc_html__( 'Enable Conditions', 'extensions-for-elementor-form' ) ),
+						Select_Control::bind_to( 'cfef_logic_mode' )
+							->set_label( esc_html__( 'Show / Hide Field', 'extensions-for-elementor-form' ) )
+							->set_options(
+								[
+									[
+										'label' => esc_html__( 'Show', 'extensions-for-elementor-form' ),
+										'value' => 'show',
+									],
+									[
+										'label' => esc_html__( 'Hide', 'extensions-for-elementor-form' ),
+										'value' => 'hide',
+									],
+								]
+							),
+						Select_Control::bind_to( 'cfef_logic_meet' )
+							->set_label( esc_html__( 'Conditions Trigger', 'extensions-for-elementor-form' ) )
+							->set_options(
+								[
+									[
+										'label' => esc_html__( 'All - AND Conditions', 'extensions-for-elementor-form' ),
+										'value' => 'All',
+									],
+									[
+										'label' => esc_html__( 'Any - OR Conditions', 'extensions-for-elementor-form' ),
+										'value' => 'Any',
+									],
+								]
+							),
+						Text_Control::bind_to( 'cfef_logic_field_id' )
+							->set_label( esc_html__( 'Field ID', 'extensions-for-elementor-form' ) ),
+						Select_Control::bind_to( 'cfef_logic_field_is' )
+							->set_label( esc_html__( 'Operator', 'extensions-for-elementor-form' ) )
+							->set_options(
+								[
+									[
+										'label' => esc_html__( 'is equal ( == )', 'extensions-for-elementor-form' ),
+										'value' => '==',
+									],
+									[
+										'label' => esc_html__( 'is not equal (!=)', 'extensions-for-elementor-form' ),
+										'value' => '!=',
+									],
+									[
+										'label' => __( 'greater than (>)', 'extensions-for-elementor-form' ),
+										'value' => '>',
+									],
+									[
+										'label' => __( 'less than (<)', 'extensions-for-elementor-form' ),
+										'value' => '<',
+									],
+								]
+							),
+						Text_Control::bind_to( 'cfef_logic_compare_value' )
+							->set_label( esc_html__( 'Value to compare', 'extensions-for-elementor-form' ) ),
+					]
+				),
 		];
     }
 

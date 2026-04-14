@@ -11,6 +11,16 @@
 {% set mask_control = settings.fme_mask_control|default('mask') %}
 {% set mask_enabled = settings.type == 'text' and mask_control != 'mask' %}
 {% set mask_auto_ph = settings.fme_mask_auto_placeholders|default(false) ? 'yes' : '' %}
+{% set conditions_enabled = settings.cfef_logic|default(false) %}
+{% set field_group_class = 'elementor-field-group elementor-field-group-' ~ name ~ ' cfef-atomic-field-group' %}
+
+{# create a container tag for conditional when conditional enable #}
+
+{% if conditions_enabled %}
+<div class="{{ field_group_class | e('html_attr') }}" data-field-id="{{ name | e('html_attr') }}">
+{% endif %}
+
+{# create a container tag for country when country enable #}
 
 {% if country_enabled %}
 <div class="ccfef-wrapper"
@@ -20,6 +30,9 @@
      data-strictMode="{{settings.strict_mode}}"
      data-dialCodeVisibilty={{settings.dial_code_visibility}}>
 {% endif %}
+
+
+{# create a container tag for mask when mask enable #}
 
 {% if mask_enabled %}
 <div class="ccfef-mask-wrapper">
@@ -46,5 +59,23 @@
 />
 
 {% if country_enabled or mask_enabled %}
+</div>
+{% endif %}
+
+{% if conditions_enabled %}
+{% set field_logic = {
+	(name): {
+		'display_mode': settings.cfef_logic_mode|default('show'),
+		'fire_action': settings.cfef_logic_meet|default('All'),
+		'logic_data': [
+			{
+				'cfef_logic_field_id': settings.cfef_logic_field_id|default(''),
+				'cfef_logic_field_is': settings.cfef_logic_field_is|default('=='),
+				'cfef_logic_compare_value': settings.cfef_logic_compare_value|default('')
+			}
+		]
+	}
+} %}
+<template class="cfef_logic_data_js cfef-atomic-field-logic cfef-hidden" data-field-id="{{ name | e('html_attr') }}">{{ field_logic|json_encode|e('html') }}</template>
 </div>
 {% endif %}
