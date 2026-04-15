@@ -187,18 +187,31 @@
 
     function getFieldValue(form, fieldId) {
         var fieldINput= getFieldGroup(form, fieldId);
+        let value= "";
 
         if(fieldINput.length > 0) {
-            let value= fieldINput.val();
-            return value;
+
+            if(fieldINput.attr('type') === 'checkbox') {
+                if(fieldINput.is(':checked')) {
+                    value = fieldINput.val();
+                }else{
+                    value = "";
+                }
+                return value;
+            }else{
+                value = fieldINput.val();
+                return value;
+            }
+
         }
-        return "";
+        return value;
         
     }
 
     function evaluateLogic(form, logicValue) {
         var displayMode = logicValue.display_mode || "show";
         var fireAction = logicValue.fire_action || "All";
+
         var logicData = Array.isArray(logicValue.logic_data) ? logicValue.logic_data : [];
         var checks = [];
 

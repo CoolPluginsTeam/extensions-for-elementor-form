@@ -2,6 +2,7 @@
 
 namespace Cool_FormKit\Widgets;
 use Cool_FormKit\Widgets\AtomicForm\Atomic_Form;
+use Cool_FormKit\Widgets\AtomicForm\Checkbox\Checkbox;
 use Cool_FormKit\Widgets\AtomicForm\Input\Input;
 use Cool_FormKit\Widgets\AtomicForm\Textarea\Textarea;
 use Elementor\Elements_Manager;
@@ -64,11 +65,14 @@ class Atomic_Form_Addon_Loader {
     public function register_widgets( Widgets_Manager $widgets_manager ) {
 		$widgets_manager->unregister('e-form-input');
 		$widgets_manager->unregister('e-form-textarea');
+		$widgets_manager->unregister('e-form-checkbox');
 
 		require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/input/input.php';
 		require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/textarea/textarea.php';
+		require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/checkbox/checkbox.php';
 		$widgets_manager->register( new Input() );
 		$widgets_manager->register( new Textarea() );
+		$widgets_manager->register( new Checkbox() );
     }
 
 	/**
