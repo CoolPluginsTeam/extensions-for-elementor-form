@@ -50,6 +50,141 @@
         return targetINput;
     }
 
+    function getFieldContainer(targetField) {
+        var fieldContainer = targetField.closest(".cfef-atomic-field-group");
+        return fieldContainer.length ? fieldContainer : targetField;
+    }
+
+    function getFieldControls(targetField) {
+        var fieldContainer = getFieldContainer(targetField);
+        var controls = fieldContainer.find("input, select, textarea");
+        if (!controls.length && targetField.is("input, select, textarea")) {
+            controls = targetField;
+        }
+        return controls;
+    }
+
+    function isRequiredControl(control) {
+        return control.prop("required") || control.attr("required") !== undefined || control.attr("aria-required") === "true";
+    }
+
+    function getDemoValueForControl(control) {
+        var nodeName = (control.prop("nodeName") || "").toLowerCase();
+        var type = (control.attr("type") || "").toLowerCase();
+
+        if (nodeName === "textarea") {
+            return "cool_plugins";
+        }
+        if (nodeName === "select") {
+            return null;
+        }
+        if (type === "email") {
+            return "cool_plugins@abc.com";
+        }
+        if (type === "url") {
+            return "https://testing.com";
+        }
+        if (type === "tel") {
+            return "+1234567890";
+        }
+        if (type === "number") {
+            return "000";
+        }
+        if (type === "date") {
+            return "1003-01-01";
+        }
+        if (type === "time") {
+            return "11:59";
+        }
+        return "cool23plugins";
+    }
+
+    function setDemoValueOnHide(targetField) {
+        var controls = getFieldControls(targetField);
+
+        controls.each(function () {
+            var control = $(this);
+            var nodeName = (control.prop("nodeName") || "").toLowerCase();
+            var type = (control.attr("type") || "").toLowerCase();
+
+            if (!isRequiredControl(control)) {
+                return;
+            }
+
+            if (type === "checkbox" || type === "radio") {
+                var groupControls = controls.filter('[type="' + type + '"][name="' + control.attr("name") + '"]');
+                var checkedControl = groupControls.filter(":checked");
+                if (typeof control.data("cfefOriginalCheckedValue") === "undefined") {
+                    control.data("cfefOriginalCheckedValue", checkedControl.length ? checkedControl.val() : "");
+                }
+                if (!checkedControl.length && groupControls.length) {
+                    var firstControl = groupControls.first();
+                    firstControl.prop("checked", true);
+                    firstControl.data("cfefDemoApplied", true);
+                } else if (checkedControl.length) {
+                    groupControls.prop("checked", false);
+                    var firstChecked = groupControls.first();
+                    firstChecked.prop("checked", true);
+                    firstChecked.data("cfefDemoApplied", true);
+                }
+                return;
+            }
+
+            if (nodeName === "select") {
+                if (typeof control.data("cfefOriginalValue") === "undefined") {
+                    control.data("cfefOriginalValue", control.val() || "");
+                }
+                var firstOption = control.find("option[value!='']").first();
+                if (!firstOption.length) {
+                    firstOption = control.find("option").first();
+                }
+                if (firstOption.length) {
+                    control.val(firstOption.val());
+                    control.data("cfefDemoApplied", true);
+                }
+                return;
+            }
+
+            if (typeof control.data("cfefOriginalValue") === "undefined") {
+                control.data("cfefOriginalValue", control.val() || "");
+            }
+            control.val(getDemoValueForControl(control));
+            control.data("cfefDemoApplied", true);
+        });
+    }
+
+    function clearDemoValueOnShow(targetField) {
+        var controls = getFieldControls(targetField);
+
+        controls.each(function () {
+            var control = $(this);
+            if (control.data("cfefDemoApplied") !== true) {
+                return;
+            }
+
+            var type = (control.attr("type") || "").toLowerCase();
+            if (type === "checkbox" || type === "radio") {
+                var groupName = control.attr("name");
+                if (groupName) {
+                    var groupControls = controls.filter('[type="' + type + '"][name="' + groupName + '"]');
+                    var originalCheckedValue = control.data("cfefOriginalCheckedValue");
+                    groupControls.prop("checked", false);
+                    if (originalCheckedValue) {
+                        groupControls.filter('[value="' + originalCheckedValue + '"]').first().prop("checked", true);
+                    }
+                } else {
+                    control.prop("checked", false);
+                }
+                control.removeData("cfefOriginalCheckedValue");
+            } else {
+                var originalValue = control.data("cfefOriginalValue");
+                control.val(typeof originalValue === "undefined" ? "" : originalValue);
+                control.removeData("cfefOriginalValue");
+            }
+            control.removeData("cfefDemoApplied");
+        });
+    }
+
     function getFieldValue(form, fieldId) {
         var fieldINput= getFieldGroup(form, fieldId);
 
@@ -91,10 +226,15 @@
         if (!targetField.length) {
             return;
         }
-        if (evaluateLogic(form, logicValue)) {
-            targetField.removeClass("cfef-hidden");
+        var shouldShowField = evaluateLogic(form, logicValue);
+        var fieldContainer = getFieldContainer(targetField);
+
+        if (shouldShowField) {
+            clearDemoValueOnShow(targetField);
+            fieldContainer.removeClass("cfef-hidden");
         } else {
-            targetField.addClass("cfef-hidden");
+            setDemoValueOnHide(targetField);
+            fieldContainer.addClass("cfef-hidden");
         }
     }
 

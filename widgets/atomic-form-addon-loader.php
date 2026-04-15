@@ -3,14 +3,16 @@
 namespace Cool_FormKit\Widgets;
 use Cool_FormKit\Widgets\AtomicForm\Atomic_Form;
 use Cool_FormKit\Widgets\AtomicForm\Input\Input;
+use Cool_FormKit\Widgets\AtomicForm\Textarea\Textarea;
 use Elementor\Elements_Manager;
 use Elementor\Plugin as Elementor_Plugin;
 use Elementor\Utils as Elementor_Utils;
 use Elementor\Widgets_Manager;
 use ElementorPro\Modules\AtomicForm\Actions\Action_Runner;
 use Cool_FormKit\Widgets\AtomicForm\Actions\AtomicForm_Whatsapp_Redirect;
-
+use Cool_FormKit\Widgets\AtomicForm\Handle_Atomic_Form_Submission;
 class Atomic_Form_Addon_Loader {
+
 
     private static $instance = null;
 
@@ -42,7 +44,11 @@ class Atomic_Form_Addon_Loader {
         add_action('elementor/frontend/before_enqueue_scripts', [$this, 'enqueue_frontend_scripts']);
 
         add_action('elementor_pro/atomic_forms/actions/register', [$this, 'register_new_form_actions']);
+
+		new Handle_Atomic_Form_Submission();
     }
+
+    
 
     public function register_new_form_actions($action_runner_class){
         require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/actions/atomic-form-whatsapp-redirect.php';
@@ -57,9 +63,12 @@ class Atomic_Form_Addon_Loader {
 
     public function register_widgets( Widgets_Manager $widgets_manager ) {
 		$widgets_manager->unregister('e-form-input');
+		$widgets_manager->unregister('e-form-textarea');
 
 		require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/input/input.php';
+		require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/textarea/textarea.php';
 		$widgets_manager->register( new Input() );
+		$widgets_manager->register( new Textarea() );
     }
 
 	/**

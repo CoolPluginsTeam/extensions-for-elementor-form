@@ -125,6 +125,15 @@
                 if (iti.isValidNumber()) {
                     jQuery(inputTelElement).closest('.ccfef-wrapper').removeClass('elementor-error');
                 }else{
+
+                    const conditionalContainer = $(inputTelElement).closest('.elementor-field-group');
+
+                    console.log();
+                    
+                    if( conditionalContainer.length > 0 && $(conditionalContainer).hasClass('cfef-hidden')){
+                        return;
+                    }
+
                     e.preventDefault();
                     const errorContainer = jQuery(inputTelElement).parent();
                     errorContainer.find('span.elementor-message').remove();
@@ -152,8 +161,7 @@
             
             const { id, type, element } = event.detail;
 
-
-            if ($(element).hasClass('e-form-input-base') || $(element).hasClass('ccfef-wrapper')) {
+            if ($(element).hasClass('e-form-input-base') || $(element).hasClass('ccfef-wrapper') || $(element).hasClass('cfef-atomic-field-group')) {
                 let $form = $(element).closest('form');
 
                 if($form.length > 0) {
