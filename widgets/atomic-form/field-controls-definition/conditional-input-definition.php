@@ -9,6 +9,8 @@ use Elementor\Modules\AtomicWidgets\Controls\Types\Text_Control;
 use Elementor\Modules\AtomicWidgets\PropDependencies\Manager as Dependency_Manager;
 use Elementor\Modules\AtomicWidgets\PropTypes\Primitives\Boolean_Prop_Type;
 use Elementor\Modules\AtomicWidgets\PropTypes\Primitives\String_Prop_Type;
+use Elementor\Modules\AtomicWidgets\Controls\Types\Textarea_Control;
+
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -57,6 +59,9 @@ final class Conditional_Input_Definition {
 				->default( '==' )
 				->enum( [ '==', '!=', '>', '<', '>=', '<=', 'e', '!e', 'c', '!c', '^', '~' ] ),
 			'cfef_logic_compare_value' => String_Prop_Type::make()
+				->set_dependencies( self::conditions_enabled_dependencies() )
+				->default( '' ),
+			'cfef_logic_repeater' => String_Prop_Type::make()
 				->set_dependencies( self::conditions_enabled_dependencies() )
 				->default( '' ),
 		];
@@ -124,6 +129,8 @@ final class Conditional_Input_Definition {
 						),
 					Text_Control::bind_to( 'cfef_logic_compare_value' )
 						->set_label( esc_html__( 'Value to compare', 'extensions-for-elementor-form' ) ),
+					Textarea_Control::bind_to( 'cfef_logic_repeater' )
+						->set_label( esc_html__( 'Repeater Data', 'extensions-for-elementor-form' ) ),
 				]
 			);
 	}

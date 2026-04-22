@@ -44,9 +44,24 @@ class Atomic_Form_Addon_Loader {
         add_action( 'elementor/elements/elements_registered', [ $this, 'register_extended_atomic_form' ], 20 );
         add_action('elementor/frontend/before_enqueue_scripts', [$this, 'enqueue_frontend_scripts']);
 
+        add_action('elementor/editor/after_enqueue_scripts', [$this, 'enqueue_editor_scripts']);
+
         add_action('elementor_pro/atomic_forms/actions/register', [$this, 'register_new_form_actions']);
 
 		new Handle_Atomic_Form_Submission();
+    }
+
+    public function enqueue_editor_scripts() {
+        wp_register_script('cfl-atomic-form-handle-conditional-repeater', CFL_PLUGIN_URL . 'assets/atomic-form/js/handle-conditional-repeater.js', array( 'jquery', 'elementor-editor'), $this->version, true);
+
+        if (! wp_script_is('cfl-atomic-form-handle-conditional-repeater', 'enqueued') && ! wp_script_is('cfl-atomic-form-handle-conditional-repeater', 'done')) {
+            wp_enqueue_script( 'cfl-atomic-form-handle-conditional-repeater' );
+        }
+
+        wp_register_style('cfl-atomic-form-conditional-repeater-style', CFL_PLUGIN_URL . 'assets/atomic-form/css/atomic-form-conditional-repeater.min.css', array(), CFL_VERSION, 'all');
+        if (! wp_style_is('cfl-atomic-form-conditional-repeater-style', 'enqueued') && ! wp_style_is('cfl-atomic-form-conditional-repeater-style', 'done')) {
+            wp_enqueue_style('cfl-atomic-form-conditional-repeater-style');
+        }
     }
 
     

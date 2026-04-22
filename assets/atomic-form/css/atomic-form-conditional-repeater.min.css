@@ -1,0 +1,157 @@
+.cfef-conditional-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99999;
+    background: rgba(20, 22, 26, 0.18);
+    display: none;
+    width: min(980px, 92vw);
+    height: min(620px, 88vh);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
+}
+
+.cfef-conditional-popup.is-open {
+    display: block;
+}
+
+.cfef-conditional-popup-dialog {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #f1f3f5;
+}
+
+.cfef-conditional-popup-header {
+    height: 56px;
+    border-bottom: 1px solid #d9dde2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    background: #f7f8fa;
+}
+
+.cfef-conditional-popup-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: #222;
+    letter-spacing: 0.3px;
+}
+
+.cfef-conditional-popup-close {
+    border: none;
+    background: transparent;
+    font-size: 32px;
+    color: #7a7d82;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+}
+
+.cfef-conditional-popup-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 90px;
+    padding-bottom: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+}
+
+.cfef-conditional-popup-heading {
+    font-size: 39px;
+    font-weight: 700;
+    color: #191b1f;
+    margin-bottom: 8px;
+}
+
+.cfef-conditional-popup-subheading {
+    color: #5c6270;
+    font-size: 20px;
+    margin-bottom: 36px;
+}
+
+.cfef-conditional-repeater {
+    width: min(900px, 100%);
+    padding: 0 14px 16px;
+}
+
+.cfef-conditional-popup-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.cfef-conditional-control {
+    height: 46px;
+    border: 1px solid #c9cfd6;
+    border-radius: 6px;
+    background: #fff;
+    color: #262a2f;
+    font-size: 15px;
+    padding: 0 12px;
+}
+
+.cfef-conditional-and-badge {
+    height: 46px;
+    padding: 0 16px;
+    border: 1px solid #c9cfd6;
+    border-radius: 6px;
+    background: #f6f8fa;
+    color: #414751;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600;
+}
+
+.cfef-conditional-row-delete {
+    border: none;
+    background: transparent;
+    font-size: 30px;
+    color: #6a7079;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.cfef-conditional-add-btn {
+    margin: 16px auto 0;
+    height: 44px;
+    border: none;
+    border-radius: 6px;
+    padding: 0 18px;
+    background: #5f6b7a;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    display: block;
+}
+
+.cfef-conditional-popup-footer {
+    height: 86px;
+    border-top: 1px solid #d9dde2;
+    background: #f7f8fa;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 24px;
+}
+
+.cfef-conditional-save-close {
+    height: 52px;
+    border: none;
+    border-radius: 8px;
+    padding: 0 22px;
+    background: #dea9ee;
+    color: #40354a;
+    font-size: 24px;
+    font-weight: 600;
+    cursor: pointer;
+}
