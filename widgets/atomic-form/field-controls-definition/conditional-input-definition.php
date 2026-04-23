@@ -6,6 +6,7 @@ use Elementor\Modules\AtomicWidgets\Controls\Section;
 use Elementor\Modules\AtomicWidgets\Controls\Types\Select_Control;
 use Elementor\Modules\AtomicWidgets\Controls\Types\Switch_Control;
 use Elementor\Modules\AtomicWidgets\Controls\Types\Text_Control;
+use Elementor\Modules\AtomicWidgets\Controls\Types\Toggle_Control;
 use Elementor\Modules\AtomicWidgets\PropDependencies\Manager as Dependency_Manager;
 use Elementor\Modules\AtomicWidgets\PropTypes\Primitives\Boolean_Prop_Type;
 use Elementor\Modules\AtomicWidgets\PropTypes\Primitives\String_Prop_Type;
@@ -51,16 +52,6 @@ final class Conditional_Input_Definition {
 				->set_dependencies( self::conditions_enabled_dependencies() )
 				->default( 'All' )
 				->enum( [ 'All', 'Any' ] ),
-			'cfef_logic_field_id' => String_Prop_Type::make()
-				->set_dependencies( self::conditions_enabled_dependencies() )
-				->default( '' ),
-			'cfef_logic_field_is' => String_Prop_Type::make()
-				->set_dependencies( self::conditions_enabled_dependencies() )
-				->default( '==' )
-				->enum( [ '==', '!=', '>', '<', '>=', '<=', 'e', '!e', 'c', '!c', '^', '~' ] ),
-			'cfef_logic_compare_value' => String_Prop_Type::make()
-				->set_dependencies( self::conditions_enabled_dependencies() )
-				->default( '' ),
 			'cfef_logic_repeater' => String_Prop_Type::make()
 				->set_dependencies( self::conditions_enabled_dependencies() )
 				->default( '' ),
@@ -68,6 +59,28 @@ final class Conditional_Input_Definition {
 	}
 
 	public static function conditions_section(): Section {
+		$logic_mode_control = Toggle_Control::bind_to( 'cfef_logic_mode' )
+			->set_label( esc_html__( 'Show / Hide Field', 'extensions-for-elementor-form' ) )
+			->set_meta( [ 'layout' => 'two-columns' ] );
+
+		if ( $logic_mode_control instanceof Toggle_Control ) {
+			$logic_mode_control
+				->add_options( [
+					'show' => [
+						'title' => esc_html__( 'Show', 'extensions-for-elementor-form' ),
+						'atomic-icon' => 'EyeIcon',
+					],
+					'hide' => [
+						'title' => esc_html__( 'Hide', 'extensions-for-elementor-form' ),
+						'atomic-icon' => 'EyeOffIcon',
+					],
+				] )
+				->set_exclusive( true )
+				->set_convert_options( true )
+				->set_size( 'tiny' )
+				->set_full_width( true );
+		}
+
 		return Section::make()
 			->set_id( 'conditions' )
 			->set_label( __( 'Conditions', 'extensions-for-elementor-form' ) )
@@ -75,20 +88,7 @@ final class Conditional_Input_Definition {
 				[
 					Switch_Control::bind_to( 'cfef_logic' )
 						->set_label( esc_html__( 'Enable Conditions', 'extensions-for-elementor-form' ) ),
-					Select_Control::bind_to( 'cfef_logic_mode' )
-						->set_label( esc_html__( 'Show / Hide Field', 'extensions-for-elementor-form' ) )
-						->set_options(
-							[
-								[
-									'label' => esc_html__( 'Show', 'extensions-for-elementor-form' ),
-									'value' => 'show',
-								],
-								[
-									'label' => esc_html__( 'Hide', 'extensions-for-elementor-form' ),
-									'value' => 'hide',
-								],
-							]
-						),
+					$logic_mode_control,
 					Select_Control::bind_to( 'cfef_logic_meet' )
 						->set_label( esc_html__( 'Conditions Trigger', 'extensions-for-elementor-form' ) )
 						->set_options(
@@ -103,32 +103,6 @@ final class Conditional_Input_Definition {
 								],
 							]
 						),
-					Text_Control::bind_to( 'cfef_logic_field_id' )
-						->set_label( esc_html__( 'Field ID', 'extensions-for-elementor-form' ) ),
-					Select_Control::bind_to( 'cfef_logic_field_is' )
-						->set_label( esc_html__( 'Operator', 'extensions-for-elementor-form' ) )
-						->set_options(
-							[
-								[
-									'label' => esc_html__( 'is equal ( == )', 'extensions-for-elementor-form' ),
-									'value' => '==',
-								],
-								[
-									'label' => esc_html__( 'is not equal (!=)', 'extensions-for-elementor-form' ),
-									'value' => '!=',
-								],
-								[
-									'label' => __( 'greater than (>)', 'extensions-for-elementor-form' ),
-									'value' => '>',
-								],
-								[
-									'label' => __( 'less than (<)', 'extensions-for-elementor-form' ),
-									'value' => '<',
-								],
-							]
-						),
-					Text_Control::bind_to( 'cfef_logic_compare_value' )
-						->set_label( esc_html__( 'Value to compare', 'extensions-for-elementor-form' ) ),
 					Textarea_Control::bind_to( 'cfef_logic_repeater' )
 						->set_label( esc_html__( 'Repeater Data', 'extensions-for-elementor-form' ) ),
 				]

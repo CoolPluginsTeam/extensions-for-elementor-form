@@ -21,7 +21,6 @@
         window.cfefConditionalConditions = conditions;
 
         $(document).trigger('cfef:conditions:saved', [conditions, conditionsJson]);
-        console.log('CFEF Conditions JSON:', conditionsJson);
 
         let textarea_logic_repeater_field = textarea_logic_repeater[0];
 
@@ -135,12 +134,19 @@
             let parentOfControl = targetButton.parent().parent();
             if(parentOfControl.find('span[data-type="settings-field"] label:contains("Repeater Data")').length > 0) {
                 let textarea_logic_repeater = parentOfControl.find('span[data-type="settings-field"] textarea[aria-invalid="false"]');
+
+                if ($('.cfef-conditional-popup').length) {
+                    $(document).find('.cfef-conditional-popup').remove();
+                }
+
                 createConditionalPopup(textarea_logic_repeater);
                 $('.cfef-conditional-popup').addClass('is-open');
 
                 $(document).on('click', '.cfef-conditional-popup-close', function (e) {
                     e.preventDefault();
-                    $('.cfef-conditional-popup').removeClass('is-open');
+                    if($('.cfef-conditional-popup').length) {
+                        $(document).find('.cfef-conditional-popup').remove();
+                    }
                 });
         
                 $(document).on('click', '.cfef-conditional-save-close', function (e) {
@@ -152,12 +158,15 @@
     }
 
     function createConditionalPopup(textarea_logic_repeater) {
+
+
         if ($('.cfef-conditional-popup').length) {
             return;
         }
 
         let parsedConditions = [];
         let repeaterRowsMarkup = "";
+
 
         try {
             const rawValue = textarea_logic_repeater.val();
@@ -204,21 +213,38 @@
     }
 
     function handleConditionalRepeater(e) {
+
         setTimeout(() => {
+
             let lastControlOfConditionsSection = $(document).find('#elementor-editor-wrapper aside#elementor-panel #elementor-panel-inner div[aria-label="Conditions section"]').next().find('span[data-type="settings-field"]:last-child');
 
             if (lastControlOfConditionsSection.length !== undefined) {
                 let parentOfControl = lastControlOfConditionsSection.parent();
 
-                if (parentOfControl.find('.cfef-repeater-data-control-btn').length > 0) {
-                    return;
-                }
+                const enableConditionsControl = parentOfControl.find('span').filter(function() {
+                    return $(this).text().trim() === 'Enable Conditions';
+                });
 
-                parentOfControl.append('<span data-type="settings-field" class="cfef-repeater-data-control-btn"><button class="cfef-repeater-data-control-button"> + Add Conditions </button></span>');
+                if (!enableConditionsControl.find('input[type="checkbox"]').is(':checked')) {
+
+                    if(parentOfControl.find('.cfef-repeater-data-control-btn').length > 0) {
+                        parentOfControl.find('.cfef-repeater-data-control-btn').remove();
+                    }
+                }else{
+                    if(parentOfControl.find('.cfef-repeater-data-control-btn').length === 0) {
+                        parentOfControl.append('<span data-type="settings-field" class="cfef-repeater-data-control-btn"><button class="cfef-repeater-data-control-button"> + Add / Edit Conditions </button></span>');
+                    }
+                }
 
             }
         }, 100);
     }
+
+    $(document).on('click', 'div[aria-label="Conditions section"]', function (e) {
+        e.preventDefault();
+        handleConditionalRepeater();
+    });
+
 
     $(window).on('elementor/commands/run/after', function (e) {
         handleConditionalRepeater(e);

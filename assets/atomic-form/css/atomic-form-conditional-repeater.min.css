@@ -13,6 +13,37 @@
     box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
 }
 
+.cfef-repeater-data-control-button {
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    /* -webkit-box-pack: center; */
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    background-color: transparent;
+    outline: 0px;
+    margin: 0px;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    appearance: none;
+    text-decoration: none;
+    text-transform: none;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.02857em;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    color: rgba(0, 0, 0, 0.54);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    line-height: 1.3334;
+    padding: 5px;
+    pointer-events: auto;
+}
+
+
 .cfef-conditional-popup.is-open {
     display: block;
 }
@@ -155,3 +186,8 @@
     font-weight: 600;
     cursor: pointer;
 }
+
+
+/* span[data-type="settings-field"]:has(textarea[aria-invalid="false"]) {
+    display: none !important;
+} */

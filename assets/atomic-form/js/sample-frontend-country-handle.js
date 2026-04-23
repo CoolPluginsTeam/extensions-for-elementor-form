@@ -128,7 +128,6 @@
 
                     const conditionalContainer = $(inputTelElement).closest('.elementor-field-group');
 
-                    console.log();
                     
                     if( conditionalContainer.length > 0 && $(conditionalContainer).hasClass('cfef-hidden')){
                         return;

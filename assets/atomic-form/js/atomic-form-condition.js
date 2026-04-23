@@ -14,32 +14,15 @@
             return v.trim();
         });
         var matchFound = values.indexOf(valueB) !== -1;
-
         switch (conditionOperation) {
             case "==":
                 return matchFound && valueA !== "";
             case "!=":
                 return !matchFound && valueA !== "";
-            case "e":
-                return valueA === "";
-            case "!e":
-                return valueA !== "";
-            case "c":
-                return valueA.indexOf(valueB) !== -1;
-            case "!c":
-                return valueA !== "" && valueA.indexOf(valueB) === -1;
-            case "^":
-                return valueA.indexOf(valueB) === 0;
-            case "~":
-                return valueA.slice(-valueB.length) === valueB;
-            case ">":
+            case "&gt;":
                 return parseInt(valueA, 10) > parseInt(valueB, 10);
-            case "<":
+            case "&lt;":
                 return parseInt(valueA, 10) < parseInt(valueB, 10);
-            case ">=":
-                return parseInt(valueA, 10) >= parseInt(valueB, 10);
-            case "<=":
-                return parseInt(valueA, 10) <= parseInt(valueB, 10);
             default:
                 return false;
         }
@@ -270,8 +253,10 @@
 
     function runAtomicLogic(form) {
         var logicMap = readAtomicLogic(form);
-        $.each(logicMap, function (targetFieldId, logicValue) {
-            applyFieldLogic(form, targetFieldId, logicValue);
+        $.each(logicMap, function (index, singleLogic) {
+            $.each(singleLogic, function (targetFieldId, logicValue) {
+                applyFieldLogic(form, targetFieldId, logicValue);
+            });
         });
     }
 
@@ -283,10 +268,46 @@
 
         $(".e-form-base").each(function () {
             var form = (this);
+            demotest(form);
             if (form.length) {
                 runAtomicLogic(form);
             }
         });
+    }
+
+    function demotest(form) {
+        var $form = $(form);
+        var all_fields_logic = [];
+
+        if ($form.attr("template-extracted") === "true") {
+            return;
+        }
+
+        $form.find(".cfef-atomic-field-group").each(function () {
+            var field = $(this);
+            var template = field.find("template").first();
+
+            if (template.length) {
+                try {
+                    all_fields_logic.push(JSON.parse(template.html()));
+                } catch (e) {
+                    // Ignore malformed template payloads.
+                }
+            }
+        });
+
+        $form.find(".cfef-atomic-field-group").each(function () {
+            var input = $(this).find("input");
+            $(this).replaceWith(input);
+        });
+
+        var template_tag_logic = $("<template>", {
+            class: "cfef_logic_data_js cfef-atomic-field-logic cfef-hidden",
+            html: JSON.stringify(all_fields_logic)
+        });
+        $form.find("template.cfef_logic_data_js").remove();
+        $form.append(template_tag_logic);
+        $form.attr("template-extracted", "true");
     }
 
     $(document).ready(function () {
