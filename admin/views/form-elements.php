@@ -408,7 +408,21 @@ $updated_elements = array('');
                                     <input type="checkbox" name="cfkef_enable_formkit_builder" value="1" <?php checked(get_option('cfkef_enable_formkit_builder', true)); ?>>
                                     <span class="cfkef-slider round"></span>
                                 </label>
-                            </div>                    
+                            </div> 
+                            
+                            <div class="cfkef-form-element-card">
+                                <div class="cfkef-form-element-info">
+                                    <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'admin/assets/icons/atomic-form.png')?>">
+                                    <h4>
+                                        <span><?php esc_html_e('Atomic Form Widget by', 'extensions-for-elementor-form'); ?></span><br>
+                                        <?php esc_html_e('Elementor Pro','extensions-for-elementor-form'); ?>
+                                    </h4>
+                                </div>
+                                <label class="cfkef-toggle-switch">
+                                    <input type="checkbox" name="cfkef_enable_atomic_form" value="1" <?php checked(get_option('cfkef_enable_atomic_form', true)); ?>>
+                                    <span class="cfkef-slider round"></span>
+                                </label>
+                            </div> 
                         </div>
                 </div>
             </div>

@@ -162,8 +162,6 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		require_once CFL_PLUGIN_PATH . 'admin/feedback/cron/cfl-class-cron.php';
 
 		CFL_Loader::get_instance();
-		// require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/country-code-addon.php';
-		// AtomicForm_COUNTRY_CODE_FIELD::get_instance();
 
 		if (get_option('cfkef_enable_formkit_builder', true)) {
 			require_once CFL_PLUGIN_PATH . 'widgets/coolform-addons-loader.php';
@@ -175,8 +173,10 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			HelloPlus_Addons_Loader::get_instance();
 		}
 
-		require_once CFL_PLUGIN_PATH . 'widgets/atomic-form-addon-loader.php';
-		Atomic_Form_Addon_Loader::get_instance();
+		if (get_option('cfkef_enable_atomic_form', true)) {	
+			require_once CFL_PLUGIN_PATH . 'widgets/atomic-form-addon-loader.php';
+			Atomic_Form_Addon_Loader::get_instance();
+		}
 
 		if (is_admin()) {
 

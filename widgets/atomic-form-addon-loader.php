@@ -51,66 +51,97 @@ class Atomic_Form_Addon_Loader {
 		new Handle_Atomic_Form_Submission();
     }
 
-    public function enqueue_editor_scripts() {
-        wp_register_script('cfl-atomic-form-handle-conditional-repeater', CFL_PLUGIN_URL . 'assets/atomic-form/js/handle-conditional-repeater.js', array( 'jquery', 'elementor-editor'), $this->version, true);
+    private function is_field_enabled($field_key) {
+        $enabled_elements = get_option('cfkef_enabled_elements', array());
+        return in_array(sanitize_key($field_key), array_map('sanitize_key', $enabled_elements));
+    }
 
-        if (! wp_script_is('cfl-atomic-form-handle-conditional-repeater', 'enqueued') && ! wp_script_is('cfl-atomic-form-handle-conditional-repeater', 'done')) {
-            wp_enqueue_script( 'cfl-atomic-form-handle-conditional-repeater' );
+    public function enqueue_editor_scripts() {
+
+        if($this->is_field_enabled('conditional_logic')){
+
+            wp_register_script('cfl-atomic-form-handle-conditional-repeater', CFL_PLUGIN_URL . 'assets/atomic-form/js/handle-conditional-repeater.js', array( 'jquery', 'elementor-editor'), $this->version, true);
+
+            if (! wp_script_is('cfl-atomic-form-handle-conditional-repeater', 'enqueued') && ! wp_script_is('cfl-atomic-form-handle-conditional-repeater', 'done')) {
+                wp_enqueue_script( 'cfl-atomic-form-handle-conditional-repeater' );
+            }
         }
 
         wp_register_style('cfl-atomic-form-conditional-repeater-style', CFL_PLUGIN_URL . 'assets/atomic-form/css/atomic-form-conditional-repeater.min.css', array(), CFL_VERSION, 'all');
         if (! wp_style_is('cfl-atomic-form-conditional-repeater-style', 'enqueued') && ! wp_style_is('cfl-atomic-form-conditional-repeater-style', 'done')) {
             wp_enqueue_style('cfl-atomic-form-conditional-repeater-style');
         }
+
+
+        if($this->is_field_enabled('whatsapp_redirect')){
+
+            wp_register_script('cfl-atomic-form-handle-whatsapp-redirect-editor', CFL_PLUGIN_URL . 'assets/atomic-form/js/handle-whatsapp-redirect-editor.js', array( 'jquery', 'elementor-editor'), $this->version, true);
+            if (! wp_script_is('cfl-atomic-form-handle-whatsapp-redirect-editor', 'enqueued') && ! wp_script_is('cfl-atomic-form-handle-whatsapp-redirect-editor', 'done')) {
+                wp_enqueue_script('cfl-atomic-form-handle-whatsapp-redirect-editor');
+            }
+        }
     }
 
     
 
     public function register_new_form_actions($action_runner_class){
-        require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/actions/atomic-form-whatsapp-redirect.php';
-
-        if (is_string($action_runner_class) && method_exists($action_runner_class, 'register_action')) {
-            $action_runner_class::register_action(new AtomicForm_Whatsapp_Redirect());
-            return;
+        if($this->is_field_enabled('whatsapp_redirect')){
+            
+            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/actions/atomic-form-whatsapp-redirect.php';
+    
+            if (is_string($action_runner_class) && method_exists($action_runner_class, 'register_action')) {
+                $action_runner_class::register_action(new AtomicForm_Whatsapp_Redirect());
+                return;
+            }
+    
+            Action_Runner::register_action(new AtomicForm_Whatsapp_Redirect());
         }
-
-        Action_Runner::register_action(new AtomicForm_Whatsapp_Redirect());
     }
 
     public function register_widgets( Widgets_Manager $widgets_manager ) {
-		$widgets_manager->unregister('e-form-input');
-		$widgets_manager->unregister('e-form-textarea');
-		$widgets_manager->unregister('e-form-checkbox');
 
-		require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/input/input.php';
-		require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/textarea/textarea.php';
-		require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/checkbox/checkbox.php';
-		$widgets_manager->register( new Input() );
-		$widgets_manager->register( new Textarea() );
-		$widgets_manager->register( new Checkbox() );
+        if(get_option('cfkef_enable_atomic_form', true)){
+
+            $widgets_manager->unregister('e-form-input');
+            $widgets_manager->unregister('e-form-textarea');
+            $widgets_manager->unregister('e-form-checkbox');
+    
+            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/input/input.php';
+            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/textarea/textarea.php';
+            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/checkbox/checkbox.php';
+            $widgets_manager->register( new Input() );
+            $widgets_manager->register( new Textarea() );
+            $widgets_manager->register( new Checkbox() );
+        }
+
     }
 
 	/**
 	 * Replace core e-form with an extended Atomic Form (extra controls / props).
 	 */
 	public function register_extended_atomic_form( Elements_Manager $elements_manager ) {
-		if ( ! Elementor_Utils::has_pro() ) {
-			return;
-		}
 
-		$experiments = Elementor_Plugin::$instance->experiments;
-		if ( ! $experiments || ! $experiments->is_feature_active( 'e_pro_atomic_form' ) ) {
-			return;
-		}
+        if(get_option('cfkef_enable_atomic_form', true)){
 
-		if ( ! $elements_manager->get_element_types( 'e-form' ) ) {
-			return;
-		}
+            if ( ! Elementor_Utils::has_pro() ) {
+                return;
+            }
+    
+            $experiments = Elementor_Plugin::$instance->experiments;
+            if ( ! $experiments || ! $experiments->is_feature_active( 'e_pro_atomic_form' ) ) {
+                return;
+            }
+    
+            if ( ! $elements_manager->get_element_types( 'e-form' ) ) {
+                return;
+            }
+    
+            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/atomic-form.php';
+    
+            $elements_manager->unregister_element_type( 'e-form' );
+            $elements_manager->register_element_type( new Atomic_Form() );
+        }
 
-		require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/atomic-form.php';
-
-		$elements_manager->unregister_element_type( 'e-form' );
-		$elements_manager->register_element_type( new Atomic_Form() );
 	}
 
     /**
@@ -185,15 +216,15 @@ class Atomic_Form_Addon_Loader {
     }
 
     private function ensure_atomic_form_country_code_assets_registered() {
-        wp_register_script('sample-frontend-country-handle-js', CFL_PLUGIN_URL . 'assets/atomic-form/js/sample-frontend-country-handle.js', array('jquery'), $this->version, true);
-        wp_enqueue_script('sample-frontend-country-handle-js');
+        wp_register_script('frontend-country-handle-js', CFL_PLUGIN_URL . 'assets/atomic-form/js/frontend-country-handle.js', array('jquery'), $this->version, true);
+        wp_enqueue_script('frontend-country-handle-js');
 
         wp_register_script('cfl-country-code-library-script', CFL_PLUGIN_URL . 'assets/addons/intl-tel-input/js/intlTelInput.js', array(), CFL_VERSION, true);
         wp_register_style('cfl-country-code-library-style', CFL_PLUGIN_URL . 'assets/addons/intl-tel-input/css/intlTelInput.min.css', array(), CFL_VERSION, 'all');
         wp_register_style('cfl-atomic-form-country-code-style', CFL_PLUGIN_URL . 'assets/atomic-form/css/atomic-form-country-code-style.min.css', array(), CFL_VERSION, 'all');
 
         wp_localize_script(
-			'sample-frontend-country-handle-js',
+			'frontend-country-handle-js',
 			'CCFEFCustomData',
 			array(
 				'pluginDir' => CFL_PLUGIN_URL,
@@ -217,7 +248,7 @@ class Atomic_Form_Addon_Loader {
     /**
      * Follow redirect_url from atomic form action results (e.g. WhatsApp), which core JS does not handle.
      */
-    public function register_atomic_form_redirect_script() {
+    public function register_atomic_form_whatsapp_redirect_script() {
         if ( ! Elementor_Utils::has_pro() ) {
             return;
         }
@@ -228,15 +259,15 @@ class Atomic_Form_Addon_Loader {
         }
 
         wp_register_script(
-            'cfl-atomic-form-action-redirect',
-            CFL_PLUGIN_URL . 'assets/atomic-form/js/atomic-form-action-redirect.js',
+            'cfl-atomic-form-whatsapp-action-redirect',
+            CFL_PLUGIN_URL . 'assets/atomic-form/js/atomic-form-whatsapp-action-redirect.js',
             array( 'elementor-frontend' ),
             $this->version,
             true
         );
 
-        if (! wp_script_is('cfl-atomic-form-action-redirect', 'enqueued') && ! wp_script_is('cfl-atomic-form-action-redirect', 'done')) {
-            wp_enqueue_script( 'cfl-atomic-form-action-redirect' );
+        if (! wp_script_is('cfl-atomic-form-whatsapp-action-redirect', 'enqueued') && ! wp_script_is('cfl-atomic-form-whatsapp-action-redirect', 'done')) {
+            wp_enqueue_script( 'cfl-atomic-form-whatsapp-action-redirect' );
         }
         
     }
@@ -273,10 +304,24 @@ class Atomic_Form_Addon_Loader {
     }
 
     public function enqueue_frontend_scripts() {
-        $this->register_atomic_form_redirect_script();
-        $this->register_atomic_form_condition_script();
-        $this->ensure_fme_mask_assets_registered();
-        $this->ensure_atomic_form_country_code_assets_registered();
+
+        if($this->is_field_enabled('whatsapp_redirect')){
+            
+            $this->register_atomic_form_whatsapp_redirect_script();
+        }
+
+        if($this->is_field_enabled('conditional_logic')){
+
+            $this->register_atomic_form_condition_script();
+        }
+
+        if($this->is_field_enabled('form_input_mask')){
+            $this->ensure_fme_mask_assets_registered();
+        }
+
+        if($this->is_field_enabled('country_code')){
+            $this->ensure_atomic_form_country_code_assets_registered();
+        }
     }
 
     public function get_version() {

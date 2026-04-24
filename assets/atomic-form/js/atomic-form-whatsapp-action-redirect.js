@@ -11,6 +11,7 @@
 	window.fetch = function (input, init) {
 		return origFetch.call(this, input, init).then(function (response) {
 			try {
+
 				const body = init && init.body;
 				if (!(body instanceof FormData)) {
 					return response;
@@ -31,6 +32,7 @@
 							return;
 						}
 						const results = data.data.data.actionResults;
+						console.log(results);
 						if (!Array.isArray(results)) {
 							return;
 						}

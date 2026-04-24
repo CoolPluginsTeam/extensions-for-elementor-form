@@ -229,6 +229,7 @@ class CFKEF_Admin {
         register_setting( 'cfkef_form_elements_group', 'cfkef_enable_elementor_pro_form' );
         register_setting( 'cfkef_form_elements_group', 'cfkef_enable_hello_plus' );
         register_setting( 'cfkef_form_elements_group', 'cfkef_enable_formkit_builder' );
+        register_setting( 'cfkef_form_elements_group', 'cfkef_enable_atomic_form' );
 
         if (!get_option('cfl_plugin_initialized')) {
             // Get current enabled elements or empty array

@@ -187,6 +187,10 @@
     cursor: pointer;
 }
 
+.cfef-whatsapp-redirect-section-empty{
+    display: none !important;
+}
+
 
 /* span[data-type="settings-field"]:has(textarea[aria-invalid="false"]) {
     display: none !important;
