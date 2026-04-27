@@ -26,11 +26,15 @@ class Atomic_Form_Whatsapp_Redirect_Controls {
 	 */
 	public static function extend_props_schema( array $schema ): array {
 		$deps = self::whatsapp_prop_dependencies();
+		$deps_rev = self::whatsapp_prop_dependencies_rev();
 
 		$extended = [];
 		foreach ( $schema as $key => $definition ) {
 			$extended[ $key ] = $definition;
 			if ( 'email' === $key ) {
+				$extended['cfl-whatsapp-warning'] = String_Prop_Type::make()
+					->default( \__( 'Enable WhatsApp under “Actions after submit” to configure these fields.', 'extensions-for-elementor-form' ) )
+					->set_dependencies( $deps_rev );
 				$extended['cfl-whatsapp-to'] = String_Prop_Type::make()
 					->default( '' )
 					->set_dependencies( $deps );
@@ -74,6 +78,8 @@ class Atomic_Form_Whatsapp_Redirect_Controls {
 			)
 			->set_items(
 				[
+					Text_Control::bind_to( 'cfl-whatsapp-warning' )
+						->set_label( \__( 'Add WhatsApp redirect action to use this action.', 'extensions-for-elementor-form' ) ),
 					Text_Control::bind_to( 'cfl-whatsapp-to' )
 						->set_label( \__( 'WhatsApp phone', 'extensions-for-elementor-form' ) )
 						->set_description( \__( 'Phone with country code, e.g. 5551999999999', 'extensions-for-elementor-form' ) )
@@ -96,6 +102,24 @@ class Atomic_Form_Whatsapp_Redirect_Controls {
 			->where(
 				[
 					'operator' => 'contains',
+					'path' => [ 'actions-after-submit' ],
+					'value' => self::ACTION_TYPE,
+					'effect' => 'hide',
+				]
+			)
+			->get();
+	}
+
+	/**
+	 * Reverse dependency used for the warning: show it when WhatsApp action is NOT selected.
+	 *
+	 * @return mixed
+	 */
+	private static function whatsapp_prop_dependencies_rev() {
+		return Dependency_Manager::make()
+			->where(
+				[
+					'operator' => 'ncontains',
 					'path' => [ 'actions-after-submit' ],
 					'value' => self::ACTION_TYPE,
 					'effect' => 'hide',

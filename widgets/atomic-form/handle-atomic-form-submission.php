@@ -6,6 +6,7 @@ use ElementorPro\Plugin;
 use ElementorPro\Modules\AtomicWidgets\Settings_Resolver;
 use Elementor\Utils as Elementor_Utils;
 use ElementorPro\Modules\AtomicForm\Actions\Action_Runner;
+use ElementorPro\Modules\AtomicForm\Actions\Action_Type;
 use ElementorPro\Modules\Forms\Classes\Ajax_Handler;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -327,6 +328,64 @@ class Handle_Atomic_Form_Submission {
 		}
 	}
 
+	/**
+	 * Execute built-in and custom registered actions.
+	 *
+	 * Core Action_Runner::execute_actions() validates only built-in Action_Type values.
+	 * This wrapper allows custom action types when they were registered successfully.
+	 *
+	 * @param string[] $actions Action type strings.
+	 * @param array    $form_data Sanitized form data.
+	 * @param array    $widget_settings Full widget settings.
+	 * @param array    $context Form context.
+	 * @return array
+	 */
+	private function execute_registered_actions( array $actions, array $form_data, array $widget_settings, array $context ): array {
+		$action_results = [];
+		$failed_actions = [];
+
+		foreach ( $actions as $action_type ) {
+			$is_builtin_type = Action_Type::is_valid( $action_type );
+			$action = Action_Runner::create_action( $action_type );
+
+			// Accept either a core/built-in type or a custom type that is registered.
+			if ( ! $is_builtin_type && ! $action ) {
+				$action_results[] = [
+					'type' => $action_type,
+					'status' => 'failed',
+					'error' => sprintf( __( 'Invalid action type: %s', 'elementor-pro' ), $action_type ),
+				];
+				$failed_actions[] = $action_type;
+				continue;
+			}
+
+			try {
+				if ( ! $action ) {
+					throw new \Exception( sprintf( __( 'Could not create action: %s', 'elementor-pro' ), $action_type ) );
+				}
+
+				$result = $action->execute( $form_data, $widget_settings, $context );
+				$action_results[] = array_merge(
+					[ 'type' => $action_type ],
+					$result
+				);
+			} catch ( \Exception $e ) {
+				$action_results[] = [
+					'type' => $action_type,
+					'status' => 'failed',
+					'error' => $e->getMessage(),
+				];
+				$failed_actions[] = $action_type;
+			}
+		}
+
+		return [
+			'actionResults' => $action_results,
+			'allActionsSucceeded' => empty( $failed_actions ),
+			'failedActions' => $failed_actions,
+		];
+	}
+
     private function extract_field_metadata( array $form_fields ): array {
 		$metadata = [];
 
@@ -457,7 +516,7 @@ class Handle_Atomic_Form_Submission {
 			$this->send_error_response( __( 'No actions configured for this form', 'elementor-pro' ) );
 		}
 
-		$results = Action_Runner::execute_actions(
+		$results = $this->execute_registered_actions(
 			$actions,
 			$form_data,
 			$widget_settings,

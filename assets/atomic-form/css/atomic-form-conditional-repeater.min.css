@@ -188,7 +188,11 @@
 }
 
 .cfef-whatsapp-redirect-section-empty{
-    display: none !important;
+    margin-left: 16px;
+}
+
+.hide-waring-contrainer{
+    display: none;
 }
 
 
