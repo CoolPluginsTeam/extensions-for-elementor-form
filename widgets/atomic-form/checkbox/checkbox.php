@@ -45,7 +45,7 @@ class Checkbox extends AtomicFormCheckbox {
 	}
 
 	protected static function define_props_schema(): array {
-		return array_merge( [
+		$schema = [
 			'classes' => Classes_Prop_Type::make()
 				->default( [] ),
 			'name' => String_Prop_Type::make()
@@ -57,11 +57,17 @@ class Checkbox extends AtomicFormCheckbox {
 			'checked' => Boolean_Prop_Type::make()
 				->default( false ),
 			'attributes' => Attributes_Prop_Type::make()->meta( Overridable_Prop_Type::ignore() ),
-		], Conditional_Input_Definition::props_schema() );
+		];
+
+		if ( Conditional_Input_Definition::is_conditional_logic_enabled() ) {
+			$schema = array_merge( $schema, Conditional_Input_Definition::props_schema() );
+		}
+
+		return $schema;
 	}
 
 	protected function define_atomic_controls(): array {
-		return [
+		$sections = [
 			Section::make()
 				->set_label( __( 'Content', 'elementor-pro' ) )
 				->set_items( [
@@ -86,8 +92,13 @@ class Checkbox extends AtomicFormCheckbox {
 				->set_label( __( 'Settings', 'elementor-pro' ) )
 				->set_id( 'settings' )
 				->set_items( $this->get_settings_controls() ),
-			Conditional_Input_Definition::conditions_section(),
 		];
+
+		if ( Conditional_Input_Definition::is_conditional_logic_enabled() ) {
+			$sections[] = Conditional_Input_Definition::conditions_section();
+		}
+
+		return $sections;
 	}
 
 	protected function get_templates(): array {
