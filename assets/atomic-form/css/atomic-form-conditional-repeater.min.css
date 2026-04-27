@@ -191,11 +191,11 @@
     margin-left: 16px;
 }
 
-.hide-warning-container{
+.hide-waring-contrainer{
     display: none;
 }
 
 
-/* span[data-type="settings-field"]:has(textarea[aria-invalid="false"]) {
+span[data-type="settings-field"]:has(textarea[aria-invalid="false"]) {
     display: none !important;
-} */
+}
