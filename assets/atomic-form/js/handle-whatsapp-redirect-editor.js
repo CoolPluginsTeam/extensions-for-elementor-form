@@ -10,6 +10,7 @@
         setTimeout(()=>{
 
             const waring_input_div = jQuery('span[data-type="settings-field"]:contains("Add WhatsApp redirect action to use this action.")').find('input').closest('span');
+            
             if(waring_input_div.length > 0){
                 waring_input_div.addClass('hide-waring-contrainer');
             }

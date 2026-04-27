@@ -48,7 +48,9 @@ class Atomic_Form_Addon_Loader {
 
         add_action('elementor_pro/atomic_forms/actions/register', [$this, 'register_new_form_actions']);
 
-		new Handle_Atomic_Form_Submission();
+		if ( $this->is_field_enabled( 'whatsapp_redirect' ) || $this->is_field_enabled( 'conditional_logic' ) ) {
+			new Handle_Atomic_Form_Submission();
+		}
     }
 
     private function is_field_enabled($field_key) {
