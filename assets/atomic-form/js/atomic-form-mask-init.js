@@ -403,6 +403,11 @@
 
 		$form.find('input.fme-mask-input').not('.hide-fme-mask-input').each(function () {
 			var $inp = $(this);
+
+			if($inp.closest('.cfef-atomic-field-group').hasClass('cfef-hidden')){
+				return;
+			}
+
 			var val = String($inp.val() || '').trim();
 			if (val.length === 1 && !/\d/.test(val)) {
 				$inp.val('');
@@ -506,6 +511,7 @@
 	function validateAtomicMaskInput(selector, errorClass, validationFunction, errorMessage) {
 		$(document).on('blur', selector, function () {
 			var $input = $(this);
+
 			if (!isAtomicMaskField($input)) {
 				return;
 			}

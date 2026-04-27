@@ -297,8 +297,12 @@
         });
 
         $form.find(".cfef-atomic-field-group").each(function () {
-            var input = $(this).find("input");
-            $(this).replaceWith(input);
+            var input = $(this).find("input[data-e-type='widget']");
+            var country_wrapper =  input.closest('div.ccfef-wrapper');
+            var mask_wrapper =  input.closest('div.ccfef-mask-wrapper');
+            if(country_wrapper.length == 0 && mask_wrapper.length == 0){
+                $(this).replaceWith(input);
+            }
         });
 
         var template_tag_logic = $("<template>", {
