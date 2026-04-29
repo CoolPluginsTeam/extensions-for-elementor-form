@@ -114,6 +114,7 @@ function buttonShakeEffectHandler() {
 		const input1 = wrapper.querySelector('input[name="cfkef_enable_elementor_pro_form"]');
 		const input2 = wrapper.querySelector('input[name="cfkef_enable_hello_plus"]');
 		const input3 = wrapper.querySelector('input[name="cfkef_enable_formkit_builder"]');
+		const input4 = wrapper.querySelector('input[name="cfkef_enable_atomic_form"]');
 
 		function triggerShake() {
 			headerButton.classList.add('shake-effect');
@@ -127,8 +128,8 @@ function buttonShakeEffectHandler() {
 			input.addEventListener('change', function () {
 				let shouldTrigger = false;
 
-				if (input1 && input2 && input3) {
-					shouldTrigger = input1.checked || input2.checked || input3.checked;
+				if (input1 && input2 && input3 && input4) {
+					shouldTrigger = input1.checked || input2.checked || input3.checked || input4.checked;
 				} else {
 					bodyInputs.forEach(i => {
 						if (i.checked) shouldTrigger = true;

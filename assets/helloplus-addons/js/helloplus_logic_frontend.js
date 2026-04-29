@@ -459,7 +459,6 @@
         // function to get the id of the conditional field 
         function getFieldMainDivById(id = "", form = null) {
             if (form) {
-                console.log(' first if case ')
               if ($("#form-field-" + id, form).length > 0) {
                 return $("#form-field-" + id, form).closest(".ehp-form__field-group");
               } else {

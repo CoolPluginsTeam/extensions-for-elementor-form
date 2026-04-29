@@ -240,6 +240,17 @@
         }, 100);
     }
 
+
+    function hideRepeaterDataControl() {
+        setTimeout(() => {
+            const repeaterDataControl = $(document).find('span[data-type="settings-field"]:contains("Repeater Data")');
+            if(repeaterDataControl.length > 0) {
+                repeaterDataControl.addClass('cfef-hide-repeater-data-control');
+            }
+        }, 100);
+    }
+
+
     $(document).on('click', 'div[aria-label="Conditions section"]', function (e) {
         e.preventDefault();
         handleConditionalRepeater();
@@ -248,6 +259,7 @@
 
     $(window).on('elementor/commands/run/after', function (e) {
         handleConditionalRepeater(e);
+        hideRepeaterDataControl();
     });
 
     $(window).on('elementor:init', function () {

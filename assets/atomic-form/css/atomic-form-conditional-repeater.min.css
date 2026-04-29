@@ -191,11 +191,11 @@
     margin-left: 16px;
 }
 
-.hide-waring-contrainer{
+.hide-warning-container{
     display: none;
 }
 
 
-span[data-type="settings-field"]:has(textarea[aria-invalid="false"]) {
+.cfef-hide-repeater-data-control{
     display: none !important;
 }

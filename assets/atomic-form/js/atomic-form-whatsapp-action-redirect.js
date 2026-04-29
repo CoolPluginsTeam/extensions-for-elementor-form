@@ -32,7 +32,6 @@
 							return;
 						}
 						const results = data.data.data.actionResults;
-						console.log(results);
 						if (!Array.isArray(results)) {
 							return;
 						}
