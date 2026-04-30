@@ -27,4 +27,6 @@
 .iti__country-container button.iti__selected-country{
 
     padding: 0px !important;
+    display: flex !important;
+    color: inherit !important;
 }

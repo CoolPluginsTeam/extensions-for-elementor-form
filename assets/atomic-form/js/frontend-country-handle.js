@@ -96,6 +96,12 @@
             }
         }
 
+        if(data.default == '' && excludeArr.length > 0 && includeArr.length == 0){
+            const defaultCoutiresArr = ['in','us','gb','ru','fr','de','br','cn','jp','it'];
+            let uniqueValue = defaultCoutiresArr.filter((value) => !excludeArr.includes(value));
+            data.default = uniqueValue[0];
+        }
+
         let options = {
             initialCountry: data.default || 'in',
             utilsScript: utilsPath,

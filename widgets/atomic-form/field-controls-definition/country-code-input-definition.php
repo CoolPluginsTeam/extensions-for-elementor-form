@@ -103,7 +103,7 @@ final class Country_Code_Input_Definition {
 					],
 					'separate' => [
 						'title' => __( 'Separate', 'elementor-pro' ),
-						'atomic-icon' => 'Columns3Icon',
+						'atomic-icon' => 'ArrowBarBothIcon',
 					],
 				] )
 				->set_exclusive( true )
