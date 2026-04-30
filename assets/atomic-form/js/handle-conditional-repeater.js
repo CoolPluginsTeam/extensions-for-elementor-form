@@ -128,7 +128,8 @@
     }
 
     function bindConditionalPopupEvents() {
-        $(document).on('click', '.cfef-repeater-data-control-button', function (e) {
+        $(document).off('click.cfefOpenPopup', '.cfef-repeater-data-control-button');
+        $(document).on('click.cfefOpenPopup', '.cfef-repeater-data-control-button', function (e) {
             e.preventDefault();
             let targetButton = $(e.target);
             let parentOfControl = targetButton.parent().parent();
@@ -142,18 +143,24 @@
                 createConditionalPopup(textarea_logic_repeater);
                 $('.cfef-conditional-popup').addClass('is-open');
 
-                $(document).on('click', '.cfef-conditional-popup-close', function (e) {
-                    e.preventDefault();
-                    if($('.cfef-conditional-popup').length) {
-                        $(document).find('.cfef-conditional-popup').remove();
-                    }
-                });
-        
-                $(document).on('click', '.cfef-conditional-save-close', function (e) {
-                    e.preventDefault();
-                    saveCondition(textarea_logic_repeater);
-                });
               }
+        });
+
+        $(document).off('click.cfefClosePopup', '.cfef-conditional-popup-close');
+        $(document).on('click.cfefClosePopup', '.cfef-conditional-popup-close', function (e) {
+            e.preventDefault();
+            if ($('.cfef-conditional-popup').length) {
+                $(document).find('.cfef-conditional-popup').remove();
+            }
+        });
+
+        $(document).off('click.cfefSavePopup', '.cfef-conditional-save-close');
+        $(document).on('click.cfefSavePopup', '.cfef-conditional-save-close', function (e) {
+            e.preventDefault();
+            const textareaLogicRepeater = $(document).find('span[data-type="settings-field"] textarea[aria-invalid="false"]').last();
+            if (textareaLogicRepeater.length) {
+                saveCondition(textareaLogicRepeater);
+            }
         });
     }
 
@@ -261,8 +268,15 @@
         handleConditionalRepeater(e);
         hideRepeaterDataControl();
     });
+    function initConditionalRepeaterBindings() {
+        bindConditionalPopupEvents();
+    }
+
+    if (window.elementor) {
+        initConditionalRepeaterBindings();
+    }
 
     $(window).on('elementor:init', function () {
-        bindConditionalPopupEvents();
+        initConditionalRepeaterBindings();
     });
 })(jQuery);

@@ -23,3 +23,8 @@
 .ccfef-wrapper .iti__country-container button.iti__selected-country .iti__selected-country-primary:hover, .ccfef-wrapper .iti__country-container button.iti__selected-country .iti__selected-country-primary:focus {
     background-color: transparent !important;
 }
+
+.iti__country-container button.iti__selected-country{
+
+    padding: 0px !important;
+}

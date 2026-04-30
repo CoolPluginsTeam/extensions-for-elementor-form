@@ -432,16 +432,6 @@
 			}
 		});
 
-		$form.find('input.fme-mask-input[required]').not('.hide-fme-mask-input').each(function () {
-			var v = String($(this).val() || '').trim();
-			if (v === '' || /^[\s_\-\(\)\.:/]+$/.test(v)) {
-				blocked = true;
-				if (!$scrollTarget || !$scrollTarget.length) {
-					$scrollTarget = $(this);
-				}
-			}
-		});
-
 		if (blocked && $scrollTarget && $scrollTarget.length) {
 			var off = $scrollTarget.offset();
 			if (off) {

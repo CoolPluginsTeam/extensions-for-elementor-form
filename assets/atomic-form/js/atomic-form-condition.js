@@ -227,10 +227,26 @@
 
         if (shouldShowField) {
             clearDemoValueOnShow(targetField);
+            showFieldLabel(form, targetFieldId);
             fieldContainer.removeClass("cfef-hidden");
         } else {
             setDemoValueOnHide(targetField);
+            hideFieldLabel(form, targetFieldId);
             fieldContainer.addClass("cfef-hidden");
+        }
+    }
+
+    function showFieldLabel(form, targetFieldId) {
+        let label_widget = $(form).find(`label[for="${targetFieldId}"]`);
+        if(label_widget.length > 0) {
+            label_widget.removeClass('cfef-hidden');
+        }
+    }
+
+    function hideFieldLabel(form, targetFieldId) {
+        let label_widget = $(form).find(`label[for="${targetFieldId}"]`);
+        if(label_widget.length > 0) {
+            label_widget.addClass('cfef-hidden');
         }
     }
 

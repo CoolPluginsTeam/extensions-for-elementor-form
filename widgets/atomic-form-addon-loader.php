@@ -32,14 +32,6 @@ class Atomic_Form_Addon_Loader {
 
         $this->version = CFL_VERSION;
 
-        $this->error_map =[
-            __("The phone number you entered is not valid. Please check the format and try again.", "extensions-for-elementor-form"),
-            __("The country code you entered is not recognized. Please ensure it is correct and try again.", "extensions-for-elementor-form"),
-            __("The phone number you entered is too short. Please enter a complete phone number, including the country code.", "extensions-for-elementor-form"),
-            __("The phone number you entered is too long. Please ensure it is in the correct format and try again.", "extensions-for-elementor-form"),
-            __("The phone number you entered is not valid. Please check the format and try again.", "extensions-for-elementor-form")
-        ];
-
         add_filter('elementor/widgets/register', [$this, 'register_widgets'], 999);
         add_action( 'elementor/elements/elements_registered', [ $this, 'register_extended_atomic_form' ], 20 );
         add_action('elementor/frontend/before_enqueue_scripts', [$this, 'enqueue_frontend_scripts']);
@@ -218,6 +210,15 @@ class Atomic_Form_Addon_Loader {
     }
 
     private function ensure_atomic_form_country_code_assets_registered() {
+
+        $this->error_map =[
+            __("The phone number you entered is not valid. Please check the format and try again.", "extensions-for-elementor-form"),
+            __("The country code you entered is not recognized. Please ensure it is correct and try again.", "extensions-for-elementor-form"),
+            __("The phone number you entered is too short. Please enter a complete phone number, including the country code.", "extensions-for-elementor-form"),
+            __("The phone number you entered is too long. Please ensure it is in the correct format and try again.", "extensions-for-elementor-form"),
+            __("The phone number you entered is not valid. Please check the format and try again.", "extensions-for-elementor-form")
+        ];
+
         wp_register_script('frontend-country-handle-js', CFL_PLUGIN_URL . 'assets/atomic-form/js/frontend-country-handle.js', array('jquery'), $this->version, true);
         wp_enqueue_script('frontend-country-handle-js');
 

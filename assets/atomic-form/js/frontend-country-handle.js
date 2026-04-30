@@ -84,10 +84,23 @@
         const utilsPath = CCFEFCustomData.pluginDir + 'assets/addons/intl-tel-input/js/utils.min.js';
         let strictMode = data.strictmode === 1 ? true : false;
 
+        if(excludeArr.length > 0 && includeArr.length > 0){
+            includeArr = includeArr.filter(x => !excludeArr.includes(x));
+        }
+
+        if(data.default == '' && includeArr.length > 0){
+            data.default = includeArr[0];
+        }else if(data.default != '' && includeArr.length > 0){
+            if(!includeArr.includes(data.default)){
+                data.default = includeArr[includeArr.length - 1];
+            }
+        }
+
         let options = {
             initialCountry: data.default || 'in',
             utilsScript: utilsPath,
             strictMode: strictMode,
+            separateDialCode: dialCodeVisibility === 'separate' ? true : false,
             formatOnDisplay: false,
             formatAsYouType: true,
             autoFormat: false,
