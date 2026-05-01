@@ -67,7 +67,7 @@
 }
 
 .cfef-conditional-popup-title {
-    font-size: 19px;
+    font-size: 0.875rem;
     font-weight: 700;
     color: #222;
     letter-spacing: 0.3px;
@@ -96,7 +96,7 @@
 }
 
 .cfef-conditional-popup-heading {
-    font-size: 39px;
+    font-size: 1.25rem;
     font-weight: 700;
     color: #191b1f;
     margin-bottom: 8px;
@@ -104,7 +104,7 @@
 
 .cfef-conditional-popup-subheading {
     color: #5c6270;
-    font-size: 20px;
+    font-size: 0.875rem;
     margin-bottom: 36px;
 }
 
@@ -159,7 +159,7 @@
     padding: 0 18px;
     background: #5f6b7a;
     color: #fff;
-    font-size: 20px;
+    font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;
     display: block;
@@ -179,10 +179,10 @@
     height: 52px;
     border: none;
     border-radius: 8px;
-    padding: 0 22px;
+    padding: 6px 16px;
     background: #dea9ee;
     color: #40354a;
-    font-size: 24px;
+    font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;
 }

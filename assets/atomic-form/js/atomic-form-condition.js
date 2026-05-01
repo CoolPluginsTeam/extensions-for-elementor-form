@@ -284,14 +284,15 @@
 
         $(".e-form-base").each(function () {
             var form = (this);
-            demotest(form);
+            filterTemplateLogic(form);
             if (form.length) {
                 runAtomicLogic(form);
             }
         });
     }
 
-    function demotest(form) {
+    function filterTemplateLogic(form) {
+
         var $form = $(form);
         var all_fields_logic = [];
 
@@ -313,11 +314,23 @@
         });
 
         $form.find(".cfef-atomic-field-group").each(function () {
-            var input = $(this).find("input[data-e-type='widget']");
-            var country_wrapper =  input.closest('div.ccfef-wrapper');
-            var mask_wrapper =  input.closest('div.ccfef-mask-wrapper');
-            if(country_wrapper.length == 0 && mask_wrapper.length == 0){
-                $(this).replaceWith(input);
+            var fieldGroup = $(this);
+            var fieldControl = fieldGroup.find("input[data-e-type='widget'], select[data-e-type='widget'], textarea[data-e-type='widget']").first();
+
+            // Fallback: keep compatibility if data-e-type is absent on some controls.
+            if (!fieldControl.length) {
+                fieldControl = fieldGroup.find("input, select, textarea").first();
+            }
+
+            if (!fieldControl.length) {
+                return;
+            }
+
+            var country_wrapper = fieldControl.closest("div.ccfef-wrapper");
+            var mask_wrapper = fieldControl.closest("div.ccfef-mask-wrapper");
+
+            if (country_wrapper.length === 0 && mask_wrapper.length === 0) {
+                fieldGroup.replaceWith(fieldControl);
             }
         });
 

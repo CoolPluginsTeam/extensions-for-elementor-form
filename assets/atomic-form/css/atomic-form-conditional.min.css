@@ -1,5 +1,11 @@
 .cfef-atomic-field-group{
     width: 100%;
+    
+}
+
+.elementor-field-group-e-form-checkbox {
+    width: auto !important;
+    display: inline-block !important;
 }
 
 .cfef-hidden{

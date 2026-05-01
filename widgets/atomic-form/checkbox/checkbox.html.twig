@@ -25,19 +25,10 @@
 	{{ checked_attribute }}
 />
 {% if conditions_enabled %}
-{% set field_logic = {
-	(name): {
-		'display_mode': settings.cfef_logic_mode|default('show'),
-		'fire_action': settings.cfef_logic_meet|default('All'),
-		'logic_data': [
-			{
-				'cfef_logic_field_id': settings.cfef_logic_field_id|default(''),
-				'cfef_logic_field_is': settings.cfef_logic_field_is|default('=='),
-				'cfef_logic_compare_value': settings.cfef_logic_compare_value|default('')
-			}
-		]
-	}
-} %}
-<template class="cfef_logic_data_js cfef-atomic-field-logic cfef-hidden" data-field-id="{{ name | e('html_attr') }}">{{ field_logic|json_encode|e('html') }}</template>
+{% set logic_data_json = settings.cfef_logic_repeater is not empty ? settings.cfef_logic_repeater : '[]' %}
+{% set safe_field_key = name|replace({'\\':'\\\\','"':'\\"'}) %}
+<template class="cfef_logic_data_js cfef-atomic-field-logic cfef-hidden" data-field-id="{{ name | e('html_attr') }}">
+{"{{ safe_field_key }}":{"display_mode":"{{ settings.cfef_logic_mode|default('show') | e('js') }}","fire_action":"{{ settings.cfef_logic_meet|default('All') | e('js') }}","logic_data":{{ logic_data_json | raw }}}}
+</template>
 </div>
 {% endif %}
