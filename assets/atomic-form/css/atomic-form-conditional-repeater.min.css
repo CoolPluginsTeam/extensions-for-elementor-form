@@ -96,10 +96,10 @@
 }
 
 .cfef-conditional-popup-heading {
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     font-weight: 700;
     color: #191b1f;
-    margin-bottom: 8px;
+    margin-bottom: 15px;
 }
 
 .cfef-conditional-popup-subheading {
@@ -160,7 +160,7 @@
     background: #5f6b7a;
     color: #fff;
     font-size: 0.875rem;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
     display: block;
 }
@@ -176,7 +176,7 @@
 }
 
 .cfef-conditional-save-close {
-    height: 52px;
+    height: 41px;
     border: none;
     border-radius: 8px;
     padding: 6px 16px;
