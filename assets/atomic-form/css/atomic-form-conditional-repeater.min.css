@@ -118,6 +118,21 @@
     align-items: center;
     gap: 10px;
     margin-bottom: 14px;
+    min-width: 0;
+}
+
+.cfef-conditional-popup-row > input[name="cfef_logic_field_id"] {
+    flex: 1 1 120px;
+    min-width: 0;
+}
+
+.cfef-conditional-popup-row > input[name="cfef_logic_compare_value"] {
+    flex: 1 1 120px;
+    min-width: 0;
+}
+
+.cfef-conditional-popup-row > .cfef-conditional-row-delete {
+    flex-shrink: 0;
 }
 
 .cfef-conditional-control {
@@ -128,6 +143,47 @@
     color: #262a2f;
     font-size: 15px;
     padding: 0 12px;
+}
+
+/* Operator column: do not shrink (flex default was crushing the select) */
+.cfef-conditional-select-wrap {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    flex: 0 0 auto;
+    min-width: 228px;
+    max-width: 100%;
+}
+
+.cfef-conditional-select-wrap select.cfef-conditional-control {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding-right: 40px;
+    background-color: #fff;
+    background-image: none;
+}
+
+.cfef-conditional-select-wrap::after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    width: 22px;
+    height: 22px;
+    margin-top: -11px;
+    pointer-events: none;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' fill='%23262a2f' d='M5.46967 9.21967C5.76256 8.92678 6.23744 8.92678 6.53033 9.21967L12 14.6893L17.4697 9.21967C17.7626 8.92678 18.2374 8.92678 18.5303 9.21967C18.8232 9.51256 18.8232 9.98744 18.5303 10.2803L12.5303 16.2803C12.2374 16.5732 11.7626 16.5732 11.4697 16.2803L5.46967 10.2803C5.17678 9.98744 5.17678 9.51256 5.46967 9.21967Z'/%3E%3C/svg%3E") center / contain no-repeat;
+    transform: rotate(0deg);
+    transform-origin: 50% 50%;
+    /* transition: transform 0.2s ease; */
+}
+
+.cfef-conditional-select-wrap.cfef-select-menu-open::after {
+    transform: rotate(180deg);
 }
 
 .cfef-conditional-and-badge {
@@ -153,7 +209,7 @@
 
 .cfef-conditional-add-btn {
     margin: 16px auto 0;
-    height: 44px;
+    height: 42px;
     border: none;
     border-radius: 6px;
     padding: 0 18px;
@@ -176,7 +232,7 @@
 }
 
 .cfef-conditional-save-close {
-    height: 41px;
+    height: 39px;
     border: none;
     border-radius: 8px;
     padding: 6px 16px;

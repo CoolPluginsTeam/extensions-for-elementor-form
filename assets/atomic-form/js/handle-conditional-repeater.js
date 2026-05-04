@@ -58,12 +58,14 @@
 
         return "<div data-repeater-item class='cfef-conditional-popup-row'>" +
             "<input type='text' class='cfef-conditional-control' name='cfef_logic_field_id' placeholder='Field ID' value=\"" + fieldId + "\">" +
+            "<span class='cfef-conditional-select-wrap'>" +
             "<select class='cfef-conditional-control' name='cfef_logic_field_is'>" +
             "<option value='=='" + isEqualSelected + ">is equal ( == )</option>" +
             "<option value='!='" + isNotEqualSelected + ">is not equal (!=)</option>" +
             "<option value='>'" + isGreaterThanSelected + ">greater than (>)</option>" +
             "<option value='<'" + isLessThanSelected + ">less than (<)</option>" +
             "</select>" +
+            "</span>" +
             "<input type='text' class='cfef-conditional-control' name='cfef_logic_compare_value' placeholder='Value to compare' value=\"" + compareValue + "\">" +
             "<button type='button' data-repeater-delete class='cfef-conditional-row-delete' aria-label='Remove condition'>&times;</button>" +
             "</div>";
@@ -161,6 +163,36 @@
             if (textareaLogicRepeater.length) {
                 saveCondition(textareaLogicRepeater);
             }
+        });
+
+        $(document).off('mousedown.cfefSelectOpen', '.cfef-conditional-select-wrap select');
+        $(document).off('keydown.cfefSelectOpen', '.cfef-conditional-select-wrap select');
+        $(document).off('blur.cfefSelectOpen', '.cfef-conditional-select-wrap select');
+        $(document).off('change.cfefSelectOpen', '.cfef-conditional-select-wrap select');
+        $(document).on('mousedown.cfefSelectOpen', '.cfef-conditional-select-wrap select', function () {
+            var $wrap = $(this).closest('.cfef-conditional-select-wrap');
+            /* Closing by clicking the select again does not blur or change — toggle here */
+            if ($wrap.hasClass('cfef-select-menu-open')) {
+                $wrap.removeClass('cfef-select-menu-open');
+            } else {
+                $wrap.addClass('cfef-select-menu-open');
+            }
+        });
+        $(document).on('keydown.cfefSelectOpen', '.cfef-conditional-select-wrap select', function (e) {
+            if (e.key === 'Escape') {
+                $(this).closest('.cfef-conditional-select-wrap').removeClass('cfef-select-menu-open');
+                return;
+            }
+            var openKeys = ['ArrowDown', 'ArrowUp', ' ', 'Enter'];
+            if (openKeys.indexOf(e.key) !== -1) {
+                $(this).closest('.cfef-conditional-select-wrap').addClass('cfef-select-menu-open');
+            }
+        });
+        $(document).on('blur.cfefSelectOpen', '.cfef-conditional-select-wrap select', function () {
+            $(this).closest('.cfef-conditional-select-wrap').removeClass('cfef-select-menu-open');
+        });
+        $(document).on('change.cfefSelectOpen', '.cfef-conditional-select-wrap select', function () {
+            $(this).closest('.cfef-conditional-select-wrap').removeClass('cfef-select-menu-open');
         });
     }
 
