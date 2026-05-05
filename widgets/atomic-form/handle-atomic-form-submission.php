@@ -91,15 +91,38 @@ class Handle_Atomic_Form_Submission {
 
 		$value = $settings[ $key ];
 
+
 		if ( is_array( $value ) && array_key_exists( 'value', $value ) ) {
 			return $value['value'];
 		}
 
+
 		return $value;
+	}
+
+	private function resolve_atomic_bool_setting_value( array $settings, string $key, bool $default = false ): bool {
+		$value = $this->resolve_atomic_setting_value( $settings, $key, $default );
+
+		if ( is_bool( $value ) ) {
+			return $value;
+		}
+
+		$parsed = filter_var( $value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE );
+		return null === $parsed ? (bool) $value : $parsed;
 	}
 
     private function collect_atomic_logic_rules( array $settings ): array {
 		$raw_rules = $this->resolve_atomic_setting_value( $settings, 'cfef_repeater_data', [] );
+
+		if ( empty( $raw_rules ) ) {
+			$raw_rules = $this->resolve_atomic_setting_value( $settings, 'cfef_logic_repeater', [] );
+		}
+
+		if ( is_string( $raw_rules ) ) {
+			$decoded_rules = json_decode( $raw_rules, true );
+			$raw_rules = is_array( $decoded_rules ) ? $decoded_rules : [];
+		}
+
 		$rules = [];
 
 		if ( is_array( $raw_rules ) && ! empty( $raw_rules ) ) {
@@ -107,6 +130,7 @@ class Handle_Atomic_Form_Submission {
 				if ( ! is_array( $rule ) ) {
 					continue;
 				}
+
 
 				$field_id = (string) $this->resolve_atomic_setting_value( $rule, 'cfef_logic_field_id', '' );
 				$operator = (string) $this->resolve_atomic_setting_value( $rule, 'cfef_logic_field_is', '==' );
@@ -136,6 +160,26 @@ class Handle_Atomic_Form_Submission {
 		}
 
 		return $rules;
+	}
+
+	private function flatten_form_elements( array $elements ): array {
+		$flattened = [];
+		$stack = $elements;
+
+		while ( ! empty( $stack ) ) {
+			$element = array_shift( $stack );
+			if ( ! is_array( $element ) ) {
+				continue;
+			}
+
+			$flattened[] = $element;
+			$children = $element['elements'] ?? [];
+			if ( is_array( $children ) && ! empty( $children ) ) {
+				$stack = array_merge( $children, $stack );
+			}
+		}
+
+		return $flattened;
 	}
 
     private function map_submitted_values_to_atomic_ids( array $form_fields, array $form_elements ): array {
@@ -194,7 +238,7 @@ class Handle_Atomic_Form_Submission {
 			return [];
 		}
 
-		$elements = $form_element['elements'];
+		$elements = $this->flatten_form_elements( $form_element['elements'] );
 		$field_values = $this->map_submitted_values_to_atomic_ids( $form_fields, $elements );
 		$hidden_fields = [];
 
@@ -202,9 +246,10 @@ class Handle_Atomic_Form_Submission {
 			if ( ! is_array( $element ) ) {
 				continue;
 			}
+			
 
 			$settings = $element['settings'] ?? [];
-			$logic_enabled = (bool) $this->resolve_atomic_setting_value( $settings, 'cfef_logic', false );
+			$logic_enabled = $this->resolve_atomic_bool_setting_value( $settings, 'cfef_logic', false );
 
 			if ( ! $logic_enabled ) {
 				continue;

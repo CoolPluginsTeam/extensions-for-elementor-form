@@ -238,7 +238,7 @@
             "<div data-repeater-list='conditions'>" +
             repeaterRowsMarkup +
             "</div>" +
-            "<button type='button' data-repeater-create class='cfef-conditional-add-btn'>+ Add condition</button>" +
+            "<button type='button' data-repeater-create class='cfef-conditional-add-btn'>+ Add Condition</button>" +
             "</div>" +
             "</div>" +
             "<div class='cfef-conditional-popup-footer'>" +

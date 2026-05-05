@@ -174,8 +174,10 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		}
 
 		if (get_option('cfkef_enable_atomic_form', true)) {	
-			require_once CFL_PLUGIN_PATH . 'widgets/atomic-form-addon-loader.php';
-			Atomic_Form_Addon_Loader::get_instance();
+			if(is_plugin_active('elementor-pro/elementor-pro.php') || is_plugin_active('pro-elements/pro-elements.php')){
+				require_once CFL_PLUGIN_PATH . 'widgets/atomic-form-addon-loader.php';
+				Atomic_Form_Addon_Loader::get_instance();
+			}
 		}
 
 		if (is_admin()) {

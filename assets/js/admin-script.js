@@ -157,6 +157,7 @@ function handleElementCardTooltip() {
 
 			const action = el.dataset.action;
 			const slug = el.dataset.slug;
+			console.log(slug);
 			const init = el.dataset.init;
 			const getCurrentTheme = el.dataset.gettheme; // e.g. 'hello-biz'
 
@@ -182,6 +183,7 @@ function handleElementCardTooltip() {
 
 				tooltip.innerHTML = defaultMessage;
 
+				console.log(tooltip);
 				// Add the button if valid action
 				if (action === 'activate') {
 					tooltip.innerHTML += `<button class="cfkef-activate-plugin-btn" data-slug="${slug}" data-init="${init}">Activate Plugin</button>`;

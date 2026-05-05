@@ -74,6 +74,29 @@ class Atomic_Form_Addon_Loader {
                 wp_enqueue_script('cfl-atomic-form-handle-whatsapp-redirect-editor');
             }
         }
+
+        if($this->is_field_enabled('country_code')){
+
+            wp_register_script('cfl-atomic-form-handle-country-editor', CFL_PLUGIN_URL . 'assets/atomic-form/js/handle-country-editor.js', array( 'jquery', 'elementor-editor'), $this->version, true);
+
+            wp_localize_script('cfl-atomic-form-handle-country-editor', 'cflCountryEditorData', array(
+                'controlDescriptions' => array(
+                    __('Default Country (e.g. in, us)', 'extensions-for-elementor-form') => __('Set default country code in tel field, like "in" for India.', 'extensions-for-elementor-form'),
+                    __('Only Countries (comma separated)', 'extensions-for-elementor-form') => __('Display only these countries as comma separated values, e.g. ca,in,us,gb.', 'extensions-for-elementor-form'),
+                    __('Exclude Countries', 'extensions-for-elementor-form') => __('Exclude countries using comma separated values, e.g. af,pk.', 'extensions-for-elementor-form'),
+                    __('Strict Mode', 'extensions-for-elementor-form') => __('Allow only numeric characters and an optional leading plus while typing, and cap input length at the maximum valid number length.', 'extensions-for-elementor-form'),
+                ),
+            ));
+
+            if (! wp_script_is('cfl-atomic-form-handle-country-editor', 'enqueued') && ! wp_script_is('cfl-atomic-form-handle-country-editor', 'done')) {
+                wp_enqueue_script('cfl-atomic-form-handle-country-editor');
+            }
+
+            wp_register_style('cfl-atomic-form-country-editor-style', CFL_PLUGIN_URL . 'assets/atomic-form/css/country-editor-style.css', array(), CFL_VERSION, 'all');
+            if (! wp_style_is('cfl-atomic-form-country-editor-style', 'enqueued') && ! wp_style_is('cfl-atomic-form-country-editor-style', 'done')) {
+                wp_enqueue_style('cfl-atomic-form-country-editor-style');
+            }
+        }
     }
 
     

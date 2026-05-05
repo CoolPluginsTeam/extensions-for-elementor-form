@@ -113,7 +113,7 @@ class Review_notice
 	function cfl_create_notice_content()
 	{
 		$html = '
-		<div data-ajax-url="' . admin_url('admin-ajax.php') . '" data-nonce="' . wp_create_nonce('cfl_elementor_review') . '" data-ajax-callback="' . esc_attr($this->plugin_slug) . '_dismiss_notice" class="' . esc_attr($this->plugin_slug) . '-review-notice-wrapper notice">
+		<div data-ajax-url="' . admin_url('admin-ajax.php') . '" data-nonce="' . wp_create_nonce('cfl_elementor_review') . '" data-ajax-callback="' . esc_attr($this->plugin_slug) . '_dismiss_notice" class="' . esc_attr($this->plugin_slug) . '-review-notice-wrapper notice notice-info is-dismissible">
 			<div class="message_container">
 				<p>Thanks for using <b>' . esc_html($this->plugin_name) . '</b> WordPress plugin. We hope it meets your expectations!<br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href="https://coolplugins.net" target="_blank"><strong>Cool Plugins</strong></a>!</p>
 				<ul>

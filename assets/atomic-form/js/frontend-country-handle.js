@@ -92,7 +92,7 @@
             data.default = includeArr[0];
         }else if(data.default != '' && includeArr.length > 0){
             if(!includeArr.includes(data.default)){
-                data.default = includeArr[includeArr.length - 1];
+                data.default = includeArr[0];
             }
         }
 
