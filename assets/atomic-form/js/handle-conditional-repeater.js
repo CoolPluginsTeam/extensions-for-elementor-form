@@ -293,6 +293,8 @@
     $(document).on('click', 'div[aria-label="Conditions section"]', function (e) {
         e.preventDefault();
         handleConditionalRepeater();
+        hideRepeaterDataControl();
+
     });
 
 
