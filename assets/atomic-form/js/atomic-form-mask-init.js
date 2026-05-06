@@ -895,7 +895,7 @@
 			}
 			const $el = $(element);
 
-			if ($el.hasClass('e-form-input-base') || $el.hasClass('ccfef-mask-wrapper')) {
+			if ($el.hasClass('e-form-input-base') || $el.hasClass('ccfef-mask-wrapper') || $el.has('.elementor-field-group.mask-enabled')) {
 				const $form = $el.closest('form');
 
 				initAtomicMasks($form.length ? $form : $el);

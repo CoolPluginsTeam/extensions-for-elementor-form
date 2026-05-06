@@ -7,12 +7,13 @@
 {% set name = settings.name is not empty ? settings.name : settings._cssid is not empty ? settings._cssid : id %}
 {% set name_attribute = 'name=' ~ name | e('html_attr') %}
 
+
 {% set country_enabled = settings.country_code and settings.type == 'tel' %}
 {% set mask_control = settings.fme_mask_control|default('mask') %}
 {% set mask_enabled = settings.type == 'text' and mask_control != 'mask' %}
 {% set mask_auto_ph = settings.fme_mask_auto_placeholders|default(false) ? 'yes' : '' %}
 {% set conditions_enabled = settings.cfef_logic|default(false) %}
-{% set field_group_class = 'elementor-field-group elementor-field-group-' ~ name ~ ' cfef-atomic-field-group' %}
+{% set field_group_class = 'elementor-field-group elementor-field-group-' ~ name ~ ' cfef-atomic-field-group' ~ (mask_enabled ? ' mask-enabled' : '') %}
 
 {# create a container tag for conditional when conditional enable #}
 
@@ -35,7 +36,7 @@
 {# create a container tag for mask when mask enable #}
 
 {% if mask_enabled %}
-<div class="ccfef-mask-wrapper">
+<div class="ccfef-mask-wrapper mask-enabled">
 {% endif %}
 
 <input 
