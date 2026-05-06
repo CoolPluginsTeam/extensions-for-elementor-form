@@ -31,7 +31,7 @@ class Textarea extends AtomicFormTextarea {
 	}
 
 	public function get_title(): string {
-		return esc_html__( 'Text area', 'elementor-pro' );
+		return esc_html__( 'Text area', 'extensions-for-elementor-form' );
 	}
 
 	public function get_icon(): string {
@@ -75,32 +75,32 @@ class Textarea extends AtomicFormTextarea {
 	protected function define_atomic_controls(): array {
 		$sections = [
 			Section::make()
-				->set_label( __( 'Content', 'elementor-pro' ) )
+				->set_label( __( 'Content', 'extensions-for-elementor-form' ) )
 				->set_items( [
 					Text_Control::bind_to( 'placeholder' )
 					  ->set_placeholder( 'Enter placeholder text' )
-						->set_label( __( 'Text area placeholder', 'elementor-pro' ) ),
+						->set_label( __( 'Text area placeholder', 'extensions-for-elementor-form' ) ),
 					Number_Control::bind_to( 'rows' )
-						->set_label( __( 'Rows', 'elementor-pro' ) )
+						->set_label( __( 'Rows', 'extensions-for-elementor-form' ) )
 						->set_min( 1 )
 						->set_step( 1 ),
 					Switch_Control::bind_to( 'required' )
-						->set_label( __( 'Required', 'elementor-pro' ) ),
+						->set_label( __( 'Required', 'extensions-for-elementor-form' ) ),
 					Switch_Control::bind_to( 'readonly' )
-						->set_label( __( 'Read only', 'elementor-pro' ) ),
+						->set_label( __( 'Read only', 'extensions-for-elementor-form' ) ),
 					Switch_Control::bind_to( 'resizable' )
-						->set_label( __( 'Resizable', 'elementor-pro' ) ),
+						->set_label( __( 'Resizable', 'extensions-for-elementor-form' ) ),
 					Number_Control::bind_to( 'minlength' )
-						->set_label( __( 'Min length', 'elementor-pro' ) )
+						->set_label( __( 'Min length', 'extensions-for-elementor-form' ) )
 						->set_min( 0 )
 						->set_step( 1 ),
 					Number_Control::bind_to( 'maxlength' )
-						->set_label( __( 'Max length', 'elementor-pro' ) )
+						->set_label( __( 'Max length', 'extensions-for-elementor-form' ) )
 						->set_min( 0 )
 						->set_step( 1 ),
 				] ),
 			Section::make()
-				->set_label( __( 'Settings', 'elementor-pro' ) )
+				->set_label( __( 'Settings', 'extensions-for-elementor-form' ) )
 				->set_id( 'settings' )
 				->set_items( $this->get_settings_controls() ),
 		];

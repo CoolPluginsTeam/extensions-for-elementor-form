@@ -67,6 +67,7 @@ final class Country_Code_Input_Definition {
 			'include' => String_Prop_Type::make()
 				->set_dependencies( $tel_and_tel_field_on_dependencies )
 				->default( '' ),
+			// phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
 			'exclude' => String_Prop_Type::make()
 				->set_dependencies( $tel_and_tel_field_on_dependencies )
 				->default( '' ),
@@ -87,22 +88,22 @@ final class Country_Code_Input_Definition {
 	 */
 	public static function content_controls(): array {
 		$dial_code_visibility_control = Toggle_Control::bind_to( 'dial_code_visibility' )
-			->set_label( __( 'Dial Code Visibility', 'elementor-pro' ) )
+			->set_label( __( 'Dial Code Visibility', 'extensions-for-elementor-form' ) )
 			->set_meta( [ 'layout' => 'two-columns' ] );
 
 		if ( $dial_code_visibility_control instanceof Toggle_Control ) {
 			$dial_code_visibility_control
 				->add_options( [
 					'show' => [
-						'title' => __( 'Show', 'elementor-pro' ),
+						'title' => __( 'Show', 'extensions-for-elementor-form' ),
 						'atomic-icon' => 'EyeIcon',
 					],
 					'hide' => [
-						'title' => __( 'Hide', 'elementor-pro' ),
+						'title' => __( 'Hide', 'extensions-for-elementor-form' ),
 						'atomic-icon' => 'EyeOffIcon',
 					],
 					'separate' => [
-						'title' => __( 'Separate', 'elementor-pro' ),
+						'title' => __( 'Separate', 'extensions-for-elementor-form' ),
 						'atomic-icon' => 'ArrowBarBothIcon',
 					],
 				] )

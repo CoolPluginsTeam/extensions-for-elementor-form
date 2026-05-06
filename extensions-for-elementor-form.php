@@ -108,6 +108,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 
 		if (!is_plugin_active('sb-elementor-contact-form-db/sb_elementor_contact_form_db.php') && !defined("formdb_elementor_marketing_editor")) {
 
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 			define("formdb_elementor_marketing_editor", true);
 
 			include_once(__DIR__ .  '/includes/class-form-to-sheet.php');

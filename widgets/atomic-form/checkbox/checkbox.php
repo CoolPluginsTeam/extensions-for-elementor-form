@@ -29,7 +29,7 @@ class Checkbox extends AtomicFormCheckbox {
 	}
 
 	public function get_title(): string {
-		return esc_html__( 'Checkbox', 'elementor-pro' );
+		return esc_html__( 'Checkbox', 'extensions-for-elementor-form' );
 	}
 
 	public function get_icon(): string {
@@ -69,27 +69,27 @@ class Checkbox extends AtomicFormCheckbox {
 	protected function define_atomic_controls(): array {
 		$sections = [
 			Section::make()
-				->set_label( __( 'Content', 'elementor-pro' ) )
+				->set_label( __( 'Content', 'extensions-for-elementor-form' ) )
 				->set_items( [
 					Text_Control::bind_to( 'name' )
-						->set_label( __( 'Group name', 'elementor-pro' ) )
-						->set_placeholder( __( 'Enter checkbox group name', 'elementor-pro' ) )
+						->set_label( __( 'Group name', 'extensions-for-elementor-form' ) )
+						->set_placeholder( __( 'Enter checkbox group name', 'extensions-for-elementor-form' ) )
 						->set_meta( [
 							'layout' => 'two-columns',
 						] ),
 					Text_Control::bind_to( 'value' )
-						->set_label( __( 'Choice value', 'elementor-pro' ) )
-						->set_placeholder( __( 'Enter choice value', 'elementor-pro' ) )
+						->set_label( __( 'Choice value', 'extensions-for-elementor-form' ) )
+						->set_placeholder( __( 'Enter choice value', 'extensions-for-elementor-form' ) )
 						->set_meta( [
 							'layout' => 'two-columns',
 						] ),
 					Switch_Control::bind_to( 'required' )
-						->set_label( __( 'Required', 'elementor-pro' ) ),
+						->set_label( __( 'Required', 'extensions-for-elementor-form' ) ),
 					Switch_Control::bind_to( 'checked' )
-						->set_label( __( 'Checked', 'elementor-pro' ) ),
+						->set_label( __( 'Checked', 'extensions-for-elementor-form' ) ),
 				] ),
 			Section::make()
-				->set_label( __( 'Settings', 'elementor-pro' ) )
+				->set_label( __( 'Settings', 'extensions-for-elementor-form' ) )
 				->set_id( 'settings' )
 				->set_items( $this->get_settings_controls() ),
 		];

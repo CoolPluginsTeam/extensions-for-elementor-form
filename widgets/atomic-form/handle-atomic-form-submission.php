@@ -227,7 +227,7 @@ class Handle_Atomic_Form_Submission {
         if ( ! $document ) {
 			return new \WP_Error(
 				'document_not_found',
-				__( 'Document not found', 'elementor-pro' )
+				__( 'Document not found', 'extensions-for-elementor-form' )
 			);
 		}
 		$element_data = $document->get_elements_data();
@@ -305,7 +305,7 @@ class Handle_Atomic_Form_Submission {
 		if ( ! $document ) {
 			return new \WP_Error(
 				'document_not_found',
-				__( 'Document not found', 'elementor-pro' )
+				__( 'Document not found', 'extensions-for-elementor-form' )
 			);
 		}
 
@@ -316,7 +316,7 @@ class Handle_Atomic_Form_Submission {
 		if ( empty( $form_element ) ) {
 			return new \WP_Error(
 				'form_not_found',
-				__( 'Form element not found', 'elementor-pro' )
+				__( 'Form element not found', 'extensions-for-elementor-form' )
 			);
 		}
 
@@ -398,7 +398,8 @@ class Handle_Atomic_Form_Submission {
 				$action_results[] = [
 					'type' => $action_type,
 					'status' => 'failed',
-					'error' => sprintf( __( 'Invalid action type: %s', 'elementor-pro' ), $action_type ),
+					// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
+					'error' => sprintf( __( 'Invalid action type: %s', 'extensions-for-elementor-form' ), $action_type ),
 				];
 				$failed_actions[] = $action_type;
 				continue;
@@ -406,7 +407,8 @@ class Handle_Atomic_Form_Submission {
 
 			try {
 				if ( ! $action ) {
-					throw new \Exception( sprintf( __( 'Could not create action: %s', 'elementor-pro' ), $action_type ) );
+					// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
+					throw new \Exception( sprintf( __( 'Could not create action: %s', 'extensions-for-elementor-form' ), $action_type ) );
 				}
 
 				$result = $action->execute( $form_data, $widget_settings, $context );
@@ -542,6 +544,7 @@ class Handle_Atomic_Form_Submission {
 		$form_name = $this->resolve_form_name( $posted_form_name, $form_id );
 
 		$spam_check = apply_filters(
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			'elementor_pro/atomic_forms/spam_check',
 			false,
 			$form_fields,
@@ -551,14 +554,14 @@ class Handle_Atomic_Form_Submission {
 		
 		if ( $spam_check ) {
 			$this->send_error_response(
-				__( 'Your submission was flagged as spam. Please try again or contact the site administrator.', 'elementor-pro' )
+				__( 'Your submission was flagged as spam. Please try again or contact the site administrator.', 'extensions-for-elementor-form' )
 			);
 		}
 
 		$actions = $widget_settings['actions-after-submit'] ?? [];
 
 		if ( empty( $actions ) ) {
-			$this->send_error_response( __( 'No actions configured for this form', 'elementor-pro' ) );
+			$this->send_error_response( __( 'No actions configured for this form', 'extensions-for-elementor-form' ) );
 		}
 
 		$results = $this->execute_registered_actions(

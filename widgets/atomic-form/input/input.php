@@ -35,7 +35,7 @@ class Input extends AtomicFormInput
     }
 
     public function get_title(): string {
-		return esc_html__( 'Input', 'elementor-pro' );
+		return esc_html__( 'Input', 'extensions-for-elementor-form' );
 	}
 
     public function get_icon(): string {
@@ -84,35 +84,35 @@ class Input extends AtomicFormInput
 			[
 				Text_Control::bind_to( 'placeholder' )
 					->set_placeholder( 'Enter placeholder text' )
-					->set_label( __( 'Input placeholder', 'elementor-pro' ) ),
+					->set_label( __( 'Input placeholder', 'extensions-for-elementor-form' ) ),
 				Select_Control::bind_to( 'type' )
-					->set_label( __( 'Type', 'elementor-pro' ) )
+					->set_label( __( 'Type', 'extensions-for-elementor-form' ) )
 					->set_options( [
 						[
-							'label' => __( 'Text', 'elementor-pro' ),
+							'label' => __( 'Text', 'extensions-for-elementor-form' ),
 							'value' => 'text',
 						],
 						[
-							'label' => __( 'Email', 'elementor-pro' ),
+							'label' => __( 'Email', 'extensions-for-elementor-form' ),
 							'value' => 'email',
 						],
 						[
-							'label' => __( 'Number', 'elementor-pro' ),
+							'label' => __( 'Number', 'extensions-for-elementor-form' ),
 							'value' => 'number',
 						],
 						[
-							'label' => __( 'Tel', 'elementor-pro' ),
+							'label' => __( 'Tel', 'extensions-for-elementor-form' ),
 							'value' => 'tel',
 						],
 						[
-							'label' => __( 'Password', 'elementor-pro' ),
+							'label' => __( 'Password', 'extensions-for-elementor-form' ),
 							'value' => 'password',
 						],
 					] ),
 				Switch_Control::bind_to( 'required' )
-					->set_label( __( 'Required', 'elementor-pro' ) ),
+					->set_label( __( 'Required', 'extensions-for-elementor-form' ) ),
 				Switch_Control::bind_to( 'readonly' )
-					->set_label( __( 'Read only', 'elementor-pro' ) ),
+					->set_label( __( 'Read only', 'extensions-for-elementor-form' ) ),
 			],
 			self::is_cfkef_element_enabled( 'country_code' ) ? Country_Code_Input_Definition::content_controls() : [],
 			self::is_cfkef_element_enabled( 'form_input_mask' ) ? Mask_Input_Definition::content_controls() : []
@@ -120,10 +120,10 @@ class Input extends AtomicFormInput
 
 		$sections = [
 			Section::make()
-				->set_label( __( 'Content', 'elementor-pro' ) )
+				->set_label( __( 'Content', 'extensions-for-elementor-form' ) )
 				->set_items( $content_items ),
 			Section::make()
-				->set_label( __( 'Settings', 'elementor-pro' ) )
+				->set_label( __( 'Settings', 'extensions-for-elementor-form' ) )
 				->set_id( 'settings' )
 				->set_items( $this->get_settings_controls() ),
 		];

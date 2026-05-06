@@ -49,16 +49,16 @@ class Atomic_Form_Whatsapp_Redirect_Controls {
 
 	public static function build_actions_after_submit_chips( string $collect_submissions_action_value ): Chips_Control {
 		return Chips_Control::bind_to( 'actions-after-submit' )
-			->set_label( \__( 'Actions after submit', 'elementor' ) )
+			->set_label( \__( 'Actions after submit', 'extensions-for-elementor-form' ) )
 			->set_meta( [ 'topDivider' => true ] )
 			->set_options(
 				[
 					[
-						'label' => \__( 'Collect submissions', 'elementor' ),
+						'label' => \__( 'Collect submissions', 'extensions-for-elementor-form' ),
 						'value' => $collect_submissions_action_value,
 					],
 					[
-						'label' => \__( 'Email', 'elementor' ),
+						'label' => \__( 'Email', 'extensions-for-elementor-form' ),
 						'value' => 'email',
 					],
 					[
@@ -82,12 +82,10 @@ class Atomic_Form_Whatsapp_Redirect_Controls {
 						->set_label( \__( 'Add WhatsApp redirect action to use this action.', 'extensions-for-elementor-form' ) ),
 					Text_Control::bind_to( 'cfl-whatsapp-to' )
 						->set_label( \__( 'WhatsApp phone', 'extensions-for-elementor-form' ) )
-						->set_description( \__( 'Phone with country code, e.g. 5551999999999', 'extensions-for-elementor-form' ) )
 						->set_placeholder( \__( '13459999999', 'extensions-for-elementor-form' ) )
 						->set_meta( [ 'classes' => 'elementor-control-whats-phone-direction-ltr' ] ),
 					Textarea_Control::bind_to( 'cfl-whatsapp-message' )
 						->set_label( \__( 'WhatsApp message', 'extensions-for-elementor-form' ) )
-						->set_description( \__( 'Use field shortcodes or custom text. To add a line break, use the token: %break%', 'extensions-for-elementor-form' ) )
 						->set_placeholder( \__( 'Write your text or use field shortcodes', 'extensions-for-elementor-form' ) )
 						->set_meta( [ 'classes' => 'elementor-control-whats-direction-ltr' ] ),
 				]

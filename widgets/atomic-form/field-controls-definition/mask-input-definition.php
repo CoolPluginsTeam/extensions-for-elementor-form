@@ -180,6 +180,7 @@ final class Mask_Input_Definition {
 		 *
 		 * @param array<int, array{label: string, value: string}> $mask_options
 		 */
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		$mask_options = apply_filters( 'fme_atomic_mask_control_options', $mask_options );
 
 		return [
