@@ -18,7 +18,9 @@
     }
 
     $(window).on('elementor/commands/run/after', function (e) {
-        hideInputOfWarning(e);
+        setTimeout(()=>{
+            hideInputOfWarning(e);
+        }, 100);
     });
 
 })(jQuery);
