@@ -44,3 +44,5 @@ node_modules
 /src
 postcss.config.js
 .wordpress-org
+fix-issues-files.txt
+fix-issues.csv
