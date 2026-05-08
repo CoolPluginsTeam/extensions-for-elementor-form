@@ -30,6 +30,10 @@ class Atomic_Form_Addon_Loader {
 
     public function __construct() {
 
+        if ( ! $this->are_atomic_form_experiments_active() ) {
+            return;
+        }
+
         $this->version = CFL_VERSION;
 
         add_filter('elementor/widgets/register', [$this, 'register_widgets'], 999);
@@ -48,6 +52,21 @@ class Atomic_Form_Addon_Loader {
     private function is_field_enabled($field_key) {
         $enabled_elements = get_option('cfkef_enabled_elements', array());
         return in_array(sanitize_key($field_key), array_map('sanitize_key', $enabled_elements));
+    }
+
+    /**
+     * Core Atomic Widgets (`e_atomic_elements`) plus Pro Atomic Form (`e_pro_atomic_form`) must both be active.
+     *
+     * @see \Elementor\Modules\AtomicWidgets\Module::EXPERIMENT_NAME
+     */
+    private function are_atomic_form_experiments_active(): bool {
+        $experiments = Elementor_Plugin::$instance->experiments ?? null;
+        if ( ! $experiments || ! method_exists( $experiments, 'is_feature_active' ) ) {
+            return false;
+        }
+
+        return $experiments->is_feature_active( 'e_atomic_elements' )
+            && $experiments->is_feature_active( 'e_pro_atomic_form' );
     }
 
     public function enqueue_editor_scripts() {
@@ -143,6 +162,10 @@ class Atomic_Form_Addon_Loader {
             if ( ! Elementor_Utils::has_pro() ) {
                 return;
             }
+
+            if ( ! $this->are_atomic_form_experiments_active() ) {
+                return;
+            }
     
             $experiments = Elementor_Plugin::$instance->experiments;
             if ( ! $experiments || ! $experiments->is_feature_active( 'e_pro_atomic_form' ) ) {
@@ -166,6 +189,21 @@ class Atomic_Form_Addon_Loader {
      * Atomic form masks still need them, so register here if missing.
      */
     private function ensure_fme_mask_assets_registered() {
+
+
+        if ( ! Elementor_Utils::has_pro() ) {
+            return;
+        }
+
+        if ( ! $this->are_atomic_form_experiments_active() ) {
+            return;
+        }
+
+        $experiments = Elementor_Plugin::$instance->experiments;
+        if ( ! $experiments || ! $experiments->is_feature_active( 'e_pro_atomic_form' ) ) {
+            return;
+        }
+
         if ( ! wp_script_is( 'fme-custom-mask-script', 'registered' ) ) {
             wp_register_script( 'fme-custom-mask-script', CFL_PLUGIN_URL . 'assets/js/inputmask/custom-mask-script.js', array( 'jquery' ), $this->version, true );
 
@@ -234,6 +272,19 @@ class Atomic_Form_Addon_Loader {
 
     private function ensure_atomic_form_country_code_assets_registered() {
 
+        if ( ! Elementor_Utils::has_pro() ) {
+            return;
+        }
+
+        if ( ! $this->are_atomic_form_experiments_active() ) {
+            return;
+        }
+
+        $experiments = Elementor_Plugin::$instance->experiments;
+        if ( ! $experiments || ! $experiments->is_feature_active( 'e_pro_atomic_form' ) ) {
+            return;
+        }
+
         $this->error_map =[
             __("The phone number you entered is not valid. Please check the format and try again.", "extensions-for-elementor-form"),
             __("The country code you entered is not recognized. Please ensure it is correct and try again.", "extensions-for-elementor-form"),
@@ -279,6 +330,10 @@ class Atomic_Form_Addon_Loader {
             return;
         }
 
+        if ( ! $this->are_atomic_form_experiments_active() ) {
+            return;
+        }
+
         $experiments = Elementor_Plugin::$instance->experiments;
         if ( ! $experiments || ! $experiments->is_feature_active( 'e_pro_atomic_form' ) ) {
             return;
@@ -303,6 +358,10 @@ class Atomic_Form_Addon_Loader {
      */
     public function register_atomic_form_condition_script() {
         if ( ! Elementor_Utils::has_pro() ) {
+            return;
+        }
+
+        if ( ! $this->are_atomic_form_experiments_active() ) {
             return;
         }
 

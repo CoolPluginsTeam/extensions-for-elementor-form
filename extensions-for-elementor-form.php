@@ -175,9 +175,13 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		}
 
 		if (get_option('cfkef_enable_atomic_form', true)) {	
-			if(is_plugin_active('elementor-pro/elementor-pro.php') || is_plugin_active('pro-elements/pro-elements.php')){
-				require_once CFL_PLUGIN_PATH . 'widgets/atomic-form-addon-loader.php';
-				Atomic_Form_Addon_Loader::get_instance();
+			if ( is_plugin_active( 'elementor-pro/elementor-pro.php' ) || is_plugin_active( 'pro-elements/pro-elements.php' ) ) {
+				// After `elementor/init`, core services (e.g. experiments) are initialized; on `elementor/loaded` they are often still null.
+				if ( did_action( 'elementor/init' ) ) {
+					$this->load_atomic_form_addon();
+				} else {
+					add_action( 'elementor/init', array( $this, 'load_atomic_form_addon' ), 20 );
+				}
 			}
 		}
 
@@ -206,6 +210,41 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		));
 		add_filter('plugin_row_meta', array($this, 'cfkef_plugin_row_meta'), 10, 2);
 	}
+
+	public function load_atomic_form_addon() {
+		if ( ! is_plugin_active( 'elementor-pro/elementor-pro.php' ) && ! is_plugin_active( 'pro-elements/pro-elements.php' ) ) {
+			return;
+		}
+
+		if ( ! did_action( 'elementor/init' ) || ! class_exists( '\Elementor\Plugin' ) ) {
+			return;
+		}
+
+		$elementor = \Elementor\Plugin::$instance;
+		if ( ! $elementor ) {
+			return;
+		}
+
+		$experiments = isset( $elementor->experiments ) ? $elementor->experiments : null;
+		if ( ! self::are_elementor_atomic_form_experiments_active( $experiments ) ) {
+			return;
+		}
+
+		require_once CFL_PLUGIN_PATH . 'widgets/atomic-form-addon-loader.php';
+		Atomic_Form_Addon_Loader::get_instance();
+	}
+
+	/**
+		 * @param mixed $experiments \Elementor\Core\Experiments\Manager|null.
+		 */
+		private static function are_elementor_atomic_form_experiments_active( $experiments ): bool {
+			if ( ! $experiments || ! is_object( $experiments ) || ! method_exists( $experiments, 'is_feature_active' ) ) {
+				return false;
+			}
+
+			return $experiments->is_feature_active( 'e_atomic_elements' )
+				&& $experiments->is_feature_active( 'e_pro_atomic_form' );
+		}
 
 	public function cfkef_plugin_row_meta($plugin_meta, $plugin_file)
 	{
