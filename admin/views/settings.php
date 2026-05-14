@@ -76,160 +76,55 @@ function handle_form_submit() {
     // Security check
     $pattern = "/(<script|<\/script>|onerror=|onload=|eval\(|javascript:|SELECT |INSERT |DELETE |DROP |UPDATE |UNION )/i";
 
-    if(isset($_POST['cfefp_cdn_image'])){
+    $fields_to_validate = array(
+        'cfefp_cdn_image',
+        'cfefp_email_conditionally',
+        'cfefp_redirect_conditionally',
+        'cfefp_mailchimp_conditionally',
+        'cfefp_webhook_conditionally',
+        'cfefp_whatsapp_conditionally',
+        'cfefp_getresponse_conditionally',
+        'cfkef_country_code_api_key',
+        'cfefp_cloudflare_site_key',
+        'cfefp_cloudflare_secret_key',
+        'cfefp_h_site_key',
+        'cfefp_h_secret_key',
+        'cfl_site_key_v2',
+        'cfl_secret_key_v2',
+        'cfl_site_key_v3',
+        'cfl_secret_key_v3',
+        'cfl_threshold_v3',
+        'cfl_mailchimp_api_key',
+        'cfl_getresponse_api_key',
+    );
 
-        if (preg_match($pattern, $_POST['cfefp_cdn_image'])) {
-
+    foreach ( $fields_to_validate as $field ) {
+        if ( ! isset( $_POST[ $field ] ) ) {
+            continue;
+        }
+        if ( ! is_scalar( $_POST[ $field ] ) ) {
+            continue;
+        }
+        $value = sanitize_text_field( wp_unslash( (string) $_POST[ $field ] ) );
+        if ( preg_match( $pattern, $value ) ) {
             return false;
         }
     }
-
-
-    if(isset($_POST['cfefp_email_conditionally'])){
-
-        if (preg_match($pattern, $_POST['cfefp_email_conditionally'])) {
-
-            return false;
-        }
-    }
-
-
-    if(isset($_POST['cfefp_redirect_conditionally'])){
-
-        if (preg_match($pattern, $_POST['cfefp_redirect_conditionally'])) {
-
-            return false;
-        }
-    }
-
-    if(isset($_POST['cfefp_mailchimp_conditionally'])){
-
-        if (preg_match($pattern, $_POST['cfefp_mailchimp_conditionally'])) {
-
-            return false;
-        }
-    }
-
-    if(isset($_POST['cfefp_webhook_conditionally'])){
-
-        if (preg_match($pattern, $_POST['cfefp_webhook_conditionally'])) {
-
-            return false;
-        }
-    }
-
-    if(isset($_POST['cfefp_whatsapp_conditionally'])){
-
-        if (preg_match($pattern, $_POST['cfefp_whatsapp_conditionally'])) {
-
-            return false;
-        }
-    }
-
-    if(isset($_POST['cfefp_getresponse_conditionally'])){
-
-        if (preg_match($pattern, $_POST['cfefp_getresponse_conditionally'])) {
-
-            return false;
-        }
-    }
-
-    if(isset($_POST['cfkef_country_code_api_key'])){
-
-        if (preg_match($pattern, $_POST['cfkef_country_code_api_key'])) {
-
-            return false;
-        }
-    }
-
-    if(isset($_POST['cfefp_cloudflare_site_key'])){
-
-        if (preg_match($pattern, $_POST['cfefp_cloudflare_site_key'])) {
-
-            return false;
-        }
-    }
-
-    if(isset($_POST['cfefp_cloudflare_secret_key'])){
-
-        if (preg_match($pattern, $_POST['cfefp_cloudflare_secret_key'])) {
-
-
-            return false;
-        }
-    }
-
-
-    if(isset($_POST['cfefp_h_site_key'])){
-
-        if (preg_match($pattern, $_POST['cfefp_h_site_key'])) {
-
-            return false;
-        }
-    }
-
-    if(isset($_POST['cfefp_h_secret_key'])){
-
-        if (preg_match($pattern, $_POST['cfefp_h_secret_key'])) {
-
-
-            return false;
-        }
-    }
-
-    if(isset($_POST['cfl_site_key_v2'])){
-
-        if (preg_match($pattern, $_POST['cfl_site_key_v2'])) {
-
-
-            return false;
-        }
-    }
-
-    if(isset($_POST['cfl_secret_key_v2'])){
-
-        if (preg_match($pattern, $_POST['cfl_secret_key_v2'])) {
-
-
-            return false;
-        }
-    }
-
-    if(isset($_POST['cfl_site_key_v3'])){
-
-        if (preg_match($pattern, $_POST['cfl_site_key_v3'])) {
-
-
-            return false;
-        }
-    }
-
-    if(isset($_POST['cfl_secret_key_v3'])){
-
-        if (preg_match($pattern, $_POST['cfl_secret_key_v3'])) {
-
-
-            return false;
-        }
-    }
-
-    if(isset($_POST['cfl_threshold_v3'])){
-
-        if (preg_match($pattern, $_POST['cfl_threshold_v3'])) {
-
-
-            return false;
-        }
-    }
-
 
     return true;
-
 
 }
 
 // Save API keys when the form is submitted
 if (isset($_POST['cfl_site_key_v2']) || isset($_POST['cfl_secret_key_v2']) || isset($_POST['cfl_site_key_v3']) || isset($_POST['cfl_secret_key_v3']) || isset($_POST['cfl_threshold_v3']) || isset($_POST['cfef_usage_share_data']) || isset($_POST['cfefp_redirect_conditionally']) || isset($_POST['cfefp_email_conditionally'])) {
+
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_die(
+            esc_html__( 'Unauthorized', 'extensions-for-elementor-form' ),
+            '',
+            array( 'response' => 403 )
+        );
+    }
 
     check_admin_referer('cool_formkit_save_api_keys', 'cool_formkit_nonce');
 
@@ -238,31 +133,31 @@ if (isset($_POST['cfl_site_key_v2']) || isset($_POST['cfl_secret_key_v2']) || is
 
     }else{
 
-    $redirect_conditionally = isset($_POST['cfefp_redirect_conditionally']) ?  sanitize_text_field($_POST['cfefp_redirect_conditionally']) : '';
+    $redirect_conditionally = isset($_POST['cfefp_redirect_conditionally']) ?  sanitize_text_field(wp_unslash($_POST['cfefp_redirect_conditionally'])) : '';
     
-    $email_conditionally = isset($_POST['cfefp_email_conditionally']) ? sanitize_text_field($_POST['cfefp_email_conditionally']) : '';
+    $email_conditionally = isset($_POST['cfefp_email_conditionally']) ? sanitize_text_field(wp_unslash($_POST['cfefp_email_conditionally'])) : '';
 
     // Mailchimp conditionally
-    $cfefp_mailchimp_conditionally = isset($_POST['cfefp_mailchimp_conditionally']) ? sanitize_text_field($_POST['cfefp_mailchimp_conditionally']) : '';
+    $cfefp_mailchimp_conditionally = isset($_POST['cfefp_mailchimp_conditionally']) ? sanitize_text_field(wp_unslash($_POST['cfefp_mailchimp_conditionally'])) : '';
 
     // GetResponse conditionally
-    $cfefp_getresponse_conditionally = isset($_POST['cfefp_getresponse_conditionally']) ? sanitize_text_field($_POST['cfefp_getresponse_conditionally']) : '';
+    $cfefp_getresponse_conditionally = isset($_POST['cfefp_getresponse_conditionally']) ? sanitize_text_field(wp_unslash($_POST['cfefp_getresponse_conditionally'])) : '';
 
     // Webhook conditionally
-    $cfefp_webhook_conditionally = isset($_POST['cfefp_webhook_conditionally']) ? sanitize_text_field($_POST['cfefp_webhook_conditionally']) : '';
+    $cfefp_webhook_conditionally = isset($_POST['cfefp_webhook_conditionally']) ? sanitize_text_field(wp_unslash($_POST['cfefp_webhook_conditionally'])) : '';
 
     // WhatsApp redirect conditionally
-    $cfefp_whatsapp_conditionally = isset($_POST['cfefp_whatsapp_conditionally']) ? sanitize_text_field($_POST['cfefp_whatsapp_conditionally']) : '';
+    $cfefp_whatsapp_conditionally = isset($_POST['cfefp_whatsapp_conditionally']) ? sanitize_text_field(wp_unslash($_POST['cfefp_whatsapp_conditionally'])) : '';
 
 
 
-    $recaptcha_site_key  = isset($_POST['cfl_site_key_v2']) ? sanitize_text_field($_POST['cfl_site_key_v2']) : '';
-    $recaptcha_secret_key = isset($_POST['cfl_secret_key_v2']) ? sanitize_text_field($_POST['cfl_secret_key_v2']) : '';
+    $recaptcha_site_key  = isset($_POST['cfl_site_key_v2']) ? sanitize_text_field(wp_unslash($_POST['cfl_site_key_v2'])) : '';
+    $recaptcha_secret_key = isset($_POST['cfl_secret_key_v2']) ? sanitize_text_field(wp_unslash($_POST['cfl_secret_key_v2'])) : '';
 
-    $recaptcha_v3_site_key  = isset($_POST['cfl_site_key_v3']) ? sanitize_text_field($_POST['cfl_site_key_v3']) : '';
-    $recaptcha_v3_secret_key = isset($_POST['cfl_secret_key_v3']) ? sanitize_text_field($_POST['cfl_secret_key_v3']) : '';
-    $recaptcha_v3_threshold = isset($_POST['cfl_threshold_v3']) ? sanitize_text_field($_POST['cfl_threshold_v3']) : '';
-    $cfef_usage_share_data = isset($_POST['cfef_usage_share_data']) ? sanitize_text_field($_POST['cfef_usage_share_data']) : '';
+    $recaptcha_v3_site_key  = isset($_POST['cfl_site_key_v3']) ? sanitize_text_field(wp_unslash($_POST['cfl_site_key_v3'])) : '';
+    $recaptcha_v3_secret_key = isset($_POST['cfl_secret_key_v3']) ? sanitize_text_field(wp_unslash($_POST['cfl_secret_key_v3'])) : '';
+    $recaptcha_v3_threshold = isset($_POST['cfl_threshold_v3']) ? sanitize_text_field(wp_unslash($_POST['cfl_threshold_v3'])) : '';
+    $cfef_usage_share_data = isset($_POST['cfef_usage_share_data']) ? sanitize_text_field(wp_unslash($_POST['cfef_usage_share_data'])) : '';
 
     update_option('cfl_site_key_v2', $recaptcha_site_key);
     update_option('cfl_secret_key_v2', $recaptcha_secret_key);

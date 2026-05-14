@@ -6,6 +6,8 @@ use WP_List_Table;
 use Cool_FormKit\Admin\Entries\CFKEF_Entries_Posts;
 use Cool_FormKit\Admin\Entries\CFKEF_Post_Bulk_Actions;
 
+if ( ! defined( 'ABSPATH' ) ) { exit; }
+
 // phpcs:disable PluginCheck.Security.DirectDB.UnescapedDBParameter	
 
 if(!class_exists('CFKEF_List_Table')) { 
@@ -149,7 +151,7 @@ class CFKEF_List_Table extends WP_List_Table {
 
     public function column_id($item) {
         $entry_id = get_post_meta($item->ID, '_cfkef_form_entry_id', true);
-        return $entry_id;
+        return esc_html($entry_id);
     }
 
     public function column_submission_date($item) {

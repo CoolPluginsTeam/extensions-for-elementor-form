@@ -34,9 +34,11 @@
         }
         
         function decodeHTMLEntities(text) {
-            var textArea = document.createElement('textarea');
-            textArea.innerHTML = text;
-            return textArea.value;
+            if (text == null || text === "") {
+                return text;
+            }
+            var doc = new DOMParser().parseFromString(String(text), "text/html");
+            return doc.body ? doc.body.textContent : String(text);
         }
 
         // function to add hidden class when form load
@@ -653,7 +655,10 @@
             // If the message hasn't been added yet, insert it and replace "Next" with the actual button text
             if (container.prev(".cfef-step-field-text").length === 0) {
                     var message = my_script_vars_elementor.no_input_step.replace('%s', nextButtonText);
-                    container.before('<p class="cfef-step-field-text">' + message + '</p>');
+                    var notice = document.createElement('p');
+                    notice.className = 'cfef-step-field-text';
+                    notice.textContent = message;
+                    container[0].before(notice);
             }
                 
 

@@ -196,11 +196,14 @@
                     
                         // If the message hasn't been added yet, insert it and replace "Next" with the actual button text
                         if (container.prev(".cfef-step-field-text").length === 0) {
-                          container.before(
-                            '<p class="cfef-step-field-text">No input is required on this step. Just click "' +
-                              nextButtonText +
-                              '" to proceed.</p>'
-                          );
+                          var stepMessage =
+                            'No input is required on this step. Just click "' +
+                            nextButtonText +
+                            '" to proceed.';
+                          var $stepNotice = $('<p></p>')
+                            .addClass('cfef-step-field-text')
+                            .text(stepMessage);
+                          container.before($stepNotice);
                         }
                     } else {
                         // Check if field exists before adding the class

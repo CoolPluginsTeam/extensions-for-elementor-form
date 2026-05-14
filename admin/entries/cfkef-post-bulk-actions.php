@@ -118,14 +118,14 @@ class CFKEF_Post_Bulk_Actions {
 		$this->action = isset( $_REQUEST['action'] ) ? sanitize_key( $action ) : false;
 
 		if ( $this->action === '-1' ) {
-			$this->action = ! empty( $_REQUEST['action2'] ) ? sanitize_key( $_REQUEST['action2'] ) : false;
+			$this->action = ! empty( $_REQUEST['action2'] ) ? sanitize_key( wp_unslash($_REQUEST['action2']) ) : false;
 		}
 
 		if($this->action === 'empty_trash'){
 			$this->ids = [0];
 		}
 
-		if(isset($_GET['action2']) && '-1' !== $_GET['action2'] && (!isset($_GET['bulk_action']) || 'Apply' !== $_GET['bulk_action']) ){
+		if(isset($_GET['action2']) && '-1' !== sanitize_key(wp_unslash($_GET['action2'])) && (!isset($_GET['bulk_action']) || 'Apply' !== sanitize_key(wp_unslash($_GET['bulk_action']))) ){
 			return;
 		}
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
@@ -145,8 +145,8 @@ class CFKEF_Post_Bulk_Actions {
 		
 		// Check the nonce.
 		if (
-			! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'bulk-entries' ) &&
-			! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'bulk-entries' )
+			! wp_verify_nonce( sanitize_key( wp_unslash($_GET['_wpnonce'])), 'bulk-entries' ) &&
+			! wp_verify_nonce( sanitize_key( wp_unslash($_GET['_wpnonce'])), 'bulk-entries' )
 			) {
 				return;
 		}

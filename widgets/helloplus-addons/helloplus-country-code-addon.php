@@ -399,6 +399,10 @@ class HelloPlus_COUNTRY_CODE_FIELD {
 			wp_die( '0', 400 );
 		}
 
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error();
+		}
+
 		if ( isset( $_POST['ccfef_notice_dismiss'] ) && 'true' === $_POST['ccfef_notice_dismiss'] ) {
 			update_option( 'ccfef_review_notice_dismiss', 'yes' );
 		}

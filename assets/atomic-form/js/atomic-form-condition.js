@@ -2,9 +2,12 @@
     "use strict";
 
     function decodeHTMLEntities(text) {
-        var textArea = document.createElement("textarea");
-        textArea.innerHTML = text == null ? "" : String(text);
-        return textArea.value;
+        if (text == null) {
+            return "";
+        }
+        var str = String(text);
+        var doc = new DOMParser().parseFromString(str, "text/html");
+        return doc.body ? doc.body.textContent : "";
     }
 
     function checkFieldLogic(compareFieldValue, conditionOperation, compareValue) {
