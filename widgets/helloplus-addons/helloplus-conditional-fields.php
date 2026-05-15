@@ -471,7 +471,7 @@ class HelloPlus_Create_Conditional_Fields {
 			wp_send_json_error();
 		}
 
-		if ( isset( $_POST['cfef_notice_dismiss'] ) && 'true' === $_POST['cfef_notice_dismiss'] ) {
+		if ( isset( $_POST['cfef_notice_dismiss'] ) && 'true' === sanitize_text_field( wp_unslash( $_POST['cfef_notice_dismiss'] ) ) ) {
 			update_option( 'cfkef_elementor_notice_dismiss', 'yes' );
 		}
 		exit;

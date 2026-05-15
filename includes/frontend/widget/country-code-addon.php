@@ -403,7 +403,7 @@ class CFL_COUNTRY_CODE_FIELD {
 			wp_send_json_error();
 		}
 
-		if ( isset( $_POST['ccfef_notice_dismiss'] ) && 'true' === $_POST['ccfef_notice_dismiss'] ) {
+		if ( isset( $_POST['ccfef_notice_dismiss'] ) && 'true' === sanitize_text_field( wp_unslash( $_POST['ccfef_notice_dismiss'] ) ) ) {
 			update_option( 'ccfef_review_notice_dismiss', 'yes' );
 		}
 		exit;

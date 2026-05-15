@@ -143,7 +143,12 @@ class Review_notice
 			wp_die('0', 400);
 		}
 
+		if (! current_user_can('update_plugins') && ! current_user_can('manage_options')) {
+			wp_send_json_error(__('You do not have permission to do this.', 'extensions-for-elementor-form'));
+		}
+
 		if (isset($_POST['cfl_notice_dismiss']) && 'true' === sanitize_text_field(wp_unslash($_POST['cfl_notice_dismiss']))) {
+			
 			update_option('cfl_review_notice_dismiss', 'yes');
 			echo json_encode(array('success' => 'true'));
 			exit;

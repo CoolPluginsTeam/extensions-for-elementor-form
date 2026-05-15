@@ -395,7 +395,10 @@
                 if (selectBox.length > 0 && selectBox.find("option").length > 0) {
                     var optionToRemove = selectBox.find("option[value='premium']");
                     if (optionToRemove.length <= 0) {
-                        selectBox.append(`<option value="${optionValue}">${optionText}</option>`);
+                        var newOption = document.createElement("option");
+                        newOption.value = optionValue;
+                        newOption.textContent = optionText;
+                        selectBox.append(newOption);
                     }
                     selectBox.val(optionValue);
                 }
