@@ -57,7 +57,7 @@ class Ajax_Handler {
 	public function ajax_send_form() {
 		check_ajax_referer( self::NONCE_ACTION, 'nonce' );
 
-		$post_data = $_POST;
+		$post_data = wp_unslash( $_POST );
 
 		// $post_id that holds the form settings.
 		$post_id = filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
@@ -213,11 +213,11 @@ class Ajax_Handler {
 
 		$post_id = filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
 
-		$error_msg = implode( '<br>', array_map( 'esc_html', $this->messages['error'] ) );
+		$error_msg = implode( '<br>', array_map( 'wp_kses_post', $this->messages['error'] ) );
 
 		if ( current_user_can( 'edit_post', $post_id ) && ! empty( $this->messages['admin_error'] ) ) {
 			$this->add_admin_error_message( esc_html__( 'This message is not visible to site visitors.', 'extensions-for-elementor-form' ) );
-			$error_msg .= '<div class="elementor-forms-admin-errors">' . implode( '<br>', array_map( 'esc_html', $this->messages['admin_error'] ) ) . '</div>';
+			$error_msg .= '<div class="elementor-forms-admin-errors">' . implode( '<br>', array_map( 'wp_kses_post', $this->messages['admin_error'] ) ) . '</div>';
 		}
 
 		wp_send_json_error( [

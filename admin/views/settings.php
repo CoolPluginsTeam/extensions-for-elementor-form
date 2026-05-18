@@ -310,7 +310,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                             <label for="cfefp_email_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Emails', 'extensions-for-elementor-form'); ?>
                                 <span class="cfkef-pro-feature">
                                     <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=settings_dashboard" target="_blank">
-                                    <?php echo $conditional_pro_install ? '' : '(Pro)'?>
+                                    <?php echo esc_html( $conditional_pro_install ? '' : '(Pro)' ); ?>
                                     </a>
                                 </span>
                             </label>
@@ -326,7 +326,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                             <label for="cfefp_redirect_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Redirections', 'extensions-for-elementor-form'); ?>
                                 <span class="cfkef-pro-feature">
                                     <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
-                                    <?php echo $conditional_pro_install ? '' : '(Pro)'?>
+                                    <?php echo esc_html( $conditional_pro_install ? '' : '(Pro)' ); ?>
                                     </a>
                                 </span>
                             </label>
@@ -342,7 +342,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                             <label for="cfefp_mailchimp_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Mailchimp', 'extensions-for-elementor-form'); ?>
                                 <span class="cfkef-pro-feature">
                                     <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
-                                    <?php echo $conditional_pro_install ? '' : '(Pro)'?>
+                                    <?php echo esc_html( $conditional_pro_install ? '' : '(Pro)' ); ?>
                                     </a>
                                 </span>
                             </label>
@@ -359,7 +359,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                             <label for="cfefp_getresponse_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Getresponse', 'extensions-for-elementor-form'); ?>
                                 <span class="cfkef-pro-feature">
                                     <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
-                                    <?php echo $conditional_pro_install ? '' : '(Pro)'?>
+                                    <?php echo esc_html( $conditional_pro_install ? '' : '(Pro)' ); ?>
                                     </a>
                                 </span>
                             </label>
@@ -376,7 +376,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                             <label for="cfefp_webhook_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Webhook', 'extensions-for-elementor-form'); ?>
                                 <span class="cfkef-pro-feature">
                                     <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
-                                    <?php echo $conditional_pro_install ? '' : '(Pro)'?>
+                                    <?php echo esc_html( $conditional_pro_install ? '' : '(Pro)' ); ?>
                                     </a>
                                 </span>
                             </label>
@@ -393,7 +393,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                             <label for="cfefp_whatsapp_conditionally" class="cool-formkit-label"><?php esc_html_e('Number of Conditional Whatsapp Redirect', 'extensions-for-elementor-form'); ?>
                                 <span class="cfkef-pro-feature">
                                     <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=settings_dashboard" target="_blank">
-                                    <?php echo $conditional_pro_install ? '' : '(Pro)'?>
+                                    <?php echo esc_html( $conditional_pro_install ? '' : '(Pro)' ); ?>
                                     </a>
                                 </span>
                             </label>
@@ -602,7 +602,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                     <h3 class="mailchimp-h3"><?php esc_html_e('MailChimp Settings', 'extensions-for-elementor-form'); ?></h3>
                     <span class="cfkef-pro-feature">
                         <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=settings_dashboard" target="_blank">
-                        <?php echo $cool_formkit_pro_install ? '' : '(Pro)'?>
+                        <?php echo esc_html( $cool_formkit_pro_install ? '' : '(Pro)' ); ?>
                         </a>
                     </span>
                 </div>
@@ -658,7 +658,7 @@ $cdn_image = get_option('cfefp_cdn_image', '');
                     <h3 class="getresponse-h3"><?php esc_html_e('GetResponse Settings', 'extensions-for-elementor-form'); ?></h3>
                     <span class="cfkef-pro-feature">
                             <a href="https://coolformkit.com/pricing/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=settings_dashboard" target="_blank">
-                            <?php echo $cool_formkit_pro_install ? '' : '(Pro)'?>
+                            <?php echo esc_html( $cool_formkit_pro_install ? '' : '(Pro)' ); ?>
                             </a>
                     </span>
                 </div>

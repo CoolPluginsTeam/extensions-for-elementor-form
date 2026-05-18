@@ -155,7 +155,7 @@ class CFKEF_List_Table extends WP_List_Table {
     }
 
     public function column_submission_date($item) {
-        return $item->post_date;
+        return esc_html($item->post_date);
     }
 
     public function column_page_title($item) {

@@ -145,7 +145,6 @@ class CFKEF_Post_Bulk_Actions {
 		
 		// Check the nonce.
 		if (
-			! wp_verify_nonce( sanitize_key( wp_unslash($_GET['_wpnonce'])), 'bulk-entries' ) &&
 			! wp_verify_nonce( sanitize_key( wp_unslash($_GET['_wpnonce'])), 'bulk-entries' )
 			) {
 				return;
