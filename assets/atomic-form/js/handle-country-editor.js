@@ -9,7 +9,7 @@
             const hasCountryDescription = controlNode.find(".country-description").length > 0;
 
             if (controlNode.length > 0 && !hasCountryDescription && descriptionText) {
-                controlNode.append(`<p class="country-description">${descriptionText}</p>`);
+                controlNode.append( $( '<p/>', { class: 'country-description' } ).text( descriptionText ) );
             }
         });
     }

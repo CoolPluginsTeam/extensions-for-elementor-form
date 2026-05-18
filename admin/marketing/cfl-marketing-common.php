@@ -161,7 +161,7 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 
 			$conditional_pro_plugin_file = 'conditional-fields-for-elementor-form-pro/class-conditional-fields-for-elementor-form-pro.php';
 
-			$pagenow        = isset($_POST['pagenow']) ? sanitize_key($_POST['pagenow']) : '';
+			$pagenow        = isset($_POST['pagenow']) ? sanitize_key(wp_unslash($_POST['pagenow'])) : '';
 			$network_wide = (is_multisite() && 'import' !== $pagenow);
 			$activation_result = activate_plugin($conditional_pro_plugin_file, '', $network_wide);
 
@@ -204,7 +204,7 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 				if ($skin->result->get_error_message() === 'Destination folder already exists.') {
 
 					$install_status = install_plugin_install_status($api);
-					$pagenow        = isset($_POST['pagenow']) ? sanitize_key($_POST['pagenow']) : '';
+					$pagenow        = isset($_POST['pagenow']) ? sanitize_key(wp_unslash($_POST['pagenow'])) : '';
 
 					if (current_user_can('activate_plugin', $install_status['file'])) {
 						$this->cfl_set_install_by_option( $plugin_slug );

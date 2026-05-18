@@ -255,23 +255,14 @@ class CFKEF_List_Table extends WP_List_Table {
         $page     = $this->get_pagenum();
 		$order    = isset( $_GET['order'] ) && sanitize_text_field(wp_unslash($_GET['order'])) === 'asc' ? 'ASC' : 'DESC';
         $search= isset($_GET['cfkef-entries-search']) ? sanitize_text_field(wp_unslash($_GET['cfkef-entries-search'])) : '';
-		$allowed_orderby = ['ID','post_title','post_date','post_modified','post_status'];
-        $orderby = isset($_GET['orderby']) ? sanitize_key(wp_unslash($_GET['orderby'])) : 'ID';
-        $orderby = isset( $allowed_orderby[ $orderby ] ) ? $allowed_orderby[ $orderby ] : 'ID';
+		$allowed_orderby = array( 'ID', 'post_title', 'post_date', 'post_modified', 'post_status' );
+        $orderby = isset( $_GET['orderby'] ) ? sanitize_key( wp_unslash( $_GET['orderby'] ) ) : 'ID';
+        $orderby = in_array( $orderby, $allowed_orderby, true ) ? $orderby : 'ID';
         $per_page = $this->get_items_per_page( $this->get_per_page_option_name() , 20 );
         $date_filter= isset($_GET['date_filter']) && isset($_GET['m']) && !empty($_GET['m']) ? sanitize_text_field(wp_unslash($_GET['m'])) : '';
         $view = CFKEF_Entries_Posts::get_view();
         // phpcs:enable WordPress.Security.NonceVerification.Recommended
 
-        if ( $orderby === 'date' ) {
-			$orderby = [
-				'modified' => $order,
-				'date'     => $order,
-			];
-		};
-
-        $orderby = esc_sql($orderby);
-        $order = esc_sql($order);
         $page = esc_sql($page);
         $view = esc_sql($view);
         $search = esc_sql($search);
@@ -331,7 +322,7 @@ class CFKEF_List_Table extends WP_List_Table {
         }
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-        $order_by_clause = ' ORDER BY ' . $orderby . ' ' . $order . ' ';
+        $order_by_clause = ' ORDER BY ' . esc_sql( $orderby ) . ' ' . esc_sql( $order ) . ' ';
         $query .= $order_by_clause . $wpdb->prepare(
             "LIMIT %d OFFSET %d",
             $args['posts_per_page'],
