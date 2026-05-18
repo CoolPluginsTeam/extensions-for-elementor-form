@@ -10,27 +10,6 @@ if (!defined('ABSPATH')) {
     die;
 }
 
-
-function cfkef_block_sql_patterns($input) {
-    $sql_keywords = [
-        'SELECT', 'INSERT', 'UPDATE', 'DELETE', 'DROP', 'UNION', 'OUTFILE', 'OR ', 'AND ', '--', '#', '/*', '*/'
-    ];
-
-    foreach ($sql_keywords as $keyword) {
-        if (stripos($input, $keyword) !== false) {
-            return ''; // If SQL pattern is detected, return an empty string
-        }
-    }
-
-    return $input;
-}
-
-function cfkef_sanitize_sql_input($input) {
-    $input = preg_replace('/[\'"=;#()\-]/', '', $input); // Remove SQL special characters
-    return cfkef_block_sql_patterns($input);
-}
-
-
 function cfkef_handle_unchecked_checkbox() {
         $choice  = get_option('cpfm_opt_in_choice_cool_forms');
         $options = get_option('cfef_usage_share_data');

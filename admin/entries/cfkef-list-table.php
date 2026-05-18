@@ -256,8 +256,8 @@ class CFKEF_List_Table extends WP_List_Table {
 		$order    = isset( $_GET['order'] ) && sanitize_text_field(wp_unslash($_GET['order'])) === 'asc' ? 'ASC' : 'DESC';
         $search= isset($_GET['cfkef-entries-search']) ? sanitize_text_field(wp_unslash($_GET['cfkef-entries-search'])) : '';
 		$allowed_orderby = ['ID','post_title','post_date','post_modified','post_status'];
-        $orderby = isset($_GET['orderby']) ? sanitize_key($_GET['orderby']) : 'ID';
-        $orderby = in_array($orderby, $allowed_orderby, true) ? $orderby : 'ID';
+        $orderby = isset($_GET['orderby']) ? sanitize_key(wp_unslash($_GET['orderby'])) : 'ID';
+        $orderby = isset( $allowed_orderby[ $orderby ] ) ? $allowed_orderby[ $orderby ] : 'ID';
         $per_page = $this->get_items_per_page( $this->get_per_page_option_name() , 20 );
         $date_filter= isset($_GET['date_filter']) && isset($_GET['m']) && !empty($_GET['m']) ? sanitize_text_field(wp_unslash($_GET['m'])) : '';
         $view = CFKEF_Entries_Posts::get_view();
@@ -330,7 +330,15 @@ class CFKEF_List_Table extends WP_List_Table {
 
         }
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        $query .= $wpdb->prepare(" ORDER BY {$args['orderby']} {$args['order']} LIMIT %d OFFSET %d", $args['posts_per_page'], ($args['paged'] - 1) * $args['posts_per_page']);
+
+        $order_by_clause = ' ORDER BY ' . $orderby . ' ' . $order . ' ';
+        $query .= $order_by_clause . $wpdb->prepare(
+            "LIMIT %d OFFSET %d",
+            $args['posts_per_page'],
+            ( $args['paged'] - 1 ) * $args['posts_per_page']
+        );
+
+        // $query .= $wpdb->prepare(" ORDER BY {$args['orderby']} {$args['order']} LIMIT %d OFFSET %d", $args['posts_per_page'], ($args['paged'] - 1) * $args['posts_per_page']);
 
         // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $this->items = $wpdb->get_results($query);

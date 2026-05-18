@@ -75,24 +75,37 @@ if (! class_exists('CFL_Marketing_Controllers')) {
 		function cfl_dismiss_notice_callback() {
 
 			if ( ! current_user_can( 'manage_options' ) ) {
-                 wp_send_json_error([ 'message' => 'Permission denied' ]);
+				wp_send_json_error( [ 'message' => 'Permission denied' ] );
 			}
 
-			$type  = sanitize_text_field(wp_unslash($_POST['notice_type'] ?? ''));
-			// phpcs:ignore WordPress.Security.NonceVerification.Missing
-           $nonce = isset($_POST['nonce']) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
-          
-		    if ( empty( $nonce ) || empty( $type ) || ! wp_verify_nonce( $nonce, "cfl_dismiss_nonce_{$type}" ) ) {
-            wp_send_json_error([ 'message' => 'Invalid nonce' ]);
-         }
-			if ($type === 'formdb_notice') {
-				update_option('cfef_formdb_marketing_dismissed', true);
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce read for verification only.
+			$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+
+			if ( empty( $nonce ) ) {
+				wp_send_json_error( [ 'message' => 'Invalid nonce' ] );
+			}
+
+			$allowed_notice_types = [ 'formdb_notice' ];
+			$type                 = '';
+
+			foreach ( $allowed_notice_types as $notice_type ) {
+				if ( wp_verify_nonce( $nonce, 'cfl_dismiss_nonce_' . $notice_type ) ) {
+					$type = $notice_type;
+					break;
+				}
+			}
+
+			if ( empty( $type ) ) {
+				wp_send_json_error( [ 'message' => 'Invalid nonce' ] );
+			}
+
+			if ( 'formdb_notice' === $type ) {
+				update_option( 'cfef_formdb_marketing_dismissed', true );
 				wp_send_json_success();
-
 			}
 
-			wp_send_json_error(['message' => 'Unknown notice type']);
-	}
+			wp_send_json_error( [ 'message' => 'Unknown notice type' ] );
+		}
 
 		public function cfl_install_plugin() {
 
