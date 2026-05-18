@@ -43,7 +43,7 @@ const addDynamicTags = (element) => {
       }
       jQuery( '<li/>', { title: 'Copy ID' } ).text( name ).appendTo( $list );
     });
-    jQuery(this).closest(".elementor-control-input-wrapper").append(html);
+    jQuery(this).closest(".elementor-control-input-wrapper").append( $list );
   })
 
   // function to copy the id of selected option from dynamic tag
