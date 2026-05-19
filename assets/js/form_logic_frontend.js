@@ -218,7 +218,7 @@
 
         function logicFixedRequiredShow(formField,file_types,status) {
             if (formField.hasClass("elementor-field-type-radio") && formField.find('input[value="^newOptionTest"]').length !== 0) {
-                formField.find('input[value="^newOptionTest"]').closest("div.mdc-radio").remove();
+                formField.find('input[value="^newOptionTest"]').closest("span.elementor-field-option").remove();
                 let checkedRadio = formField.find('input[checked="checked"]')[0]
                 checkedRadio ? $(checkedRadio).prop('checked', true):  $(checkedRadio).prop('checked', false)
             } else if (formField.hasClass("elementor-field-type-acceptance")) {
@@ -289,17 +289,18 @@
         function logicFixedRequiredHidden(formField, fieldKey, file_types) {
 
             if (formField.hasClass("elementor-field-type-radio")) {
+
                 var groupclass = '.elementor-field-group-' + fieldKey;
                 const field2 = $(groupclass);
 
                 if (field2.length > 0) {
                     if (field2.find('input[value="^newOptionTest"]').length === 0) {
                         const newOption = $(`
-                            <div class="mdc-radio">
+                            <span class="elementor-field-option">
                                 <input type="radio" value="^newOptionTest" id="form-field-newOption" name="form_fields[${fieldKey}]" required="required" aria-required="true" checked="checked">
-                            </div>
+                            </span>
                         `);
-                        field2.find('.mdc-form-field').append(newOption);
+                        field2.find('.elementor-field-subgroup').append(newOption);
                     }
                 }
             } else if (formField.hasClass("elementor-field-type-acceptance")) {

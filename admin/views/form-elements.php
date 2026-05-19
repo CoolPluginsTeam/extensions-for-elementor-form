@@ -305,7 +305,12 @@ $updated_elements = array('');
                                         $data_slug   = 'elementor-pro';
                                     }
                                 }
-                                ?>
+
+                                $elementor_card_class = $card_class;
+                                $elementor_data_action = $data_action;
+                                $elementor_data_slug = $data_slug;
+                                $elementor_data_init = $data_init;
+                            ?>
 
                                 <div class="cfkef-form-element-card<?php echo esc_attr( $card_class ); ?>"
                                     <?php if ( !$is_elementor_active ) : ?>
@@ -315,7 +320,7 @@ $updated_elements = array('');
                                             data-init="<?php echo esc_attr( $data_init ); ?>"
                                         <?php endif; ?>
                                     <?php endif; ?>
-                                    title="<?php echo !$is_elementor_active ? 'Requires Elementor Pro plugin to be activated' : ''; ?>"
+                                    title="<?php echo esc_attr( ! $is_elementor_active ? __( 'Requires Elementor Pro plugin to be activated', 'extensions-for-elementor-form' ) : '' ); ?>"
                                 >
                                 <div class="cfkef-form-element-info">
                                     <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'admin/assets/icons/elementor-pro-form-widget-min.svg'); ?>" alt="Elementor Field">
@@ -330,7 +335,7 @@ $updated_elements = array('');
                                     </h4>
                                 </div>
                                 <label class="cfkef-toggle-switch"
-                                    style="<?php echo !$is_elementor_active ? 'opacity: 0.5; pointer-events: none; cursor: not-allowed;' : ''; ?>">
+                                    style="<?php echo esc_attr( ! $is_elementor_active ? 'opacity: 0.5; pointer-events: none; cursor: not-allowed;' : '' ); ?>">
                                     <input type="checkbox"
                                         name="cfkef_enable_elementor_pro_form"
                                         value="1"
@@ -381,7 +386,7 @@ $updated_elements = array('');
                                     </h4>
                                 </div>
                                 <label class="cfkef-toggle-switch"
-                                style="<?php echo !$is_hello_plus_active ? 'opacity: 0.5; pointer-events: none; cursor: not-allowed;' : ''; ?>"
+                                style="<?php echo esc_attr( ! $is_hello_plus_active ? 'opacity: 0.5; pointer-events: none; cursor: not-allowed;' : '' ); ?>"
                                 >
                                     <input type="checkbox"
                                         name="cfkef_enable_hello_plus"
@@ -408,7 +413,55 @@ $updated_elements = array('');
                                     <input type="checkbox" name="cfkef_enable_formkit_builder" value="1" <?php checked(get_option('cfkef_enable_formkit_builder', true)); ?>>
                                     <span class="cfkef-slider round"></span>
                                 </label>
-                            </div>                    
+                            </div> 
+
+                            <?php
+                                $card_class = $elementor_card_class;
+                                $data_action = $elementor_data_action;
+                                $data_slug = $elementor_data_slug;
+                                $data_init = $elementor_data_init;
+                            ?>
+                            
+
+                            <div class="cfkef-form-element-card<?php echo esc_attr( $card_class ); ?>"
+                                <?php if ( ! $is_elementor_active ) : ?>
+                                    data-action="<?php echo esc_attr( $data_action ); ?>"
+                                    data-slug="<?php echo esc_attr( $data_slug ); ?>"
+                                    <?php if ( $data_init ) : ?>
+                                        data-init="<?php echo esc_attr( $data_init ); ?>"
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                                title="<?php echo ! $is_elementor_active ? 'Requires Elementor Pro plugin to be activated' : ''; ?>"
+                            >
+
+                                
+
+                                <div class="cfkef-form-element-info">
+                                    <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'admin/assets/icons/atomic-form.png')?>">
+                                    <h4>
+                                        <?php if($pro_elements_activate): ?>
+                                            <span><?php esc_html_e('Atomic Form Widget by', 'extensions-for-elementor-form'); ?></span><br>
+                                            <?php esc_html_e('Pro Elements', 'extensions-for-elementor-form'); ?>
+                                        <?php else: ?>
+                                            <span><?php esc_html_e('Atomic Form Widget by', 'extensions-for-elementor-form'); ?></span><br>
+                                            <?php esc_html_e('Elementor Pro', 'extensions-for-elementor-form'); ?>
+                                        <?php endif; ?>
+                                    </h4>
+                                </div>
+
+                                <label class="cfkef-toggle-switch"
+                                    style="<?php echo esc_attr( ! $is_elementor_active ? 'opacity: 0.5; pointer-events: none; cursor: not-allowed;' : '' ); ?>">
+                                    <input type="checkbox"
+                                        name="cfkef_enable_atomic_form"
+                                        value="1"
+                                        <?php checked(get_option('cfkef_enable_atomic_form', true)); ?>
+                                        <?php disabled(!$is_elementor_active); ?>>
+                                    <span class="cfkef-slider round"></span>
+                                </label>
+                                <?php if (!$is_elementor_active): ?>
+                                    <div class="cfkef-tooltip"><?php esc_html_e('Requires Elementor Pro plugin to be activated', 'extensions-for-elementor-form'); ?></div>
+                                <?php endif; ?>
+                            </div> 
                         </div>
                 </div>
             </div>

@@ -114,6 +114,7 @@ function buttonShakeEffectHandler() {
 		const input1 = wrapper.querySelector('input[name="cfkef_enable_elementor_pro_form"]');
 		const input2 = wrapper.querySelector('input[name="cfkef_enable_hello_plus"]');
 		const input3 = wrapper.querySelector('input[name="cfkef_enable_formkit_builder"]');
+		const input4 = wrapper.querySelector('input[name="cfkef_enable_atomic_form"]');
 
 		function triggerShake() {
 			headerButton.classList.add('shake-effect');
@@ -127,8 +128,8 @@ function buttonShakeEffectHandler() {
 			input.addEventListener('change', function () {
 				let shouldTrigger = false;
 
-				if (input1 && input2 && input3) {
-					shouldTrigger = input1.checked || input2.checked || input3.checked;
+				if (input1 && input2 && input3 && input4) {
+					shouldTrigger = input1.checked || input2.checked || input3.checked || input4.checked;
 				} else {
 					bodyInputs.forEach(i => {
 						if (i.checked) shouldTrigger = true;
@@ -156,6 +157,7 @@ function handleElementCardTooltip() {
 
 			const action = el.dataset.action;
 			const slug = el.dataset.slug;
+			console.log(slug);
 			const init = el.dataset.init;
 			const getCurrentTheme = el.dataset.gettheme; // e.g. 'hello-biz'
 
@@ -181,15 +183,35 @@ function handleElementCardTooltip() {
 
 				tooltip.innerHTML = defaultMessage;
 
+				console.log(tooltip);
 				// Add the button if valid action
 				if (action === 'activate') {
-					tooltip.innerHTML += `<button class="cfkef-activate-plugin-btn" data-slug="${slug}" data-init="${init}">Activate Plugin</button>`;
-				} else if (action === 'install') {
-					let extraCss = '';
-					if (el.classList.contains('need-install') && slug === 'elementor-pro') {
-						extraCss = 'redirect-elementor-page';
+					const activateBtn = document.createElement('button');
+					activateBtn.type = 'button';
+					activateBtn.className = 'cfkef-activate-plugin-btn';
+					activateBtn.textContent = 'Activate Plugin';
+					if (slug !== undefined && slug !== null) {
+						activateBtn.dataset.slug = String(slug);
 					}
-					tooltip.innerHTML += `<button class="cfkef-install-plugin-btn ${extraCss}" data-slug="${slug}" data-init="${init}">Install Plugin</button>`;
+					if (init !== undefined && init !== null && init !== '') {
+						activateBtn.dataset.init = String(init);
+					}
+					tooltip.appendChild(activateBtn);
+				} else if (action === 'install') {
+					const installBtn = document.createElement('button');
+					installBtn.type = 'button';
+					installBtn.className = 'cfkef-install-plugin-btn';
+					if (el.classList.contains('need-install') && slug === 'elementor-pro') {
+						installBtn.classList.add('redirect-elementor-page');
+					}
+					installBtn.textContent = 'Install Plugin';
+					if (slug !== undefined && slug !== null) {
+						installBtn.dataset.slug = String(slug);
+					}
+					if (init !== undefined && init !== null && init !== '') {
+						installBtn.dataset.init = String(init);
+					}
+					tooltip.appendChild(installBtn);
 				}
 			}
 		});

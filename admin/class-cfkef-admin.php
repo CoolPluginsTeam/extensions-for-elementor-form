@@ -189,14 +189,14 @@ class CFKEF_Admin {
                 </div>
             </div>
             <h2 class="nav-tab-wrapper">
-                <a href="?page=cool-formkit&tab=form-elements" class="nav-tab <?php echo $tab == 'form-elements' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Form Elements', 'extensions-for-elementor-form'); ?></a>
-                <a href="?page=cfkef-entries" class="nav-tab <?php echo $tab == 'cfkef-entries' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Entries', 'extensions-for-elementor-form'); ?></a>
-                <a href="?page=cool-formkit&tab=settings" class="nav-tab <?php echo $tab == 'settings' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Settings', 'extensions-for-elementor-form'); ?></a>
-                <a href="?page=cool-formkit&tab=license" class="nav-tab <?php echo $tab == 'license' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('License', 'extensions-for-elementor-form'); ?></a>
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=cool-formkit&tab=form-elements' ) ); ?>" class="nav-tab <?php echo esc_attr( 'form-elements' === $tab ? 'nav-tab-active' : '' ); ?>"><?php esc_html_e('Form Elements', 'extensions-for-elementor-form'); ?></a>
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=cfkef-entries' ) ); ?>" class="nav-tab <?php echo esc_attr( 'cfkef-entries' === $tab ? 'nav-tab-active' : '' ); ?>"><?php esc_html_e('Entries', 'extensions-for-elementor-form'); ?></a>
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=cool-formkit&tab=settings' ) ); ?>" class="nav-tab <?php echo esc_attr( 'settings' === $tab ? 'nav-tab-active' : '' ); ?>"><?php esc_html_e('Settings', 'extensions-for-elementor-form'); ?></a>
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=cool-formkit&tab=license' ) ); ?>" class="nav-tab <?php echo esc_attr( 'license' === $tab ? 'nav-tab-active' : '' ); ?>"><?php esc_html_e('License', 'extensions-for-elementor-form'); ?></a>
             </h2>
             <div class="tab-content">
                 <?php
-                switch ($tab) {
+                switch (esc_attr($tab)) {
                     case 'form-elements':
                         include_once 'views/form-elements.php';
                         break;
@@ -229,6 +229,7 @@ class CFKEF_Admin {
         register_setting( 'cfkef_form_elements_group', 'cfkef_enable_elementor_pro_form' );
         register_setting( 'cfkef_form_elements_group', 'cfkef_enable_hello_plus' );
         register_setting( 'cfkef_form_elements_group', 'cfkef_enable_formkit_builder' );
+        register_setting( 'cfkef_form_elements_group', 'cfkef_enable_atomic_form' );
 
         if (!get_option('cfl_plugin_initialized')) {
             // Get current enabled elements or empty array

@@ -181,6 +181,9 @@ class cfl_feedback {
 		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash($_POST['_wpnonce'] ) ), '_cool-plugins_deactivate_feedback_nonce' ) ) {
 			wp_send_json_error();
 		} else {
+			if ( ! current_user_can( 'activate_plugins' ) ) {
+				wp_send_json_error();
+			}
 			$reason             = isset( $_POST['reason'] ) ? sanitize_text_field( wp_unslash($_POST['reason'] ) ) : '';
 			$deactivate_reasons = array(
 				'didnt_work_as_expected'         => array(

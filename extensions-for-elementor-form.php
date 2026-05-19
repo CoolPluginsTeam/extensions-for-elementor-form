@@ -24,6 +24,9 @@ use Cool_FormKit\Includes\CFL_Loader;
 
 use Cool_FormKit\Widgets\CoolForm_Addons_Loader;
 use Cool_FormKit\Widgets\HelloPlus_Addons_Loader;
+use Cool_FormKit\Widgets\Atomic_Form_Addon_Loader;
+
+
 
 if (! defined('ABSPATH')) {
 	header('Status: 403 Forbidden');
@@ -90,6 +93,8 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		}
 	}
 
+	
+
 	public function formdb_elementor_marketing() {
 
 		if ( did_action( 'elementor/loaded' ) && class_exists( '\Elementor\Plugin' ) ) {
@@ -103,6 +108,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 
 		if (!is_plugin_active('sb-elementor-contact-form-db/sb_elementor_contact_form_db.php') && !defined("formdb_elementor_marketing_editor")) {
 
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 			define("formdb_elementor_marketing_editor", true);
 
 			include_once(__DIR__ .  '/includes/class-form-to-sheet.php');
@@ -168,6 +174,17 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			HelloPlus_Addons_Loader::get_instance();
 		}
 
+		if (get_option('cfkef_enable_atomic_form', true)) {	
+			if ( is_plugin_active( 'elementor-pro/elementor-pro.php' ) || is_plugin_active( 'pro-elements/pro-elements.php' ) ) {
+				// After `elementor/init`, core services (e.g. experiments) are initialized; on `elementor/loaded` they are often still null.
+				if ( did_action( 'elementor/init' ) ) {
+					$this->load_atomic_form_addon();
+				} else {
+					add_action( 'elementor/init', array( $this, 'load_atomic_form_addon' ), 20 );
+				}
+			}
+		}
+
 		if (is_admin()) {
 
 			require_once CFL_PLUGIN_PATH . 'admin/review-notice.php';
@@ -193,6 +210,41 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		));
 		add_filter('plugin_row_meta', array($this, 'cfkef_plugin_row_meta'), 10, 2);
 	}
+
+	public function load_atomic_form_addon() {
+		if ( ! is_plugin_active( 'elementor-pro/elementor-pro.php' ) && ! is_plugin_active( 'pro-elements/pro-elements.php' ) ) {
+			return;
+		}
+
+		if ( ! did_action( 'elementor/init' ) || ! class_exists( '\Elementor\Plugin' ) ) {
+			return;
+		}
+
+		$elementor = \Elementor\Plugin::$instance;
+		if ( ! $elementor ) {
+			return;
+		}
+
+		$experiments = isset( $elementor->experiments ) ? $elementor->experiments : null;
+		if ( ! self::are_elementor_atomic_form_experiments_active( $experiments ) ) {
+			return;
+		}
+
+		require_once CFL_PLUGIN_PATH . 'widgets/atomic-form-addon-loader.php';
+		Atomic_Form_Addon_Loader::get_instance();
+	}
+
+	/**
+		 * @param mixed $experiments \Elementor\Core\Experiments\Manager|null.
+		 */
+		private static function are_elementor_atomic_form_experiments_active( $experiments ): bool {
+			if ( ! $experiments || ! is_object( $experiments ) || ! method_exists( $experiments, 'is_feature_active' ) ) {
+				return false;
+			}
+
+			return $experiments->is_feature_active( 'e_atomic_elements' )
+				&& $experiments->is_feature_active( 'e_pro_atomic_form' );
+		}
 
 	public function cfkef_plugin_row_meta($plugin_meta, $plugin_file)
 	{

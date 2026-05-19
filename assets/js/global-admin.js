@@ -29,7 +29,6 @@ jQuery(document).ready(function () {
             $submenu.append($coolFormkitItem);
 
             if(localStorage.getItem('cfkef_enable_hello_plus') == 1 || localStorage.getItem('cfkef_enable_formkit_builder') == 1){
-                console.log($submenu);
                 $submenu.append($coolFormEntriesItem);
             }
         }

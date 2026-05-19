@@ -95,7 +95,7 @@ class Widget_Form_Render {
 							?>
 								<label <?php $this->widget->print_render_attribute_string( 'label' . $item_index ); ?>>
 									<?php // PHPCS - the variable $item['field_label'] is safe.
-									echo $item['field_label']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+									echo wp_kses_post($item['field_label']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 								</label>
 							<?php
 						}

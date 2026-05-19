@@ -95,7 +95,7 @@ class Custom_Success_Message {
 	 */
 	public function template_message ( $instance ) {
 		if ( ! $instance['template-custom-sucess-message'] == '' ) {
-			echo '<div class="extensions-for-elementor-form custom-sucess-message">' . do_shortcode( $instance['template-custom-sucess-message'] ) . '</div>';
+			echo '<div class="extensions-for-elementor-form custom-sucess-message">' . wp_kses_post( do_shortcode( $instance['template-custom-sucess-message'] ) ) . '</div>';
 		}
 	}
 }

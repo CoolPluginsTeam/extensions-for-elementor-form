@@ -1,0 +1,43 @@
+{% set classes = settings.classes | merge( [ base_styles.base ] ) | join(' ') | trim %}
+{% set id_attribute = settings._cssid is not empty ? 'id=' ~ settings._cssid | e('html_attr') : '' %}
+{% set interactions_attribute = interactions is not empty ? 'data-interactions=' ~ interactions | json_encode | e('html_attr') : '' %}
+{% set placeholder_attribute = settings.placeholder is not empty ? 'placeholder=' ~ settings.placeholder | e('html_attr') : '' %}
+{% set required_attribute = settings.required ? 'required' : '' %}
+{% set readonly_attribute = settings.readonly ? 'readonly' : '' %}
+{% set rows_attribute = settings.rows is not empty ? 'rows=' ~ settings.rows | e('html_attr') : '' %}
+{% set minlength_attribute = settings.minlength is not empty ? 'minlength=' ~ settings.minlength | e('html_attr') : '' %}
+{% set maxlength_attribute = settings.maxlength is not empty ? 'maxlength=' ~ settings.maxlength | e('html_attr') : '' %}
+{% set resizable_attribute = settings.resizable ? 'data-resizable' : '' %}
+{% set name = settings.name is not empty ? settings.name : settings._cssid is not empty ? settings._cssid : id %}
+{% set name_attribute = 'name=' ~ name | e('html_attr') %}
+{% set conditions_enabled = settings.cfef_logic|default(false) %}
+{% set field_group_class = 'elementor-field-group elementor-field-group-' ~ name ~ ' cfef-atomic-field-group' %}
+
+{% if conditions_enabled %}
+<div class="{{ field_group_class | e('html_attr') }}" data-field-id="{{ name | e('html_attr') }}">
+{% endif %}
+
+<textarea
+	{{ id_attribute }}
+	{{ name_attribute }}
+	class="{{ classes }}"
+	data-interaction-id="{{ interaction_id | default(id) }}"
+	{{ settings.attributes | raw }}
+	{{ interactions_attribute }}
+	{{ placeholder_attribute | raw }}
+	{{ required_attribute }}
+	{{ readonly_attribute }}
+	{{ rows_attribute }}
+	{{ minlength_attribute }}
+	{{ maxlength_attribute }}
+	{{ resizable_attribute }}
+></textarea>
+
+{% if conditions_enabled %}
+{% set logic_data_json = settings.cfef_logic_repeater is not empty ? settings.cfef_logic_repeater : '[]' %}
+{% set safe_field_key = name|replace({'\\':'\\\\','"':'\\"'}) %}
+<template class="cfef_logic_data_js cfef-atomic-field-logic cfef-hidden" data-field-id="{{ name | e('html_attr') }}">
+{"{{ safe_field_key }}":{"display_mode":"{{ settings.cfef_logic_mode|default('show') | e('js') }}","fire_action":"{{ settings.cfef_logic_meet|default('All') | e('js') }}","logic_data":{{ logic_data_json | raw }}}}
+</template>
+</div>
+{% endif %}
