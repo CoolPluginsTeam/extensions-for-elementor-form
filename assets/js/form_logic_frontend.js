@@ -34,11 +34,9 @@
         }
         
         function decodeHTMLEntities(text) {
-            if (text == null || text === "") {
-                return text;
-            }
-            var doc = new DOMParser().parseFromString(String(text), "text/html");
-            return doc.body ? doc.body.textContent : String(text);
+            var textArea = document.createElement('textarea');
+            textArea.innerHTML = text;
+            return textArea.value;
         }
 
         // function to add hidden class when form load
@@ -291,17 +289,18 @@
         function logicFixedRequiredHidden(formField, fieldKey, file_types) {
 
             if (formField.hasClass("elementor-field-type-radio")) {
+
                 var groupclass = '.elementor-field-group-' + fieldKey;
                 const field2 = $(groupclass);
 
                 if (field2.length > 0) {
                     if (field2.find('input[value="^newOptionTest"]').length === 0) {
                         const newOption = $(`
-                            <div class="mdc-radio">
+                            <span class="elementor-field-option">
                                 <input type="radio" value="^newOptionTest" id="form-field-newOption" name="form_fields[${fieldKey}]" required="required" aria-required="true" checked="checked">
-                            </div>
+                            </span>
                         `);
-                        field2.find('.mdc-form-field').append(newOption);
+                        field2.find('.elementor-field-subgroup').append(newOption);
                     }
                 }
             } else if (formField.hasClass("elementor-field-type-acceptance")) {
@@ -395,10 +394,7 @@
                 if (selectBox.length > 0 && selectBox.find("option").length > 0) {
                     var optionToRemove = selectBox.find("option[value='premium']");
                     if (optionToRemove.length <= 0) {
-                        var newOption = document.createElement("option");
-                        newOption.value = optionValue;
-                        newOption.textContent = optionText;
-                        selectBox.append(newOption);
+                        selectBox.append(`<option value="${optionValue}">${optionText}</option>`);
                     }
                     selectBox.val(optionValue);
                 }
@@ -658,10 +654,7 @@
             // If the message hasn't been added yet, insert it and replace "Next" with the actual button text
             if (container.prev(".cfef-step-field-text").length === 0) {
                     var message = my_script_vars_elementor.no_input_step.replace('%s', nextButtonText);
-                    var notice = document.createElement('p');
-                    notice.className = 'cfef-step-field-text';
-                    notice.textContent = message;
-                    container[0].before(notice);
+                    container.before('<p class="cfef-step-field-text">' + message + '</p>');
             }
                 
 
