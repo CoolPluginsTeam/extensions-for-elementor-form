@@ -296,17 +296,6 @@ class CFKEF_List_Table extends WP_List_Table {
         }
 
         
-                // echo "<pre>";
-                // var_dump($_GET);
-                // echo "</pre>";
-                // $date_object = DateTime::createFromFormat('Y-m-d H:i:s', $date_filter);
-                // if ($date_object) {
-                //     var_dump($date_object->format('m'));
-                //     var_dump($date_object->format('Y'));
-                // } else {
-                //     var_dump('Invalid date format');
-                // }
-        
         if(!empty($date_filter)){
            if (!empty($date_filter) && preg_match('/^(\d{4})(\d{2})$/', $date_filter, $matches)) {
                $year = $matches[1];

@@ -328,7 +328,7 @@ class CFKEF_Post_Bulk_Actions {
         }
 
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
-		$posts=$wpdb->get_results($wpdb->prepare($query));
+		$posts=$wpdb->get_results($query);
 		
 		foreach($posts as $post){
 			if ( ! current_user_can( 'delete_post', $post->ID ) ) {
