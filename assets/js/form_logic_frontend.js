@@ -218,7 +218,7 @@
 
         function logicFixedRequiredShow(formField,file_types,status) {
             if (formField.hasClass("elementor-field-type-radio") && formField.find('input[value="^newOptionTest"]').length !== 0) {
-                formField.find('input[value="^newOptionTest"]').closest("div.mdc-radio").remove();
+                formField.find('input[value="^newOptionTest"]').closest("span.elementor-field-option").remove();
                 let checkedRadio = formField.find('input[checked="checked"]')[0]
                 checkedRadio ? $(checkedRadio).prop('checked', true):  $(checkedRadio).prop('checked', false)
             } else if (formField.hasClass("elementor-field-type-acceptance")) {
