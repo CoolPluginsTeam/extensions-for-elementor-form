@@ -310,18 +310,13 @@ class CFKEF_Post_Bulk_Actions {
 			's' => $search,
 		];
 
+
 		global $wpdb;
+        $post_status_placeholders = implode( ', ', array_fill( 0, count( $args['post_status'] ), '%s' ) );
 
-		$post_placeholders=implode(',', array_fill(0, count($args['post_status']), "%s"));
-
-		//phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        $post_status_query = $wpdb->prepare("post_status IN ($post_placeholders)", array_map('esc_sql', $args['post_status']));
-
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $query = $wpdb->prepare(
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared	
-            "SELECT * FROM $wpdb->posts WHERE post_type = %s AND $post_status_query",
-            $this->posts_type,
+            "SELECT * FROM {$wpdb->posts} WHERE post_type = %s AND post_status IN ($post_status_placeholders)", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Placeholders are dynamically generated for IN clause.
+            array_merge( array( $this->posts_type ), $args['post_status'] )
         );
 
         if(!empty($search)){
