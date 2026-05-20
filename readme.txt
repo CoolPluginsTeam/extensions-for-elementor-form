@@ -8,8 +8,8 @@ Stable tag: 2.6.4
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Elementor tested up to: 4.0.0
-Elementor Pro tested up to: 4.0.0
+Elementor tested up to: 4.0.9
+Elementor Pro tested up to: 4.0.3
 
 Contact form addon for Elementor. Create forms in Elementor Free or extend Elementor Pro forms with conditional logic, country code and extra fields.
 
@@ -195,6 +195,10 @@ You can open a support ticket on the [WordPress.org support forum](https://wordp
 You can report vulnerabilities through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/extensions-for-elementor-form). The Patchstack team helps validate, triage, and handle reported issues responsibly.  
 
 == Changelog ==
+
+= 2.7.0 - 2026-05-20 =
+* Added: Atomic form compatibility.  
+* Improved: Code improvements.
 
 = 2.6.4 - 2026-04-01 =
 * Fixed: Double submission issue with country and mask fields.
