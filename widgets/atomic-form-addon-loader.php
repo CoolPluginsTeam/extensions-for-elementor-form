@@ -55,11 +55,16 @@ class Atomic_Form_Addon_Loader {
     }
 
     /**
-     * Core Atomic Widgets (`e_atomic_elements`) plus Pro Atomic Form (`e_pro_atomic_form`) must both be active.
+     * Elementor 4.0+ and experiments: Atomic Widgets (`e_atomic_elements`) plus Pro Atomic Form (`e_pro_atomic_form`).
      *
      * @see \Elementor\Modules\AtomicWidgets\Module::EXPERIMENT_NAME
+     * @see \ElementorPro\Modules\AtomicForm\Module::is_experiment_active()
      */
     private function are_atomic_form_experiments_active(): bool {
+        if ( ! defined( 'ELEMENTOR_VERSION' ) || ! version_compare( ELEMENTOR_VERSION, CFL_MIN_ELEMENTOR_ATOMIC_FORM_VERSION, '>=' ) ) {
+            return false;
+        }
+
         $experiments = Elementor_Plugin::$instance->experiments ?? null;
         if ( ! $experiments || ! method_exists( $experiments, 'is_feature_active' ) ) {
             return false;

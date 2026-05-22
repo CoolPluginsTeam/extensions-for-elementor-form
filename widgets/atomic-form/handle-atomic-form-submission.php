@@ -20,8 +20,8 @@ class Handle_Atomic_Form_Submission {
     private $validate_form = false;
 
 	public function __construct() {
-		add_action( 'wp_ajax_elementor_pro_atomic_forms_send_form', [ $this, 'ajax_send_form' ]);
-		add_action( 'wp_ajax_nopriv_elementor_pro_atomic_forms_send_form', [ $this, 'ajax_send_form' ]);
+		add_action( 'wp_ajax_elementor_pro_atomic_forms_send_form', [ $this, 'ajax_send_form' ], 1);
+		add_action( 'wp_ajax_nopriv_elementor_pro_atomic_forms_send_form', [ $this, 'ajax_send_form' ], 1);
 	}
 
     private function resolve_form_name( string $posted_form_name, string $form_id ): string {

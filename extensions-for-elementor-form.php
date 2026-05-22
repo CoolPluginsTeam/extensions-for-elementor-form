@@ -49,6 +49,7 @@ define('CFL_STYLE_URL', CFL_ASSETS_URL . 'css/');
 define('CFL_IMAGES_PATH', CFL_ASSETS_PATH . 'images/');
 define('CFL_IMAGES_URL', CFL_ASSETS_URL . 'images/');
 define('CFL__MIN_ELEMENTOR_VERSION', '3.26.4');
+define('CFL_MIN_ELEMENTOR_ATOMIC_FORM_VERSION', '4.0');
 define('CFL_FEEDBACK_URL', 'https://feedback.coolplugins.net/');
 
 
@@ -220,6 +221,13 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			return;
 		}
 
+		if ( ! self::is_elementor_atomic_form_supported() ) {
+			if ( is_admin() && get_option( 'cfkef_enable_atomic_form', true ) ) {
+				add_action( 'admin_notices', array( $this, 'admin_notice_elementor_atomic_form_version' ) );
+			}
+			return;
+		}
+
 		$elementor = \Elementor\Plugin::$instance;
 		if ( ! $elementor ) {
 			return;
@@ -235,16 +243,51 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	}
 
 	/**
-		 * @param mixed $experiments \Elementor\Core\Experiments\Manager|null.
-		 */
-		private static function are_elementor_atomic_form_experiments_active( $experiments ): bool {
-			if ( ! $experiments || ! is_object( $experiments ) || ! method_exists( $experiments, 'is_feature_active' ) ) {
-				return false;
-			}
+	 * Atomic Form extensions require Elementor 4.0+ (matches Elementor Pro atomic-form module).
+	 */
+	public static function is_elementor_atomic_form_supported(): bool {
+		return defined( 'ELEMENTOR_VERSION' )
+			&& version_compare( ELEMENTOR_VERSION, CFL_MIN_ELEMENTOR_ATOMIC_FORM_VERSION, '>=' );
+	}
 
-			return $experiments->is_feature_active( 'e_atomic_elements' )
-				&& $experiments->is_feature_active( 'e_pro_atomic_form' );
+	/**
+	 * @param mixed $experiments \Elementor\Core\Experiments\Manager|null.
+	 */
+	private static function are_elementor_atomic_form_experiments_active( $experiments ): bool {
+		if ( ! self::is_elementor_atomic_form_supported() ) {
+			return false;
 		}
+
+		if ( ! $experiments || ! is_object( $experiments ) || ! method_exists( $experiments, 'is_feature_active' ) ) {
+			return false;
+		}
+
+		return $experiments->is_feature_active( 'e_atomic_elements' )
+			&& $experiments->is_feature_active( 'e_pro_atomic_form' );
+	}
+
+	public function admin_notice_elementor_atomic_form_version() {
+		if ( ! current_user_can( 'update_plugins' ) ) {
+			return;
+		}
+
+		$file_path = 'elementor/elementor.php';
+		$upgrade_link = wp_nonce_url(
+			self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $file_path,
+			'upgrade-plugin_' . $file_path
+		);
+
+		printf(
+			'<div class="notice notice-warning is-dismissible"><p><strong>%1$s</strong> %2$s <a href="%3$s">%4$s</a></p></div>',
+			esc_html__( 'Cool FormKit:', 'extensions-for-elementor-form' ),
+			esc_html__(
+				'Atomic Form extensions require Elementor 4.0 or newer. Update Elementor to use this feature, or disable Atomic Form in Cool FormKit settings.',
+				'extensions-for-elementor-form'
+			),
+			esc_url( $upgrade_link ),
+			esc_html__( 'Update Elementor', 'extensions-for-elementor-form' )
+		);
+	}
 
 	public function cfkef_plugin_row_meta($plugin_meta, $plugin_file)
 	{
