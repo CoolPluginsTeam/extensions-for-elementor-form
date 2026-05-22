@@ -139,8 +139,10 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
         $field = current($fields);
     
         // Get the reCAPTCHA token from the submitted form data
-        // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-        $recaptcha_response = sanitize_text_field(wp_unslash($_POST['g-recaptcha-response'])) ?? '';
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $recaptcha_response = isset( $_POST['g-recaptcha-response'] )
+            ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) )
+            : '';
     
         if (empty($recaptcha_response)) {
             $ajax_handler->add_error($field['id'], esc_html__('Captcha validation failed. Please try again.', 'extensions-for-elementor-form'));

@@ -540,7 +540,11 @@ class CFL_Create_Conditional_Fields {
 			wp_die( '0', 400 );
 		}
 
-		if ( isset( $_POST['cfef_notice_dismiss'] ) && 'true' === $_POST['cfef_notice_dismiss'] ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error();
+		}
+
+		if ( isset( $_POST['cfef_notice_dismiss'] ) && 'true' === sanitize_text_field( wp_unslash( $_POST['cfef_notice_dismiss'] ) ) ) {
 			update_option( 'cfkef_elementor_notice_dismiss', 'yes' );
 		}
 		exit;

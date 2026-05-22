@@ -1,5 +1,4 @@
 <?php
-
 namespace Cool_FormKit\Widgets;
 use Cool_FormKit\Widgets\AtomicForm\Atomic_Form;
 use Cool_FormKit\Widgets\AtomicForm\Checkbox\Checkbox;
@@ -12,6 +11,8 @@ use Elementor\Widgets_Manager;
 use ElementorPro\Modules\AtomicForm\Actions\Action_Runner;
 use Cool_FormKit\Widgets\AtomicForm\Actions\AtomicForm_Whatsapp_Redirect;
 use Cool_FormKit\Widgets\AtomicForm\Handle_Atomic_Form_Submission;
+
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 class Atomic_Form_Addon_Loader {
 
 

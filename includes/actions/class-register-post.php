@@ -166,24 +166,62 @@ class Register_Post extends \ElementorPro\Modules\Forms\Classes\Action_Base {
 		}
 
 		$is_restrict_to_loggedin_users = $record->get_form_settings( 'eef-register-post-user-permission' );
-		if ( $is_restrict_to_loggedin_users !== 'yes' ) {
-			$post_id = wp_insert_post( $new_post_data, true );
-			if ( ! is_wp_error( $post_id ) ) {
-				foreach ( $custom_fields_to_register as $meta_key => $meta_value ) {
-					add_post_meta( $post_id, $meta_key, $meta_value );
-				}
-			}
+
+		if ( 'yes' === $is_restrict_to_loggedin_users && ! is_user_logged_in() ) {
 			return;
 		}
 
-		if ( is_user_logged_in() ) {
-			$post_id = wp_insert_post( $new_post_data, true );
-			if ( ! is_wp_error( $post_id ) ) {
-				foreach ( $custom_fields_to_register as $meta_key => $meta_value ) {
-					add_post_meta( $post_id, $meta_key, $meta_value );
-				}
+		if ( ! $this->user_can_insert_post( $new_post_data ) ) {
+			return;
+		}
+
+		$new_post_data = $this->maybe_adjust_post_status( $new_post_data );
+
+		$post_id = wp_insert_post( $new_post_data, true );
+		if ( ! is_wp_error( $post_id ) ) {
+			foreach ( $custom_fields_to_register as $meta_key => $meta_value ) {
+				add_post_meta( $post_id, $meta_key, $meta_value );
 			}
 		}
+	}
+
+	/**
+	 * Check whether the current user may create the target post type.
+	 *
+	 * @param array $new_post_data Post data for wp_insert_post.
+	 * @return bool
+	 */
+	private function user_can_insert_post( array $new_post_data ) {
+		$post_type        = isset( $new_post_data['post_type'] ) ? $new_post_data['post_type'] : 'post';
+		$post_type_object = get_post_type_object( $post_type );
+
+		if ( ! $post_type_object ) {
+			return false;
+		}
+
+		return current_user_can( $post_type_object->cap->create_posts );
+	}
+
+	/**
+	 * Downgrade publish status when the user lacks publish capability.
+	 *
+	 * @param array $new_post_data Post data for wp_insert_post.
+	 * @return array
+	 */
+	private function maybe_adjust_post_status( array $new_post_data ) {
+		$post_type        = isset( $new_post_data['post_type'] ) ? $new_post_data['post_type'] : 'post';
+		$post_type_object = get_post_type_object( $post_type );
+
+		if (
+			isset( $new_post_data['post_status'] )
+			&& 'publish' === $new_post_data['post_status']
+			&& $post_type_object
+			&& ! current_user_can( $post_type_object->cap->publish_posts )
+		) {
+			$new_post_data['post_status'] = 'pending';
+		}
+
+		return $new_post_data;
 	}
 
 	/**

@@ -320,7 +320,7 @@ $updated_elements = array('');
                                             data-init="<?php echo esc_attr( $data_init ); ?>"
                                         <?php endif; ?>
                                     <?php endif; ?>
-                                    title="<?php echo !$is_elementor_active ? 'Requires Elementor Pro plugin to be activated' : ''; ?>"
+                                    title="<?php echo esc_attr( ! $is_elementor_active ? __( 'Requires Elementor Pro plugin to be activated', 'extensions-for-elementor-form' ) : '' ); ?>"
                                 >
                                 <div class="cfkef-form-element-info">
                                     <img src="<?php echo esc_url(CFL_PLUGIN_URL . 'admin/assets/icons/elementor-pro-form-widget-min.svg'); ?>" alt="Elementor Field">
@@ -335,7 +335,7 @@ $updated_elements = array('');
                                     </h4>
                                 </div>
                                 <label class="cfkef-toggle-switch"
-                                    style="<?php echo !$is_elementor_active ? 'opacity: 0.5; pointer-events: none; cursor: not-allowed;' : ''; ?>">
+                                    style="<?php echo esc_attr( ! $is_elementor_active ? 'opacity: 0.5; pointer-events: none; cursor: not-allowed;' : '' ); ?>">
                                     <input type="checkbox"
                                         name="cfkef_enable_elementor_pro_form"
                                         value="1"
@@ -386,7 +386,7 @@ $updated_elements = array('');
                                     </h4>
                                 </div>
                                 <label class="cfkef-toggle-switch"
-                                style="<?php echo !$is_hello_plus_active ? 'opacity: 0.5; pointer-events: none; cursor: not-allowed;' : ''; ?>"
+                                style="<?php echo esc_attr( ! $is_hello_plus_active ? 'opacity: 0.5; pointer-events: none; cursor: not-allowed;' : '' ); ?>"
                                 >
                                     <input type="checkbox"
                                         name="cfkef_enable_hello_plus"
@@ -450,7 +450,7 @@ $updated_elements = array('');
                                 </div>
 
                                 <label class="cfkef-toggle-switch"
-                                    style="<?php echo !$is_elementor_active ? 'opacity: 0.5; pointer-events: none; cursor: not-allowed;' : ''; ?>">
+                                    style="<?php echo esc_attr( ! $is_elementor_active ? 'opacity: 0.5; pointer-events: none; cursor: not-allowed;' : '' ); ?>">
                                     <input type="checkbox"
                                         name="cfkef_enable_atomic_form"
                                         value="1"

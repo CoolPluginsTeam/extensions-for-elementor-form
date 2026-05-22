@@ -34,9 +34,11 @@
         }
         
         function decodeHTMLEntities(text) {
-            var textArea = document.createElement('textarea');
-            textArea.innerHTML = text;
-            return textArea.value;
+            if (text == null || text === '') {
+                return text;
+            }
+            var doc = new DOMParser().parseFromString(String(text), 'text/html');
+            return doc.body ? doc.body.textContent : '';
         }
 
         // function to add hidden class when form load
@@ -400,7 +402,10 @@
                 if (selectBox.length > 0 && selectBox.find("option").length > 0) {
                     var optionToRemove = selectBox.find("option[value='premium']");
                     if (optionToRemove.length <= 0) {
-                        selectBox.append(`<option value="${optionValue}">${optionText}</option>`);
+                        var newOption = document.createElement("option");
+                        newOption.value = optionValue;
+                        newOption.textContent = optionText;
+                        selectBox.append(newOption);
                     }
                     selectBox.val(optionValue);
                 }

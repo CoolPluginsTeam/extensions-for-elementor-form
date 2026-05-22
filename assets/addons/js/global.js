@@ -23,7 +23,7 @@ const addDynamicTags = (element) => {
 
   // create list of id's of form fields for dynamic tags
   jQuery(".cfef-add-tag").on("click", function (e) {
-    var html = '<ul class="cfef-dynamic-tag">';
+    const $list = jQuery( '<ul/>', { class: 'cfef-dynamic-tag' } );
     let formFields = jQuery(this).closest(".elementor-repeater-fields-wrapper").parents(".elementor-repeater-fields-wrapper").find('.elementor-form-field-shortcode');
     if(this.closest('.elementor-control-cfef_repeater_data_cfefp_submit')){
       formFields=formRepeaterFields; 
@@ -41,10 +41,9 @@ const addDynamicTags = (element) => {
           name = match.replaceAll('"', "");
         });
       }
-      html += '<li title="Copy ID">' + name + '</li>';
+      jQuery( '<li/>', { title: 'Copy ID' } ).text( name ).appendTo( $list );
     });
-    html += '</ul>';
-    jQuery(this).closest(".elementor-control-input-wrapper").append(html);
+    jQuery(this).closest(".elementor-control-input-wrapper").append( $list );
   })
 
   // function to copy the id of selected option from dynamic tag
