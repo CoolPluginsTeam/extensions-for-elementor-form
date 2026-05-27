@@ -213,9 +213,12 @@
             return false;
         }
 
-        var result = fireAction === "All"
-            ? checks.every(function (v) { return v === true; })
-            : checks.some(function (v) { return v === true; });
+        // OR ("Any") logic is handled by the pro plugin; free only evaluates AND ("All").
+        if (fireAction !== "All") {
+            return true;
+        }
+
+        var result = checks.every(function (v) { return v === true; });
 
         return displayMode === "show" ? result : !result;
     }
