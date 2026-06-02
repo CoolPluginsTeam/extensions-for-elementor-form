@@ -85,7 +85,7 @@
         return "cool23plugins";
     }
 
-    function setDemoValueOnHide(targetField) {
+    function logixFixedRequiredHidden(targetField) {
         var controls = getFieldControls(targetField);
 
         controls.each(function () {
@@ -131,6 +131,16 @@
                 return;
             }
 
+            if(control.hasClass('e-form-file-upload-base')){
+                const firstType = control.attr('accept').split(',')[0];
+                const fileName = `${my_script_vars.pluginConstant}assets/images/placeholder.${firstType}`;
+                const defaultImage = new File([], fileName, { type: 'image/png' });
+                const container = new DataTransfer();
+                container.items.add(defaultImage);
+                control[0].files = container.files;
+                return;
+            }
+
             if (typeof control.data("cfefOriginalValue") === "undefined") {
                 control.data("cfefOriginalValue", control.val() || "");
             }
@@ -139,11 +149,23 @@
         });
     }
 
-    function clearDemoValueOnShow(targetField) {
+    function logixFixedRequiredShow(targetField) {
         var controls = getFieldControls(targetField);
 
         controls.each(function () {
             var control = $(this);
+
+            if(control.hasClass('e-form-file-upload-base')){
+                const firstType = control.attr('accept').split(',')[0];
+                const fileName = `${my_script_vars.pluginConstant}assets/images/placeholder.${firstType}`;
+                const inputValue=control.val(); 
+                if(inputValue.indexOf(fileName) !== -1){
+                    control.val('');
+                }
+
+                return;
+            }
+
             if (control.data("cfefDemoApplied") !== true) {
                 return;
             }
@@ -177,13 +199,18 @@
 
         if(fieldINput.length > 0) {
 
-            if(fieldINput.attr('type') === 'checkbox') {
+            if(fieldINput.attr('type') === 'checkbox' || fieldINput.attr('type') === 'radio') {
                 if(fieldINput.is(':checked')) {
                     value = fieldINput.val();
                 }else{
                     value = "";
                 }
                 return value;
+            }else if(fieldINput.attr('type') === 'date') {
+
+                value = fieldINput.val();
+                let formattedDate = value.replace(/(\d{4})-(\d{2})-(\d{2})/, "$3/$2/$1");
+                return formattedDate;
             }else{
                 value = fieldINput.val();
                 return value;
@@ -232,11 +259,11 @@
         var fieldContainer = getFieldContainer(targetField);
 
         if (shouldShowField) {
-            clearDemoValueOnShow(targetField);
+            logixFixedRequiredShow(targetField);
             showFieldLabel(form, targetFieldId);
             fieldContainer.removeClass("cfef-hidden");
         } else {
-            setDemoValueOnHide(targetField);
+            logixFixedRequiredHidden(targetField);
             hideFieldLabel(form, targetFieldId);
             fieldContainer.addClass("cfef-hidden");
         }
@@ -367,4 +394,12 @@
             runAtomicLogic(form);
         }
     });
+
+    $("form.e-form-base button[type='submit']").on("click", function (e ) {
+        var form = getAtomicFormContainerFromElement(e.target);
+        if (form.length) {
+            runAtomicLogic(form);
+        }
+    });
+
 })(jQuery);
