@@ -30,7 +30,7 @@ class Date_Picker extends AtomicFormDatePicker {
 	}
 
 	public function get_title(): string {
-		return esc_html__( 'Date picker', 'elementor-pro' );
+		return esc_html__( 'Date picker', 'extensions-for-elementor-form' );
 	}
 
 	public function get_icon(): string {
@@ -66,17 +66,17 @@ class Date_Picker extends AtomicFormDatePicker {
 	protected function define_atomic_controls(): array {
 		$sections = [
 			Section::make()
-				->set_label( __( 'Content', 'elementor-pro' ) )
+				->set_label( __( 'Content', 'extensions-for-elementor-form' ) )
 				->set_items( [
 					Date_Range_Control::bind_to( 'min_max' )
 						->set_meta( [
 							'layout' => 'custom',
 						] ),
 					Switch_Control::bind_to( 'required' )
-						->set_label( __( 'Required', 'elementor-pro' ) ),
+						->set_label( __( 'Required', 'extensions-for-elementor-form' ) ),
 				] ),
 			Section::make()
-				->set_label( __( 'Settings', 'elementor-pro' ) )
+				->set_label( __( 'Settings', 'extensions-for-elementor-form' ) )
 				->set_id( 'settings' )
 				->set_items( $this->get_settings_controls() ),
 		];

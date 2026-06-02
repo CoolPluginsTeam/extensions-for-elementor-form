@@ -37,7 +37,7 @@ class File_Upload extends AtomicFormFileUpload {
 	}
 
 	public function get_title(): string {
-		return esc_html__( 'File Upload', 'elementor-pro' );
+		return esc_html__( 'File Upload', 'extensions-for-elementor-form' );
 	}
 
 	public function get_icon(): string {
@@ -94,41 +94,41 @@ class File_Upload extends AtomicFormFileUpload {
 	protected function define_atomic_controls(): array {
 		$sections = [
 			Section::make()
-				->set_label( __( 'Content', 'elementor-pro' ) )
+				->set_label( __( 'Content', 'extensions-for-elementor-form' ) )
 				->set_items( [
 					Attachment_Type_Control::bind_to( 'attachment-type' )
-						->set_label( __( 'Send file', 'elementor-pro' ) )
+						->set_label( __( 'Send file', 'extensions-for-elementor-form' ) )
 						->set_options( [
 							[
-								'label' => __( 'Email with link', 'elementor-pro' ),
+								'label' => __( 'Email with link', 'extensions-for-elementor-form' ),
 								'value' => 'link',
 							],
 							[
-								'label' => __( 'Email with attachment', 'elementor-pro' ),
+								'label' => __( 'Email with attachment', 'extensions-for-elementor-form' ),
 								'value' => 'attach',
 							],
 							[
-								'label' => __( 'Email with both', 'elementor-pro' ),
+								'label' => __( 'Email with both', 'extensions-for-elementor-form' ),
 								'value' => 'both',
 							],
 						] ),
 					Number_Control::bind_to( 'max-file-size' )
-						->set_label( __( 'Max file size', 'elementor-pro' ) )
+						->set_label( __( 'Max file size', 'extensions-for-elementor-form' ) )
 						->set_min( 1 ),
 					Text_Control::bind_to( 'file-types' )
-						->set_label( __( 'Allowed file types', 'elementor-pro' ) )
+						->set_label( __( 'Allowed file types', 'extensions-for-elementor-form' ) )
 						->set_placeholder( 'pdf, docx, doc, jpeg, jpg…' ),
 					Switch_Control::bind_to( 'multiple' )
-						->set_label( __( 'Multiple files', 'elementor-pro' ) ),
+						->set_label( __( 'Multiple files', 'extensions-for-elementor-form' ) ),
 					Number_Control::bind_to( 'max-files' )
-						->set_label( __( 'Max files', 'elementor-pro' ) )
+						->set_label( __( 'Max files', 'extensions-for-elementor-form' ) )
 						->set_placeholder( 'specify number' )
 						->set_min( 1 ),
 					Switch_Control::bind_to( 'required' )
-						->set_label( __( 'Required', 'elementor-pro' ) ),
+						->set_label( __( 'Required', 'extensions-for-elementor-form' ) ),
 				] ),
 			Section::make()
-				->set_label( __( 'Settings', 'elementor-pro' ) )
+				->set_label( __( 'Settings', 'extensions-for-elementor-form' ) )
 				->set_id( 'settings' )
 				->set_items( $this->get_settings_controls() ),
 		];

@@ -32,7 +32,7 @@ class Select extends AtomicFormSelect {
 	}
 
 	public function get_title(): string {
-		return esc_html__( 'Select', 'elementor-pro' );
+		return esc_html__( 'Select', 'extensions-for-elementor-form' );
 	}
 
 	public function get_icon(): string {
@@ -79,7 +79,7 @@ class Select extends AtomicFormSelect {
 	private function define_options_control() {
 		$control = Repeatable_Attributes_Control::bind_to( 'options' )
 			->set_child_control_props( (object) [] )
-			->set_repeaterLabel( __( 'Options', 'elementor-pro' ) )
+			->set_repeaterLabel( __( 'Options', 'extensions-for-elementor-form' ) )
 			->set_patternLabel( '${value.key.value} (${value.value.value})' )
 			->set_placeholder( 'Empty option' )
 			->set_child_control_type( 'options' )
@@ -97,16 +97,16 @@ class Select extends AtomicFormSelect {
 	protected function define_atomic_controls(): array {
 		$sections = [
 			Section::make()
-				->set_label( __( 'Content', 'elementor-pro' ) )
+				->set_label( __( 'Content', 'extensions-for-elementor-form' ) )
 				->set_items( [
 					$this->define_options_control(),
 					Switch_Control::bind_to( 'required' )
-						->set_label( __( 'Required', 'elementor-pro' ) ),
+						->set_label( __( 'Required', 'extensions-for-elementor-form' ) ),
 					Switch_Control::bind_to( 'multiple' )
-						->set_label( __( 'Multiple selections', 'elementor-pro' ) ),
+						->set_label( __( 'Multiple selections', 'extensions-for-elementor-form' ) ),
 				] ),
 			Section::make()
-				->set_label( __( 'Settings', 'elementor-pro' ) )
+				->set_label( __( 'Settings', 'extensions-for-elementor-form' ) )
 				->set_id( 'settings' )
 				->set_items( $this->get_settings_controls() ),
 		];
