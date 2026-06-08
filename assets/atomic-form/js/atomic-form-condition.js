@@ -2,12 +2,9 @@
     "use strict";
 
     function decodeHTMLEntities(text) {
-        if (text == null) {
-            return "";
-        }
-        var str = String(text);
-        var doc = new DOMParser().parseFromString(str, "text/html");
-        return doc.body ? doc.body.textContent : "";
+        var textArea = document.createElement("textarea");
+        textArea.innerHTML = text == null ? "" : String(text);
+        return textArea.value;
     }
 
     function checkFieldLogic(compareFieldValue, conditionOperation, compareValue) {
@@ -91,6 +88,7 @@
         controls.each(function () {
             var control = $(this);
             var nodeName = (control.prop("nodeName") || "").toLowerCase();
+
             var type = (control.attr("type") || "").toLowerCase();
 
             if (!isRequiredControl(control)) {
@@ -154,7 +152,6 @@
 
         controls.each(function () {
             var control = $(this);
-
             if(control.hasClass('e-form-file-upload-base')){
                 const firstType = control.attr('accept').split(',')[0];
                 const fileName = `${my_script_vars.pluginConstant}assets/images/placeholder.${firstType}`;
@@ -184,13 +181,26 @@
                     control.prop("checked", false);
                 }
                 control.removeData("cfefOriginalCheckedValue");
-            } else {
-                var originalValue = control.data("cfefOriginalValue");
-                control.val(typeof originalValue === "undefined" ? "" : originalValue);
-                control.removeData("cfefOriginalValue");
+            } 
+            else{
+                    var originalValue = control.data("cfefOriginalValue");
+                    control.val(typeof originalValue === "undefined" ? "" : originalValue);
+                    control.removeData("cfefOriginalValue");
             }
             control.removeData("cfefDemoApplied");
         });
+    }
+
+    function formatToMDY(dateStr) {
+        let [year, month, day] = dateStr.split("-");
+        return `${month}/${day}/${year}`;
+    }
+
+    function convertTo12Hour(time) {
+        let [hours, minutes] = time.split(":");
+        let period = hours >= 12 ? 'PM' : 'AM';
+        let hours12 = hours % 12 || 12; // Convert 0 to 12
+        return `${hours12.toString().padStart(2, '0')}:${minutes} ${period}`;
     }
 
     function getFieldValue(form, fieldId) {
@@ -209,9 +219,15 @@
             }else if(fieldINput.attr('type') === 'date') {
 
                 value = fieldINput.val();
-                let formattedDate = value.replace(/(\d{4})-(\d{2})-(\d{2})/, "$3/$2/$1");
+                let formattedDate = formatToMDY(value);
                 return formattedDate;
-            }else{
+            }
+            else if(fieldINput.attr('type') === 'time') {
+                value = fieldINput.val();
+                let time_12_hour = convertTo12Hour(value);
+                return time_12_hour;
+            }
+            else{
                 value = fieldINput.val();
                 return value;
             }
@@ -401,5 +417,4 @@
             runAtomicLogic(form);
         }
     });
-
 })(jQuery);

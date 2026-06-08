@@ -185,36 +185,6 @@
                 saveCondition(textareaLogicRepeater);
             }
         });
-
-        $(document).off('mousedown.cfefSelectOpen', '.cfef-conditional-select-wrap select');
-        $(document).off('keydown.cfefSelectOpen', '.cfef-conditional-select-wrap select');
-        $(document).off('blur.cfefSelectOpen', '.cfef-conditional-select-wrap select');
-        $(document).off('change.cfefSelectOpen', '.cfef-conditional-select-wrap select');
-        $(document).on('mousedown.cfefSelectOpen', '.cfef-conditional-select-wrap select', function () {
-            var $wrap = $(this).closest('.cfef-conditional-select-wrap');
-            /* Closing by clicking the select again does not blur or change — toggle here */
-            if ($wrap.hasClass('cfef-select-menu-open')) {
-                $wrap.removeClass('cfef-select-menu-open');
-            } else {
-                $wrap.addClass('cfef-select-menu-open');
-            }
-        });
-        $(document).on('keydown.cfefSelectOpen', '.cfef-conditional-select-wrap select', function (e) {
-            if (e.key === 'Escape') {
-                $(this).closest('.cfef-conditional-select-wrap').removeClass('cfef-select-menu-open');
-                return;
-            }
-            var openKeys = ['ArrowDown', 'ArrowUp', ' ', 'Enter'];
-            if (openKeys.indexOf(e.key) !== -1) {
-                $(this).closest('.cfef-conditional-select-wrap').addClass('cfef-select-menu-open');
-            }
-        });
-        $(document).on('blur.cfefSelectOpen', '.cfef-conditional-select-wrap select', function () {
-            $(this).closest('.cfef-conditional-select-wrap').removeClass('cfef-select-menu-open');
-        });
-        $(document).on('change.cfefSelectOpen', '.cfef-conditional-select-wrap select', function () {
-            $(this).closest('.cfef-conditional-select-wrap').removeClass('cfef-select-menu-open');
-        });
     }
 
     function createConditionalPopup(textarea_logic_repeater) {
@@ -259,7 +229,7 @@
             "<div data-repeater-list='conditions'>" +
             repeaterRowsMarkup +
             "</div>" +
-            "<button type='button' data-repeater-create class='cfef-conditional-add-btn'>+ Add Condition</button>" +
+            "<button type='button' data-repeater-create class='cfef-conditional-add-btn'>+ Add condition</button>" +
             "</div>" +
             "</div>" +
             "<div class='cfef-conditional-popup-footer'>" +
