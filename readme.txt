@@ -196,7 +196,7 @@ You can report vulnerabilities through the [Patchstack Vulnerability Disclosure 
 
 == Changelog ==
 
-= 2.7.1 - 2026-06-11 =
+= 2.7.1 - 2026-06-12 =
 * Added: Compatibility with new fields of atomic form.  
 * Tested up to: Elementor 4.1.2 and Elementor Pro 4.1.1.
 
