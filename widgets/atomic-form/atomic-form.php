@@ -57,9 +57,7 @@ class Atomic_Form extends Core_Atomic_Form {
 					&& $item instanceof Chips_Control
 					&& 'actions-after-submit' === $item->get_bind()
 				) {
-					$new_items[] = Atomic_Form_Whatsapp_Redirect_Controls::build_actions_after_submit_chips(
-						self::ACTION_COLLECT_SUBMISSIONS
-					);
+					$new_items[] = Atomic_Form_Whatsapp_Redirect_Controls::extend_actions_after_submit_chips( $item );
 					continue;
 				}
 

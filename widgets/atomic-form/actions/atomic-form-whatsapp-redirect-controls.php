@@ -47,26 +47,41 @@ class Atomic_Form_Whatsapp_Redirect_Controls {
 		return $extended;
 	}
 
-	public static function build_actions_after_submit_chips( string $collect_submissions_action_value ): Chips_Control {
-		return Chips_Control::bind_to( 'actions-after-submit' )
-			->set_label( \__( 'Actions after submit', 'extensions-for-elementor-form' ) )
-			->set_meta( [ 'topDivider' => true ] )
-			->set_options(
-				[
-					[
-						'label' => \__( 'Collect submissions', 'extensions-for-elementor-form' ),
-						'value' => $collect_submissions_action_value,
-					],
-					[
-						'label' => \__( 'Email', 'extensions-for-elementor-form' ),
-						'value' => 'email',
-					],
-					[
-						'label' => \__( 'WhatsApp', 'extensions-for-elementor-form' ),
-						'value' => self::ACTION_TYPE,
-					],
-				]
-			);
+	/**
+	 * Append WhatsApp to the core actions-after-submit chips (preserve Email, Collect submissions, Webhook, etc.).
+	 */
+	public static function extend_actions_after_submit_chips( Chips_Control $source ): Chips_Control {
+		$options = $source->get_props()['options'] ?? [];
+
+		foreach ( $options as $option ) {
+			if ( isset( $option['value'] ) && self::ACTION_TYPE === $option['value'] ) {
+				return $source;
+			}
+		}
+
+		$options[] = [
+			'label' => \__( 'WhatsApp', 'extensions-for-elementor-form' ),
+			'value' => self::ACTION_TYPE,
+		];
+
+		$serialized = $source->jsonSerialize();
+		$value      = $serialized['value'] ?? [];
+
+		$control = Chips_Control::bind_to( 'actions-after-submit' );
+
+		if ( ! empty( $value['label'] ) ) {
+			$control->set_label( $value['label'] );
+		}
+
+		if ( ! empty( $value['description'] ) ) {
+			$control->set_description( $value['description'] );
+		}
+
+		if ( ! empty( $value['meta'] ) ) {
+			$control->set_meta( $value['meta'] );
+		}
+
+		return $control->set_options( $options );
 	}
 
 	public static function define_whatsapp_section(): Section {
