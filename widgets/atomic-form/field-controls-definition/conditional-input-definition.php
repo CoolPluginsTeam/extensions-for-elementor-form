@@ -105,7 +105,7 @@ final class Conditional_Input_Definition {
 									'value' => 'All',
 								],
 								[
-									'label' => esc_html__( 'Any - OR Conditions', 'extensions-for-elementor-form' ),
+									'label' => esc_html__( 'Any - OR Conditions (PRO)', 'extensions-for-elementor-form' ),
 									'value' => 'Any (PRO)',
 									'disabled' => true,
 								],
