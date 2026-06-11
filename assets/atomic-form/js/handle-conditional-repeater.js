@@ -45,25 +45,46 @@
             .replace(/>/g, '&gt;');
     }
 
+    var CONDITION_OPERATORS = [
+        { value: '==', label: 'is equal ( == )', isPro: false },
+        { value: '!=', label: 'is not equal (!=)', isPro: false },
+        { value: '>', label: 'greater than (>)', isPro: false },
+        { value: '<', label: 'less than (<)', isPro: false },
+        { value: '>=', label: 'greater than equal (>=)', isPro: true },
+        { value: '<=', label: 'less than equal (<=)', isPro: true },
+        { value: 'e', label: "empty ('')", isPro: true },
+        { value: '!e', label: 'not empty', isPro: true },
+        { value: 'c', label: 'contains', isPro: true },
+        { value: '!c', label: 'does not contain', isPro: true },
+        { value: '^', label: 'starts with', isPro: true },
+        { value: '~', label: 'ends with', isPro: true }
+    ];
+
+    function getOperatorOptionsMarkup(selectedOperator) {
+        return CONDITION_OPERATORS.map(function (operator) {
+            var isSelected = selectedOperator === operator.value;
+            var selectedAttr = isSelected ? ' selected' : '';
+            var proAttrs = operator.isPro
+                ? ' disabled class="cfef-conditional-operator-pro"'
+                : '';
+
+            return "<option value='" + operator.value + "'" + selectedAttr + proAttrs + ">" +
+                operator.label + (operator.isPro ? ' (PRO)' : '') +
+                "</option>";
+        }).join('');
+    }
+
     function getConditionRowMarkup(condition) {
         const item = condition || {};
         const fieldId = escapeAttr(item.cfef_logic_field_id);
         const fieldIs = item.cfef_logic_field_is || '==';
         const compareValue = escapeAttr(item.cfef_logic_compare_value);
 
-        const isEqualSelected = fieldIs === '==' ? " selected" : "";
-        const isNotEqualSelected = fieldIs === '!=' ? " selected" : "";
-        const isGreaterThanSelected = fieldIs === '>' ? " selected" : "";
-        const isLessThanSelected = fieldIs === '<' ? " selected" : "";
-
         return "<div data-repeater-item class='cfef-conditional-popup-row'>" +
             "<input type='text' class='cfef-conditional-control' name='cfef_logic_field_id' placeholder='Field ID' value=\"" + fieldId + "\">" +
             "<span class='cfef-conditional-select-wrap'>" +
             "<select class='cfef-conditional-control' name='cfef_logic_field_is'>" +
-            "<option value='=='" + isEqualSelected + ">is equal ( == )</option>" +
-            "<option value='!='" + isNotEqualSelected + ">is not equal (!=)</option>" +
-            "<option value='>'" + isGreaterThanSelected + ">greater than (>)</option>" +
-            "<option value='<'" + isLessThanSelected + ">less than (<)</option>" +
+            getOperatorOptionsMarkup(fieldIs) +
             "</select>" +
             "</span>" +
             "<input type='text' class='cfef-conditional-control' name='cfef_logic_compare_value' placeholder='Value to compare' value=\"" + compareValue + "\">" +
@@ -164,36 +185,6 @@
                 saveCondition(textareaLogicRepeater);
             }
         });
-
-        $(document).off('mousedown.cfefSelectOpen', '.cfef-conditional-select-wrap select');
-        $(document).off('keydown.cfefSelectOpen', '.cfef-conditional-select-wrap select');
-        $(document).off('blur.cfefSelectOpen', '.cfef-conditional-select-wrap select');
-        $(document).off('change.cfefSelectOpen', '.cfef-conditional-select-wrap select');
-        $(document).on('mousedown.cfefSelectOpen', '.cfef-conditional-select-wrap select', function () {
-            var $wrap = $(this).closest('.cfef-conditional-select-wrap');
-            /* Closing by clicking the select again does not blur or change — toggle here */
-            if ($wrap.hasClass('cfef-select-menu-open')) {
-                $wrap.removeClass('cfef-select-menu-open');
-            } else {
-                $wrap.addClass('cfef-select-menu-open');
-            }
-        });
-        $(document).on('keydown.cfefSelectOpen', '.cfef-conditional-select-wrap select', function (e) {
-            if (e.key === 'Escape') {
-                $(this).closest('.cfef-conditional-select-wrap').removeClass('cfef-select-menu-open');
-                return;
-            }
-            var openKeys = ['ArrowDown', 'ArrowUp', ' ', 'Enter'];
-            if (openKeys.indexOf(e.key) !== -1) {
-                $(this).closest('.cfef-conditional-select-wrap').addClass('cfef-select-menu-open');
-            }
-        });
-        $(document).on('blur.cfefSelectOpen', '.cfef-conditional-select-wrap select', function () {
-            $(this).closest('.cfef-conditional-select-wrap').removeClass('cfef-select-menu-open');
-        });
-        $(document).on('change.cfefSelectOpen', '.cfef-conditional-select-wrap select', function () {
-            $(this).closest('.cfef-conditional-select-wrap').removeClass('cfef-select-menu-open');
-        });
     }
 
     function createConditionalPopup(textarea_logic_repeater) {
@@ -238,7 +229,7 @@
             "<div data-repeater-list='conditions'>" +
             repeaterRowsMarkup +
             "</div>" +
-            "<button type='button' data-repeater-create class='cfef-conditional-add-btn'>+ Add Condition</button>" +
+            "<button type='button' data-repeater-create class='cfef-conditional-add-btn'>+ Add condition</button>" +
             "</div>" +
             "</div>" +
             "<div class='cfef-conditional-popup-footer'>" +

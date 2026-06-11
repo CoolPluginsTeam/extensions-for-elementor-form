@@ -659,6 +659,7 @@ span.cfkef-pro-feature a{
     margin: 0px 5px;
     box-shadow: none;
     padding: 0;
+    background-color: #f0f0f0;
 }
 
 .form-table .cool-formkit-table-td #cfefp_cloudflare_site_key:focus, .form-table .cool-formkit-table-td #cfefp_cloudflare_secret_key:focus .form-table .cool-formkit-table-td #cfefp_h_site_key:focus, .form-table .cool-formkit-table-td #cfefp_h_secret_key:focus
@@ -680,7 +681,7 @@ span.cfkef-pro-feature a{
     box-shadow: 0 0 0 transparent;
     border-radius: 4px;
     border: 1px solid rgba(220, 220, 222, .75);
-    background-color: #fff;
+    background-color: #f0f0f0;
     color: #2c3338;
 
     display: flex;

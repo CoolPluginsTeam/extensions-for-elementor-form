@@ -4,6 +4,11 @@ use Cool_FormKit\Widgets\AtomicForm\Atomic_Form;
 use Cool_FormKit\Widgets\AtomicForm\Checkbox\Checkbox;
 use Cool_FormKit\Widgets\AtomicForm\Input\Input;
 use Cool_FormKit\Widgets\AtomicForm\Textarea\Textarea;
+use Cool_FormKit\Widgets\AtomicForm\Radio_Button\Radio_Button;
+use Cool_FormKit\Widgets\AtomicForm\Select\Select;
+use Cool_FormKit\Widgets\AtomicForm\Date_Picker\Date_Picker;
+use Cool_FormKit\Widgets\AtomicForm\Time_Picker\Time_Picker;
+use Cool_FormKit\Widgets\AtomicForm\File_Upload\File_Upload;
 use Elementor\Elements_Manager;
 use Elementor\Plugin as Elementor_Plugin;
 use Elementor\Utils as Elementor_Utils;
@@ -56,11 +61,16 @@ class Atomic_Form_Addon_Loader {
     }
 
     /**
-     * Core Atomic Widgets (`e_atomic_elements`) plus Pro Atomic Form (`e_pro_atomic_form`) must both be active.
+     * Elementor 4.0+ and experiments: Atomic Widgets (`e_atomic_elements`) plus Pro Atomic Form (`e_pro_atomic_form`).
      *
      * @see \Elementor\Modules\AtomicWidgets\Module::EXPERIMENT_NAME
+     * @see \ElementorPro\Modules\AtomicForm\Module::is_experiment_active()
      */
     private function are_atomic_form_experiments_active(): bool {
+        if ( ! defined( 'ELEMENTOR_VERSION' ) || ! version_compare( ELEMENTOR_VERSION, CFL_MIN_ELEMENTOR_ATOMIC_FORM_VERSION, '>=' ) ) {
+            return false;
+        }
+
         $experiments = Elementor_Plugin::$instance->experiments ?? null;
         if ( ! $experiments || ! method_exists( $experiments, 'is_feature_active' ) ) {
             return false;
@@ -142,13 +152,29 @@ class Atomic_Form_Addon_Loader {
             $widgets_manager->unregister('e-form-input');
             $widgets_manager->unregister('e-form-textarea');
             $widgets_manager->unregister('e-form-checkbox');
+            $widgets_manager->unregister('e-form-radio-button');
+            $widgets_manager->unregister('e-form-date-picker');
+            $widgets_manager->unregister('e-form-time-picker');
+            $widgets_manager->unregister('e-form-file-upload');
+            $widgets_manager->unregister('e-form-select');
     
             require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/input/input.php';
             require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/textarea/textarea.php';
             require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/checkbox/checkbox.php';
+            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/radio-button/radio-button.php';
+            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/date-picker/date-picker.php';
+            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/time-picker/time-picker.php';
+            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/file-upload/file-upload.php';
+            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/select/select.php';
             $widgets_manager->register( new Input() );
             $widgets_manager->register( new Textarea() );
             $widgets_manager->register( new Checkbox() );
+            $widgets_manager->register( new Radio_Button() );
+            $widgets_manager->register( new Date_Picker() );
+            $widgets_manager->register( new Time_Picker() );
+            $widgets_manager->register( new File_Upload() );
+            $widgets_manager->register( new Select() );
+
         }
 
     }
@@ -377,6 +403,14 @@ class Atomic_Form_Addon_Loader {
             array( 'jquery', 'elementor-frontend' ),
             $this->version,
             true
+        );
+
+        wp_localize_script(
+            'cfl-atomic-form-condition',
+            'my_script_vars',
+            array(
+                'pluginConstant' => CFL_PLUGIN_URL,
+            )
         );
 
         if (! wp_script_is('cfl-atomic-form-condition', 'enqueued') && ! wp_script_is('cfl-atomic-form-condition', 'done')) {

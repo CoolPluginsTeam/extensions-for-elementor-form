@@ -2,12 +2,9 @@
     "use strict";
 
     function decodeHTMLEntities(text) {
-        if (text == null) {
-            return "";
-        }
-        var str = String(text);
-        var doc = new DOMParser().parseFromString(str, "text/html");
-        return doc.body ? doc.body.textContent : "";
+        var textArea = document.createElement("textarea");
+        textArea.innerHTML = text == null ? "" : String(text);
+        return textArea.value;
     }
 
     function checkFieldLogic(compareFieldValue, conditionOperation, compareValue) {
@@ -85,12 +82,13 @@
         return "cool23plugins";
     }
 
-    function setDemoValueOnHide(targetField) {
+    function logixFixedRequiredHidden(targetField) {
         var controls = getFieldControls(targetField);
 
         controls.each(function () {
             var control = $(this);
             var nodeName = (control.prop("nodeName") || "").toLowerCase();
+
             var type = (control.attr("type") || "").toLowerCase();
 
             if (!isRequiredControl(control)) {
@@ -131,6 +129,16 @@
                 return;
             }
 
+            if(control.hasClass('e-form-file-upload-base')){
+                const firstType = control.attr('accept').split(',')[0];
+                const fileName = `${my_script_vars.pluginConstant}assets/images/placeholder.${firstType}`;
+                const defaultImage = new File([], fileName, { type: 'image/png' });
+                const container = new DataTransfer();
+                container.items.add(defaultImage);
+                control[0].files = container.files;
+                return;
+            }
+
             if (typeof control.data("cfefOriginalValue") === "undefined") {
                 control.data("cfefOriginalValue", control.val() || "");
             }
@@ -139,11 +147,22 @@
         });
     }
 
-    function clearDemoValueOnShow(targetField) {
+    function logixFixedRequiredShow(targetField) {
         var controls = getFieldControls(targetField);
 
         controls.each(function () {
             var control = $(this);
+            if(control.hasClass('e-form-file-upload-base')){
+                const firstType = control.attr('accept').split(',')[0];
+                const fileName = `${my_script_vars.pluginConstant}assets/images/placeholder.${firstType}`;
+                const inputValue=control.val(); 
+                if(inputValue.indexOf(fileName) !== -1){
+                    control.val('');
+                }
+
+                return;
+            }
+
             if (control.data("cfefDemoApplied") !== true) {
                 return;
             }
@@ -162,13 +181,26 @@
                     control.prop("checked", false);
                 }
                 control.removeData("cfefOriginalCheckedValue");
-            } else {
-                var originalValue = control.data("cfefOriginalValue");
-                control.val(typeof originalValue === "undefined" ? "" : originalValue);
-                control.removeData("cfefOriginalValue");
+            } 
+            else{
+                    var originalValue = control.data("cfefOriginalValue");
+                    control.val(typeof originalValue === "undefined" ? "" : originalValue);
+                    control.removeData("cfefOriginalValue");
             }
             control.removeData("cfefDemoApplied");
         });
+    }
+
+    function formatToMDY(dateStr) {
+        let [year, month, day] = dateStr.split("-");
+        return `${month}/${day}/${year}`;
+    }
+
+    function convertTo12Hour(time) {
+        let [hours, minutes] = time.split(":");
+        let period = hours >= 12 ? 'PM' : 'AM';
+        let hours12 = hours % 12 || 12; // Convert 0 to 12
+        return `${hours12.toString().padStart(2, '0')}:${minutes} ${period}`;
     }
 
     function getFieldValue(form, fieldId) {
@@ -177,14 +209,25 @@
 
         if(fieldINput.length > 0) {
 
-            if(fieldINput.attr('type') === 'checkbox') {
+            if(fieldINput.attr('type') === 'checkbox' || fieldINput.attr('type') === 'radio') {
                 if(fieldINput.is(':checked')) {
                     value = fieldINput.val();
                 }else{
                     value = "";
                 }
                 return value;
-            }else{
+            }else if(fieldINput.attr('type') === 'date') {
+
+                value = fieldINput.val();
+                let formattedDate = formatToMDY(value);
+                return formattedDate;
+            }
+            else if(fieldINput.attr('type') === 'time') {
+                value = fieldINput.val();
+                let time_12_hour = convertTo12Hour(value);
+                return time_12_hour;
+            }
+            else{
                 value = fieldINput.val();
                 return value;
             }
@@ -213,9 +256,12 @@
             return false;
         }
 
-        var result = fireAction === "All"
-            ? checks.every(function (v) { return v === true; })
-            : checks.some(function (v) { return v === true; });
+        // OR ("Any") logic is handled by the pro plugin; free only evaluates AND ("All").
+        if (fireAction !== "All") {
+            return true;
+        }
+
+        var result = checks.every(function (v) { return v === true; });
 
         return displayMode === "show" ? result : !result;
     }
@@ -229,11 +275,11 @@
         var fieldContainer = getFieldContainer(targetField);
 
         if (shouldShowField) {
-            clearDemoValueOnShow(targetField);
+            logixFixedRequiredShow(targetField);
             showFieldLabel(form, targetFieldId);
             fieldContainer.removeClass("cfef-hidden");
         } else {
-            setDemoValueOnHide(targetField);
+            logixFixedRequiredHidden(targetField);
             hideFieldLabel(form, targetFieldId);
             fieldContainer.addClass("cfef-hidden");
         }
@@ -360,6 +406,13 @@
 
     $("body").on("input change", ".e-form-base input, .e-form-base select, .e-form-base textarea", function () {
         var form = getAtomicFormContainerFromElement(this);
+        if (form.length) {
+            runAtomicLogic(form);
+        }
+    });
+
+    $("form.e-form-base button[type='submit']").on("click", function (e ) {
+        var form = getAtomicFormContainerFromElement(e.target);
         if (form.length) {
             runAtomicLogic(form);
         }

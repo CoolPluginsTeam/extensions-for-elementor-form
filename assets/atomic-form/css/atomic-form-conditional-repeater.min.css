@@ -168,6 +168,10 @@
     background-image: none;
 }
 
+.cfef-conditional-select-wrap select option.cfef-conditional-operator-pro:disabled {
+    background-color: #00000015;
+}
+
 .cfef-conditional-select-wrap::after {
     content: "";
     position: absolute;
