@@ -34,7 +34,7 @@ class CPFM_Feedback_Notice {
         }
 
         if(!isset(self::$registered_notices[$key]['plugins'])){
-            self::$registered_notices[$key]['plugins'][] = array();
+            self::$registered_notices[$key]['plugins'] = array();
         }
         
         self::$registered_notices[$key]['plugins'][] = $args;
