@@ -21,6 +21,12 @@
           }
           return formatted;
         }
+
+        function stripCNPJ(value) {
+          var s = String(value).toUpperCase().replace(/[^A-Z0-9]/g, "");
+          if (s.length <= 12) return s;
+          return s.slice(0, 12) + s.slice(12).replace(/\D/g, "").slice(0, 2);
+        }
       
         // ----------------- Money Mask Formatting -----------------
         function formatMoneyInput(value, type, prefix,input) {
@@ -213,11 +219,11 @@
                   return;
               }
       
-              // Standard digit-based formatting for other fields
-              var rawDigits = input.value.replace(/\D/g, ""); // Remove non-digits
-              var digitIndex = getDigitIndexFromCaret(input.value, oldCaret);
-              var newVal = formatFunction(rawDigits); // Use predefined function for other fields
-              var newCaret = mapDigitIndexToCaret(newVal, digitIndex);
+              var isCnpj = $(input).hasClass("mask-cnpj");
+              var rawDigits = isCnpj ? stripCNPJ(input.value) : input.value.replace(/\D/g, "");
+              var digitIndex = getDigitIndexFromCaret(input.value, oldCaret, isCnpj);
+              var newVal = formatFunction(rawDigits);
+              var newCaret = mapDigitIndexToCaret(newVal, digitIndex, isCnpj);
       
               if(newVal != '('){
 
@@ -238,19 +244,21 @@
         function getCaretPosition(input) {
           return input.selectionStart;
         }
-        function getDigitIndexFromCaret(formattedStr, caretPos) {
+        function getDigitIndexFromCaret(formattedStr, caretPos, alphanumeric) {
           var count = 0;
+          var pattern = alphanumeric ? /[A-Z0-9]/ : /\d/;
           for (var i = 0; i < caretPos; i++) {
-            if (/\d/.test(formattedStr.charAt(i))) {
+            if (pattern.test(formattedStr.charAt(i))) {
               count++;
             }
           }
           return count;
         }
-        function mapDigitIndexToCaret(formattedStr, digitIndex) {
+        function mapDigitIndexToCaret(formattedStr, digitIndex, alphanumeric) {
           var count = 0;
+          var pattern = alphanumeric ? /[A-Z0-9]/ : /\d/;
           for (var i = 0; i < formattedStr.length; i++) {
-            if (/\d/.test(formattedStr.charAt(i))) {
+            if (pattern.test(formattedStr.charAt(i))) {
               if (count === digitIndex) {
                 return i;
               }
@@ -301,10 +309,11 @@
               }
       
               var caretPos = getCaretPosition(input);
-              var digitIndex = getDigitIndexFromCaret(input.value, caretPos);
+              var isCnpj = $(input).hasClass("mask-cnpj");
+              var digitIndex = getDigitIndexFromCaret(input.value, caretPos, isCnpj);
               if (digitIndex === 0) return;
       
-              var rawDigits = input.value.replace(/\D/g, "");
+              var rawDigits = isCnpj ? stripCNPJ(input.value) : input.value.replace(/\D/g, "");
               var newDigits = rawDigits.slice(0, digitIndex - 1) + rawDigits.slice(digitIndex);
       
               // Find matching class for format function
@@ -313,7 +322,7 @@
               if (matchedClass) {
                   var formatted = formatFunctions[matchedClass](newDigits);
                   input.value = formatted;
-                  var newCaretPos = mapDigitIndexToCaret(formatted, digitIndex - 1);
+                  var newCaretPos = mapDigitIndexToCaret(formatted, digitIndex - 1, isCnpj);
                   setCaretPosition(input, newCaretPos);
               }
           }
@@ -539,31 +548,31 @@
           return sum % 10 === 0;
         }
       
-        // Validate CNPJ (Brazilian Business ID - 14 digits)
+        // Validate CNPJ (Brazilian Business ID - 14 chars, numeric or alphanumeric)
         function isValidCNPJ(cnpj) {
-          cnpj = cnpj.replace(/\D/g, ''); // Remove non-numeric characters
-          if (cnpj.length !== 14) return false;
-      
-          // Eliminate obvious invalid CNPJs (repeated digits)
-          if (/^(\d)\1+$/.test(cnpj)) return false;
-      
+          cnpj = cnpj.toUpperCase().replace(/[.\-\/]/g, '');
+          if (!/^[A-Z0-9]{12}\d{2}$/.test(cnpj)) return false;
+
+          // Eliminate obvious invalid CNPJs (repeated characters)
+          if (/^(.)\1{13}$/.test(cnpj)) return false;
+
           let calcCheckDigit = (cnpj, length) => {
               let weights = length === 12 ? [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2] : [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
               let sum = 0;
-      
+
               for (let i = 0; i < weights.length; i++) {
-                  sum += parseInt(cnpj.charAt(i)) * weights[i];
+                  sum += (cnpj.charCodeAt(i) - 48) * weights[i];
               }
-      
+
               let remainder = sum % 11;
               return remainder < 2 ? 0 : 11 - remainder;
           };
-      
+
           // Validate both check digits
           let firstCheck = calcCheckDigit(cnpj, 12);
-          let secondCheck = calcCheckDigit(cnpj, 13);
-      
-          return firstCheck === parseInt(cnpj.charAt(12)) && secondCheck === parseInt(cnpj.charAt(13));
+          let secondCheck = calcCheckDigit(cnpj.slice(0, 12) + firstCheck, 13);
+
+          return firstCheck === parseInt(cnpj.charAt(12), 10) && secondCheck === parseInt(cnpj.charAt(13), 10);
         }
       
         // Validate CPF (Brazilian Individual ID - 11 digits)

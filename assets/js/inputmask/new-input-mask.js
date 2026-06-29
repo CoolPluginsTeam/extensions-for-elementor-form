@@ -385,6 +385,10 @@ class InputHandler extends elementorModules.frontend.handlers.Base {
                     $input.attr('placeholder',moneyPrefix+`0${format}00`)
                   }
                 }
+
+                if ($input.hasClass('mask-cnpj')) {
+                    $input.attr('inputmode', 'text');
+                }
             }
         });
     }
