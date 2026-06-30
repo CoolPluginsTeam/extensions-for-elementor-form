@@ -1,3 +1,7 @@
+:root {
+  --cfef-accent-color: #EDACFB;
+}
+
 .cfef-dynamic-tag {
     background: #d3d3d3;
     padding: 5px;
@@ -16,13 +20,13 @@
   }
   .cfef_elementor_review_notice .cfef_elementor_review_wrapper{
     padding: 10px;
-    border:2px solid #EDACFB;
+    border:2px solid var(--cfef-accent-color);
   }
   .cfef_elementor_review_notice .cfef_elementor_offer_notice{
     position: absolute;
     top: -11px;
     left: 16px;
-    background: #EDACFB;
+    background: var(--cfef-accent-color);
     color: #0C0D0E;
     font-size: 10px;
     padding: 5px;
@@ -35,7 +39,7 @@
   .cfef_elementor_review_notice #cfef_elementor_review_dismiss{
     position: absolute;
     bottom: 4px;
-    background: #EDACFB;
+    background: var(--cfef-accent-color);
     color: #0C0D0E;
     font-size: 10px;
     padding: 5px;
@@ -48,13 +52,13 @@
   }
   
   .cfef_elementor_review_notice .cfef_elementor_review_msg a{
-    color: #EDACFB;
+    color: var(--cfef-accent-color);
   }
   .cfef_elementor_demo_btn{
     position: absolute;
     bottom: 4px;
     right: 20px;
-    background: #EDACFB;
+    background: var(--cfef-accent-color);
     font-size: 10px;
     padding: 5px;
     border-radius: 3px;
@@ -69,7 +73,7 @@
   }
   .cfefp_pro_link_button{
     padding: 5px;
-    background-color: #edacfb;
+    background-color: var(--cfef-accent-color);
     text-align: center;
     border-radius: 5px;
   }

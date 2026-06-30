@@ -1,12 +1,16 @@
+:root {
+  --ccfef-accent-color: #EDACFB;
+}
+
 .ccfef_elementor_review_notice .ccfef_elementor_review_wrapper{
     padding: 10px;
-    border:2px solid #EDACFB;
+    border:2px solid var(--ccfef-accent-color);
   }
   .ccfef_elementor_review_notice .ccfef_elementor_offer_notice{
     position: absolute;
     top: -11px;
     left: 16px;
-    background: #EDACFB;
+    background: var(--ccfef-accent-color);
     color: #0C0D0E;
     font-size: 10px;
     padding: 5px;
@@ -19,7 +23,7 @@
   .ccfef_elementor_review_notice #ccfef_elementor_review_dismiss{
     position: absolute;
     bottom: 4px;
-    background: #EDACFB;
+    background: var(--ccfef-accent-color);
     color: #0C0D0E;
     font-size: 10px;
     padding: 5px;
@@ -32,13 +36,13 @@
   }
   
   .ccfef_elementor_review_notice .ccfef_elementor_review_msg a{
-    color: #EDACFB;;
+    color: var(--ccfef-accent-color);
   }
   .ccfef_elementor_demo_btn{
     position: absolute;
     bottom: 4px;
     right: 20px;
-    background: #EDACFB;
+    background: var(--ccfef-accent-color);
     font-size: 10px;
     padding: 5px;
     border-radius: 3px;
