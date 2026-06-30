@@ -478,7 +478,6 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			} else {
 				// Optional: Log or debug if the module class isn't found.
 				if (defined('WP_DEBUG') && WP_DEBUG) {
-					// error_log('Module class not found or not active: ' . $class_name);
 				}
 			}
 		}

@@ -91,7 +91,6 @@ if (!class_exists('CFL_cronjob')) {
               
                   if (is_wp_error($response)) {
                     if ( defined( 'WP_DEBUG' ) && WP_DEBUG ){
-                        // error_log('CFL Feedback Send Failed: ' . $response->get_error_message());
                         return;
                     }
                   }

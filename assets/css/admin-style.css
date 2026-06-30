@@ -1,3 +1,10 @@
+:root {
+    --cfkef-white: #fff;
+    --cfkef-pink: #fb5fab;
+    --cfkef-slate: #3f415e;
+    --cfkef-dark: #323348;
+}
+
 /* Updated CSS for Toggle Switch */
 .cfkef-toggle-switch {
     position: relative;
@@ -38,7 +45,7 @@
 }
 
 input:checked + .cfkef-slider {
-    background-color: #fb5fab;
+    background-color: var(--cfkef-pink);
 }
 
 input:checked + .cfkef-slider::before {
@@ -72,8 +79,8 @@ input.cfkef-element-toggle:disabled::before{
 }
 
 .cfkef-wrapper h2.nav-tab-wrapper .nav-tab-active{
-    background-color: #fff;
-    border-bottom-color: #fff;
+    background-color: var(--cfkef-white);
+    border-bottom-color: var(--cfkef-white);
 }
 
 
@@ -137,7 +144,7 @@ input.cfkef-element-toggle:disabled::before{
 .cfkef-settings-box .wrapper-header,
 .cfkef-form-element-wrapper .wrapper-header {
     padding: 1px 20px;
-    background-color: #3f415e;
+    background-color: var(--cfkef-slate);
     border-radius: 5px 5px 0px 0px;
 }
 .cfkef-license-box .wrapper-header h2,
@@ -205,7 +212,7 @@ input.cfkef-element-toggle:disabled::before{
 
 
 .cfkef-form-element-card {
-    background: #fff;
+    background: var(--cfkef-white);
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 20px;
@@ -280,8 +287,8 @@ input.cfkef-element-toggle:disabled::before{
 .cfkef-label-popular, .cfkef-label-updated {
     font-size: 10px;
     text-transform: uppercase;
-    color: #fff;
-    background-color: #fb5fab;
+    color: var(--cfkef-white);
+    background-color: var(--cfkef-pink);
     padding: 2px 6px;
     border-radius: 4px;
     position: absolute;
@@ -299,7 +306,7 @@ input.cfkef-element-toggle:disabled::before{
 }
 
 .cfkef-label-updated {
-    background-color: #3f415e;
+    background-color: var(--cfkef-slate);
 }
 
 .cfkef-wrapper {
@@ -315,7 +322,7 @@ input.cfkef-element-toggle:disabled::before{
 
 body.elementor_page_cool-formkit,
 body.elementor_page_cfkef-entries{
-    background-color: #fff;
+    background-color: var(--cfkef-white);
 }
 
 .elementor_page_cool-formkit #wpbody #wpbody-content {
@@ -333,24 +340,24 @@ body.elementor_page_cfkef-entries{
 
 .cfkef-wrapper .button {
     padding: 10px 14px;
-    background-color: #3f415e;
-    border: 1px solid #323348;
+    background-color: var(--cfkef-slate);
+    border: 1px solid var(--cfkef-dark);
     box-shadow: 1px 2px 6px -4px rgba(56, 60, 96, 0.977);
-    color: #ffffff;
+    color: var(--cfkef-white);
     font-weight: 500;
     text-decoration: none;
     border-radius: 5px;
     font-size: 14px;
     line-height: 14px;
     align-self: center;
-    text-shadow: 1px 1px 1px #323348;
+    text-shadow: 1px 1px 1px var(--cfkef-dark);
 }
 .cfkef-wrapper .button:focus {
-    box-shadow: 0 0 2px 2px #323348;
+    box-shadow: 0 0 2px 2px var(--cfkef-dark);
     outline: none;
-    border: 1px solid #323348;
+    border: 1px solid var(--cfkef-dark);
     background: #0E1136;
-    color: #fff;
+    color: var(--cfkef-white);
     text-shadow: none;
 }
 .cfkef-wrapper .button-secondary {
@@ -358,17 +365,17 @@ body.elementor_page_cfkef-entries{
     border: 1px solid #ccc;
     color: #595959;
     box-shadow: 1px 3px 4px -5px rgb(55 55 55 / 42%);
-    text-shadow: 1px 1px 1px #ffffff;
+    text-shadow: 1px 1px 1px var(--cfkef-white);
 }
 .cfkef-wrapper .button:hover {
     box-shadow: 1px 2px 6px -4px rgb(30, 31, 48);
-    border: 1px solid #323348;
+    border: 1px solid var(--cfkef-dark);
     background: #0E1136;
-    color: #fff;
+    color: var(--cfkef-white);
     text-shadow: none;
 }
 .wrapper-header .cfkef-save-all .cfkef-save-controls .button{
-    background-color: #fb5fab;
+    background-color: var(--cfkef-pink);
     border:1px solid #fd79b9;
     text-shadow: 1px 1px 1px #fc63ad;
 }
@@ -398,7 +405,7 @@ body.elementor_page_cfkef-entries{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #ffffff;
+    background-color: var(--cfkef-white);
     padding: 10px 30px;
     border-bottom: 1px solid #ddd;
     height: 60px;
@@ -419,7 +426,7 @@ body.elementor_page_cfkef-entries{
     border: 1px solid #dcd0d6;
 }
 .cfkef-header-logo .button{
-    background-color: #fb5fab;
+    background-color: var(--cfkef-pink);
     border: 1px solid #fd79b9;
     text-shadow: 1px 1px 1px #fc63ad;
 }
@@ -468,7 +475,7 @@ a.button-primary.upgrade-pro-btn{
 }
 
 .cfkef-sidebar-block {
-    background: #fff;
+    background: var(--cfkef-white);
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 20px;
@@ -535,7 +542,7 @@ a.button-primary.upgrade-pro-btn{
 
 /* Review Request Styles */
 .cfkef-review-request {
-    background: #fff;
+    background: var(--cfkef-white);
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 20px;
@@ -581,7 +588,7 @@ a.button-primary.upgrade-pro-btn{
 .cfkef-license-box,
 .cfkef-settings-box {
     margin: 25px 0;
-    background: #fff;
+    background: var(--cfkef-white);
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0px 2px 2px rgb(150 150 150 / 12%);
@@ -613,7 +620,7 @@ span.cfkef-pro-feature a{
     padding: 10px;
     border-radius: 5px;
     margin-top: 10px;
-    border-left: 4px solid #fb5fab;
+    border-left: 4px solid var(--cfkef-pink);
 }
 .cfkef-license-upgrade-box a {
     color: #0073aa;
@@ -746,8 +753,8 @@ td.cool-formkit-table-td.usage-share-data {
     top: -10px;
     right: 0px;
     transform: translateY(-100%);
-    background: #3f415e;
-    color: #fff;
+    background: var(--cfkef-slate);
+    color: var(--cfkef-white);
     padding: 10px;
     font-size: 12px;
     border-radius: 4px;
@@ -768,7 +775,7 @@ td.cool-formkit-table-td.usage-share-data {
     right: 15px;
     border-width: 6px;
     border-style: solid;
-    border-color: #3f415e transparent transparent transparent;
+    border-color: var(--cfkef-slate) transparent transparent transparent;
 }
 
 /* Shake Effect On save buttons*/
@@ -790,7 +797,7 @@ td.cool-formkit-table-td.usage-share-data {
 }
 .cfkef-activate-plugin-btn,.cfkef-install-plugin-btn,.cfkef-activate-check-theme{
     cursor: pointer;
-    background-color: #fb5fab;
+    background-color: var(--cfkef-pink);
     color: white;
     border: none;
     padding: 5px 3px;
