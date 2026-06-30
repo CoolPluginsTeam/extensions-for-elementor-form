@@ -1,0 +1,24 @@
+Ignore all duplicate-code findings related to the following files/classes/scripts. These are intentionally maintained as separate implementations because each addon loads its own JS/CSS and functionality independently based on feature toggles. Do not recommend merging, abstracting, or creating shared base classes/modules for these files.
+
+Ignore all duplicate-code reports for:
+
+Country Code addon classes
+Elementor Mask Control classes
+Conditional Fields classes
+WhatsApp Redirect classes
+FME Plugin classes
+Form to Sheet action variants
+Collect Entries action variants
+Input Mask JS files
+Conditional Logic frontend JS files
+Country Code JS files
+Country Code content template JS
+Editor/global JS files that are intentionally separated
+Duplicate editor CSS files for addon families
+
+
+Do not report accepted naming conventions such as:
+
+formdb_elementor_marketing()
+EEF_get_pro_link()
+These are maintained for backward compatibility and existing hook integrations.

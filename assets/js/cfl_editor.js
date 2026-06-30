@@ -24,7 +24,6 @@
                     btn.closest('.elementor-control').remove();
                 },
                 error: (xhr, status, error) => {
-                    console.log(xhr.responseText);
                     console.log(error);
                     console.log(status);
                 }
