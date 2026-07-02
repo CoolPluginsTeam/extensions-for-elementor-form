@@ -21,6 +21,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/field-controls-definition/conditional-input-definition.php';
 
+if ( ! class_exists( AtomicFormTextarea::class ) ) {
+	return;
+}
+
 class Textarea extends AtomicFormTextarea {
 	use Has_Template;
 

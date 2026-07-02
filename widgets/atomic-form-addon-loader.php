@@ -147,36 +147,95 @@ class Atomic_Form_Addon_Loader {
 
     public function register_widgets( Widgets_Manager $widgets_manager ) {
 
-        if(get_option('cfkef_enable_atomic_form', true)){
-
-            $widgets_manager->unregister('e-form-input');
-            $widgets_manager->unregister('e-form-textarea');
-            $widgets_manager->unregister('e-form-checkbox');
-            $widgets_manager->unregister('e-form-radio-button');
-            $widgets_manager->unregister('e-form-date-picker');
-            $widgets_manager->unregister('e-form-time-picker');
-            $widgets_manager->unregister('e-form-file-upload');
-            $widgets_manager->unregister('e-form-select');
-    
-            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/input/input.php';
-            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/textarea/textarea.php';
-            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/checkbox/checkbox.php';
-            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/radio-button/radio-button.php';
-            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/date-picker/date-picker.php';
-            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/time-picker/time-picker.php';
-            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/file-upload/file-upload.php';
-            require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/select/select.php';
-            $widgets_manager->register( new Input() );
-            $widgets_manager->register( new Textarea() );
-            $widgets_manager->register( new Checkbox() );
-            $widgets_manager->register( new Radio_Button() );
-            $widgets_manager->register( new Date_Picker() );
-            $widgets_manager->register( new Time_Picker() );
-            $widgets_manager->register( new File_Upload() );
-            $widgets_manager->register( new Select() );
-
+        if ( ! get_option( 'cfkef_enable_atomic_form', true ) ) {
+            return;
         }
 
+        if ( ! $this->are_atomic_form_experiments_active() ) {
+            return;
+        }
+
+        $this->register_conditional_atomic_widget(
+            $widgets_manager,
+            'e-form-input',
+            \ElementorPro\Modules\AtomicForm\Input\Input::class,
+            CFL_PLUGIN_PATH . 'widgets/atomic-form/input/input.php',
+            Input::class
+        );
+        $this->register_conditional_atomic_widget(
+            $widgets_manager,
+            'e-form-textarea',
+            \ElementorPro\Modules\AtomicForm\Textarea\Textarea::class,
+            CFL_PLUGIN_PATH . 'widgets/atomic-form/textarea/textarea.php',
+            Textarea::class
+        );
+        $this->register_conditional_atomic_widget(
+            $widgets_manager,
+            'e-form-checkbox',
+            \ElementorPro\Modules\AtomicForm\Checkbox\Checkbox::class,
+            CFL_PLUGIN_PATH . 'widgets/atomic-form/checkbox/checkbox.php',
+            Checkbox::class
+        );
+        $this->register_conditional_atomic_widget(
+            $widgets_manager,
+            'e-form-radio-button',
+            \ElementorPro\Modules\AtomicForm\Radio_Button\Radio_Button::class,
+            CFL_PLUGIN_PATH . 'widgets/atomic-form/radio-button/radio-button.php',
+            Radio_Button::class
+        );
+        $this->register_conditional_atomic_widget(
+            $widgets_manager,
+            'e-form-date-picker',
+            \ElementorPro\Modules\AtomicForm\Date_Picker\Date_Picker::class,
+            CFL_PLUGIN_PATH . 'widgets/atomic-form/date-picker/date-picker.php',
+            Date_Picker::class
+        );
+        $this->register_conditional_atomic_widget(
+            $widgets_manager,
+            'e-form-time-picker',
+            \ElementorPro\Modules\AtomicForm\Time_Picker\Time_Picker::class,
+            CFL_PLUGIN_PATH . 'widgets/atomic-form/time-picker/time-picker.php',
+            Time_Picker::class
+        );
+        $this->register_conditional_atomic_widget(
+            $widgets_manager,
+            'e-form-file-upload',
+            \ElementorPro\Modules\AtomicForm\File_Upload\File_Upload::class,
+            CFL_PLUGIN_PATH . 'widgets/atomic-form/file-upload/file-upload.php',
+            File_Upload::class
+        );
+        $this->register_conditional_atomic_widget(
+            $widgets_manager,
+            'e-form-select',
+            \ElementorPro\Modules\AtomicForm\Select\Select::class,
+            CFL_PLUGIN_PATH . 'widgets/atomic-form/select/select.php',
+            Select::class
+        );
+
+    }
+
+    /**
+     * Replace an Elementor Pro atomic form widget when its base class is available.
+     */
+    private function register_conditional_atomic_widget(
+        Widgets_Manager $widgets_manager,
+        string $widget_type,
+        string $parent_class,
+        string $file,
+        string $class
+    ): void {
+        if ( ! class_exists( $parent_class ) ) {
+            return;
+        }
+
+        $widgets_manager->unregister( $widget_type );
+        require_once $file;
+
+        if ( ! class_exists( $class ) ) {
+            return;
+        }
+
+        $widgets_manager->register( new $class() );
     }
 
 	/**
@@ -202,8 +261,16 @@ class Atomic_Form_Addon_Loader {
             if ( ! $elements_manager->get_element_types( 'e-form' ) ) {
                 return;
             }
+
+            if ( ! class_exists( \Elementor\Modules\AtomicWidgets\Elements\Atomic_Form\Atomic_Form::class ) ) {
+                return;
+            }
     
             require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/atomic-form.php';
+
+            if ( ! class_exists( Atomic_Form::class ) ) {
+                return;
+            }
     
             $elements_manager->unregister_element_type( 'e-form' );
             $elements_manager->register_element_type( new Atomic_Form() );

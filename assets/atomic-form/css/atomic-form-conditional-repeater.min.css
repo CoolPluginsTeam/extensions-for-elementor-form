@@ -1,3 +1,7 @@
+:root {
+    --cfef-white: #fff;
+}
+
 .cfef-conditional-popup {
     position: fixed;
     top: 50%;
@@ -41,7 +45,7 @@
     line-height: 1.3334;
     padding: 5px;
     pointer-events: auto;
-    background-color: #fff;
+    background-color: var(--cfef-white);
 }
 
 
@@ -140,7 +144,7 @@
     height: 46px;
     border: 1px solid #c9cfd6;
     border-radius: 6px;
-    background: #fff;
+    background: var(--cfef-white);
     color: #262a2f;
     font-size: 15px;
     padding: 0 12px;
@@ -164,7 +168,7 @@
     width: 100%;
     min-width: 0;
     padding-right: 40px;
-    background-color: #fff;
+    background-color: var(--cfef-white);
     background-image: none;
 }
 
@@ -219,7 +223,7 @@
     border-radius: 6px;
     padding: 0 18px;
     background: #5f6b7a;
-    color: #fff;
+    color: var(--cfef-white);
     font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
