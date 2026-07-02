@@ -198,7 +198,7 @@ You can report vulnerabilities through the [Patchstack Vulnerability Disclosure 
 
 = 2.7.4 - 2026-07-02 =
 * Improved: Code improvements.
-* Fixed: Bug Fixes.
+* Fixed: Atomic Forms compatibility issue with older versions of Elementor Pro (v4.0.2).
 
 = 2.7.3 - 2026-06-16 =
 * Fixed: Bug Fixes.
