@@ -20,6 +20,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/field-controls-definition/conditional-input-definition.php';
 
+if ( ! class_exists( AtomicFormRadioButton::class ) ) {
+	return;
+}
+
 class Radio_Button extends AtomicFormRadioButton {
 	use Has_Template;
 

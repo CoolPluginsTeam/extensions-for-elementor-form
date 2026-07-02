@@ -3,6 +3,10 @@
 |       Deactivation feedback form
 |------------------------------------------
 */
+:root {
+    --cp-feedback-white: #fff;
+}
+
 [id^="cool-plugins-feedback"].hide-feedback-popup{
     opacity: 0;
 }
@@ -16,8 +20,8 @@
     max-height: 80vh;
     z-index: 9999;
     box-shadow: 0px 0px 10px -5px #000;
-    background: #fff;
-    color: #fff;
+    background: var(--cp-feedback-white);
+    color: var(--cp-feedback-white);
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -28,7 +32,7 @@
     padding: 20px;
     min-height: 25px;
     background-color: #0D1031;
-    color: #fff;
+    color: var(--cp-feedback-white);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -39,7 +43,7 @@
 }
 .cp-feedback-title-link,
 .cp-feedback-title-link a {
-    color: #fff;
+    color: var(--cp-feedback-white);
     font-style: italic;
 }
 /* ---------------------------- Title Area - END ---------------------------- */
@@ -50,7 +54,7 @@
     display: none;
     width: 100%;
     height: calc(100% - 65px);
-    background: #fff;
+    background: var(--cp-feedback-white);
     opacity: 0.7;
     position: absolute;
     text-align: center;
@@ -67,7 +71,7 @@
 /* ---------------------------------- Form ---------------------------------- */
 .cp-feedback-form-wrapper {
     padding: 20px;
-    background: #fff;
+    background: var(--cp-feedback-white);
     color: #555;
 }
 .cp-feedback-form-title {
@@ -145,7 +149,7 @@ p.cp-feedback-error {
 }
 .cp-feedback-button.cp-submit {
     background-color: #0D1031;
-    color: white;
+    color: var(--cp-feedback-white);
     padding: 8px;
 }
 .cp-feedback-button.cp-submit:hover {

@@ -29,8 +29,7 @@
     vertical-align: middle;
 }
 
-.cfl-review-notice-wrapper p,
-.cfl-review-notice-wrapper ul {
+.cfl-review-notice-wrapper p {
     padding: 0;
     margin: 0;
     line-height: 1.25em;
@@ -38,7 +37,10 @@
 }
 
 .cfl-review-notice-wrapper ul {
-    margin-top: 10px;
+    padding: 0;
+    margin: 10px 0 0;
+    line-height: 1.25em;
+    display: flow-root;
 }
 
 .cfl-review-notice-wrapper ul li {

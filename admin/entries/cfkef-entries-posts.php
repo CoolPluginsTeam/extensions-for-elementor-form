@@ -140,7 +140,6 @@ class CFKEF_Entries_Posts {
             $list_table = CFKEF_List_Table::get_instance(self::$post_type);
             $list_table->prepare_items();
             $list_table->views();
-            // echo '<form method="get">';
             echo '<form method="get" action="'.esc_url( admin_url( 'admin.php?page=cfkef-entries' ) ).'">';
             echo '<input type="hidden" name="page" value="' . esc_attr( self::$post_type ) . '">';
             echo '<input type="hidden" name="view" value="' . esc_attr( self::get_view() ) . '">';

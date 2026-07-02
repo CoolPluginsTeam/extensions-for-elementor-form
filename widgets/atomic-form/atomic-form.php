@@ -13,6 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/actions/atomic-form-whatsapp-redirect-controls.php';
 
+if ( ! class_exists( Core_Atomic_Form::class ) ) {
+	return;
+}
+
 /**
  * Extends core Atomic Form: WhatsApp submit action and a dedicated panel section for its fields.
  */

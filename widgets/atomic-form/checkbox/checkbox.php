@@ -19,6 +19,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/field-controls-definition/conditional-input-definition.php';
 
+if ( ! class_exists( AtomicFormCheckbox::class ) ) {
+	return;
+}
+
 class Checkbox extends AtomicFormCheckbox {
 	use Has_Template;
 

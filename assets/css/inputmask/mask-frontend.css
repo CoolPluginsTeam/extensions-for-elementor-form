@@ -8,14 +8,11 @@
     padding: 2px 4px;
     border-radius: 3px;
     border: 1px solid #ff6a6a;
-    display: flex;
     height: 24px;
     box-sizing: border-box;
     line-height: 13px;
     align-items: center;
     z-index: 9;
-}
-.mask-error{
     display: none;
 }
 .mask-error:after {

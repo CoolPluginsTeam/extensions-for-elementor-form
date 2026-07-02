@@ -147,11 +147,6 @@ class CFL_Loader {
         if(class_exists(CFKEF_Entries_Posts::class)){
             $entries_posts = CFKEF_Entries_Posts::get_instance();
         }
-
-
-        // if(class_exists(Recaptcha_settings::class)){
-        //     $entries_posts = Recaptcha_settings::get_instance();
-        // }
     }
 
 

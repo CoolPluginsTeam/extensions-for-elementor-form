@@ -99,7 +99,6 @@ class Widget_Form_Render {
 								</label>
 							<?php
 						}
-						// if ( $print_label && $item['field_label'] ) {
 						if ( $print_label ) {
 
 							switch ( $item['field_type'] ){

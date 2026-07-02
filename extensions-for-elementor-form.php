@@ -7,7 +7,7 @@
  * Author: Cool Plugins
  * Author URI: https://coolplugins.net/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
  * Text Domain: extensions-for-elementor-form
- * Version: 2.7.3
+ * Version: 2.7.4
  * Requires at least: 6.2
  * Requires PHP: 7.4
  * License: GPL-2.0+
@@ -34,7 +34,7 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 
-define('CFL_VERSION', '2.7.3');
+define('CFL_VERSION', '2.7.4');
 define('PHP_MINIMUM_VERSION', '7.4');
 define('WP_MINIMUM_VERSION', '5.5');
 define('CFL_PLUGIN_MAIN_FILE', __FILE__);
@@ -475,11 +475,6 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			if (class_exists($class_name) && $class_name::is_active()) {
 				// Initialize the module by calling its singleton instance.
 				$class_name::instance();
-			} else {
-				// Optional: Log or debug if the module class isn't found.
-				if (defined('WP_DEBUG') && WP_DEBUG) {
-					// error_log('Module class not found or not active: ' . $class_name);
-				}
 			}
 		}
 	}
