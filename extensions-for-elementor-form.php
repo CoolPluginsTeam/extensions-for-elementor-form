@@ -475,10 +475,6 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			if (class_exists($class_name) && $class_name::is_active()) {
 				// Initialize the module by calling its singleton instance.
 				$class_name::instance();
-			} else {
-				// Optional: Log or debug if the module class isn't found.
-				if (defined('WP_DEBUG') && WP_DEBUG) {
-				}
 			}
 		}
 	}
