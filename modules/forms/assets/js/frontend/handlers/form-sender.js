@@ -91,7 +91,11 @@ export default elementorModules.frontend.handlers.Base.extend( {
 
 						$parent.find('.elementor-message-danger').remove();
 
-						$inputField.after('<span class="elementor-message elementor-message-danger elementor-help-inline elementor-form-help-inline" role="alert">' + title + '</span>');
+						const $msg = jQuery( '<span/>', {
+							class: 'elementor-message elementor-message-danger elementor-help-inline elementor-form-help-inline',
+							role: 'alert',
+						} ).text( title );
+						$inputField.after( $msg );
 
 						$inputField.attr('aria-invalid', 'true');
 					}

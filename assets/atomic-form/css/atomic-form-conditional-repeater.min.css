@@ -1,0 +1,266 @@
+:root {
+    --cfef-white: #fff;
+}
+
+.cfef-conditional-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99999;
+    background: rgba(20, 22, 26, 0.18);
+    display: none;
+    width: min(980px, 92vw);
+    height: min(620px, 88vh);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
+}
+
+.cfef-repeater-data-control-button {
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    /* -webkit-box-pack: center; */
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    background-color: transparent;
+    outline: 0px;
+    margin: 0px;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    appearance: none;
+    text-decoration: none;
+    text-transform: none;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.02857em;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    color: rgba(0, 0, 0, 0.54);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    line-height: 1.3334;
+    padding: 5px;
+    pointer-events: auto;
+    background-color: var(--cfef-white);
+}
+
+
+.cfef-conditional-popup.is-open {
+    display: block;
+}
+
+.cfef-conditional-popup-dialog {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #f1f3f5;
+}
+
+.cfef-conditional-popup-header {
+    height: 56px;
+    border-bottom: 1px solid #d9dde2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    background: #f7f8fa;
+}
+
+.cfef-conditional-popup-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #222;
+    letter-spacing: 0.3px;
+}
+
+.cfef-conditional-popup-close {
+    border: none;
+    background: transparent;
+    font-size: 32px;
+    color: #7a7d82;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+}
+
+.cfef-conditional-popup-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 90px;
+    padding-bottom: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+}
+
+.cfef-conditional-popup-heading {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #191b1f;
+    margin-bottom: 15px;
+}
+
+.cfef-conditional-popup-subheading {
+    color: #5c6270;
+    font-size: 0.875rem;
+    margin-bottom: 36px;
+}
+
+.cfef-conditional-repeater {
+    width: min(900px, 100%);
+    padding: 0 14px 16px;
+}
+
+.cfef-conditional-popup-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    min-width: 0;
+}
+
+.cfef-conditional-popup-row > input[name="cfef_logic_field_id"] {
+    flex: 1 1 120px;
+    min-width: 0;
+}
+
+.cfef-conditional-popup-row > input[name="cfef_logic_compare_value"] {
+    flex: 1 1 120px;
+    min-width: 0;
+}
+
+.cfef-conditional-popup-row > .cfef-conditional-row-delete {
+    flex-shrink: 0;
+}
+
+.cfef-conditional-control {
+    height: 46px;
+    border: 1px solid #c9cfd6;
+    border-radius: 6px;
+    background: var(--cfef-white);
+    color: #262a2f;
+    font-size: 15px;
+    padding: 0 12px;
+}
+
+/* Operator column: do not shrink (flex default was crushing the select) */
+.cfef-conditional-select-wrap {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    flex: 0 0 auto;
+    min-width: 228px;
+    max-width: 100%;
+}
+
+.cfef-conditional-select-wrap select.cfef-conditional-control {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding-right: 40px;
+    background-color: var(--cfef-white);
+    background-image: none;
+}
+
+.cfef-conditional-select-wrap select option.cfef-conditional-operator-pro:disabled {
+    background-color: #00000015;
+}
+
+.cfef-conditional-select-wrap::after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    width: 22px;
+    height: 22px;
+    margin-top: -11px;
+    pointer-events: none;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' fill='%23262a2f' d='M5.46967 9.21967C5.76256 8.92678 6.23744 8.92678 6.53033 9.21967L12 14.6893L17.4697 9.21967C17.7626 8.92678 18.2374 8.92678 18.5303 9.21967C18.8232 9.51256 18.8232 9.98744 18.5303 10.2803L12.5303 16.2803C12.2374 16.5732 11.7626 16.5732 11.4697 16.2803L5.46967 10.2803C5.17678 9.98744 5.17678 9.51256 5.46967 9.21967Z'/%3E%3C/svg%3E") center / contain no-repeat;
+    transform: rotate(0deg);
+    transform-origin: 50% 50%;
+    /* transition: transform 0.2s ease; */
+}
+
+.cfef-conditional-select-wrap.cfef-select-menu-open::after {
+    transform: rotate(180deg);
+}
+
+.cfef-conditional-and-badge {
+    height: 46px;
+    padding: 0 16px;
+    border: 1px solid #c9cfd6;
+    border-radius: 6px;
+    background: #f6f8fa;
+    color: #414751;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600;
+}
+
+.cfef-conditional-row-delete {
+    border: none;
+    background: transparent;
+    font-size: 30px;
+    color: #6a7079;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.cfef-conditional-add-btn {
+    margin: 16px auto 0;
+    height: 42px;
+    border: none;
+    border-radius: 6px;
+    padding: 0 18px;
+    background: #5f6b7a;
+    color: var(--cfef-white);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: block;
+}
+
+.cfef-conditional-popup-footer {
+    height: 86px;
+    border-top: 1px solid #d9dde2;
+    background: #f7f8fa;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 24px;
+}
+
+.cfef-conditional-save-close {
+    height: 39px;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 16px;
+    background: #dea9ee;
+    color: #40354a;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cfef-whatsapp-redirect-section-empty{
+    margin-left: 16px;
+}
+
+.hide-warning-container{
+    display: none;
+}
+
+
+.cfef-hide-repeater-data-control{
+    display: none !important;
+}

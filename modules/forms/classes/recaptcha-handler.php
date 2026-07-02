@@ -183,7 +183,7 @@ class Recaptcha_Handler
 	 */
 	public function render_field($item, $item_index, $widget)
 	{
-		$recaptcha_html = '<div class="cool-form-field" id="form-field-' . $item['custom_id'] . '" >';
+		$recaptcha_html = '<div class="cool-form-field" id="form-field-' . esc_attr( $item['custom_id'] ?? '' ) . '">';
 
 		if (static::is_enabled()) {
 			$this->enqueue_scripts();

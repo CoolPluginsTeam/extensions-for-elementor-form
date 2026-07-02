@@ -3,7 +3,7 @@
     
     $(document).ready(function() {
         // function for compare conditional values 
-        function checkFieldLogic(compareFieldValue, conditionOperation, compareValue) {   
+        function checkFieldLogic(compareFieldValue, conditionOperation, compareValue) { 
             conditionOperation = decodeHTMLEntities(conditionOperation);
             compareValue === null
             ? decodeHTMLEntities(compareValue)
@@ -34,9 +34,11 @@
         }
         
         function decodeHTMLEntities(text) {
-            var textArea = document.createElement('textarea');
-            textArea.innerHTML = text;
-            return textArea.value;
+            if (text == null || text === '') {
+                return text;
+            }
+            var doc = new DOMParser().parseFromString(String(text), 'text/html');
+            return doc.body ? doc.body.textContent : '';
         }
 
         // function to add hidden class when form load
@@ -196,11 +198,14 @@
                     
                         // If the message hasn't been added yet, insert it and replace "Next" with the actual button text
                         if (container.prev(".cfef-step-field-text").length === 0) {
-                          container.before(
-                            '<p class="cfef-step-field-text">No input is required on this step. Just click "' +
-                              nextButtonText +
-                              '" to proceed.</p>'
-                          );
+                          var stepMessage =
+                            'No input is required on this step. Just click "' +
+                            nextButtonText +
+                            '" to proceed.';
+                          var $stepNotice = $('<p></p>')
+                            .addClass('cfef-step-field-text')
+                            .text(stepMessage);
+                          container.before($stepNotice);
                         }
                     } else {
                         // Check if field exists before adding the class
@@ -400,7 +405,10 @@
                 if (selectBox.length > 0 && selectBox.find("option").length > 0) {
                     var optionToRemove = selectBox.find("option[value='premium']");
                     if (optionToRemove.length <= 0) {
-                        selectBox.append(`<option value="${optionValue}">${optionText}</option>`);
+                        var newOption = document.createElement("option");
+                        newOption.value = optionValue;
+                        newOption.textContent = optionText;
+                        selectBox.append(newOption);
                     }
                     selectBox.val(optionValue);
                 }

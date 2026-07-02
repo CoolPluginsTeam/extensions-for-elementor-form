@@ -32,7 +32,12 @@ class CPFM_Feedback_Notice {
                 'always_show_on' => [],
             ]);
         }
-         self::$registered_notices[$key][] = $args;
+
+        if(!isset(self::$registered_notices[$key]['plugins'])){
+            self::$registered_notices[$key]['plugins'] = array();
+        }
+        
+        self::$registered_notices[$key]['plugins'][] = $args;
     }
     
     public function cpfm_listen_for_external_notice_registration() {
@@ -129,6 +134,10 @@ class CPFM_Feedback_Notice {
 
             wp_send_json_error('Invalid notice category.');
         }
+
+        if(!isset(self::$registered_notices[$category]['plugins'])){
+            wp_send_json_error('Invalid notice category plugins.');
+        }
        
         update_option("cpfm_opt_in_choice_{$category}", $opt_in);
 
@@ -136,7 +145,7 @@ class CPFM_Feedback_Notice {
        
         if ($review_option === 'yes') {
             
-            $category_notices = self::$registered_notices[$category];
+            $category_notices = self::$registered_notices[$category]['plugins'];
 
             foreach ($category_notices as $notice) {
                 if (is_array($notice)) {
@@ -212,7 +221,7 @@ class CPFM_Feedback_Notice {
             $output .= '<p>' . esc_html__('Opt in to receive email updates about security improvements, new features, helpful tutorials, and occasional special offers. We\'ll collect:', 'extensions-for-elementor-form') . '</p>';
             $output .= '<ul>';
             $output .= '<li>' . esc_html__('Your website home URL and WordPress admin email.', 'extensions-for-elementor-form') . '</li>';
-            $output .= '<li>' . esc_html__('To check plugin compatibility, we will collect the following: list of active plugins and themes, server type, MySQL version, WordPress version, memory limit, site language and database prefix.', 'extensions-for-elementor-form') . '</li>';
+            $output .= '<li>' . esc_html__('To check plugin compatibility, we will collect the following: list of active plugins and themes, server type, MySQL version, WordPress version, memory limit, site language and database prefix.', 'extensions-for-elementor-form') . ' <a href="https://my.coolplugins.net/terms/usage-tracking/" target="_blank">' . esc_html__('Click Here', 'extensions-for-elementor-form') . '</a></li>';
             $output .= '</ul>';
             
             $output .= '</div>';

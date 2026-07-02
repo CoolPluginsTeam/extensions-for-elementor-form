@@ -18,6 +18,7 @@ if (
 ) {
 
     // Both active → extend Elementor Pro (compatible)
+    // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
     abstract class Form_to_Sheet_Action extends \ElementorPro\Modules\Forms\Classes\Action_Base
     {
         protected $platform = 'both';
@@ -26,6 +27,7 @@ if (
 } elseif (class_exists('ElementorPro\Modules\Forms\Classes\Action_Base')) {
 
     // Elementor Pro only
+    // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
     abstract class Form_to_Sheet_Action extends \ElementorPro\Modules\Forms\Classes\Action_Base
     {
         protected $platform = 'elementor';
@@ -34,6 +36,7 @@ if (
 } elseif (class_exists('HelloPlus\Modules\Forms\Classes\Action_Base')) {
 
     // Hello Plus only
+    // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
     abstract class Form_to_Sheet_Action extends \HelloPlus\Modules\Forms\Classes\Action_Base
     {
         protected $platform = 'hello_plus';
@@ -48,6 +51,7 @@ if (
 // Shared helpers
 // --------------------------------------------------
 
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound  
 abstract class Form_To_Sheet_Helper extends Form_to_Sheet_Action
 {
 
@@ -61,6 +65,7 @@ abstract class Form_To_Sheet_Helper extends Form_to_Sheet_Action
 // Concrete Action Class (REAL ACTION)
 // --------------------------------------------------
 
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class Sheet_Action extends Form_To_Sheet_Helper
 {
     /**

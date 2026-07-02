@@ -7,14 +7,14 @@
  * Author: Cool Plugins
  * Author URI: https://coolplugins.net/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
  * Text Domain: extensions-for-elementor-form
- * Version: 2.6.3
+ * Version: 2.7.4
  * Requires at least: 6.2
  * Requires PHP: 7.4
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Requires Plugins: elementor
- * Elementor tested up to: 3.35.4
- * Elementor Pro tested up to: 3.35.0
+ * Elementor tested up to: 4.1.2
+ * Elementor Pro tested up to: 4.1.1
  */
 
 namespace Cool_FormKit;
@@ -24,6 +24,9 @@ use Cool_FormKit\Includes\CFL_Loader;
 
 use Cool_FormKit\Widgets\CoolForm_Addons_Loader;
 use Cool_FormKit\Widgets\HelloPlus_Addons_Loader;
+use Cool_FormKit\Widgets\Atomic_Form_Addon_Loader;
+
+
 
 if (! defined('ABSPATH')) {
 	header('Status: 403 Forbidden');
@@ -31,7 +34,7 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 
-define('CFL_VERSION', '2.6.3');
+define('CFL_VERSION', '2.7.4');
 define('PHP_MINIMUM_VERSION', '7.4');
 define('WP_MINIMUM_VERSION', '5.5');
 define('CFL_PLUGIN_MAIN_FILE', __FILE__);
@@ -46,6 +49,7 @@ define('CFL_STYLE_URL', CFL_ASSETS_URL . 'css/');
 define('CFL_IMAGES_PATH', CFL_ASSETS_PATH . 'images/');
 define('CFL_IMAGES_URL', CFL_ASSETS_URL . 'images/');
 define('CFL__MIN_ELEMENTOR_VERSION', '3.26.4');
+define('CFL_MIN_ELEMENTOR_ATOMIC_FORM_VERSION', '4.0');
 define('CFL_FEEDBACK_URL', 'https://feedback.coolplugins.net/');
 
 
@@ -90,6 +94,8 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		}
 	}
 
+	
+
 	public function formdb_elementor_marketing() {
 
 		if ( did_action( 'elementor/loaded' ) && class_exists( '\Elementor\Plugin' ) ) {
@@ -103,6 +109,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 
 		if (!is_plugin_active('sb-elementor-contact-form-db/sb_elementor_contact_form_db.php') && !defined("formdb_elementor_marketing_editor")) {
 
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 			define("formdb_elementor_marketing_editor", true);
 
 			include_once(__DIR__ .  '/includes/class-form-to-sheet.php');
@@ -168,6 +175,17 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			HelloPlus_Addons_Loader::get_instance();
 		}
 
+		if (get_option('cfkef_enable_atomic_form', true)) {	
+			if ( is_plugin_active( 'elementor-pro/elementor-pro.php' ) || is_plugin_active( 'pro-elements/pro-elements.php' ) ) {
+				// After `elementor/init`, core services (e.g. experiments) are initialized; on `elementor/loaded` they are often still null.
+				if ( did_action( 'elementor/init' ) ) {
+					$this->load_atomic_form_addon();
+				} else {
+					add_action( 'elementor/init', array( $this, 'load_atomic_form_addon' ), 20 );
+				}
+			}
+		}
+
 		if (is_admin()) {
 
 			require_once CFL_PLUGIN_PATH . 'admin/review-notice.php';
@@ -192,6 +210,83 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			'EEF_get_pro_link'
 		));
 		add_filter('plugin_row_meta', array($this, 'cfkef_plugin_row_meta'), 10, 2);
+	}
+
+	public function load_atomic_form_addon() {
+		if ( ! is_plugin_active( 'elementor-pro/elementor-pro.php' ) && ! is_plugin_active( 'pro-elements/pro-elements.php' ) ) {
+			return;
+		}
+
+		if ( ! did_action( 'elementor/init' ) || ! class_exists( '\Elementor\Plugin' ) ) {
+			return;
+		}
+
+		if ( ! self::is_elementor_atomic_form_supported() ) {
+			if ( is_admin() && get_option( 'cfkef_enable_atomic_form', true ) ) {
+				add_action( 'admin_notices', array( $this, 'admin_notice_elementor_atomic_form_version' ) );
+			}
+			return;
+		}
+
+		$elementor = \Elementor\Plugin::$instance;
+		if ( ! $elementor ) {
+			return;
+		}
+
+		$experiments = isset( $elementor->experiments ) ? $elementor->experiments : null;
+		if ( ! self::are_elementor_atomic_form_experiments_active( $experiments ) ) {
+			return;
+		}
+
+		require_once CFL_PLUGIN_PATH . 'widgets/atomic-form-addon-loader.php';
+		Atomic_Form_Addon_Loader::get_instance();
+	}
+
+	/**
+	 * Atomic Form extensions require Elementor 4.0+ (matches Elementor Pro atomic-form module).
+	 */
+	public static function is_elementor_atomic_form_supported(): bool {
+		return defined( 'ELEMENTOR_VERSION' )
+			&& version_compare( ELEMENTOR_VERSION, CFL_MIN_ELEMENTOR_ATOMIC_FORM_VERSION, '>=' );
+	}
+
+	/**
+	 * @param mixed $experiments \Elementor\Core\Experiments\Manager|null.
+	 */
+	private static function are_elementor_atomic_form_experiments_active( $experiments ): bool {
+		if ( ! self::is_elementor_atomic_form_supported() ) {
+			return false;
+		}
+
+		if ( ! $experiments || ! is_object( $experiments ) || ! method_exists( $experiments, 'is_feature_active' ) ) {
+			return false;
+		}
+
+		return $experiments->is_feature_active( 'e_atomic_elements' )
+			&& $experiments->is_feature_active( 'e_pro_atomic_form' );
+	}
+
+	public function admin_notice_elementor_atomic_form_version() {
+		if ( ! current_user_can( 'update_plugins' ) ) {
+			return;
+		}
+
+		$file_path = 'elementor/elementor.php';
+		$upgrade_link = wp_nonce_url(
+			self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $file_path,
+			'upgrade-plugin_' . $file_path
+		);
+
+		printf(
+			'<div class="notice notice-warning is-dismissible"><p><strong>%1$s</strong> %2$s <a href="%3$s">%4$s</a></p></div>',
+			esc_html__( 'Cool FormKit:', 'extensions-for-elementor-form' ),
+			esc_html__(
+				'Atomic Form extensions require Elementor 4.0 or newer. Update Elementor to use this feature, or disable Atomic Form in Cool FormKit settings.',
+				'extensions-for-elementor-form'
+			),
+			esc_url( $upgrade_link ),
+			esc_html__( 'Update Elementor', 'extensions-for-elementor-form' )
+		);
 	}
 
 	public function cfkef_plugin_row_meta($plugin_meta, $plugin_file)
@@ -380,11 +475,6 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			if (class_exists($class_name) && $class_name::is_active()) {
 				// Initialize the module by calling its singleton instance.
 				$class_name::instance();
-			} else {
-				// Optional: Log or debug if the module class isn't found.
-				if (defined('WP_DEBUG') && WP_DEBUG) {
-					// error_log('Module class not found or not active: ' . $class_name);
-				}
 			}
 		}
 	}

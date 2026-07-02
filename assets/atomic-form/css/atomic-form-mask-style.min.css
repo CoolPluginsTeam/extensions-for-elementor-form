@@ -1,0 +1,8 @@
+.ccfef-mask-wrapper{
+    width: 100%;
+    position: relative;
+}
+
+.ccfef-mask-wrapper .card-logo{
+    bottom: -2px !important;
+}

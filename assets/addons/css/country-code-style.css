@@ -24,14 +24,10 @@
 
 .cfefp-intl-container button.iti__selected-country{
     background: transparent !important;
-    box-shadow:  unset !important;
-}
-.cfefp-intl-container button.iti__selected-country{
-    background: transparent !important;
-    box-shadow:  unset !important;
-    padding:0px 6px 0px 8px;
-	border:none;
-	border-radius:unset;
+    box-shadow: unset !important;
+    padding: 0 6px 0 8px;
+    border: none;
+    border-radius: unset;
 }
 .cfefp-intl-container button.iti__selected-country:hover{
     border: unset;
@@ -51,6 +47,7 @@
     height: 100%;
     width: 100%;
 }
+
 .is-field-type-ehp-tel.has-width-100 .iti input{
     width: 100%;
 }

@@ -1,0 +1,32 @@
+.iti--inline-dropdown{
+    --cfefp-intl-tel-button-height: 100%;
+}
+
+.ccfef-wrapper .iti__country-container{
+    height: var(--cfefp-intl-tel-button-height);
+}
+
+.ccfef-wrapper, .iti--inline-dropdown, .iti--allow-dropdown {
+    width: 100%;
+}
+
+.ccfef-wrapper .iti__country-container button.iti__selected-country{
+    border: none !important;
+    color: none !important;
+}
+
+
+.ccfef-wrapper .iti__country-container button.iti__selected-country:hover, .ccfef-wrapper .iti__country-container button.iti__selected-country:focus {
+    background-color: transparent !important;
+}
+
+.ccfef-wrapper .iti__country-container button.iti__selected-country .iti__selected-country-primary:hover, .ccfef-wrapper .iti__country-container button.iti__selected-country .iti__selected-country-primary:focus {
+    background-color: transparent !important;
+}
+
+.iti__country-container button.iti__selected-country{
+
+    padding: 0px !important;
+    display: flex !important;
+    color: inherit !important;
+}

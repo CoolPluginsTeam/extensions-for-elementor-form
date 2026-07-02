@@ -6,6 +6,8 @@ use WP_List_Table;
 use Cool_FormKit\Admin\Entries\CFKEF_Entries_Posts;
 use Cool_FormKit\Admin\Entries\CFKEF_Post_Bulk_Actions;
 
+if ( ! defined( 'ABSPATH' ) ) { exit; }
+
 // phpcs:disable PluginCheck.Security.DirectDB.UnescapedDBParameter	
 
 if(!class_exists('CFKEF_List_Table')) { 
@@ -149,11 +151,11 @@ class CFKEF_List_Table extends WP_List_Table {
 
     public function column_id($item) {
         $entry_id = get_post_meta($item->ID, '_cfkef_form_entry_id', true);
-        return $entry_id;
+        return esc_html($entry_id);
     }
 
     public function column_submission_date($item) {
-        return $item->post_date;
+        return esc_html($item->post_date);
     }
 
     public function column_page_title($item) {
@@ -253,23 +255,14 @@ class CFKEF_List_Table extends WP_List_Table {
         $page     = $this->get_pagenum();
 		$order    = isset( $_GET['order'] ) && sanitize_text_field(wp_unslash($_GET['order'])) === 'asc' ? 'ASC' : 'DESC';
         $search= isset($_GET['cfkef-entries-search']) ? sanitize_text_field(wp_unslash($_GET['cfkef-entries-search'])) : '';
-		$allowed_orderby = ['ID','post_title','post_date','post_modified','post_status'];
-        $orderby = isset($_GET['orderby']) ? sanitize_key($_GET['orderby']) : 'ID';
-        $orderby = in_array($orderby, $allowed_orderby, true) ? $orderby : 'ID';
+		$allowed_orderby = array( 'ID', 'post_title', 'post_date', 'post_modified', 'post_status' );
+        $orderby = isset( $_GET['orderby'] ) ? sanitize_key( wp_unslash( $_GET['orderby'] ) ) : 'ID';
+        $orderby = in_array( $orderby, $allowed_orderby, true ) ? $orderby : 'ID';
         $per_page = $this->get_items_per_page( $this->get_per_page_option_name() , 20 );
         $date_filter= isset($_GET['date_filter']) && isset($_GET['m']) && !empty($_GET['m']) ? sanitize_text_field(wp_unslash($_GET['m'])) : '';
         $view = CFKEF_Entries_Posts::get_view();
         // phpcs:enable WordPress.Security.NonceVerification.Recommended
 
-        if ( $orderby === 'date' ) {
-			$orderby = [
-				'modified' => $order,
-				'date'     => $order,
-			];
-		};
-
-        $orderby = esc_sql($orderby);
-        $order = esc_sql($order);
         $page = esc_sql($page);
         $view = esc_sql($view);
         $search = esc_sql($search);
@@ -285,17 +278,13 @@ class CFKEF_List_Table extends WP_List_Table {
             's'              => $search,
         ];
 
-        global $wpdb;
-            
-        $post_placeholders=implode(',', array_fill(0, count($args['post_status']), "%s"));
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare 
-        $post_status_query = $wpdb->prepare("post_status IN ($post_placeholders)", array_map('esc_sql', $args['post_status']));
+        global $wpdb;
+        $post_status_placeholders = implode( ', ', array_fill( 0, count( $args['post_status'] ), '%s' ) );
 
         $query = $wpdb->prepare(
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-            "SELECT * FROM $wpdb->posts WHERE post_type = %s AND $post_status_query",
-            $this->post_type,
+            "SELECT * FROM {$wpdb->posts} WHERE post_type = %s AND post_status IN ($post_status_placeholders)", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Placeholders are dynamically generated for IN clause.
+            array_merge( array( $this->post_type ), $args['post_status'] )
         );
 
         if(!empty($search)){
@@ -307,17 +296,6 @@ class CFKEF_List_Table extends WP_List_Table {
         }
 
         
-                // echo "<pre>";
-                // var_dump($_GET);
-                // echo "</pre>";
-                // $date_object = DateTime::createFromFormat('Y-m-d H:i:s', $date_filter);
-                // if ($date_object) {
-                //     var_dump($date_object->format('m'));
-                //     var_dump($date_object->format('Y'));
-                // } else {
-                //     var_dump('Invalid date format');
-                // }
-        
         if(!empty($date_filter)){
            if (!empty($date_filter) && preg_match('/^(\d{4})(\d{2})$/', $date_filter, $matches)) {
                $year = $matches[1];
@@ -328,7 +306,15 @@ class CFKEF_List_Table extends WP_List_Table {
 
         }
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        $query .= $wpdb->prepare(" ORDER BY {$args['orderby']} {$args['order']} LIMIT %d OFFSET %d", $args['posts_per_page'], ($args['paged'] - 1) * $args['posts_per_page']);
+
+        $order_by_clause = ' ORDER BY ' . esc_sql( $orderby ) . ' ' . esc_sql( $order ) . ' ';
+        $query .= $order_by_clause . $wpdb->prepare(
+            "LIMIT %d OFFSET %d",
+            $args['posts_per_page'],
+            ( $args['paged'] - 1 ) * $args['posts_per_page']
+        );
+
+        // $query .= $wpdb->prepare(" ORDER BY {$args['orderby']} {$args['order']} LIMIT %d OFFSET %d", $args['posts_per_page'], ($args['paged'] - 1) * $args['posts_per_page']);
 
         // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $this->items = $wpdb->get_results($query);

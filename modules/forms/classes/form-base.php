@@ -290,7 +290,7 @@ abstract class Form_Base extends Widget_Base {
 
 		$value = empty( $item['field_value'] ) ? '' : $item['field_value'];
 
-		return '<textarea ' . $this->get_render_attribute_string( 'textarea' . $item_index ) . '>' . $value . '</textarea>';
+		return '<textarea ' . $this->get_render_attribute_string( 'textarea' . $item_index ) . '>' . esc_textarea( $value ) . '</textarea>';
 	}
 
 	public function make_select_field( $item, $i ,$instance) {

@@ -3,13 +3,13 @@ Contributors: coolplugins, narinder-singh, satindersingh
 Donate link: https://donate.stripe.com/5kQdR92iBevO75WbPm6c00i
 Tags: form builder, contact form, elementor form, elementor, elementor form builder
 Requires at least: 6.2
-Tested up to: 6.9
-Stable tag: 2.6.3
+Tested up to: 7.0
+Stable tag: 2.7.4
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Elementor tested up to: 3.35.4
-Elementor Pro tested up to: 3.35.0
+Elementor tested up to: 4.1.2
+Elementor Pro tested up to: 4.1.1
 
 Contact form addon for Elementor. Create forms in Elementor Free or extend Elementor Pro forms with conditional logic, country code and extra fields.
 
@@ -195,6 +195,29 @@ You can open a support ticket on the [WordPress.org support forum](https://wordp
 You can report vulnerabilities through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/extensions-for-elementor-form). The Patchstack team helps validate, triage, and handle reported issues responsibly.  
 
 == Changelog ==
+
+= 2.7.4 - 2026-07-02 =
+* Improved: Code improvements.
+* Fixed: Atomic Forms compatibility issue with older versions of Elementor Pro (v4.0.2).
+
+= 2.7.3 - 2026-06-16 =
+* Fixed: Bug Fixes.
+
+= 2.7.2 - 2026-06-16 =
+* Improved: Cleaned up the notice registration logic for better readability.
+
+= 2.7.1 - 2026-06-12 =
+* Added: Compatibility with new fields of atomic form.  
+* Tested up to: Elementor 4.1.2 and Elementor Pro 4.1.1.
+
+= 2.7.0 - 2026-05-20 =
+* Added: Atomic form compatibility.  
+* Improved: Code improvements.
+
+= 2.6.4 - 2026-04-01 =
+* Fixed: Double submission issue with country and mask fields.
+* Fixed: Admin dashboard UI fixes.
+* Tested up to: Elementor 4.0.0 and Elementor Pro 4.0.0.
 
 = 2.6.3 - 2026-02-17 =
 * Improved: Other plugin recommendations for Elementor users.

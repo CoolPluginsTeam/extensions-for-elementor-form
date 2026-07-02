@@ -113,15 +113,18 @@ class CFKEF_Dashboard
     public function add_menu_page($slug, $title, $callback, $position = 99)
     {
         add_action('admin_menu', function () use ($slug, $title, $callback, $position) {
-            add_submenu_page(
-                $this->parent_slug,
-                str_replace('↳ ', '', $title),
-                esc_html($title),
-                $this->capability,
-                $slug,
-                $callback,
-                $position
-            );
+
+            if(get_option('cfkef_enable_hello_plus',true) || get_option('cfkef_enable_formkit_builder',true) || get_option('cfkef_enable_atomic_form',true)){
+                add_submenu_page(
+                    $this->parent_slug,
+                    str_replace('↳ ', '', $title),
+                    esc_html($title),
+                    $this->capability,
+                    $slug,
+                    $callback,
+                    $position
+                );
+            }
         }, 999);
     }
 
@@ -235,7 +238,7 @@ class CFKEF_Dashboard
         }
 
 
-        if(get_option('cfkef_enable_hello_plus',true) || get_option('cfkef_enable_formkit_builder',true)){
+        if(get_option('cfkef_enable_hello_plus',true) || get_option('cfkef_enable_formkit_builder',true) || get_option('cfkef_enable_atomic_form',true)){
             do_action('cfkef_render_menu_pages', $this);
         }else{
             echo '<p style="margin:20px auto;

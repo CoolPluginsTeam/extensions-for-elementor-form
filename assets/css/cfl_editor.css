@@ -1,3 +1,7 @@
+:root {
+  --cfl-accent-color: #EDACFB;
+}
+
 .cfl-dynamic-tag {
   background: #d3d3d3;
   padding: 5px;
@@ -17,13 +21,13 @@
 
 .cfl_elementor_review_notice .cfl_elementor_review_wrapper{
   padding: 10px; border:
-  2px solid #EDACFB;
+  2px solid var(--cfl-accent-color);
 }
 .cfl_elementor_review_notice .cfl_elementor_offer_notice{
   position: absolute;
   top: -11px;
   left: 16px;
-  background: #EDACFB;
+  background: var(--cfl-accent-color);
   color: #0C0D0E;
   font-size: 10px;
   padding: 5px;
@@ -36,7 +40,7 @@
 .cfl_elementor_review_notice #cfl_elementor_review_dismiss{
   position: absolute;
   bottom: 4px;
-  background: #EDACFB;
+  background: var(--cfl-accent-color);
   color: #0C0D0E;
   font-size: 10px;
   padding: 5px;
@@ -49,13 +53,13 @@
 }
 
 .cfl_elementor_review_notice .cfl_elementor_review_msg a{
-  color: #EDACFB;
+  color: var(--cfl-accent-color);
 }
 .cfl_elementor_demo_btn{
   position: absolute;
   bottom: 4px;
   right: 20px;
-  background: #EDACFB;
+  background: var(--cfl-accent-color);
   font-size: 10px;
   padding: 5px;
   border-radius: 3px;
@@ -70,7 +74,7 @@
 }
 .cfl_pro_link_button{
   padding: 5px;
-  background-color: #edacfb;
+  background-color: var(--cfl-accent-color);
   text-align: center;
   border-radius: 5px;
 }

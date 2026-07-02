@@ -106,26 +106,37 @@ class CFKEF_Post_Bulk_Actions {
 	 */
 	private function process() {
 
-		// phpcs:disable WordPress.Security.NonceVerification.Recommended
-		if ( ! current_user_can( 'manage_options' )) {
+		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-		
-		$this->ids    = isset( $_GET['entry_id'] ) ? array_map( 'absint', (array) $_GET['entry_id'] ) : [];
 
-		$action=isset($_REQUEST['action']) ? str_replace(' ', '_', strtolower(sanitize_text_field(wp_unslash($_REQUEST['action'])))) : false;
+		// Verify nonce before reading action/entry data (supports GET row links and POST bulk form).
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce value only; verified below.
+		if ( empty( $_REQUEST['_wpnonce'] ) ) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Verified here.
+		if ( ! wp_verify_nonce( sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ), 'bulk-entries' ) ) {
+			return;
+		}
+
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Nonce verified above.
+		$this->ids = isset( $_GET['entry_id'] ) ? array_map( 'absint', (array) $_GET['entry_id'] ) : [];
+
+		$action = isset( $_REQUEST['action'] ) ? str_replace( ' ', '_', strtolower( sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) ) ) : false;
 
 		$this->action = isset( $_REQUEST['action'] ) ? sanitize_key( $action ) : false;
 
 		if ( $this->action === '-1' ) {
-			$this->action = ! empty( $_REQUEST['action2'] ) ? sanitize_key( $_REQUEST['action2'] ) : false;
+			$this->action = ! empty( $_REQUEST['action2'] ) ? sanitize_key( wp_unslash( $_REQUEST['action2'] ) ) : false;
 		}
 
-		if($this->action === 'empty_trash'){
-			$this->ids = [0];
+		if ( $this->action === 'empty_trash' ) {
+			$this->ids = [ 0 ];
 		}
 
-		if(isset($_GET['action2']) && '-1' !== $_GET['action2'] && (!isset($_GET['bulk_action']) || 'Apply' !== $_GET['bulk_action']) ){
+		if ( isset( $_GET['action2'] ) && '-1' !== sanitize_key( wp_unslash( $_GET['action2'] ) ) && ( ! isset( $_GET['bulk_action'] ) || 'Apply' !== sanitize_key( wp_unslash( $_GET['bulk_action'] ) ) ) ) {
 			return;
 		}
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
@@ -133,25 +144,11 @@ class CFKEF_Post_Bulk_Actions {
 		if ( empty( $this->ids ) || empty( $this->action ) ) {
 			return;
 		}
-		
-		// Check exact action values.
+
 		if ( ! in_array( $this->action, self::ALLOWED_ACTIONS, true ) ) {
 			return;
 		}
-		
-		if ( empty( $_GET['_wpnonce'] ) ) {
-			return;
-		}
-		
-		// Check the nonce.
-		if (
-			! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'bulk-entries' ) &&
-			! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'bulk-entries' )
-			) {
-				return;
-		}
 
-		// Finally, we can process the action.
 		$this->process_action();
 	}
 
@@ -313,18 +310,13 @@ class CFKEF_Post_Bulk_Actions {
 			's' => $search,
 		];
 
+
 		global $wpdb;
+        $post_status_placeholders = implode( ', ', array_fill( 0, count( $args['post_status'] ), '%s' ) );
 
-		$post_placeholders=implode(',', array_fill(0, count($args['post_status']), "%s"));
-
-		//phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        $post_status_query = $wpdb->prepare("post_status IN ($post_placeholders)", array_map('esc_sql', $args['post_status']));
-
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $query = $wpdb->prepare(
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared	
-            "SELECT * FROM $wpdb->posts WHERE post_type = %s AND $post_status_query",
-            $this->posts_type,
+            "SELECT * FROM {$wpdb->posts} WHERE post_type = %s AND post_status IN ($post_status_placeholders)", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Placeholders are dynamically generated for IN clause.
+            array_merge( array( $this->posts_type ), $args['post_status'] )
         );
 
         if(!empty($search)){
@@ -336,7 +328,7 @@ class CFKEF_Post_Bulk_Actions {
         }
 
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
-		$posts=$wpdb->get_results($wpdb->prepare($query));
+		$posts=$wpdb->get_results($query);
 		
 		foreach($posts as $post){
 			if ( ! current_user_can( 'delete_post', $post->ID ) ) {

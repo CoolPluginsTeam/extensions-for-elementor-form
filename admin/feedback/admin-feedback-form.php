@@ -181,6 +181,9 @@ class cfl_feedback {
 		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash($_POST['_wpnonce'] ) ), '_cool-plugins_deactivate_feedback_nonce' ) ) {
 			wp_send_json_error();
 		} else {
+			if ( ! current_user_can( 'activate_plugins' ) ) {
+				wp_send_json_error();
+			}
 			$reason             = isset( $_POST['reason'] ) ? sanitize_text_field( wp_unslash($_POST['reason'] ) ) : '';
 			$deactivate_reasons = array(
 				'didnt_work_as_expected'         => array(
@@ -221,8 +224,8 @@ class cfl_feedback {
 				array(
                     'timeout' => 30,
                         'body'    => array(
-                        'server_info' => serialize($this->cpfm_get_user_info()['server_info']),
-                        'extra_details' => serialize($this->cpfm_get_user_info()['extra_details']),
+                        'server_info' => wp_json_encode($this->cpfm_get_user_info()['server_info']),
+                        'extra_details' => wp_json_encode($this->cpfm_get_user_info()['extra_details']),
                         'plugin_initial'  => isset($plugin_initial) ? sanitize_text_field($plugin_initial) : 'N/A',
                         'plugin_version' => $this->plugin_version,
                         'plugin_name'    => $this->plugin_name,
