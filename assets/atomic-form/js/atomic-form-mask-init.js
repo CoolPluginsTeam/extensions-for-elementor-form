@@ -303,24 +303,24 @@
 	}
 
 	function isValidCNPJ(cnpj) {
-		cnpj = cnpj.replace(/\D/g, '');
-		if (cnpj.length !== 14) {
+		cnpj = String(cnpj).toUpperCase().replace(/[.\-\/]/g, '');
+		if (!/^[A-Z0-9]{12}\d{2}$/.test(cnpj)) {
 			return false;
 		}
-		if (/^(\d)\1+$/.test(cnpj)) {
+		if (/^(.)\1{13}$/.test(cnpj)) {
 			return false;
 		}
 		var calcCheckDigit = function (str, length) {
 			var weights = length === 12 ? [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2] : [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
 			var s = 0;
 			for (var i = 0; i < weights.length; i++) {
-				s += parseInt(str.charAt(i), 10) * weights[i];
+				s += (str.charCodeAt(i) - 48) * weights[i];
 			}
 			var remainder = s % 11;
 			return remainder < 2 ? 0 : 11 - remainder;
 		};
 		var firstCheck = calcCheckDigit(cnpj, 12);
-		var secondCheck = calcCheckDigit(cnpj, 13);
+		var secondCheck = calcCheckDigit(cnpj.slice(0, 12) + firstCheck, 13);
 		return firstCheck === parseInt(cnpj.charAt(12), 10) && secondCheck === parseInt(cnpj.charAt(13), 10);
 	}
 
@@ -873,6 +873,10 @@
 					const format = $input.data('moneymask-format') === 'dot' ? ',' : '.';
 					$input.attr('placeholder', moneyPrefix + '0' + format + '00');
 				}
+			}
+
+			if ($input.hasClass('mask-cnpj')) {
+				$input.attr('inputmode', 'text');
 			}
 
 			$input.data('cflAtomicMaskUi', 1);
