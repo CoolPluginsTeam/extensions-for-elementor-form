@@ -4,12 +4,12 @@ Donate link: https://donate.stripe.com/5kQdR92iBevO75WbPm6c00i
 Tags: form builder, contact form, elementor form, elementor, elementor form builder
 Requires at least: 6.2
 Tested up to: 7.0
-Stable tag: 2.7.5
+Stable tag: 2.7.6
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Elementor tested up to: 4.1.2
-Elementor Pro tested up to: 4.1.1
+Elementor tested up to: 4.2.0
+Elementor Pro tested up to: 4.2.0
 
 Contact form addon for Elementor. Create forms in Elementor Free or extend Elementor Pro forms with conditional logic, country code and extra fields.
 
@@ -195,6 +195,9 @@ You can open a support ticket on the [WordPress.org support forum](https://wordp
 You can report vulnerabilities through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/extensions-for-elementor-form). The Patchstack team helps validate, triage, and handle reported issues responsibly.  
 
 == Changelog ==
+
+= 2.7.6 - 2026-07-27 =
+Fixed: Editor loading issue with latest elementor 4.2.0.
 
 = 2.7.5 - 2026-07-08 =
 * Added: Support for the new alphanumeric CNPJ format.

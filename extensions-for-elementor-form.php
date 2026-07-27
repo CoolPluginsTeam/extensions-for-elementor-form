@@ -7,14 +7,14 @@
  * Author: Cool Plugins
  * Author URI: https://coolplugins.net/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
  * Text Domain: extensions-for-elementor-form
- * Version: 2.7.5
+ * Version: 2.7.6
  * Requires at least: 6.2
  * Requires PHP: 7.4
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Requires Plugins: elementor
- * Elementor tested up to: 4.1.2
- * Elementor Pro tested up to: 4.1.1
+ * Elementor tested up to: 4.2.0
+ * Elementor Pro tested up to: 4.2.0
  */
 
 namespace Cool_FormKit;
@@ -33,7 +33,7 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 
-define('CFL_VERSION', '2.7.5');
+define('CFL_VERSION', '2.7.6');
 define('PHP_MINIMUM_VERSION', '7.4');
 define('WP_MINIMUM_VERSION', '5.5');
 define('CFL_PLUGIN_MAIN_FILE', __FILE__);
@@ -90,6 +90,8 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			add_action('wp_head', array($this, 'stop_format_detection_in_safari'));
 			add_action('elementor_pro/forms/actions/register', array($this, 'cfl_register_new_form_actions'));
 			add_action( 'plugins_loaded',array($this,'formdb_elementor_marketing'));
+			add_filter( 'elementor-pro/editor/v2/packages', array( $this, 'filter_elementor_pro_editor_packages' ) );
+			add_action( 'elementor/editor/v2/scripts/enqueue', array( $this, 'enqueue_editor_templates_extended_stub' ), 20 );
 		}
 	}
 
@@ -351,6 +353,34 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	public function add_global_editor_js()
 	{
 		wp_enqueue_script('cfl-global-editor-script', CFL_PLUGIN_URL . 'assets/addons/js/global.js', array('jquery'), CFL_VERSION, true);
+	}
+
+	/**
+	 * Skips Elementor Pro's editor-templates-extended package (crashes editor with nested form controls).
+	 *
+	 * @param mixed $packages Editor v2 packages.
+	 * @return mixed
+	 */
+	public function filter_elementor_pro_editor_packages( $packages ) {
+		if ( ! is_array( $packages ) ) {
+			return $packages;
+		}
+
+		return array_values( array_diff( $packages, array( 'editor-templates-extended' ) ) );
+	}
+
+	/**
+	 * Stub the removed package handle for other Pro packages that depend on it.
+	 */
+	public function enqueue_editor_templates_extended_stub() {
+		wp_register_script(
+			'elementor-v2-editor-templates-extended',
+			CFL_PLUGIN_URL . 'assets/js/cfl-editor-templates-extended-stub.js',
+			array(),
+			CFL_VERSION,
+			true
+		);
+		wp_enqueue_script( 'elementor-v2-editor-templates-extended' );
 	}
 
 	public function EEF_plugin_dashboard_link($links)
