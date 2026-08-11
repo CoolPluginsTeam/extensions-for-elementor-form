@@ -66,3 +66,42 @@
     padding-left: var(--iti-selected-country-arrow-padding);
     margin-left: 0;
 }
+
+/* Dropdown is nested in .iti__country-container (flag button).
+   Size it to the full .iti field width, not the flag button. */
+.cfefp-intl-container.iti {
+    container-type: inline-size;
+    container-name: cfefp-iti;
+    width: 100%;
+    display: block;
+}
+
+.cfefp-intl-container.iti .iti__dropdown-content {
+    width: 100cqi !important;
+    max-width: 100cqi !important;
+    left: 0 !important;
+    right: auto !important;
+    box-sizing: border-box;
+    margin-top: 3px !important;
+}
+
+.cfefp-intl-container.iti--flexible-dropdown-width .iti__country-list {
+    white-space: normal;
+}
+
+.cool-form-text .mdc-text-field.mdc-text-field--outlined.cool-field-size-sm {
+    z-index: 999;
+}
+
+.is-field-type-tel .cool-form-text .cfefp-intl-container .iti__country-container {
+    top: 11px !important;
+    z-index: 999;
+}
+
+.is-field-type-tel .cool-form-text {
+    z-index: 999;
+}
+
+.cool-form__field-group.is-field-type-tel .cool-form-text .cfefp-intl-container .cool-form-field-type-tel {
+    top: 10px !important;
+}

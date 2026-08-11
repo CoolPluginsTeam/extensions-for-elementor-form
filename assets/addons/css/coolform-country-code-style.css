@@ -1,0 +1,8 @@
+@import url(../../css/shared/country-common.css);
+
+.cool-form__field-group.is-field-type-tel .cfefp-intl-container {
+	--cfefp-intl-tel-button-height: 100%;
+	height: 100%;
+	width: 100%;
+}
+

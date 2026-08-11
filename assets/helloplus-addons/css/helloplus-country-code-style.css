@@ -1,0 +1,37 @@
+@import url(../../css/shared/country-common.css);
+
+.cool-form__field-group.is-field-type-ehp-tel .cfefp-intl-container {
+	--cfefp-intl-tel-button-height: 100%;
+}
+
+.elementor-field-group .cfefp-intl-container.iti {
+	width: 100%;
+}
+
+.elementor-field-group .cfefp-intl-container.iti.elementor-error .iti__country-container {
+	bottom: 23px;
+}
+
+.is-field-type-ehp-tel.has-width-100 .iti input {
+	width: 100%;
+}
+
+.is-field-type-ehp-tel.has-width-50 .iti input {
+	width: 50%;
+}
+
+.is-field-type-ehp-tel.has-width-33 .iti input {
+	width: 33%;
+}
+
+.iti--allow-dropdown input.iti__tel-input,
+.iti--allow-dropdown input.iti__tel-input[type="ehp-tel"],
+.iti--allow-dropdown input.iti__tel-input[type="text"] {
+	padding-right: var(--iti-input-padding);
+	padding-left: var(--iti-selected-country-arrow-padding);
+	margin-left: 0;
+}
+
+.ehp-form .elementor-message.elementor-message-success {
+	z-index: 0;
+}

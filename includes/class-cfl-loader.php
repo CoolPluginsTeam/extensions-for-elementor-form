@@ -109,9 +109,7 @@ class CFL_Loader {
     }
 
     private function is_field_enabled($field_key) {
-        $enabled_elements = get_option('cfkef_enabled_elements', array());
-        return in_array(sanitize_key($field_key), array_map('sanitize_key', $enabled_elements));
-
+        return \CFL_Elements::is_enabled( $field_key );
     }
 
     /**

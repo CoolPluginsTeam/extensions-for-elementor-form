@@ -50,14 +50,16 @@ class Atomic_Form_Addon_Loader {
 
         add_action('elementor_pro/atomic_forms/actions/register', [$this, 'register_new_form_actions']);
 
-		if ( $this->is_field_enabled( 'whatsapp_redirect' ) || $this->is_field_enabled( 'conditional_logic' ) ) {
+		if ( \CFL_Elements::is_enabled( 'whatsapp_redirect' ) || \CFL_Elements::is_enabled( 'conditional_logic' ) ) {
 			new Handle_Atomic_Form_Submission();
 		}
     }
 
+    /**
+     * @deprecated Use \CFL_Elements::is_enabled().
+     */
     private function is_field_enabled($field_key) {
-        $enabled_elements = get_option('cfkef_enabled_elements', array());
-        return in_array(sanitize_key($field_key), array_map('sanitize_key', $enabled_elements));
+        return \CFL_Elements::is_enabled( $field_key );
     }
 
     /**

@@ -84,7 +84,6 @@ class Atomic_Form extends Core_Atomic_Form {
 	 * @param string $field_key Option list entry from cfkef_enabled_elements.
 	 */
 	private static function is_cfkef_element_enabled( $field_key ): bool {
-		$enabled_elements = get_option( 'cfkef_enabled_elements', array() );
-		return in_array( sanitize_key( $field_key ), array_map( 'sanitize_key', (array) $enabled_elements ), true );
+		return \CFL_Elements::is_enabled( $field_key );
 	}
 }
