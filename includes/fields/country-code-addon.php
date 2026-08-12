@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once __DIR__ . '/country-code-addon-trait.php';
 require_once __DIR__ . '/configurable-addon-trait.php';
+require_once __DIR__ . '/singleton-trait.php';
 
 class Country_Code_Addon {
 	use Country_Code_Addon_Trait;

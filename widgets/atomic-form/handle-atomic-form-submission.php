@@ -511,6 +511,7 @@ class Handle_Atomic_Form_Submission {
 
 		if ( ! $this->is_nonce_valid( $post_data ) ) {
 			$this->send_invalid_form_response();
+			return;
 		}
 
 		$post_id = absint( $post_data['post_id'] ?? 0 );
@@ -519,6 +520,7 @@ class Handle_Atomic_Form_Submission {
 
 		if ( ! $post_id || ! $form_id || empty( $form_fields ) ) {
 			$this->send_invalid_form_response();
+			return;
 		}
 
         $widget_settings = $this->get_widget_settings( $post_id, $form_id );
@@ -531,6 +533,7 @@ class Handle_Atomic_Form_Submission {
 
 		if ( empty( $form_data ) ) {
 			$this->send_invalid_form_response();
+			return;
 		}
 
 		$field_metadata = $this->extract_field_metadata( $form_fields );
@@ -538,6 +541,7 @@ class Handle_Atomic_Form_Submission {
 
 		if ( is_wp_error( $widget_settings ) ) {
 			$this->send_error_response( $widget_settings->get_error_message() );
+			return;
 		}
 
 		$posted_form_name = sanitize_text_field( $post_data['form_name'] ?? '' );
@@ -556,12 +560,14 @@ class Handle_Atomic_Form_Submission {
 			$this->send_error_response(
 				__( 'Your submission was flagged as spam. Please try again or contact the site administrator.', 'extensions-for-elementor-form' )
 			);
+			return;
 		}
 
 		$actions = $widget_settings['actions-after-submit'] ?? [];
 
 		if ( empty( $actions ) ) {
 			$this->send_error_response( __( 'No actions configured for this form', 'extensions-for-elementor-form' ) );
+			return;
 		}
 
 		$results = $this->execute_registered_actions(

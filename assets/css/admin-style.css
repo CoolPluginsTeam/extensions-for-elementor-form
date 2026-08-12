@@ -379,13 +379,15 @@ body.elementor_page_cfkef-entries{
     border:1px solid #fd79b9;
     text-shadow: 1px 1px 1px #fc63ad;
 }
-.wrapper-header .cfkef-save-all .cfkef-save-controls .button:hover,
-.wrapper-header .cfkef-save-all .cfkef-save-controls .button:focus{
+.wrapper-header .cfkef-save-all .cfkef-save-controls .button:hover {
     background-color: #e8338a;
     border-color: #ff57a8;
     text-shadow: 1px 1px 1px #f0398d;
 }
 .wrapper-header .cfkef-save-all .cfkef-save-controls .button:focus {
+    background-color: #e8338a;
+    border-color: #ff57a8;
+    text-shadow: 1px 1px 1px #f0398d;
     box-shadow: 0 0 4px 2px #f0cedf;
     outline: none;
 }

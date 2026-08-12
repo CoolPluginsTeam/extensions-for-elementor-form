@@ -396,49 +396,52 @@ trait Country_Code_Addon_Trait {
 			return;
 		}
 
-		$tel_type = $this->get_tel_field_type();
+		$tel_type       = $this->get_tel_field_type();
+		$field_controls = array();
 
-		$ccfef_default_desc = sprintf(
-			"%s <b>'%s'</b> %s.",
-			esc_html__( 'Set default country code in tel field, like', 'extensions-for-elementor-form' ),
-			esc_html__( 'in', 'extensions-for-elementor-form' ),
-			esc_html__( 'for India', 'extensions-for-elementor-form' )
+		$this->add_geo_controls( $field_controls, $tel_type );
+		$this->add_flag_controls( $field_controls, $tel_type );
+		$this->add_behavior_controls( $field_controls, $tel_type );
+		$this->add_review_notice_control( $field_controls, $tel_type );
+
+		$control_data['fields'] = \array_merge( $control_data['fields'], $field_controls );
+		$widget->update_control( 'form_fields', $control_data );
+	}
+
+	/**
+	 * Shared tab/condition keys for country-code field controls.
+	 *
+	 * @param string $tel_type
+	 * @param bool   $require_enabled
+	 * @return array<string, mixed>
+	 */
+	private function get_country_code_control_meta( string $tel_type, bool $require_enabled = true ): array {
+		$condition = array(
+			'field_type' => $tel_type,
 		);
 
-		$ccfef_auto_detect_desc = sprintf(
-			'%s <br> To use - <a target="__blank" href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=ccfef_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=editor-panel">(UPGRADE TO PRO)</a>',
-			esc_html__( 'Auto select user country using ipapi.co', 'extensions-for-elementor-form' )
-		);
+		if ( $require_enabled ) {
+			$condition['ccfef-country-code-field'] = 'yes';
+		}
 
-		$ccfef_include_desc = sprintf(
-			'%s - <b>%s</b>,<b>%s</b>,<b>%s</b>,<b>%s</b>',
-			esc_html__( 'Display only these countries, add comma separated', 'extensions-for-elementor-form' ),
-			esc_html__( 'ca', 'extensions-for-elementor-form' ),
-			esc_html__( 'in', 'extensions-for-elementor-form' ),
-			esc_html__( 'us', 'extensions-for-elementor-form' ),
-			esc_html__( 'gb', 'extensions-for-elementor-form' )
+		return array(
+			'condition'    => $condition,
+			'tab'          => 'content',
+			'inner_tab'    => 'form_fields_content_tab',
+			'tabs_wrapper' => 'form_fields_tabs',
 		);
+	}
 
-		$ccfef_prefer_desc = sprintf(
-			'%s To use - <a target="__blank" href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=ccfef_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=editor-panel">(UPGRADE TO PRO)</a>',
-			esc_html__( 'The Specified countries will appear at the top of the list.', 'extensions-for-elementor-form' )
-		);
+	/**
+	 * @param array  $field_controls
+	 * @param string $tel_type
+	 * @return void
+	 */
+	private function add_geo_controls( array &$field_controls, string $tel_type ): void {
+		$enabled_meta = $this->get_country_code_control_meta( $tel_type );
 
-		$ccfef_exclude_desc = sprintf(
-			'%s - <b>%s</b>,<b>%s</b><br><br>%s - <a target="__blank" href="' . esc_url( 'https://www.iban.com/country-codes' ) . '">https://www.iban.com/country-codes</a>',
-			esc_html__( 'Exclude some countries, add comma separated', 'extensions-for-elementor-form' ),
-			esc_html__( 'af', 'extensions-for-elementor-form' ),
-			esc_html__( 'pk', 'extensions-for-elementor-form' ),
-			esc_html__( 'Check country codes alpha-2 list here', 'extensions-for-elementor-form' )
-		);
-
-		$ccfef_strict_mode = sprintf(
-			'%s',
-			esc_html__( 'As the user types in the input, ignore any irrelevant characters. Basically, the user can only enter numeric characters, and an optional plus at the beginning. Cap the length at the maximum valid number length.', 'extensions-for-elementor-form' )
-		);
-
-		$field_controls = array(
-			'ccfef-country-code-field'       => array(
+		$field_controls['ccfef-country-code-field'] = array_merge(
+			array(
 				'name'         => 'ccfef-country-code-field',
 				'label'        => esc_html__( 'Country Code', 'extensions-for-elementor-form' ),
 				'type'         => \Elementor\Controls_Manager::SWITCHER,
@@ -446,67 +449,108 @@ trait Country_Code_Addon_Trait {
 				'label_off'    => esc_html__( 'Hide', 'extensions-for-elementor-form' ),
 				'return_value' => 'yes',
 				'default'      => 'no',
-				'condition'    => array(
-					'field_type' => $tel_type,
-				),
-				'tab'          => 'content',
-				'inner_tab'    => 'form_fields_content_tab',
-				'tabs_wrapper' => 'form_fields_tabs',
 			),
-			'ccfef-country-code-default'     => array(
-				'name'         => 'ccfef-country-code-default',
-				'label'        => esc_html__( 'Default Country', 'extensions-for-elementor-form' ),
-				'type'         => \Elementor\Controls_Manager::TEXT,
-				'condition'    => array(
-					'field_type'               => $tel_type,
-					'ccfef-country-code-field' => 'yes',
+			$this->get_country_code_control_meta( $tel_type, false )
+		);
+
+		$field_controls['ccfef-country-code-default'] = array_merge(
+			array(
+				'name'        => 'ccfef-country-code-default',
+				'label'       => esc_html__( 'Default Country', 'extensions-for-elementor-form' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'description' => sprintf(
+					"%s <b>'%s'</b> %s.",
+					esc_html__( 'Set default country code in tel field, like', 'extensions-for-elementor-form' ),
+					esc_html__( 'in', 'extensions-for-elementor-form' ),
+					esc_html__( 'for India', 'extensions-for-elementor-form' )
 				),
-				'description'  => $ccfef_default_desc,
-				'default'      => 'in',
-				'tab'          => 'content',
-				'inner_tab'    => 'form_fields_content_tab',
-				'tabs_wrapper' => 'form_fields_tabs',
-				'ai'           => array(
-					'active' => false,
-				),
+				'default'     => 'in',
+				'ai'          => array( 'active' => false ),
 			),
-			'ccfef-country-code-include'     => array(
-				'name'         => 'ccfef-country-code-include',
-				'label'        => esc_html__( 'Only country', 'extensions-for-elementor-form' ),
-				'type'         => \Elementor\Controls_Manager::TEXT,
-				'description'  => $ccfef_include_desc,
-				'condition'    => array(
-					'field_type'               => $tel_type,
-					'ccfef-country-code-field' => 'yes',
+			$enabled_meta
+		);
+
+		$field_controls['ccfef-country-code-include'] = array_merge(
+			array(
+				'name'        => 'ccfef-country-code-include',
+				'label'       => esc_html__( 'Only country', 'extensions-for-elementor-form' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'description' => sprintf(
+					'%s - <b>%s</b>,<b>%s</b>,<b>%s</b>,<b>%s</b>',
+					esc_html__( 'Display only these countries, add comma separated', 'extensions-for-elementor-form' ),
+					esc_html__( 'ca', 'extensions-for-elementor-form' ),
+					esc_html__( 'in', 'extensions-for-elementor-form' ),
+					esc_html__( 'us', 'extensions-for-elementor-form' ),
+					esc_html__( 'gb', 'extensions-for-elementor-form' )
 				),
-				'tab'          => 'content',
-				'inner_tab'    => 'form_fields_content_tab',
-				'tabs_wrapper' => 'form_fields_tabs',
-				'ai'           => array(
-					'active' => false,
-				),
+				'ai'          => array( 'active' => false ),
 			),
-			'ccfef-country-code-exclude'     => array(
-				'name'         => 'ccfef-country-code-exclude',
-				'label'        => esc_html__( 'Exclude Countries', 'extensions-for-elementor-form' ),
-				'type'         => \Elementor\Controls_Manager::TEXT,
-				'description'  => $ccfef_exclude_desc,
-				'condition'    => array(
-					'field_type'               => $tel_type,
-					'ccfef-country-code-field' => 'yes',
+			$enabled_meta
+		);
+
+		$field_controls['ccfef-country-code-exclude'] = array_merge(
+			array(
+				'name'        => 'ccfef-country-code-exclude',
+				'label'       => esc_html__( 'Exclude Countries', 'extensions-for-elementor-form' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'description' => sprintf(
+					'%s - <b>%s</b>,<b>%s</b><br><br>%s - <a target="__blank" href="' . esc_url( 'https://www.iban.com/country-codes' ) . '">https://www.iban.com/country-codes</a>',
+					esc_html__( 'Exclude some countries, add comma separated', 'extensions-for-elementor-form' ),
+					esc_html__( 'af', 'extensions-for-elementor-form' ),
+					esc_html__( 'pk', 'extensions-for-elementor-form' ),
+					esc_html__( 'Check country codes alpha-2 list here', 'extensions-for-elementor-form' )
 				),
-				'tab'          => 'content',
-				'inner_tab'    => 'form_fields_content_tab',
-				'tabs_wrapper' => 'form_fields_tabs',
-				'ai'           => array(
-					'active' => false,
-				),
+				'ai'          => array( 'active' => false ),
 			),
-			'ccfef-dial-code-visibility'     => array(
-				'name'         => 'ccfef-dial-code-visibility',
-				'label'        => esc_html__( 'Dial Code Visibility', 'extensions-for-elementor-form' ),
-				'type'         => \Elementor\Controls_Manager::CHOOSE,
-				'options'      => array(
+			$enabled_meta
+		);
+
+		$field_controls['ccfef-country-code-auto-detect'] = array_merge(
+			array(
+				'name'         => 'ccfef-country-code-auto-detect',
+				'label'        => esc_html__( 'Auto Detect Country', 'extensions-for-elementor-form' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Yes', 'extensions-for-elementor-form' ),
+				'label_off'    => esc_html__( 'No', 'extensions-for-elementor-form' ),
+				'return_value' => 'yes',
+				'default'      => 'no',
+				'description'  => sprintf(
+					'%s <br> To use - <a target="__blank" href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=ccfef_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=editor-panel">(UPGRADE TO PRO)</a>',
+					esc_html__( 'Auto select user country using ipapi.co', 'extensions-for-elementor-form' )
+				),
+				'ai'           => array( 'active' => false ),
+				'disabled'     => true,
+			),
+			$enabled_meta
+		);
+
+		$field_controls['ccfef-country-code-prefer'] = array_merge(
+			array(
+				'name'        => 'ccfef-country-code-prefer',
+				'label'       => esc_html__( 'Preferred Countries', 'extensions-for-elementor-form' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'description' => sprintf(
+					'%s To use - <a target="__blank" href="https://coolplugins.net/cool-formkit-for-elementor-forms/?utm_source=ccfef_plugin&utm_medium=inside&utm_campaign=get-pro&utm_content=editor-panel">(UPGRADE TO PRO)</a>',
+					esc_html__( 'The Specified countries will appear at the top of the list.', 'extensions-for-elementor-form' )
+				),
+				'ai'          => array( 'active' => false ),
+			),
+			$enabled_meta
+		);
+	}
+
+	/**
+	 * @param array  $field_controls
+	 * @param string $tel_type
+	 * @return void
+	 */
+	private function add_flag_controls( array &$field_controls, string $tel_type ): void {
+		$field_controls['ccfef-dial-code-visibility'] = array_merge(
+			array(
+				'name'    => 'ccfef-dial-code-visibility',
+				'label'   => esc_html__( 'Dial Code Visibility', 'extensions-for-elementor-form' ),
+				'type'    => \Elementor\Controls_Manager::CHOOSE,
+				'options' => array(
 					'show'     => array(
 						'title' => esc_html__( 'Show', 'extensions-for-elementor-form' ),
 						'icon'  => 'far fa-eye',
@@ -520,19 +564,21 @@ trait Country_Code_Addon_Trait {
 						'icon'  => 'fas fa-arrows-alt-h',
 					),
 				),
-				'default'      => 'show',
-				'condition'    => array(
-					'field_type'               => $tel_type,
-					'ccfef-country-code-field' => 'yes',
-				),
-				'tab'          => 'content',
-				'inner_tab'    => 'form_fields_content_tab',
-				'tabs_wrapper' => 'form_fields_tabs',
-				'ai'           => array(
-					'active' => false,
-				),
+				'default' => 'show',
+				'ai'      => array( 'active' => false ),
 			),
-			'ccfef-strict-mode'              => array(
+			$this->get_country_code_control_meta( $tel_type )
+		);
+	}
+
+	/**
+	 * @param array  $field_controls
+	 * @param string $tel_type
+	 * @return void
+	 */
+	private function add_behavior_controls( array &$field_controls, string $tel_type ): void {
+		$field_controls['ccfef-strict-mode'] = array_merge(
+			array(
 				'name'         => 'ccfef-strict-mode',
 				'label'        => esc_html__( 'Strict Mode', 'extensions-for-elementor-form' ),
 				'type'         => \Elementor\Controls_Manager::SWITCHER,
@@ -540,83 +586,40 @@ trait Country_Code_Addon_Trait {
 				'label_off'    => esc_html__( 'No', 'extensions-for-elementor-form' ),
 				'return_value' => 'yes',
 				'default'      => 'no',
-				'description'  => $ccfef_strict_mode,
-				'condition'    => array(
-					'field_type'               => $tel_type,
-					'ccfef-country-code-field' => 'yes',
-				),
-				'tab'          => 'content',
-				'inner_tab'    => 'form_fields_content_tab',
-				'tabs_wrapper' => 'form_fields_tabs',
-				'ai'           => array(
-					'active' => false,
-				),
+				'description'  => esc_html__( 'As the user types in the input, ignore any irrelevant characters. Basically, the user can only enter numeric characters, and an optional plus at the beginning. Cap the length at the maximum valid number length.', 'extensions-for-elementor-form' ),
+				'ai'           => array( 'active' => false ),
 			),
-			'ccfef-country-code-auto-detect' => array(
-				'name'         => 'ccfef-country-code-auto-detect',
-				'label'        => esc_html__( 'Auto Detect Country', 'extensions-for-elementor-form' ),
-				'type'         => \Elementor\Controls_Manager::SWITCHER,
-				'label_on'     => esc_html__( 'Yes', 'extensions-for-elementor-form' ),
-				'label_off'    => esc_html__( 'No', 'extensions-for-elementor-form' ),
-				'return_value' => 'yes',
-				'default'      => 'no',
-				'description'  => $ccfef_auto_detect_desc,
-				'condition'    => array(
-					'field_type'               => $tel_type,
-					'ccfef-country-code-field' => 'yes',
-				),
-				'tab'          => 'content',
-				'inner_tab'    => 'form_fields_content_tab',
-				'tabs_wrapper' => 'form_fields_tabs',
-				'ai'           => array(
-					'active' => false,
-				),
-				'disabled'     => true,
-			),
-			'ccfef-country-code-prefer'      => array(
-				'name'         => 'ccfef-country-code-prefer',
-				'label'        => esc_html__( 'Preferred Countries', 'extensions-for-elementor-form' ),
-				'type'         => \Elementor\Controls_Manager::TEXT,
-				'description'  => $ccfef_prefer_desc,
-				'condition'    => array(
-					'field_type'               => $tel_type,
-					'ccfef-country-code-field' => 'yes',
-				),
-				'tab'          => 'content',
-				'inner_tab'    => 'form_fields_content_tab',
-				'tabs_wrapper' => 'form_fields_tabs',
-				'ai'           => array(
-					'active' => false,
-				),
-			),
+			$this->get_country_code_control_meta( $tel_type )
 		);
+	}
 
-		if ( $this->should_include_review_notice() && ! get_option( 'ccfef_review_notice_dismiss' ) ) {
-			$review_nonce = wp_create_nonce( 'ccfef_elementor_review' );
-			$url          = admin_url( 'admin-ajax.php' );
-			$html         = '<div class="ccfef_elementor_review_wrapper ccfef_custom_html">';
-			$html        .= '<div id="ccfef_elementor_review_dismiss" data-url="' . esc_url( $url ) . '" data-nonce="' . esc_attr( $review_nonce ) . '">Close Notice X</div>
-							<div class="ccfef_elementor_review_msg">Hope this addon solved your problem! <br><a href="https://wordpress.org/support/plugin/country-code-field-for-elementor-form/reviews/#new-post" target="_blank" rel="noopener noreferrer">Share the love with a ⭐⭐⭐⭐⭐ rating.</a><br><br></div>
-							<div class="ccfef_elementor_demo_btn"><a href="https://wordpress.org/support/plugin/country-code-field-for-elementor-form/reviews/#new-post" target="_blank" rel="noopener noreferrer">Submit Review</a></div>
-							</div>';
+	/**
+	 * @param array  $field_controls
+	 * @param string $tel_type
+	 * @return void
+	 */
+	private function add_review_notice_control( array &$field_controls, string $tel_type ): void {
+		if ( ! $this->should_include_review_notice() || get_option( 'ccfef_review_notice_dismiss' ) ) {
+			return;
+		}
 
-			$field_controls['ccfef_review_notice'] = array(
+		$review_nonce = wp_create_nonce( 'ccfef_elementor_review' );
+		$url          = admin_url( 'admin-ajax.php' );
+		$html         = '<div class="ccfef_elementor_review_wrapper ccfef_custom_html">';
+		$html        .= '<div id="ccfef_elementor_review_dismiss" data-url="' . esc_url( $url ) . '" data-nonce="' . esc_attr( $review_nonce ) . '">Close Notice X</div>
+						<div class="ccfef_elementor_review_msg">Hope this addon solved your problem! <br><a href="https://wordpress.org/support/plugin/country-code-field-for-elementor-form/reviews/#new-post" target="_blank" rel="noopener noreferrer">Share the love with a ⭐⭐⭐⭐⭐ rating.</a><br><br></div>
+						<div class="ccfef_elementor_demo_btn"><a href="https://wordpress.org/support/plugin/country-code-field-for-elementor-form/reviews/#new-post" target="_blank" rel="noopener noreferrer">Submit Review</a></div>
+						</div>';
+
+		$field_controls['ccfef_review_notice'] = array_merge(
+			array(
 				'name'            => 'ccfef_review_notice',
 				'type'            => \Elementor\Controls_Manager::RAW_HTML,
 				'raw'             => $html,
 				'content_classes' => 'ccfef_elementor_review_notice',
-				'tab'             => 'content',
-				'condition'       => array(
-					'field_type'               => $tel_type,
-					'ccfef-country-code-field' => 'yes',
-				),
-				'inner_tab'       => 'form_fields_content_tab',
-				'tabs_wrapper'    => 'form_fields_tabs',
-			);
-		}
-
-		$control_data['fields'] = \array_merge( $control_data['fields'], $field_controls );
-		$widget->update_control( 'form_fields', $control_data );
+			),
+			$this->get_country_code_control_meta( $tel_type )
+		);
 	}
 
 	/**

@@ -172,10 +172,14 @@ trait Whatsapp_Redirect_Action_Trait {
 
 		$whatsapp_message = $record->get_form_settings( 'whatsapp_message' );
 
-		$whatsapp_message = str_replace( '%break%', '%0D%0A', $whatsapp_message );
+		$whatsapp_to      = $record->replace_setting_shortcodes( $whatsapp_to, false );
+		$whatsapp_message = $record->replace_setting_shortcodes( $whatsapp_message, false );
+		$whatsapp_message = str_replace( '%break%', "\r\n", $whatsapp_message );
 
-		$whatsapp_to = 'https://wa.me/' . $whatsapp_to . '?text=' . $whatsapp_message . '';
-		$whatsapp_to = $record->replace_setting_shortcodes( $whatsapp_to, true );
+		$whatsapp_to = add_query_arg(
+			array( 'text' => $whatsapp_message ),
+			'https://wa.me/' . rawurlencode( $whatsapp_to )
+		);
 
 		if ( ! empty( $whatsapp_to ) ) {
 			$ajax_handler->add_response_data( 'redirect_url', $whatsapp_to );

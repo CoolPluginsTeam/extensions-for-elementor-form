@@ -76,7 +76,6 @@ class Ajax_Handler {
 		$elementor = Utils::elementor();
 		$document = $elementor->documents->get( $post_id );
 		$form = null;
-		$template_id = null;
 
 		if ( $document ) {
 			$form = Module::find_element_recursive( $document->get_elements_data(), (string) $form_id );
@@ -86,13 +85,14 @@ class Ajax_Handler {
 			$this
 				->add_error_message( self::get_default_message( self::INVALID_FORM, [] ) )
 				->send();
-			}
+			return;
+		}
 			
 			// restore default values
 			$widget = $elementor->elements_manager->create_element_instance( $form );
 			$form['settings'] = $widget->get_settings_for_display();
 			$form['settings']['id'] = $form_id;
-			$form['settings']['form_post_id'] = $template_id ? $template_id : $post_id;
+			$form['settings']['form_post_id'] = $post_id;
 			
 			// TODO: Should be removed if there is an ability to edit "global widgets"
 			$form['settings']['edit_post_id'] = $post_id;
@@ -103,6 +103,7 @@ class Ajax_Handler {
 				$this
 				->add_error_message( self::get_default_message( self::INVALID_FORM, $form['settings'] ) )
 				->send();
+				return;
 			}
 			
 			// the fields are not fixed so they will be validated afterwards
@@ -113,12 +114,14 @@ class Ajax_Handler {
 				->add_error( $record->get( 'errors' ) )
 				->add_error_message( self::get_default_message( self::ERROR, $form['settings'] ) )
 				->send();
+				return;
 			}
 			
 			$record->process_fields( $this );
 			//check for process errors
 			if ( ! empty( $this->errors ) ) {
 				$this->send();
+				return;
 			}
 			
 			$module = Module::instance();

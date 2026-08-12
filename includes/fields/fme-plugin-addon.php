@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once __DIR__ . '/fme-plugin-trait.php';
 require_once __DIR__ . '/configurable-addon-trait.php';
 require_once __DIR__ . '/mask-control-addon.php';
+require_once __DIR__ . '/singleton-trait.php';
 
 class FME_Plugin_Addon {
 	use FME_Plugin_Trait;

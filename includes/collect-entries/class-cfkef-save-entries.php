@@ -25,8 +25,7 @@ class CFKEF_Save_Entries {
     public function save_entries($record, $ajax_handler, $collect_entries) {
         $meta_keys = array_merge(['page_url', 'page_title'], $record->get_form_settings('collect_entries_meta_data'));
         $meta = $record->get_form_meta($meta_keys);
-        $form_fields = $record->get_form_settings( 'form_fields' );;
-        
+
         $actions_count = (new Collection($record->get_form_settings('submit_actions')))
         ->filter(function ($value) use ($collect_entries) {
             return $value !== $collect_entries->get_name();

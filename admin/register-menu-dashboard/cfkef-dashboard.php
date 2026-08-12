@@ -76,16 +76,10 @@ class CFKEF_Dashboard
         $this->plugin_name = $plugin_name;
         $this->version = $version;
         $dashboard_pages = array(
-            // 'cool-formkit' => array(
-            //     'title' => 'Cool FormKit Lite',
-            //     'position' => 45,
-            //     'slug' => 'cool-formkit',
-            // ),
             'cfkef-entries' => array(
                 'title' => '↳ Entries',
                 'position' => 46,
-                // 'slug' => 'edit.php?post_type=cfkef-entries', // Retained the original slug with post-new.php?post_type=
-                'slug' => 'cfkef-entries', // Retained the original slug with post-new.php?post_type=
+                'slug' => 'cfkef-entries',
             )
         );
 
