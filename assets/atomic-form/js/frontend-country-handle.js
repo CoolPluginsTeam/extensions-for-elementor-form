@@ -81,7 +81,7 @@
         let includeArr = data.include ? data.include.split(',') : [];
         let excludeArr = data.exclude ? data.exclude.split(',') : [];
         let dialCodeVisibility = data.dialcodevisibilty || 'show';
-        const utilsPath = CCFEFCustomData.pluginDir + 'assets/addons/intl-tel-input/js/utils.min.js';
+        const utilsPath = CCFEFCustomData.pluginDir + 'assets/js/utils.js';
         let strictMode = data.strictmode === 1 ? true : false;
 
         if(excludeArr.length > 0 && includeArr.length > 0){

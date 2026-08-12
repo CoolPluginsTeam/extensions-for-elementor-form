@@ -45,22 +45,38 @@ CFKEF.initCountryCode = function (opts) {
 
     handleTelWithMdcFields(iti) {
         const input = iti.telInput;
+        if (!input) {
+            return;
+        }
         const parentFieldGroup = input.closest(fieldGroupSelector);
+        if (!parentFieldGroup) {
+            return;
+        }
         const $parent = jQuery(parentFieldGroup);
-    
+        const $telInput = jQuery(input);
+        const $iti = $telInput.closest('.iti');
+
+        // Avoid stacking duplicate handlers when countrychange re-runs this.
+        if ($parent.data('ccfefMdcBound')) {
+            return;
+        }
+        $parent.data('ccfefMdcBound', true);
+
         // Cache common elements
         const $floatingLabel = $parent.find('.mdc-floating-label');
-        const $inputs = $parent.find('input');
+        const $searchInput = $iti.find('input.iti__search-input');
         const $notchedOutlineNotch = $parent.find('.mdc-notched-outline__notch');
         const $notchedOutlineLeading = $parent.find('.mdc-notched-outline__leading');
-    
-        let selectedDialCode = $inputs.eq(1).prev('.iti__country-container').find('.iti__selected-dial-code')
-        selectedDialCode.css('visibility','hidden')
-        if($inputs.eq(1).val() !== ""){
-            selectedDialCode.css('visibility','visible')
-        }else{
-            selectedDialCode.css('visibility','hidden')
-        }
+        const $selectedDialCode = $iti.find('.iti__country-container .iti__selected-dial-code');
+
+        const syncDialCodeVisibility = () => {
+            if (!$selectedDialCode.length) {
+                return;
+            }
+            $selectedDialCode.css('visibility', $telInput.val() !== '' ? 'visible' : 'hidden');
+        };
+        syncDialCodeVisibility();
+
         if ($parent.nextAll().length > 0) {
             const $nextAll = $parent.nextAll();
             if ($nextAll.length > 0) {
@@ -80,54 +96,82 @@ CFKEF.initCountryCode = function (opts) {
             }
         }
 
-        // Set initial floating label style
+        // Make room for the flag button inside the outlined field.
         $floatingLabel.css('left', '50px');
-    
-        // Input focus event for the second input element
-        $inputs.eq(1).on('blur',()=>{
-            if($inputs.eq(1).val() !== ""){
-            selectedDialCode.css('visibility','visible')
-            }else{
-                selectedDialCode.css('visibility','hidden')
+
+        // Match dropdown width/left to the outer MDC outline (not the padded tel input).
+        const syncDropdownToField = () => {
+            const field = input.closest('.mdc-text-field') || input.closest('.cool-form-text');
+            const countryContainer = $iti[0] && $iti[0].querySelector('.iti__country-container');
+            const dropdown = $iti[0] && $iti[0].querySelector('.iti__dropdown-content');
+            if (!field || !countryContainer || !dropdown) {
+                return;
             }
-        })
-        $inputs.eq(1).on('focus', () => {
-            selectedDialCode.css('visibility','visible')
+            const fieldRect = field.getBoundingClientRect();
+            const containerRect = countryContainer.getBoundingClientRect();
+            const width = Math.round(fieldRect.width);
+            const left = Math.round(fieldRect.left - containerRect.left);
+            dropdown.style.setProperty('width', width + 'px', 'important');
+            dropdown.style.setProperty('max-width', width + 'px', 'important');
+            dropdown.style.setProperty('left', left + 'px', 'important');
+            dropdown.style.setProperty('right', 'auto', 'important');
+            dropdown.style.setProperty('margin-left', '0', 'important');
+        };
+        input.addEventListener('open:countrydropdown', () => {
+            requestAnimationFrame(syncDropdownToField);
+        });
+        jQuery(window).on('resize.ccfefMdcDropdown', () => {
+            if ($iti.find('.iti__dropdown-content:not(.iti__hide)').length) {
+                syncDropdownToField();
+            }
+        });
+
+        $telInput.on('blur.ccfefMdc', () => {
+            syncDialCodeVisibility();
+        });
+        $telInput.on('focus.ccfefMdc', () => {
+            $selectedDialCode.css('visibility', 'visible');
             $floatingLabel.css({
-                "left": "50px",
-                "background-color": "white"
+                left: '50px',
+                'background-color': 'white'
             });
-            const borderTop = getComputedStyle($notchedOutlineNotch[0]).getPropertyValue('border-bottom');
-            $notchedOutlineNotch.css({ 'border-top': borderTop });
+            if ($notchedOutlineNotch[0]) {
+                const borderTop = getComputedStyle($notchedOutlineNotch[0]).getPropertyValue('border-bottom');
+                $notchedOutlineNotch.css({ 'border-top': borderTop });
+            }
         });
-    
-        // Bind a click event on the parent container
-        $parent.on('click', (e) => {
+
+        $parent.on('click.ccfefMdc', () => {
             handleMainLogic();
         });
-    
-        // Mouseover on the first input element
-        $inputs.eq(0).on('mouseover', () => {
+
+        $searchInput.on('mouseover.ccfefMdc', () => {
+            if (!$notchedOutlineLeading[0] || !$notchedOutlineNotch[0]) {
+                return;
+            }
             const borderWidth = getComputedStyle($notchedOutlineLeading[0]).getPropertyValue('border-bottom-width');
             $notchedOutlineNotch.css({ 'border-top-width': borderWidth, 'border-top-color': 'black' });
         });
-    
-        // Parent mouseover event
-        $parent.on('mouseover', (e) => {
+
+        $parent.on('mouseover.ccfefMdc', () => {
+            if (!$notchedOutlineLeading[0] || !$notchedOutlineNotch[0]) {
+                return;
+            }
             const borderWidth = getComputedStyle($notchedOutlineLeading[0]).getPropertyValue('border-bottom-width');
             $notchedOutlineNotch.css({ 'border-top-width': borderWidth, 'border-top-color': 'black' });
             handleMainLogic();
         });
-    
-        // Mouse leave event on the parent container
-        $parent.on('mouseleave', (e) => {
+
+        $parent.on('mouseleave.ccfefMdc', () => {
+            if (!$notchedOutlineLeading[0] || !$notchedOutlineNotch[0]) {
+                return;
+            }
             const borderWidth = getComputedStyle($notchedOutlineLeading[0]).getPropertyValue('border-bottom-width');
             const borderColor = getComputedStyle($notchedOutlineLeading[0]).getPropertyValue('border-right-color');
             $notchedOutlineNotch.css({ 'border-top-width': borderWidth, 'border-top-color': borderColor });
             handleMainLogic();
         });
-    
-        // Inner function to handle the main logic
+
         function handleMainLogic() {
             const $dropdown = $parent.find('.iti__dropdown-content');
             $parent.nextAll(fieldGroupSelector).each(function() {
@@ -137,7 +181,6 @@ CFKEF.initCountryCode = function (opts) {
                     this.style.zIndex = 'initial';
                 }
             });
-        
         }
     }
 
@@ -253,7 +296,6 @@ CFKEF.initCountryCode = function (opts) {
             };
 
             const handleCountryChange = (e) => {
-                if (enableMdcHandling) { this.handleTelWithMdcFields(iti); }
                 this.customFlags();
                 this.TelFieldInputEventHandler(inputElement)
                 const currentCountryData = iti.getSelectedCountryData();
@@ -342,7 +384,7 @@ CFKEF.initCountryCode = function (opts) {
                 excludeCountries = [...this.excludeCountries[uniqueId]];
             }
         
-            if (this.defaultCountry[uniqueId] && '' !== this.defaultCountry[uniqueId]) {
+            if (this.defaultCountry[uniqueId] && '' !== this.defaultCountry[uniqueId] && 'NAN' !== String(this.defaultCountry[uniqueId]).toUpperCase()) {
                 defaultCountry = this.defaultCountry[uniqueId];
             }
             
@@ -536,7 +578,8 @@ CFKEF.initCountryCode = function (opts) {
     }
 
     customFlags() {
-        const selectedCountries = this.$element.find('.cfefp-intl-container .iti__country-container .iti__flag:not(.iti__globe)');
+        // Only the selected-country button — not dropdown list flags (those use the CSS sprite).
+        const selectedCountries = this.$element.find('.cfefp-intl-container .iti__country-container .iti__selected-country .iti__flag:not(.iti__globe), .cfefp-intl-container .iti__country-container .iti__selected-flag .iti__flag:not(.iti__globe)');
     
         // Loop through each flag element
         selectedCountries.each(function() {
@@ -625,7 +668,7 @@ CFKEF.initCountryCode = function (opts) {
                     this.countryStrictMode[currentId] = countryStrictMode
                 }
 
-                if ('' !== defaultCountry) {
+                if ('' !== defaultCountry && 'NAN' !== String(defaultCountry).toUpperCase()) {
                     this.defaultCountry[currentId] = defaultCountry;
                 }
             }

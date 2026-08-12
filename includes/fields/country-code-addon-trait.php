@@ -111,7 +111,9 @@ trait Country_Code_Addon_Trait {
 	 * @return string
 	 */
 	protected function get_main_script_version(): string {
-		return CFL_VERSION;
+		return function_exists( 'cfl_asset_version' )
+			? cfl_asset_version( 'assets/js/country-code-script.js' )
+			: CFL_VERSION;
 	}
 
 	/**
@@ -120,7 +122,9 @@ trait Country_Code_Addon_Trait {
 	 * @return string
 	 */
 	protected function get_shared_script_version(): string {
-		return CFL_VERSION;
+		return function_exists( 'cfl_asset_version' )
+			? cfl_asset_version( 'assets/js/shared/country-code-script.js' )
+			: CFL_VERSION;
 	}
 
 	/**
@@ -142,18 +146,27 @@ trait Country_Code_Addon_Trait {
 	}
 
 	public function register_styles() {
+		$library_ver = function_exists( 'cfl_asset_version' )
+			? cfl_asset_version( 'assets/css/intlTelInput.min.css' )
+			: CFL_VERSION;
+		$style_src   = $this->get_style_src();
+		$style_ver   = CFL_VERSION;
+		if ( function_exists( 'cfl_asset_version' ) && defined( 'CFL_PLUGIN_URL' ) && 0 === strpos( $style_src, CFL_PLUGIN_URL ) ) {
+			$style_ver = cfl_asset_version( substr( $style_src, strlen( CFL_PLUGIN_URL ) ) );
+		}
+
 		wp_register_style(
 			$this->get_library_style_handle(),
 			CFL_PLUGIN_URL . 'assets/css/intlTelInput.min.css',
 			array(),
-			CFL_VERSION,
+			$library_ver,
 			'all'
 		);
 		wp_register_style(
 			$this->get_style_handle(),
-			$this->get_style_src(),
+			$style_src,
 			array(),
-			CFL_VERSION,
+			$style_ver,
 			'all'
 		);
 	}
@@ -304,11 +317,18 @@ trait Country_Code_Addon_Trait {
 		}
 
 		wp_enqueue_script( 'cfkef-shared-content-template-editor' );
+
+		$editor_src = $this->get_editor_script_src();
+		$editor_ver = CFL_VERSION;
+		if ( function_exists( 'cfl_asset_version' ) && defined( 'CFL_PLUGIN_URL' ) && 0 === strpos( $editor_src, CFL_PLUGIN_URL ) ) {
+			$editor_ver = cfl_asset_version( substr( $editor_src, strlen( CFL_PLUGIN_URL ) ) );
+		}
+
 		wp_enqueue_script(
 			$this->get_editor_script_handle(),
-			$this->get_editor_script_src(),
+			$editor_src,
 			array( 'jquery', 'cfkef-shared-content-template-editor' ),
-			CFL_VERSION,
+			$editor_ver,
 			true
 		);
 		$this->register_common_assets();
@@ -322,14 +342,18 @@ trait Country_Code_Addon_Trait {
 			'cfl-country-code-editor-style',
 			CFL_PLUGIN_URL . 'assets/addons/css/ccfef_editor.min.css',
 			array(),
-			CFL_VERSION,
+			function_exists( 'cfl_asset_version' )
+				? cfl_asset_version( 'assets/addons/css/ccfef_editor.min.css' )
+				: CFL_VERSION,
 			'all'
 		);
 		wp_enqueue_script(
 			'cfl-country-code-editor-panel-script',
 			CFL_PLUGIN_URL . 'assets/addons/js/ccfef-editor.min.js',
 			array( 'jquery' ),
-			CFL_VERSION,
+			function_exists( 'cfl_asset_version' )
+				? cfl_asset_version( 'assets/addons/js/ccfef-editor.min.js' )
+				: CFL_VERSION,
 			true
 		);
 	}

@@ -78,6 +78,18 @@ if ( ! class_exists( 'CoolForm_COUNTRY_CODE_FIELD' ) ) {
 			return CFL_PLUGIN_URL . 'assets/addons/js/coolform-country-code-script.js';
 		}
 
+		protected function get_main_script_version(): string {
+			return function_exists( 'cfl_asset_version' )
+				? cfl_asset_version( 'assets/addons/js/coolform-country-code-script.js' )
+				: CFL_VERSION;
+		}
+
+		protected function get_shared_script_version(): string {
+			return function_exists( 'cfl_asset_version' )
+				? cfl_asset_version( 'assets/js/shared/country-code-script.js' )
+				: CFL_VERSION;
+		}
+
 		protected function get_editor_script_handle(): string {
 			return 'coolform-country-code-editor-script';
 		}

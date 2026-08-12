@@ -392,8 +392,8 @@ class Atomic_Form_Addon_Loader {
         wp_register_script('frontend-country-handle-js', CFL_PLUGIN_URL . 'assets/atomic-form/js/frontend-country-handle.js', array('jquery'), $this->version, true);
         wp_enqueue_script('frontend-country-handle-js');
 
-        wp_register_script('cfl-country-code-library-script', CFL_PLUGIN_URL . 'assets/addons/intl-tel-input/js/intlTelInput.js', array(), CFL_VERSION, true);
-        wp_register_style('cfl-country-code-library-style', CFL_PLUGIN_URL . 'assets/addons/intl-tel-input/css/intlTelInput.min.css', array(), CFL_VERSION, 'all');
+        wp_register_script('cfl-country-code-library-script', CFL_PLUGIN_URL . 'assets/js/intlTelInput.min.js', array(), CFL_VERSION, true);
+        wp_register_style('cfl-country-code-library-style', CFL_PLUGIN_URL . 'assets/css/intlTelInput.min.css', array(), CFL_VERSION, 'all');
         wp_register_style('cfl-atomic-form-country-code-style', CFL_PLUGIN_URL . 'assets/atomic-form/css/atomic-form-country-code-style.min.css', array(), CFL_VERSION, 'all');
 
         wp_localize_script(

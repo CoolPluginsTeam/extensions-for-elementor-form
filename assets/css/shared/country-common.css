@@ -11,7 +11,8 @@
 	border-radius: unset;
 }
 
-.cfefp-intl-container .iti__country-container .iti__flag:not(.iti__globe) {
+.cfefp-intl-container .iti__country-container .iti__selected-country .iti__flag:not(.iti__globe),
+.cfefp-intl-container .iti__country-container .iti__selected-flag .iti__flag:not(.iti__globe) {
 	height: 13px;
 	background-position: center;
 	background-size: cover;

@@ -77,6 +77,18 @@ if ( ! class_exists( 'HelloPlus_COUNTRY_CODE_FIELD' ) ) {
 			return CFL_PLUGIN_URL . 'assets/helloplus-addons/js/helloplus-country-code-script.js';
 		}
 
+		protected function get_main_script_version(): string {
+			return function_exists( 'cfl_asset_version' )
+				? cfl_asset_version( 'assets/helloplus-addons/js/helloplus-country-code-script.js' )
+				: CFL_VERSION;
+		}
+
+		protected function get_shared_script_version(): string {
+			return function_exists( 'cfl_asset_version' )
+				? cfl_asset_version( 'assets/js/shared/country-code-script.js' )
+				: CFL_VERSION;
+		}
+
 		protected function get_editor_script_handle(): string {
 			return 'helloplus-country-code-editor-script';
 		}
