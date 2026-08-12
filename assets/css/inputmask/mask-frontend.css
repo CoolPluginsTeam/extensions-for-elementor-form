@@ -61,14 +61,4 @@
 /* Hello Plus flat fields */
 .ehp-form__field-group.is-field-type-text {
     position: relative;
-}
-
-.ehp-form__field-group.is-field-type-text .mask-error {
-    bottom: unset;
-    left: unset;
-}
-
-.ehp-form__field-group.is-field-type-text .mask-error:after {
-    transform: rotate(220deg);
-    top: 16px;
 } 
