@@ -2,9 +2,9 @@
 
 namespace Cool_FormKit\Includes\Frontend\Widget;
 
-require_once CFL_PLUGIN_PATH . 'includes/fields/fme-plugin-trait.php';
+require_once CFL_PLUGIN_PATH . 'includes/fields/fme-plugin-addon.php';
 
-use Cool_FormKit\Includes\Fields\FME_Plugin_Trait;
+use Cool_FormKit\Includes\Fields\FME_Plugin_Addon;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -13,8 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Form Mask Elementor bootstrap for Elementor Pro.
  */
-final class FME_Plugin {
-	use FME_Plugin_Trait;
+final class FME_Plugin extends FME_Plugin_Addon {
 
 	/**
 	 * @var FME_Plugin|null
@@ -31,43 +30,7 @@ final class FME_Plugin {
 		return self::$_instance;
 	}
 
-	private function __construct() {
-		$this->init_fme_plugin();
-	}
-
-	protected function get_custom_mask_script_handle(): string {
-		return 'fme-custom-mask-script';
-	}
-
-	protected function get_frontend_style_handle(): string {
-		return 'fme-frontend-css';
-	}
-
-	protected function get_input_mask_script_handle(): string {
-		return 'fme-new-input-mask';
-	}
-
-	protected function get_input_mask_script_src(): string {
-		return CFL_PLUGIN_URL . 'assets/js/inputmask/new-input-mask.js';
-	}
-
-	protected function get_editor_template_script_handle(): string {
-		return 'fme-editor-template-js';
-	}
-
-	protected function get_editor_template_script_src(): string {
-		return CFL_PLUGIN_URL . 'assets/js/inputmask/mask-editor-template.js';
-	}
-
-	protected function get_after_mask_attribute_action(): string {
-		return 'fme_after_mask_attribute_added';
-	}
-
-	protected function get_mask_control_file(): string {
-		return CFL_PLUGIN_PATH . 'includes/frontend/widget/class-elementor-mask-control.php';
-	}
-
-	protected function get_mask_control_class(): string {
-		return FME_Elementor_Forms_Mask::class;
+	public function __construct() {
+		parent::__construct( FME_Plugin_Addon::elementor_config() );
 	}
 }

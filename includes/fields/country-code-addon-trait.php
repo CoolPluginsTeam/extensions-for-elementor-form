@@ -347,10 +347,13 @@ trait Country_Code_Addon_Trait {
 				: CFL_VERSION,
 			'all'
 		);
+		if ( function_exists( 'cfl_register_review_dismiss_script' ) ) {
+			cfl_register_review_dismiss_script();
+		}
 		wp_enqueue_script(
 			'cfl-country-code-editor-panel-script',
 			CFL_PLUGIN_URL . 'assets/addons/js/ccfef-editor.min.js',
-			array( 'jquery' ),
+			array( 'jquery', 'cfkef-review-dismiss' ),
 			function_exists( 'cfl_asset_version' )
 				? cfl_asset_version( 'assets/addons/js/ccfef-editor.min.js' )
 				: CFL_VERSION,
@@ -624,7 +627,6 @@ trait Country_Code_Addon_Trait {
 	public function ccfef_elementor_review_notice() {
 		if ( ! check_ajax_referer( 'ccfef_elementor_review', 'nonce', false ) ) {
 			wp_send_json_error( __( 'Invalid security token sent.', 'extensions-for-elementor-form' ) );
-			wp_die( '0', 400 );
 		}
 
 		if ( ! current_user_can( 'manage_options' ) ) {

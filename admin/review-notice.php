@@ -131,7 +131,10 @@ class Review_notice
 
 	public function editor_assets()
 	{
-		wp_register_script('cfl_reivew_notice', CFL_PLUGIN_URL . 'assets/js/cfl_editor.min.js', array('jquery'), CFL_VERSION, true);
+		if ( function_exists( 'cfl_register_review_dismiss_script' ) ) {
+			cfl_register_review_dismiss_script();
+		}
+		wp_register_script('cfl_reivew_notice', CFL_PLUGIN_URL . 'assets/js/cfl_editor.min.js', array('jquery', 'cfkef-review-dismiss'), CFL_VERSION, true);
 		wp_enqueue_style('cfl_reivew_notice', CFL_PLUGIN_URL . 'assets/css/cfl_editor.min.css', null, CFL_VERSION);
 		wp_enqueue_script('cfl_reivew_notice');
 	}
@@ -140,7 +143,6 @@ class Review_notice
 	{
 		if (! check_ajax_referer('cfl_elementor_review', 'nonce', false)) {
 			wp_send_json_error(__('Invalid security token sent.', 'extensions-for-elementor-form'));
-			wp_die('0', 400);
 		}
 
 		if (! current_user_can('update_plugins') && ! current_user_can('manage_options')) {

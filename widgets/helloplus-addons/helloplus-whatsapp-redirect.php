@@ -11,22 +11,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once CFL_PLUGIN_PATH . 'includes/actions/whatsapp-redirect-action-trait.php';
 
 /**
- * Class HelloPlus_Whatsapp_Redirect
+ * Hello Plus WhatsApp redirect. Must extend Hello Plus Action_Base for the registrar.
  */
 class HelloPlus_Whatsapp_Redirect extends Action_Base {
 	use Whatsapp_Redirect_Action_Trait;
 
-	protected function get_submit_actions_setting_key(): string {
-		return 'cool_formkit_submit_actions';
-	}
-
-	protected function should_guard_duplicate_section_registration(): bool {
-		return true;
-	}
-
-	protected function get_control_extra_conditions(): array {
-		return array(
-			'cool_formkit_submit_actions' => $this->get_name(),
+	public function __construct() {
+		$this->apply_whatsapp_config(
+			array(
+				'submit_actions_key' => 'cool_formkit_submit_actions',
+				'guard_duplicate'    => true,
+				'extra_conditions'   => array(
+					'cool_formkit_submit_actions' => $this->get_name(),
+				),
+			)
 		);
 	}
 }

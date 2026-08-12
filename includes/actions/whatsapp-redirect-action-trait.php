@@ -21,18 +21,40 @@ trait Whatsapp_Redirect_Action_Trait {
 	private static $registered_actions = array();
 
 	/**
+	 * @var array<string, mixed>
+	 */
+	private $whatsapp_config = array(
+		'submit_actions_key' => 'submit_actions',
+		'guard_duplicate'    => false,
+		'extra_conditions'   => array(),
+		'bail_on_empty'      => true,
+	);
+
+	/**
+	 * @param array<string, mixed> $config
+	 * @return void
+	 */
+	protected function apply_whatsapp_config( array $config ): void {
+		$this->whatsapp_config = array_merge( $this->whatsapp_config, $config );
+	}
+
+	/**
 	 * Form settings key for submit actions (submit_actions vs cool_formkit_submit_actions).
 	 *
 	 * @return string
 	 */
-	abstract protected function get_submit_actions_setting_key(): string;
+	protected function get_submit_actions_setting_key(): string {
+		return (string) $this->whatsapp_config['submit_actions_key'];
+	}
 
 	/**
 	 * Whether to skip re-registering the settings section for the same control ID.
 	 *
 	 * @return bool
 	 */
-	abstract protected function should_guard_duplicate_section_registration(): bool;
+	protected function should_guard_duplicate_section_registration(): bool {
+		return (bool) $this->whatsapp_config['guard_duplicate'];
+	}
 
 	/**
 	 * Whether to bail early when WhatsApp phone setting is empty.
@@ -40,7 +62,7 @@ trait Whatsapp_Redirect_Action_Trait {
 	 * @return bool
 	 */
 	protected function should_bail_on_empty_whatsapp_to(): bool {
-		return true;
+		return (bool) $this->whatsapp_config['bail_on_empty'];
 	}
 
 	/**
@@ -49,7 +71,7 @@ trait Whatsapp_Redirect_Action_Trait {
 	 * @return array
 	 */
 	protected function get_control_extra_conditions(): array {
-		return array();
+		return is_array( $this->whatsapp_config['extra_conditions'] ) ? $this->whatsapp_config['extra_conditions'] : array();
 	}
 
 	public function get_name(): string {

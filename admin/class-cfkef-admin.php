@@ -106,6 +106,23 @@ class CFKEF_Admin {
         add_action( 'wp_ajax_cfkef_plugin_activate', array($this,'cfkef_plugin_activate') );
     }
 
+    /**
+     * Companion plugins the dashboard may install or activate.
+     *
+     * @return array{slugs: string[], inits: string[]}
+     */
+    private function cfkef_allowed_companion_plugins() {
+        return array(
+            // Install from wordpress.org is only used for Hello Plus; Elementor Pro install redirects.
+            'slugs' => array( 'hello-plus' ),
+            // Activate must cover every companion the dashboard offers.
+            'inits' => array(
+                'hello-plus/hello-plus.php',
+                'elementor-pro/elementor-pro.php',
+            ),
+        );
+    }
+
     public function cfkef_plugin_activate(){
         check_ajax_referer( 'cfkef_plugin_nonce', 'security' );
         if ( ! current_user_can( 'activate_plugins' ) ) {
@@ -119,6 +136,15 @@ class CFKEF_Admin {
         include_once ABSPATH . 'wp-admin/includes/plugin.php';
 
         $init_file = sanitize_text_field( wp_unslash($_POST['init']) );
+        $allowed   = $this->cfkef_allowed_companion_plugins();
+
+        if ( ! in_array( $init_file, $allowed['inits'], true ) ) {
+            wp_send_json_error( [ 'message' => 'Plugin not allowed' ] );
+        }
+
+        if ( ! current_user_can( 'activate_plugin', $init_file ) ) {
+            wp_send_json_error( [ 'message' => 'Permission denied' ] );
+        }
 
         $activate = activate_plugin( $init_file );
 

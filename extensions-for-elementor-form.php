@@ -358,7 +358,8 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	public function add_global_editor_js()
 	{
 		$this->register_shared_editor_scripts();
-		wp_enqueue_script('cfl-global-editor-script', CFL_PLUGIN_URL . 'assets/addons/js/global.js', array('jquery'), CFL_VERSION, true);
+		cfl_register_review_dismiss_script();
+		wp_enqueue_script('cfl-global-editor-script', CFL_PLUGIN_URL . 'assets/addons/js/global.js', array('jquery', 'cfkef-review-dismiss'), CFL_VERSION, true);
 	}
 
 	/**

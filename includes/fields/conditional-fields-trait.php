@@ -303,10 +303,13 @@ trait Conditional_Fields_Logic_Trait {
 	 * Js and css files loaded for elementor editor mode for add dynamic tags.
 	 */
 	public function add_editor_js() {
+		if ( function_exists( 'cfl_register_review_dismiss_script' ) ) {
+			cfl_register_review_dismiss_script();
+		}
 		wp_register_script(
 			$this->get_editor_script_handle(),
 			$this->get_editor_script_src(),
-			array( 'jquery' ),
+			array( 'jquery', 'cfkef-review-dismiss' ),
 			CFL_VERSION,
 			true
 		);
@@ -982,7 +985,7 @@ trait Conditional_Fields_Logic_Trait {
 			wp_send_json_error( __( 'Permission denied.', 'extensions-for-elementor-form' ) );
 		}
 
-		if ( isset( $_POST['cfef_notice_dismiss'] ) && 'true' === $_POST['cfef_notice_dismiss'] ) {
+		if ( isset( $_POST['cfef_notice_dismiss'] ) && 'true' === sanitize_text_field( wp_unslash( $_POST['cfef_notice_dismiss'] ) ) ) {
 			update_option( 'cfkef_elementor_notice_dismiss', 'yes', false );
 		}
 		exit;

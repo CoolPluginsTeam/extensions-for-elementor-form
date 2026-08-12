@@ -11,16 +11,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once CFL_PLUGIN_PATH . 'includes/actions/whatsapp-redirect-action-trait.php';
 
 /**
- * Class CoolForm_Whatsapp_Redirect
+ * Cool Form WhatsApp redirect. Must extend Cool Form Action_Base for the registrar.
  */
 class CoolForm_Whatsapp_Redirect extends Action_Base {
 	use Whatsapp_Redirect_Action_Trait;
 
-	protected function get_submit_actions_setting_key(): string {
-		return 'submit_actions';
-	}
-
-	protected function should_guard_duplicate_section_registration(): bool {
-		return false;
+	public function __construct() {
+		$this->apply_whatsapp_config(
+			array(
+				'submit_actions_key' => 'submit_actions',
+				'guard_duplicate'    => false,
+			)
+		);
 	}
 }

@@ -25,3 +25,26 @@ if ( ! function_exists( 'cfl_asset_version' ) ) {
 		return defined( 'CFL_VERSION' ) ? (string) CFL_VERSION : '1.0.0';
 	}
 }
+
+if ( ! function_exists( 'cfl_register_review_dismiss_script' ) ) {
+	/**
+	 * Shared review-notice dismiss helper used by editor scripts.
+	 *
+	 * @return void
+	 */
+	function cfl_register_review_dismiss_script() {
+		if ( wp_script_is( 'cfkef-review-dismiss', 'registered' ) ) {
+			return;
+		}
+
+		wp_register_script(
+			'cfkef-review-dismiss',
+			CFL_PLUGIN_URL . 'assets/js/shared/review-dismiss.js',
+			array( 'jquery' ),
+			function_exists( 'cfl_asset_version' )
+				? cfl_asset_version( 'assets/js/shared/review-dismiss.js' )
+				: CFL_VERSION,
+			true
+		);
+	}
+}
