@@ -8,7 +8,7 @@ jQuery(document).ready(function ($) {
 				'mask_control_@' + item.fme_mask_control,
 				'money_mask_format_@' + (item.fme_money_mask_format || ''),
 				'mask_prefix_@' + (item.fme_money_mask_prefix || ''),
-				'mask_decimal_places_@' + (item.fme_mask_decimal_places || ''),
+				'mask_decimal_places_@' + (item.fme_money_mask_decimal_places || ''),
 				'mask_time_mask_format_@' + (item.fme_time_mask_format || ''),
 				'fme_phone_format_@' + (item.fme_phone_format || ''),
 				'credit_card_options_@' + (item.fme_credit_card_options || ''),

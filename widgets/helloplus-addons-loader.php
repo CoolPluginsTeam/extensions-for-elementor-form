@@ -77,8 +77,6 @@ if ( ! class_exists( 'HelloPlus_Addons_Loader' ) ) {
 		}
 
 		public function show_actions_on_editor_side( $element, $args ) {
-			require_once CFL_PLUGIN_PATH . 'widgets/helloplus-addons/helloplus-whatsapp-redirect.php';
-
 			$custom_actions   = array();
 			$action_instances = array();
 
@@ -91,9 +89,16 @@ if ( ! class_exists( 'HelloPlus_Addons_Loader' ) ) {
 				$action_instances[]                       = $instance;
 			}
 
-			$instance                                = new HelloPlus_Whatsapp_Redirect();
-			$custom_actions[ $instance->get_name() ] = $instance->get_label();
-			$action_instances[]                      = $instance;
+			if ( \CFL_Elements::is_enabled( 'whatsapp_redirect' ) ) {
+				require_once CFL_PLUGIN_PATH . 'widgets/helloplus-addons/helloplus-whatsapp-redirect.php';
+				$instance                                = new HelloPlus_Whatsapp_Redirect();
+				$custom_actions[ $instance->get_name() ] = $instance->get_label();
+				$action_instances[]                      = $instance;
+			}
+
+			if ( empty( $custom_actions ) ) {
+				return;
+			}
 
 			$element->start_controls_section(
 				'cool_formkit_conditional_actions_section',

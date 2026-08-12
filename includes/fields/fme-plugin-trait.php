@@ -92,9 +92,17 @@ trait FME_Plugin_Trait {
 		wp_register_style( $style_handle, CFL_PLUGIN_URL . 'assets/css/inputmask/mask-frontend.css', array(), CFL_VERSION, 'all' );
 
 		wp_register_script(
+			'cfkef-shared-mask-ui',
+			CFL_PLUGIN_URL . 'assets/js/shared/mask-ui.js',
+			array( 'jquery' ),
+			CFL_VERSION,
+			true
+		);
+
+		wp_register_script(
 			'cfkef-shared-input-mask',
 			CFL_PLUGIN_URL . 'assets/js/shared/input-mask.js',
-			array( 'elementor-frontend', 'jquery' ),
+			array( 'elementor-frontend', 'jquery', 'cfkef-shared-mask-ui' ),
 			CFL_VERSION,
 			true
 		);

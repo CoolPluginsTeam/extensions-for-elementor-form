@@ -661,4 +661,3 @@ class Handle_Atomic_Form_Submission {
     }
 }
 
-new Handle_Atomic_Form_Submission();

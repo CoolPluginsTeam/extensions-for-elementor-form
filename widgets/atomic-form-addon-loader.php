@@ -310,10 +310,20 @@ class Atomic_Form_Addon_Loader {
             );
         }
 
+        if ( ! wp_script_is( 'cfkef-shared-mask-ui', 'registered' ) ) {
+            wp_register_script(
+                'cfkef-shared-mask-ui',
+                CFL_PLUGIN_URL . 'assets/js/shared/mask-ui.js',
+                array( 'jquery' ),
+                $this->version,
+                true
+            );
+        }
+
         wp_register_script(
             'cfl-atomic-form-mask-init',
             CFL_PLUGIN_URL . 'assets/atomic-form/js/atomic-form-mask-init.js',
-            array( 'jquery', 'elementor-frontend', 'fme-custom-mask-script' ),
+            array( 'jquery', 'elementor-frontend', 'fme-custom-mask-script', 'cfkef-shared-mask-ui' ),
             $this->version,
             true
         );

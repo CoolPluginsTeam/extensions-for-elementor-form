@@ -117,7 +117,7 @@ class Cool_Form extends Form_Base {
 							inputField = '',
 							multiple = '',
 							fieldGroupClasses = 'cool-form__field-group has-border elementor-column is-field-type-' + item.field_type,
-							printLabel = settings.show_labels && ! [ 'hidden', 'html', 'step' ].includes( item.field_type );
+							printLabel = settings.show_labels && ! [ 'hidden', 'html' ].includes( item.field_type );
 
 						fieldGroupClasses += ' has-width-' + ( ( '' !== item.width ) ? item.width : '100' );
 
@@ -489,7 +489,6 @@ class Cool_Form extends Form_Base {
 								'recaptcha_v3',
 								'hidden',
 								'html',
-								'step',
 							],
 						],
 					],

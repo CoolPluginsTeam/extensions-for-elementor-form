@@ -134,9 +134,9 @@ class Review_notice
 		if ( function_exists( 'cfl_register_review_dismiss_script' ) ) {
 			cfl_register_review_dismiss_script();
 		}
-		wp_register_script('cfl_reivew_notice', CFL_PLUGIN_URL . 'assets/js/cfl_editor.min.js', array('jquery', 'cfkef-review-dismiss'), CFL_VERSION, true);
-		wp_enqueue_style('cfl_reivew_notice', CFL_PLUGIN_URL . 'assets/css/cfl_editor.min.css', null, CFL_VERSION);
-		wp_enqueue_script('cfl_reivew_notice');
+		wp_register_script('cfl_review_notice', CFL_PLUGIN_URL . 'assets/js/cfl_editor.min.js', array('jquery', 'cfkef-review-dismiss'), CFL_VERSION, true);
+		wp_enqueue_style('cfl_review_notice', CFL_PLUGIN_URL . 'assets/css/cfl_editor.min.css', null, CFL_VERSION);
+		wp_enqueue_script('cfl_review_notice');
 	}
 
 	public function cfl_review_notice()

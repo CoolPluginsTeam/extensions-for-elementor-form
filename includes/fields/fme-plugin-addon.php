@@ -54,7 +54,7 @@ class FME_Plugin_Addon {
 			'input_mask_script_handle'      => 'helloplus-fme-new-input-mask',
 			'input_mask_script_src'         => CFL_PLUGIN_URL . 'assets/helloplus-addons/js/helloplus-new-input-mask.js',
 			'editor_template_script_handle' => 'helloplus-fme-editor-template-js',
-			'editor_template_script_src'    => CFL_PLUGIN_URL . 'assets/addons/js/inputmask/coolform-mask-editor-template.js',
+			'editor_template_script_src'    => CFL_PLUGIN_URL . 'assets/helloplus-addons/js/helloplus-mask-editor-template.js',
 			'after_mask_attribute'          => 'helloplus_after_mask_attribute_added',
 			'mask'                          => Mask_Control_Addon::helloplus_config(),
 		);

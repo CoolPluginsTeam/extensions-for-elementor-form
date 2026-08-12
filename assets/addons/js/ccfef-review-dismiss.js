@@ -1,3 +1,0 @@
-jQuery(document).ready(function ($) {
-    CFKEF.bindReviewDismiss('#ccfef_elementor_review_dismiss', 'ccfef_elementor_review_notice', 'ccfef_notice_dismiss');
-});

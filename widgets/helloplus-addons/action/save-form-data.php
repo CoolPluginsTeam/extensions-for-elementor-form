@@ -32,7 +32,7 @@ class Save_Form_Data {
                 'alert_type' => 'info',
                 'content' => sprintf(
                     esc_html__('This action will collect the entries and store it in a variable. You can use this variable in the next action or in the same form.', 'extensions-for-elementor-form'),
-                    sprintf('<a href="%s" target="_blank">%s</a>', get_admin_url() . 'admin.php?page=cool-formkit-for-elementor-forms', esc_html__('Learn More', 'extensions-for-elementor-form')),
+                    sprintf('<a href="%s" target="_blank">%s</a>', get_admin_url() . 'admin.php?page=cool-formkit', esc_html__('Learn More', 'extensions-for-elementor-form')),
                 ),
                 'condition' => array(
                     'save_form_data' => 'yes'

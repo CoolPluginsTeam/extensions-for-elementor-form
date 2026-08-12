@@ -87,7 +87,7 @@ class Widget_Form_Render {
 					 */
 					$item = apply_filters( "cool_formkit/forms/render/item/{$field_type}", $item, $item_index, $this );
 
-					$print_label = ! in_array( $item['field_type'], [ 'hidden', 'html', 'step' ], true );
+					$print_label = ! in_array( $item['field_type'], [ 'hidden', 'html' ], true );
 					?>
 					<div <?php $this->widget->print_render_attribute_string( 'field-group' . $item_index ); ?>>
 						<?php

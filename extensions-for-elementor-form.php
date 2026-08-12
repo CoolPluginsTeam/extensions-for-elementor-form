@@ -39,14 +39,9 @@ define('WP_MINIMUM_VERSION', '5.5');
 define('CFL_PLUGIN_MAIN_FILE', __FILE__);
 define('CFL_PLUGIN_PATH', plugin_dir_path(CFL_PLUGIN_MAIN_FILE));
 define('CFL_PLUGIN_URL', plugin_dir_url(CFL_PLUGIN_MAIN_FILE));
-define('CFL_ASSETS_PATH', CFL_PLUGIN_PATH . 'build/');
 define('CFL_ASSETS_URL', CFL_PLUGIN_URL . 'build/');
-define('CFL_SCRIPTS_PATH', CFL_ASSETS_PATH . 'js/');
 define('CFL_SCRIPTS_URL', CFL_ASSETS_URL . 'js/');
-define('CFL_STYLE_PATH', CFL_ASSETS_PATH . 'css/');
 define('CFL_STYLE_URL', CFL_ASSETS_URL . 'css/');
-define('CFL_IMAGES_PATH', CFL_ASSETS_PATH . 'images/');
-define('CFL_IMAGES_URL', CFL_ASSETS_URL . 'images/');
 define('CFL__MIN_ELEMENTOR_VERSION', '3.26.4');
 define('CFL_MIN_ELEMENTOR_ATOMIC_FORM_VERSION', '4.0');
 define('CFL_FEEDBACK_URL', 'https://feedback.coolplugins.net/');
@@ -539,36 +534,20 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			return;
 		}
 
-		$has_class_alias = isset($this->classes_aliases[$class_name]);
-
-		// Backward Compatibility: Save old class name for set an alias after the new class is loaded
-		if ($has_class_alias) {
-			$class_alias_name = $this->classes_aliases[$class_name];
-			$class_to_load = $class_alias_name;
-		} else {
-			$class_to_load = $class_name;
-		}
-
-		if (! class_exists($class_to_load)) {
+		if (! class_exists($class_name)) {
 			$filename = strtolower(
 				preg_replace(
 					['/^' . __NAMESPACE__ . '\\\/', '/([a-z])([A-Z])/', '/_/', '/\\\/'],
 					['', '$1-$2', '-', DIRECTORY_SEPARATOR],
-					$class_to_load
+					$class_name
 				)
 			);
 
-
 			$filename = trailingslashit(CFL_PLUGIN_PATH) . $filename . '.php';
-
 
 			if (is_readable($filename)) {
 				include $filename;
 			}
-		}
-
-		if ($has_class_alias) {
-			class_alias($class_alias_name, $class_name);
 		}
 	}
 

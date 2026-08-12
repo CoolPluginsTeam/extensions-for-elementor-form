@@ -93,7 +93,6 @@ class CFKEF_Dashboard
 
         add_action('elementor/admin-top-bar/is-active', [$this, 'hide_elementor_top_bar']);
         add_action('admin_print_scripts', [$this, 'hide_unrelated_notices']);
-        add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_styles'));
     }
 
     /**
@@ -283,20 +282,6 @@ class CFKEF_Dashboard
         });
 
         return $tabs;
-    }
-
-    /**
-     * Enqueue admin styles and scripts.
-     *
-     * @since    1.0.0
-     */
-    public function enqueue_admin_styles() {
-        // phpcs:ignore	WordPress.Security.NonceVerification.Recommended
-        if (isset($_GET['page']) && self::current_screen(sanitize_text_field(wp_unslash($_GET['page'])))) {
-            wp_enqueue_style('cfkef-admin-style', CFL_PLUGIN_URL . 'assets/css/admin-style.css', array(), $this->version, 'all');
-            wp_enqueue_style('dashicons');
-            wp_enqueue_script('cfkef-admin-script', CFL_PLUGIN_URL . 'assets/js/admin-script.js', array('jquery'), $this->version, true);
-        }
     }
 
     /**
