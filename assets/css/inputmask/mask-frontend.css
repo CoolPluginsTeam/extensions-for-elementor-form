@@ -39,14 +39,36 @@
     width: 40px;
     height: auto;
     display: none;
+    bottom: 5px;
 }
 
-/* ❗ Form Lite Mask CSS❗ */
-.ehp-form__field-group.is-field-type-text .mask-error{
-    bottom: unset;
-    left: unset;    
+/* Cool Form (MDC fields) */
+.cool-form__field-group {
+    position: relative;
 }
-.ehp-form__field-group.is-field-type-text .mask-error:after{
+
+.cool-form__field-group .cool-form-text {
+    position: relative;
+    overflow: visible;
+}
+
+.cool-form__field-group .mask-error {
+    top: 100%;
+    bottom: auto;
+    margin-top: 4px;
+}
+
+/* Hello Plus flat fields */
+.ehp-form__field-group.is-field-type-text {
+    position: relative;
+}
+
+.ehp-form__field-group.is-field-type-text .mask-error {
+    bottom: unset;
+    left: unset;
+}
+
+.ehp-form__field-group.is-field-type-text .mask-error:after {
     transform: rotate(220deg);
     top: 16px;
 } 
