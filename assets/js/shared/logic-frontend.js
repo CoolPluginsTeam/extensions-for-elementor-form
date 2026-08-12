@@ -1290,14 +1290,16 @@ CFKEF.initLogicFrontend = function (opts) {
         const $body = $("body");
 
         if (flags.supportsMdcSelect) {
-            $body.on("MDCSelect:change", S.mdcSelectRoot, function (e) {
-                $(S.form).each(function() {
-                    var form = $(this).closest(S.widgetWrap);
-                    var formId = resolveFormId(form);
-                    form.attr("data-form-id", "form-" + formId);
-                    addHiddenClass(form, formId);
-                    logicLoad(form, formId);
-                });
+            document.addEventListener("MDCSelect:change", function (e) {
+                var selectRoot = e.target && e.target.closest ? e.target.closest(".mdc-select") : null;
+                if (!selectRoot || !$(selectRoot).closest(S.form).length) {
+                    return;
+                }
+                var form = $(selectRoot).closest(S.widgetWrap);
+                var formId = resolveFormId(form);
+                form.attr("data-form-id", "form-" + formId);
+                addHiddenClass(form, formId);
+                logicLoad(form, formId);
             });
         }
 

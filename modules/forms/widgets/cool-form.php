@@ -64,6 +64,18 @@ class Cool_Form extends Form_Base {
 	}
 
 	protected function render(): void {
+		$instance = $this->get_settings_for_display();
+
+		if ( ! Utils::elementor()->editor->is_edit_mode() ) {
+			/**
+			 * Cool Form pre render.
+			 *
+			 * @param array     $instance Current form settings.
+			 * @param Cool_Form $this     An instance of the form.
+			 */
+			do_action( 'cool_formkit/forms/pre_render', $instance, $this );
+		}
+
 		$render_strategy = new Widget_Form_Render( $this );
 
 		$render_strategy->render();
