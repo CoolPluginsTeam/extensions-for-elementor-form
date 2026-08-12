@@ -41,7 +41,6 @@ if ( ! class_exists( 'CFKEF_Frontend' ) ) {
 			$this->plugin_name = $plugin_name;
 			$this->version     = $version;
 
-			add_action( 'elementor_pro/forms/fields/register', array( $this, 'register_form_fields' ) );
 			add_action( 'elementor_pro/forms/actions/register', array( $this, 'cfef_register_new_form_actions' ) );
 			$this->include_addons();
 		}
@@ -72,13 +71,6 @@ if ( ! class_exists( 'CFKEF_Frontend' ) ) {
 			}
 			require_once CFL_PLUGIN_PATH . 'includes/actions/class-register-post.php';
 			$form_actions_registrar->register( new Register_Post() );
-		}
-
-		/**
-		 * @param mixed $form_fields_registrar Form fields registrar.
-		 * @return void
-		 */
-		public function register_form_fields( $form_fields_registrar ) {
 		}
 	}
 }

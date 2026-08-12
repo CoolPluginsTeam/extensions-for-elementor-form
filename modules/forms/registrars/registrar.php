@@ -8,8 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Basic items registrar.
- *
- * TODO: Move to Core.
  */
 class Registrar {
 
@@ -36,7 +34,7 @@ class Registrar {
 	 * @return boolean - Whether the item was registered.
 	 */
 	public function register( $instance, $id = null ) {
-		// TODO: For BC. Remove in the future.
+		// Optional $id kept for backward compatibility.
 		if ( ! $id ) {
 			// Get the ID or default to the class name.
 			$id = ( method_exists( $instance, 'get_id' ) ) ? $instance->get_id() : get_class( $instance );

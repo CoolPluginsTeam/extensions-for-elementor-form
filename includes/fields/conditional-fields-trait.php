@@ -365,15 +365,7 @@ trait Conditional_Fields_Logic_Trait {
 			'country',
 			'rating',
 			'slider',
-			'calculator',
-			'signature',
 			'step',
-			'image_radio',
-			'state',
-			'WYSIWYG',
-			'currency',
-			'monthWeek',
-			'toggle',
 		);
 	}
 
@@ -624,8 +616,6 @@ trait Conditional_Fields_Logic_Trait {
 	 * @return bool
 	 */
 	public function cfefp_check_field_logic( $value_id, $operator, $value, $display_mode ) {
-		$disallowed_values = array(); // Editor stubs are not rejected as user input.
-
 		// Sanitize and escape dynamic values.
 		$value_id = esc_html( $value_id );
 		$value    = trim( $value );
@@ -910,8 +900,6 @@ trait Conditional_Fields_Logic_Trait {
 	 * @param object $ajax_handler get form all fields.
 	 */
 	public function check_validation( $form_record, $ajax_handler ) {
-		$disallowed_values = array(); // Editor stubs are not rejected as user input.
-
 		if ( false === $this->validate_form ) {
 			$submitted_form_settings = $form_record->get( 'form_settings' );
 			$form_fields             = $form_record->get( 'fields' );
@@ -958,12 +946,12 @@ trait Conditional_Fields_Logic_Trait {
 
 					if ( 'show' === $display_mode && ! $action_type ) {
 						if ( $this->should_prune_hidden_step_fields() ) {
-							$this->delete_fields_of_hidden_step( $form_fields, $field['custom_id'], $disallowed_values, $form_record );
+							$this->delete_fields_of_hidden_step( $form_fields, $field['custom_id'], array(), $form_record );
 						}
 						$this->remove_hidden_conditional_field( $form_record, $ajax_handler, $field['custom_id'] );
 					} elseif ( 'hide' == $display_mode && $action_type ) {
 						if ( $this->should_prune_hidden_step_fields() ) {
-							$this->delete_fields_of_hidden_step( $form_fields, $field['custom_id'], $disallowed_values, $form_record );
+							$this->delete_fields_of_hidden_step( $form_fields, $field['custom_id'], array(), $form_record );
 						}
 						$this->remove_hidden_conditional_field( $form_record, $ajax_handler, $field['custom_id'] );
 					}

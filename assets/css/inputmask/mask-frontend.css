@@ -42,7 +42,7 @@
     bottom: 5px;
 }
 
-/* Cool Form (MDC fields) */
+/* Cool Form + Hello Plus field-group positioning (shared mask stylesheet). */
 .cool-form__field-group {
     position: relative;
 }

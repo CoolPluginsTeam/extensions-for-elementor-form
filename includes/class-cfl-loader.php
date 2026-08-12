@@ -8,8 +8,6 @@ use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
 use Cool_FormKit\Admin\Entries\CFKEF_Entries_Posts;
 use Cool_FormKit\Includes\Frontend\CFKEF_Frontend;
 
-use Cool_FormKit\Includes\Frontend\Widget\Custom_Success_Message;
-
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 /**
@@ -106,10 +104,6 @@ class CFL_Loader {
             self::$instance = new self();
         }
         return self::$instance;
-    }
-
-    private function is_field_enabled($field_key) {
-        return \CFL_Elements::is_enabled( $field_key );
     }
 
     /**

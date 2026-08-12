@@ -26,7 +26,7 @@ if (
     }
 } elseif (class_exists('ElementorPro\Modules\Forms\Classes\Action_Base')) {
 
-    // Elementor Pro only
+    // Elementor Pro Forms API available
     // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
     abstract class Form_to_Sheet_Action extends \ElementorPro\Modules\Forms\Classes\Action_Base
     {
@@ -43,9 +43,11 @@ if (
         protected $hello_plus_active = true;
     }
 } else {
-    // Neither plugin active
+    // Neither Elementor Pro Forms nor Hello Plus Forms API available
     return;
 }
+
+require_once __DIR__ . '/formsdb-marketing-notice.php';
 
 // --------------------------------------------------
 // Shared helpers
@@ -101,24 +103,16 @@ class Sheet_Action extends Form_To_Sheet_Helper
             ]
         );
 
-        $widget->add_control(
-            $this->add_prefix('fdbgp_plugin_marketing'),
-            [
-                'name'      => 'fdbgp_plugin_marketing',
-                'label'     => '',
-                'type'      => \Elementor\Controls_Manager::RAW_HTML,
-                'raw'       => '<div class="elementor-control-raw-html cool-form-wrp"><div class="elementor-control-notice elementor-control-notice-type-info">
-											<div class="elementor-control-notice-icon"><img class="cfl-highlight-icon" src="' . esc_url(CFL_PLUGIN_URL . 'assets/images/cfl-highlight-icon.svg') . '" width="250" alt="Highlight Icon" /></div>
-											<div class="elementor-control-notice-main">
-												
-												<div class="elementor-control-notice-main-content">Save Form Submissions to Google Sheets.</div>
-												<div class="elementor-control-notice-main-actions">
-												<button type="button" class="elementor-button e-btn e-info e-btn-1 cfl-install-plugin" data-plugin="form-db" data-nonce="' . esc_attr(wp_create_nonce('cfl_install_nonce')) . '">Install FormsDB</button>
-											</div></div>
-											</div></div>',
+		$widget->add_control(
+			$this->add_prefix('fdbgp_plugin_marketing'),
+			[
+				'name'      => 'fdbgp_plugin_marketing',
+				'label'     => '',
+				'type'      => \Elementor\Controls_Manager::RAW_HTML,
+				'raw'       => cfl_formsdb_marketing_raw_html(),
 
-            ]
-        );
+			]
+		);
 
         $widget->end_controls_section();
     }

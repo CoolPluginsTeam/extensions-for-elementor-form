@@ -56,13 +56,6 @@ class Atomic_Form_Addon_Loader {
     }
 
     /**
-     * @deprecated Use \CFL_Elements::is_enabled().
-     */
-    private function is_field_enabled($field_key) {
-        return \CFL_Elements::is_enabled( $field_key );
-    }
-
-    /**
      * Elementor 4.0+ and experiments: Atomic Widgets (`e_atomic_elements`) plus Pro Atomic Form (`e_pro_atomic_form`).
      *
      * @see \Elementor\Modules\AtomicWidgets\Module::EXPERIMENT_NAME
@@ -84,7 +77,7 @@ class Atomic_Form_Addon_Loader {
 
     public function enqueue_editor_scripts() {
 
-        if($this->is_field_enabled('conditional_logic')){
+        if(\CFL_Elements::is_enabled('conditional_logic')){
 
             wp_register_script('cfl-atomic-form-handle-conditional-repeater', CFL_PLUGIN_URL . 'assets/atomic-form/js/handle-conditional-repeater.js', array( 'jquery', 'elementor-editor'), $this->version, true);
 
@@ -99,7 +92,7 @@ class Atomic_Form_Addon_Loader {
         }
 
 
-        if($this->is_field_enabled('whatsapp_redirect')){
+        if(\CFL_Elements::is_enabled('whatsapp_redirect')){
 
             wp_register_script('cfl-atomic-form-handle-whatsapp-redirect-editor', CFL_PLUGIN_URL . 'assets/atomic-form/js/handle-whatsapp-redirect-editor.js', array( 'jquery', 'elementor-editor'), $this->version, true);
             if (! wp_script_is('cfl-atomic-form-handle-whatsapp-redirect-editor', 'enqueued') && ! wp_script_is('cfl-atomic-form-handle-whatsapp-redirect-editor', 'done')) {
@@ -107,7 +100,7 @@ class Atomic_Form_Addon_Loader {
             }
         }
 
-        if($this->is_field_enabled('country_code')){
+        if(\CFL_Elements::is_enabled('country_code')){
 
             wp_register_script('cfl-atomic-form-handle-country-editor', CFL_PLUGIN_URL . 'assets/atomic-form/js/handle-country-editor.js', array( 'jquery', 'elementor-editor'), $this->version, true);
 
@@ -134,7 +127,7 @@ class Atomic_Form_Addon_Loader {
     
 
     public function register_new_form_actions($action_runner_class){
-        if($this->is_field_enabled('whatsapp_redirect')){
+        if(\CFL_Elements::is_enabled('whatsapp_redirect')){
             
             require_once CFL_PLUGIN_PATH . 'widgets/atomic-form/actions/atomic-form-whatsapp-redirect.php';
     
@@ -303,34 +296,16 @@ class Atomic_Form_Addon_Loader {
         if ( ! wp_script_is( 'fme-custom-mask-script', 'registered' ) ) {
             wp_register_script( 'fme-custom-mask-script', CFL_PLUGIN_URL . 'assets/js/inputmask/custom-mask-script.js', array( 'jquery' ), $this->version, true );
 
-            $error_messages = array(
-                'mask-cnpj'  => __( 'Invalid CNPJ.', 'extensions-for-elementor-form' ),
-                'mask-cpf'   => __( 'Invalid CPF.', 'extensions-for-elementor-form' ),
-                'mask-cep'   => __( 'Invalid CEP (XXXXX-XXX).', 'extensions-for-elementor-form' ),
-                'mask-phus'  => __( 'Invalid number: (123) 456-7890', 'extensions-for-elementor-form' ),
-                'mask-ph8'   => __( 'Invalid number: 1234-5678', 'extensions-for-elementor-form' ),
-                'mask-ddd8'  => __( 'Invalid number: (DDD) 1234-5678', 'extensions-for-elementor-form' ),
-                'mask-ddd9'  => __( 'Invalid number: (DDD) 91234-5678', 'extensions-for-elementor-form' ),
-                'mask-dmy'   => __( 'Invalid date: dd/mm/yyyy', 'extensions-for-elementor-form' ),
-                'mask-mdy'   => __( 'Invalid date: mm/dd/yyyy', 'extensions-for-elementor-form' ),
-                'mask-hms'   => __( 'Invalid time: hh:mm:ss', 'extensions-for-elementor-form' ),
-                'mask-hm'    => __( 'Invalid time: hh:mm', 'extensions-for-elementor-form' ),
-                'mask-dmyhm' => __( 'Invalid date: dd/mm/yyyy hh:mm', 'extensions-for-elementor-form' ),
-                'mask-mdyhm' => __( 'Invalid date: mm/dd/yyyy hh:mm', 'extensions-for-elementor-form' ),
-                'mask-my'    => __( 'Invalid date: mm/yyyy', 'extensions-for-elementor-form' ),
-                'mask-ccs'   => __( 'Invalid credit card number.', 'extensions-for-elementor-form' ),
-                'mask-cch'   => __( 'Invalid credit card number.', 'extensions-for-elementor-form' ),
-                'mask-ccmy'  => __( 'Invalid date.', 'extensions-for-elementor-form' ),
-                'mask-ccmyy' => __( 'Invalid date.', 'extensions-for-elementor-form' ),
-                'mask-ipv4'  => __( 'Invalid IPv4 address.', 'extensions-for-elementor-form' ),
-            );
+            if ( ! function_exists( 'cfl_get_mask_error_messages' ) ) {
+                require_once CFL_PLUGIN_PATH . 'includes/fields/mask-error-messages.php';
+            }
 
             wp_localize_script(
                 'fme-custom-mask-script',
                 'fmeData',
                 array(
                     'pluginUrl'     => CFL_PLUGIN_URL,
-                    'errorMessages' => $error_messages,
+                    'errorMessages' => cfl_get_mask_error_messages(),
                 )
             );
         }
@@ -494,21 +469,21 @@ class Atomic_Form_Addon_Loader {
 
     public function enqueue_frontend_scripts() {
 
-        if($this->is_field_enabled('whatsapp_redirect')){
+        if(\CFL_Elements::is_enabled('whatsapp_redirect')){
             
             $this->register_atomic_form_whatsapp_redirect_script();
         }
 
-        if($this->is_field_enabled('conditional_logic')){
+        if(\CFL_Elements::is_enabled('conditional_logic')){
 
             $this->register_atomic_form_condition_script();
         }
 
-        if($this->is_field_enabled('form_input_mask')){
+        if(\CFL_Elements::is_enabled('form_input_mask')){
             $this->ensure_fme_mask_assets_registered();
         }
 
-        if($this->is_field_enabled('country_code')){
+        if(\CFL_Elements::is_enabled('country_code')){
             $this->ensure_atomic_form_country_code_assets_registered();
         }
     }

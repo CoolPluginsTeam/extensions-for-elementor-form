@@ -53,20 +53,6 @@ trait FME_Plugin_Trait {
 	abstract protected function get_after_mask_attribute_action(): string;
 
 	/**
-	 * Absolute path to the platform mask control class file.
-	 *
-	 * @return string
-	 */
-	abstract protected function get_mask_control_file(): string;
-
-	/**
-	 * Fully-qualified (or short) class name for the mask control.
-	 *
-	 * @return string
-	 */
-	abstract protected function get_mask_control_class(): string;
-
-	/**
 	 * Shared constructor body. Call from the concrete class private constructor.
 	 */
 	protected function init_fme_plugin(): void {
@@ -115,34 +101,16 @@ trait FME_Plugin_Trait {
 
 		wp_register_script( $input_handle, $this->get_input_mask_script_src(), array( 'elementor-frontend', 'jquery', 'cfkef-shared-input-mask' ), CFL_VERSION, true );
 
-		$error_messages = array(
-			'mask-cnpj'  => __( 'Invalid CNPJ.', 'extensions-for-elementor-form' ),
-			'mask-cpf'   => __( 'Invalid CPF.', 'extensions-for-elementor-form' ),
-			'mask-cep'   => __( 'Invalid CEP (XXXXX-XXX).', 'extensions-for-elementor-form' ),
-			'mask-phus'  => __( 'Invalid number: (123) 456-7890', 'extensions-for-elementor-form' ),
-			'mask-ph8'   => __( 'Invalid number: 1234-5678', 'extensions-for-elementor-form' ),
-			'mask-ddd8'  => __( 'Invalid number: (DDD) 1234-5678', 'extensions-for-elementor-form' ),
-			'mask-ddd9'  => __( 'Invalid number: (DDD) 91234-5678', 'extensions-for-elementor-form' ),
-			'mask-dmy'   => __( 'Invalid date: dd/mm/yyyy', 'extensions-for-elementor-form' ),
-			'mask-mdy'   => __( 'Invalid date: mm/dd/yyyy', 'extensions-for-elementor-form' ),
-			'mask-hms'   => __( 'Invalid time: hh:mm:ss', 'extensions-for-elementor-form' ),
-			'mask-hm'    => __( 'Invalid time: hh:mm', 'extensions-for-elementor-form' ),
-			'mask-dmyhm' => __( 'Invalid date: dd/mm/yyyy hh:mm', 'extensions-for-elementor-form' ),
-			'mask-mdyhm' => __( 'Invalid date: mm/dd/yyyy hh:mm', 'extensions-for-elementor-form' ),
-			'mask-my'    => __( 'Invalid date: mm/yyyy', 'extensions-for-elementor-form' ),
-			'mask-ccs'   => __( 'Invalid credit card number.', 'extensions-for-elementor-form' ),
-			'mask-cch'   => __( 'Invalid credit card number.', 'extensions-for-elementor-form' ),
-			'mask-ccmy'  => __( 'Invalid date.', 'extensions-for-elementor-form' ),
-			'mask-ccmyy' => __( 'Invalid date.', 'extensions-for-elementor-form' ),
-			'mask-ipv4'  => __( 'Invalid IPv4 address.', 'extensions-for-elementor-form' ),
-		);
+		if ( ! function_exists( 'cfl_get_mask_error_messages' ) ) {
+			require_once CFL_PLUGIN_PATH . 'includes/fields/mask-error-messages.php';
+		}
 
 		wp_localize_script(
 			$custom_handle,
 			'fmeData',
 			array(
 				'pluginUrl'     => CFL_PLUGIN_URL,
-				'errorMessages' => $error_messages,
+				'errorMessages' => cfl_get_mask_error_messages(),
 			)
 		);
 	}
@@ -190,16 +158,5 @@ trait FME_Plugin_Trait {
 		wp_enqueue_script( $custom_handle );
 		wp_enqueue_script( $this->get_input_mask_script_handle() );
 		wp_enqueue_style( $this->get_frontend_style_handle() );
-	}
-
-	/**
-	 * Load the platform mask control class.
-	 *
-	 * @return void
-	 */
-	public function init() {
-		require_once $this->get_mask_control_file();
-		$class = $this->get_mask_control_class();
-		new $class();
 	}
 }

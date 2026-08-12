@@ -88,7 +88,7 @@ class Country_Code_Addon {
 			'main_script_handle'     => 'ccfef-country-code-script',
 			'main_script_src'        => CFL_PLUGIN_URL . 'assets/js/country-code-script.js',
 			'editor_script_handle'   => 'ccfef-country-code-editor-script',
-			'editor_script_src'      => CFL_PLUGIN_URL . 'assets/js/ccfef-editor.js',
+			'editor_script_src'      => CFL_PLUGIN_URL . 'assets/js/ccfef-country-editor.js',
 			'review_notice'          => true,
 		);
 	}

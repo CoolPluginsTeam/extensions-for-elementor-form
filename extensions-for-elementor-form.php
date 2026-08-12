@@ -40,7 +40,7 @@ define('CFL_PLUGIN_MAIN_FILE', __FILE__);
 define('CFL_PLUGIN_PATH', plugin_dir_path(CFL_PLUGIN_MAIN_FILE));
 define('CFL_PLUGIN_URL', plugin_dir_url(CFL_PLUGIN_MAIN_FILE));
 define('CFL_ASSETS_PATH', CFL_PLUGIN_PATH . 'build/');
-define('CFL_ASSETS_URL', CFL_PLUGIN_URL . '/build/');
+define('CFL_ASSETS_URL', CFL_PLUGIN_URL . 'build/');
 define('CFL_SCRIPTS_PATH', CFL_ASSETS_PATH . 'js/');
 define('CFL_SCRIPTS_URL', CFL_ASSETS_URL . 'js/');
 define('CFL_STYLE_PATH', CFL_ASSETS_PATH . 'css/');

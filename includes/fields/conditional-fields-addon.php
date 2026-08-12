@@ -41,7 +41,7 @@ class Conditional_Fields_Addon {
 			'editor_script_handle'              => 'coolform_cfefp_logic_editor',
 			'editor_script_src'                 => CFL_PLUGIN_URL . 'assets/addons/js/coolform-editor.js',
 			'editor_style_handle'               => 'coolform_cfefp_logic_editor',
-			'editor_style_src'                  => CFL_PLUGIN_URL . 'assets/addons/css/editor.css',
+			'editor_style_src'                  => CFL_PLUGIN_URL . 'assets/addons/css/editor.min.css',
 			'localize_my_script_vars'           => true,
 			'localize_my_script_vars_elementor' => true,
 			'enqueue_editor_fontawesome'        => true,
@@ -62,9 +62,9 @@ class Conditional_Fields_Addon {
 			'frontend_script_handle'   => 'helloplus_cfefp_logic',
 			'frontend_script_src'      => CFL_PLUGIN_URL . 'assets/helloplus-addons/js/helloplus-logic_frontend.js',
 			'editor_script_handle'     => 'helloplus_cfefp_logic_editor',
-			'editor_script_src'        => CFL_PLUGIN_URL . 'assets/addons/js/coolform-editor.js',
+			'editor_script_src'        => CFL_PLUGIN_URL . 'assets/helloplus-addons/js/helloplus-editor.js',
 			'editor_style_handle'      => 'helloplus_cfefp_logic_editor',
-			'editor_style_src'         => CFL_PLUGIN_URL . 'assets/addons/css/editor.css',
+			'editor_style_src'         => CFL_PLUGIN_URL . 'assets/addons/css/editor.min.css',
 			'pre_render_widget_guard'  => 'ehp-form',
 		);
 	}

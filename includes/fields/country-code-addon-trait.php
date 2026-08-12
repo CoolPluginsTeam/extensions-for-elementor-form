@@ -352,10 +352,10 @@ trait Country_Code_Addon_Trait {
 		}
 		wp_enqueue_script(
 			'cfl-country-code-editor-panel-script',
-			CFL_PLUGIN_URL . 'assets/addons/js/ccfef-editor.min.js',
+			CFL_PLUGIN_URL . 'assets/addons/js/ccfef-review-dismiss.min.js',
 			array( 'jquery', 'cfkef-review-dismiss' ),
 			function_exists( 'cfl_asset_version' )
-				? cfl_asset_version( 'assets/addons/js/ccfef-editor.min.js' )
+				? cfl_asset_version( 'assets/addons/js/ccfef-review-dismiss.min.js' )
 				: CFL_VERSION,
 			true
 		);

@@ -104,14 +104,6 @@ class FME_Plugin_Addon {
 		return (string) $this->cfg( 'after_mask_attribute' );
 	}
 
-	protected function get_mask_control_file(): string {
-		return __DIR__ . '/mask-control-addon.php';
-	}
-
-	protected function get_mask_control_class(): string {
-		return Mask_Control_Addon::class;
-	}
-
 	/**
 	 * Instantiate the shared mask control with this platform's config.
 	 *

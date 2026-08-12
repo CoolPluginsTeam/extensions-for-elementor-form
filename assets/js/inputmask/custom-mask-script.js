@@ -1102,15 +1102,6 @@
 
             // ❌ Validation failed
             if (hasVisibleMaskError) {
-              // $form[0].classList.remove("elementor-form-waiting");
-              $submitBtn.data("clicked", false);
-              e.preventDefault();
-              return;
-            }
-
-            // ❌ Validation failed
-            if (hasVisibleMaskError) {
-              // $form[0].classList.remove("elementor-form-waiting");
               $submitBtn.data("clicked", false);
               e.preventDefault();
               return;

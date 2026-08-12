@@ -22,10 +22,6 @@ if ( ! class_exists( Core_Atomic_Form::class ) ) {
  */
 class Atomic_Form extends Core_Atomic_Form {
 
-	private function is_field_enabled( $field_key ) {
-		return self::is_cfkef_element_enabled( $field_key );
-	}
-
 	protected static function define_props_schema(): array {
 		$schema = parent::define_props_schema();
 		if ( ! self::is_cfkef_element_enabled( 'whatsapp_redirect' ) ) {
@@ -38,7 +34,7 @@ class Atomic_Form extends Core_Atomic_Form {
 		$sections                  = parent::define_atomic_controls();
 		$result                    = [];
 		$whatsapp_section_inserted = false;
-		$whatsapp_enabled          = $this->is_field_enabled( 'whatsapp_redirect' );
+		$whatsapp_enabled          = \CFL_Elements::is_enabled( 'whatsapp_redirect' );
 
 		foreach ( $sections as $section ) {
 			if ( ! ( $section instanceof Section ) ) {

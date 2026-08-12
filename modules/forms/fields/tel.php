@@ -56,7 +56,7 @@ class Tel extends Field_Base {
 			return;
 		}
 		if ( preg_match( '/^[0-9()#&+*-=.]+$/', $field['value'] ) !== 1 ) {
-			// $ajax_handler->add_error( $field['id'], esc_html__( 'The field accepts only numbers and phone characters (#, -, *, etc).', 'extensions-for-elementor-form' ) );
+			$ajax_handler->add_error( $field['id'], esc_html__( 'The field accepts only numbers and phone characters (#, -, *, etc).', 'extensions-for-elementor-form' ) );
 		}
 	}
 }

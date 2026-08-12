@@ -13,14 +13,6 @@ const addDynamicTags = (element) => {
     }
   })
 
-  // add repeater functionality to conditional field repeater for button section
-  jQuery('.elementor-control-tag-area[data-setting="cfef_logic_field_id"]').on("click", function (e) {
-    if (jQuery(this).data("check") != "ok") {
-      jQuery(this).after('<div class="elementor-control-dynamic-switcher elementor-control-unit-1 cfef-add-tag" data-tooltip="add Tags" original-title=""><i class="eicon-database" aria-hidden="true"></i><span class="elementor-screen-only">Dynamic Tags</span></div>');
-      jQuery(this).data("check", "ok");
-    }
-  })
-
   // create list of id's of form fields for dynamic tags
   jQuery(".cfef-add-tag").on("click", function (e) {
     const $list = jQuery( '<ul/>', { class: 'cfef-dynamic-tag' } );
@@ -75,7 +67,7 @@ window.addEventListener('elementor/init', function () {
       if (this.$el.hasClass('elementor-control-cfef_repeater_data') || this.$el.hasClass('elementor-control-choices')) {
         customRepeaterField(this.$el);
       }
-      if (this.$el.hasClass('elementor-control-cfef_repeater_data_cfefp_submit' || this.$el.hasClass('elementor-control-choices'))) {
+      if (this.$el.hasClass('elementor-control-cfef_repeater_data_cfefp_submit') || this.$el.hasClass('elementor-control-choices')) {
         customRepeaterField(this.$el);
       }
       if (this.$el.hasClass('elementor-control-cfef_repeater_data') || this.$el.hasClass('elementor-control-cfef_repeater_data_cfefp_submit')) {

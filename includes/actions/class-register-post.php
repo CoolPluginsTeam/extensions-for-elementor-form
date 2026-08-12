@@ -70,13 +70,6 @@ class Register_Post extends \ElementorPro\Modules\Forms\Classes\Action_Base {
 			]
 		);
 
-		/**
-		 * TODO:
-		 * 1. Add or edit existent post.
-		 * 2. Post terms (taxonomy).
-		 * 3. Redirect to post after submit/created?.
-		 * 4. Se post status === private add campo de senha.
-		 */
 		$widget->add_control(
 			'eef-register-post-post-type',
 			[

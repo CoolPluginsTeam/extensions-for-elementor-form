@@ -1,6 +1,6 @@
 @import url(../../css/shared/country-common.css);
 
-.cool-form__field-group.is-field-type-ehp-tel .cfefp-intl-container {
+.ehp-form__field-group.is-field-type-ehp-tel .cfefp-intl-container {
 	--cfefp-intl-tel-button-height: 100%;
 }
 
