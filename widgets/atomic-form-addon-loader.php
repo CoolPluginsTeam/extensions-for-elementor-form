@@ -462,9 +462,17 @@ class Atomic_Form_Addon_Loader {
         }
 
         wp_register_script(
+            'cfkef-shared-utils',
+            CFL_PLUGIN_URL . 'assets/js/shared/cfkef-utils.js',
+            array(),
+            $this->version,
+            true
+        );
+
+        wp_register_script(
             'cfkef-shared-field-logic',
             CFL_PLUGIN_URL . 'assets/js/shared/field-logic.js',
-            array(),
+            array( 'cfkef-shared-utils' ),
             $this->version,
             true
         );

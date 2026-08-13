@@ -240,7 +240,7 @@ trait Conditional_Fields_Logic_Trait {
 		wp_register_script(
 			'cfkef-shared-field-logic',
 			CFL_PLUGIN_URL . 'assets/js/shared/field-logic.js',
-			array(),
+			array( 'cfkef-shared-utils' ),
 			CFL_VERSION,
 			true
 		);

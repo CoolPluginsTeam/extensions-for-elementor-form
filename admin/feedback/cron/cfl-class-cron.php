@@ -38,7 +38,7 @@ if (!class_exists('CFL_cronjob')) {
             
             $settings       = get_option('cfef_usage_share_data');
            
-            if (!empty($settings) || $settings === 'on'){
+            if ('on' === $settings){
 
                 CFL_cronjob::cfl_send_data();
             }

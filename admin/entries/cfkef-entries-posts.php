@@ -173,7 +173,16 @@ class CFKEF_Entries_Posts {
         }
 
         if ( ! empty( $args['orderby'] ) && ! empty( $args['order'] ) ) {
-            $query .= ' ORDER BY ' . esc_sql( $args['orderby'] ) . ' ' . esc_sql( $args['order'] ) . ' ';
+            $allowed_orderby = array( 'ID', 'post_title', 'post_date', 'post_modified', 'post_status' );
+            $allowed_order   = array( 'ASC', 'DESC' );
+
+            $orderby = sanitize_key( (string) $args['orderby'] );
+            $order   = strtoupper( sanitize_key( (string) $args['order'] ) );
+
+            $orderby = in_array( $orderby, $allowed_orderby, true ) ? $orderby : 'ID';
+            $order   = in_array( $order, $allowed_order, true ) ? $order : 'DESC';
+
+            $query .= ' ORDER BY ' . $orderby . ' ' . $order . ' ';
         }
 
         $per_page = isset( $args['posts_per_page'] ) ? (int) $args['posts_per_page'] : 0;

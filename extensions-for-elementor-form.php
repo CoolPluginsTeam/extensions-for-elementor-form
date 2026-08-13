@@ -121,7 +121,12 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	public function stop_format_detection_in_safari()
 	{
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-		$ua = sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT']));
+		$ua = isset( $_SERVER['HTTP_USER_AGENT'] )
+			? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) )
+			: '';
+		if ( '' === $ua ) {
+			return;
+		}
 		$is_safari = strpos($ua, 'Safari') !== false
 			&& strpos($ua, 'Mobile') !== false        // ensures mobile Safari
 			&& (strpos($ua, 'iPhone') !== false

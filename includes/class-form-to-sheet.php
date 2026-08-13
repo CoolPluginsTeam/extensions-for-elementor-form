@@ -12,18 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Detect platform base class
 // --------------------------------------------------
 
-if (
-	class_exists( 'ElementorPro\Modules\Forms\Classes\Action_Base' ) &&
-	class_exists( 'HelloPlus\Modules\Forms\Classes\Action_Base' )
-) {
+if ( class_exists( 'ElementorPro\Modules\Forms\Classes\Action_Base' ) ) {
 
-	// Both active → extend Elementor Pro (compatible)
-	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
-	abstract class Form_to_Sheet_Action extends \ElementorPro\Modules\Forms\Classes\Action_Base {
-	}
-} elseif ( class_exists( 'ElementorPro\Modules\Forms\Classes\Action_Base' ) ) {
-
-	// Elementor Pro Forms API available
+	// Elementor Pro Forms API available (also preferred when Hello Plus is active)
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 	abstract class Form_to_Sheet_Action extends \ElementorPro\Modules\Forms\Classes\Action_Base {
 	}

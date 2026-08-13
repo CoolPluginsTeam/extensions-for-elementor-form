@@ -238,51 +238,6 @@ input.cfkef-element-toggle:disabled::before{
     font-weight: lighter;
 }
 
-.cfkef-form-element-icons {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.cfkef-form-element-icons a {
-    text-decoration: none;
-    color: #27C3F3;
-    border: 1px solid;
-    border-radius: 3px;
-    padding: 1px 3px;
-    font-size: 10px;
-    text-transform: uppercase;
-    width: 14px;
-    height: 14px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: width 0.5s;
-    overflow: hidden;
-}
-
-.cfkef-form-element-icons a:hover {
-    color: #666;
-    width: 60px;
-}
-
-.cfkef-form-element-icons a span {
-    display: none;
-    margin-left: 2px;
-    white-space: nowrap;
-}
-
-.cfkef-form-element-icons a:hover span {
-    display: inline;
-}
-
-.cfkef-form-element-icons a i {
-    font-size: 12px;
-    vertical-align: middle;
-    width: 12px;
-    height: 12px;
-}
-
 /* Popular and Updated Labels */
 .cfkef-label-popular, .cfkef-label-updated {
     font-size: 10px;
@@ -725,24 +680,6 @@ span.cfkef-pro-feature a{
     display: inline-block;
 }
 
-.cfkef-toggle-wrapper-div{
-    display: flex;
-    gap: 20px;
-}
-.cfkef-toggle-wrapper-div .cfkef-toggle-all-wrapper{
-    border: 3px solid #f1f1f1;
-    padding: 20px;
-    border-radius: 8px;
-    transition: border-color 0.6s linear;
-}
-.cfkef-toggle-wrapper-div .cfkef-toggle-all-wrapper .cfkef-toggle-switch{
-    margin-bottom: unset;
-    min-width: 60px;
-}
-.cfkef-toggle-wrapper-div .cfkef-toggle-all-wrapper .cfkef-toggle-label{
-    font-size: 16px;
-    font-weight: 600;
-}
 td.cool-formkit-table-td.usage-share-data {
     display: flex;
     align-items: start;

@@ -4,11 +4,11 @@
 window.CFKEF = window.CFKEF || {};
 
 CFKEF.checkFieldLogic = function (compareFieldValue, conditionOperation, compareValue) {
-	var decode = window.CFKEF.decodeHtml || function (text) {
-		var textArea = document.createElement('textarea');
-		textArea.innerHTML = text == null ? '' : String(text);
-		return textArea.value;
-	};
+	var decode = typeof CFKEF.decodeHtml === 'function'
+		? CFKEF.decodeHtml
+		: function (text) {
+			return text == null ? '' : String(text);
+		};
 
 	conditionOperation = decode(conditionOperation);
 	compareValue = compareValue === null ? decode(compareValue) : decode(compareValue).trim();
