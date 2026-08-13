@@ -259,8 +259,8 @@ class CFKEF_Admin {
                 );
 
                 update_option('cfkef_enabled_elements', $default_elements);
-                if ( class_exists( 'CFL_Elements' ) ) {
-                    CFL_Elements::flush_cache();
+                if ( class_exists( '\CFL_Elements' ) ) {
+                    \CFL_Elements::flush_cache();
                 }
             }
             // Set initialization flag to avoid repeating
@@ -287,8 +287,8 @@ class CFKEF_Admin {
             }
         }
 
-        if ( class_exists( 'CFL_Elements' ) ) {
-            CFL_Elements::flush_cache();
+        if ( class_exists( '\CFL_Elements' ) ) {
+            \CFL_Elements::flush_cache();
         }
 
         return $valid;
