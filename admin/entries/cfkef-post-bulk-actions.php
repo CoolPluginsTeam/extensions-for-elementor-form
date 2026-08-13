@@ -2,7 +2,6 @@
 
 namespace Cool_FormKit\Admin\Entries;
 
-use WPForms\Admin\Notice;
 use Cool_FormKit\Admin\Entries\CFKEF_Entries_Posts;
 use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
 

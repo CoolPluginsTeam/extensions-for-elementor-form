@@ -25,8 +25,6 @@ class Atomic_Form_Addon_Loader {
 
     protected $version;
 
-    protected $error_map;
-
     public static function get_instance() {
         if (null == self::$instance) {
             self::$instance = new self();
@@ -84,11 +82,11 @@ class Atomic_Form_Addon_Loader {
             if (! wp_script_is('cfl-atomic-form-handle-conditional-repeater', 'enqueued') && ! wp_script_is('cfl-atomic-form-handle-conditional-repeater', 'done')) {
                 wp_enqueue_script( 'cfl-atomic-form-handle-conditional-repeater' );
             }
-        }
 
-        wp_register_style('cfl-atomic-form-conditional-repeater-style', CFL_PLUGIN_URL . 'assets/atomic-form/css/atomic-form-conditional-repeater.min.css', array(), CFL_VERSION, 'all');
-        if (! wp_style_is('cfl-atomic-form-conditional-repeater-style', 'enqueued') && ! wp_style_is('cfl-atomic-form-conditional-repeater-style', 'done')) {
-            wp_enqueue_style('cfl-atomic-form-conditional-repeater-style');
+            wp_register_style('cfl-atomic-form-conditional-repeater-style', CFL_PLUGIN_URL . 'assets/atomic-form/css/atomic-form-conditional-repeater.min.css', array(), CFL_VERSION, 'all');
+            if (! wp_style_is('cfl-atomic-form-conditional-repeater-style', 'enqueued') && ! wp_style_is('cfl-atomic-form-conditional-repeater-style', 'done')) {
+                wp_enqueue_style('cfl-atomic-form-conditional-repeater-style');
+            }
         }
 
 
@@ -293,20 +291,23 @@ class Atomic_Form_Addon_Loader {
             return;
         }
 
-        if ( ! wp_script_is( 'fme-custom-mask-script', 'registered' ) ) {
-            wp_register_script( 'fme-custom-mask-script', CFL_PLUGIN_URL . 'assets/js/inputmask/custom-mask-script.js', array( 'jquery' ), $this->version, true );
+        if ( ! wp_script_is( 'cfkef-mask-validators', 'registered' ) ) {
+            wp_register_script(
+                'cfkef-mask-validators',
+                CFL_PLUGIN_URL . 'assets/js/shared/mask-validators.js',
+                array(),
+                $this->version,
+                true
+            );
+        }
 
-            if ( ! function_exists( 'cfl_get_mask_error_messages' ) ) {
-                require_once CFL_PLUGIN_PATH . 'includes/fields/mask-error-messages.php';
-            }
-
-            wp_localize_script(
-                'fme-custom-mask-script',
-                'fmeData',
-                array(
-                    'pluginUrl'     => CFL_PLUGIN_URL,
-                    'errorMessages' => cfl_get_mask_error_messages(),
-                )
+        if ( ! wp_script_is( 'cfkef-shared-input-mask', 'registered' ) ) {
+            wp_register_script(
+                'cfkef-shared-input-mask',
+                CFL_PLUGIN_URL . 'assets/js/shared/input-mask.js',
+                array( 'jquery' ),
+                $this->version,
+                true
             );
         }
 
@@ -320,12 +321,25 @@ class Atomic_Form_Addon_Loader {
             );
         }
 
+        if ( ! function_exists( 'cfl_get_mask_error_messages' ) ) {
+            require_once CFL_PLUGIN_PATH . 'includes/fields/mask-error-messages.php';
+        }
+
         wp_register_script(
             'cfl-atomic-form-mask-init',
             CFL_PLUGIN_URL . 'assets/atomic-form/js/atomic-form-mask-init.js',
-            array( 'jquery', 'elementor-frontend', 'fme-custom-mask-script', 'cfkef-shared-mask-ui' ),
+            array( 'jquery', 'elementor-frontend', 'cfkef-mask-validators', 'cfkef-shared-input-mask', 'cfkef-shared-mask-ui' ),
             $this->version,
             true
+        );
+
+        wp_localize_script(
+            'cfl-atomic-form-mask-init',
+            'fmeData',
+            array(
+                'pluginUrl'     => CFL_PLUGIN_URL,
+                'errorMessages' => cfl_get_mask_error_messages(),
+            )
         );
 
         if ( ! wp_style_is( 'fme-frontend-css', 'registered' ) ) {
@@ -334,10 +348,6 @@ class Atomic_Form_Addon_Loader {
 
         if ( ! wp_style_is( 'atomic-form-mask-style', 'registered' ) ) {
             wp_register_style( 'atomic-form-mask-style', CFL_PLUGIN_URL . 'assets/atomic-form/css/atomic-form-mask-style.min.css', array(), $this->version, 'all' );
-        }
-
-        if (! wp_script_is('fme-custom-mask-script', 'enqueued') && ! wp_script_is('fme-custom-mask-script', 'done')) {
-            wp_enqueue_script( 'fme-custom-mask-script' );
         }
 
         if (! wp_script_is('cfl-atomic-form-mask-init', 'enqueued') && ! wp_script_is('cfl-atomic-form-mask-init', 'done')) {
@@ -366,18 +376,18 @@ class Atomic_Form_Addon_Loader {
             return;
         }
 
-        $this->error_map =[
-            __("The phone number you entered is not valid. Please check the format and try again.", "extensions-for-elementor-form"),
-            __("The country code you entered is not recognized. Please ensure it is correct and try again.", "extensions-for-elementor-form"),
-            __("The phone number you entered is too short. Please enter a complete phone number, including the country code.", "extensions-for-elementor-form"),
-            __("The phone number you entered is too long. Please ensure it is in the correct format and try again.", "extensions-for-elementor-form"),
-            __("The phone number you entered is not valid. Please check the format and try again.", "extensions-for-elementor-form")
-        ];
+        cfl_register_shared_country_code_script( $this->version );
+        cfl_register_intl_tel_input_script( $this->version );
 
-        wp_register_script('frontend-country-handle-js', CFL_PLUGIN_URL . 'assets/atomic-form/js/frontend-country-handle.js', array('jquery'), $this->version, true);
-        wp_enqueue_script('frontend-country-handle-js');
+        wp_register_script(
+            'frontend-country-handle-js',
+            CFL_PLUGIN_URL . 'assets/atomic-form/js/frontend-country-handle.js',
+            array( 'jquery', 'cfkef-shared-country-code-script', 'cfl-country-code-library-script' ),
+            $this->version,
+            true
+        );
+        wp_enqueue_script( 'frontend-country-handle-js' );
 
-        wp_register_script('cfl-country-code-library-script', CFL_PLUGIN_URL . 'assets/js/intlTelInput.min.js', array(), CFL_VERSION, true);
         wp_register_style('cfl-country-code-library-style', CFL_PLUGIN_URL . 'assets/css/intlTelInput.min.css', array(), CFL_VERSION, 'all');
         wp_register_style('cfl-atomic-form-country-code-style', CFL_PLUGIN_URL . 'assets/atomic-form/css/atomic-form-country-code-style.min.css', array(), CFL_VERSION, 'all');
 
@@ -386,8 +396,8 @@ class Atomic_Form_Addon_Loader {
 			'CCFEFCustomData',
 			array(
 				'pluginDir' => CFL_PLUGIN_URL,
-				'errorMap'  => $this->error_map, 
-			)	
+				'errorMap'  => cfl_get_country_code_error_map(),
+			)
 		);
 
         if (! wp_script_is('cfl-country-code-library-script', 'enqueued') && ! wp_script_is('cfl-country-code-library-script', 'done')) {
@@ -452,19 +462,19 @@ class Atomic_Form_Addon_Loader {
         }
 
         wp_register_script(
-            'cfl-atomic-form-condition',
-            CFL_PLUGIN_URL . 'assets/atomic-form/js/atomic-form-condition.js',
-            array( 'jquery', 'elementor-frontend' ),
+            'cfkef-shared-field-logic',
+            CFL_PLUGIN_URL . 'assets/js/shared/field-logic.js',
+            array(),
             $this->version,
             true
         );
 
-        wp_localize_script(
+        wp_register_script(
             'cfl-atomic-form-condition',
-            'my_script_vars',
-            array(
-                'pluginConstant' => CFL_PLUGIN_URL,
-            )
+            CFL_PLUGIN_URL . 'assets/atomic-form/js/atomic-form-condition.js',
+            array( 'jquery', 'elementor-frontend', 'cfkef-shared-field-logic' ),
+            $this->version,
+            true
         );
 
         if (! wp_script_is('cfl-atomic-form-condition', 'enqueued') && ! wp_script_is('cfl-atomic-form-condition', 'done')) {
@@ -496,9 +506,5 @@ class Atomic_Form_Addon_Loader {
         if(\CFL_Elements::is_enabled('country_code')){
             $this->ensure_atomic_form_country_code_assets_registered();
         }
-    }
-
-    public function get_version() {
-        return $this->version;
     }
 }

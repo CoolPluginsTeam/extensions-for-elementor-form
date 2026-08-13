@@ -23,24 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'CFKEF_Frontend' ) ) {
 	class CFKEF_Frontend {
 
-		/**
-		 * @var string
-		 */
-		private $plugin_name;
-
-		/**
-		 * @var string
-		 */
-		private $version;
-
-		/**
-		 * @param string $plugin_name Plugin name.
-		 * @param string $version Plugin version.
-		 */
-		public function __construct( $plugin_name, $version ) {
-			$this->plugin_name = $plugin_name;
-			$this->version     = $version;
-
+		public function __construct() {
 			add_action( 'elementor_pro/forms/actions/register', array( $this, 'cfef_register_new_form_actions' ) );
 			$this->include_addons();
 		}

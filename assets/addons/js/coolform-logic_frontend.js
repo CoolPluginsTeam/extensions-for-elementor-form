@@ -29,7 +29,7 @@
     },
     flags: {
       supportsMdcSelect: true,
-      supportsConditionalSteps: true,
+      supportsConditionalSteps: false,
       supportsSimpleStepMessage: false,
       supportsMdcFieldControls: true,
       emptyCheckboxFallback: 'cool_plugins',

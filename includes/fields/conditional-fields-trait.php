@@ -196,15 +196,6 @@ trait Conditional_Fields_Logic_Trait {
 	}
 
 	/**
-	 * Hello Plus: skip empty logic field IDs and fail unknown IDs (do not compare against the ID string).
-	 *
-	 * @return bool
-	 */
-	protected function use_strict_logic_field_id_resolution(): bool {
-		return false;
-	}
-
-	/**
 	 * Elementor Pro: also remove fields belonging to a hidden step.
 	 *
 	 * @return bool
@@ -220,7 +211,7 @@ trait Conditional_Fields_Logic_Trait {
 		add_action( $this->get_pre_render_hook(), array( $this, 'all_field_conditions' ), 10, 3 );
 		add_action(
 			'elementor/element/' . $this->get_form_widget_name() . '/section_form_fields/before_section_end',
-			array( $this, 'append_conditional_fields_controler' ),
+			array( $this, 'append_conditional_fields_controller' ),
 			100,
 			2
 		);
@@ -247,9 +238,16 @@ trait Conditional_Fields_Logic_Trait {
 			true
 		);
 		wp_register_script(
+			'cfkef-shared-field-logic',
+			CFL_PLUGIN_URL . 'assets/js/shared/field-logic.js',
+			array(),
+			CFL_VERSION,
+			true
+		);
+		wp_register_script(
 			'cfkef-shared-logic-frontend',
 			CFL_PLUGIN_URL . 'assets/js/shared/logic-frontend.js',
-			array( 'jquery', 'cfkef-shared-utils' ),
+			array( 'jquery', 'cfkef-shared-utils', 'cfkef-shared-field-logic' ),
 			CFL_VERSION,
 			true
 		);
@@ -276,10 +274,8 @@ trait Conditional_Fields_Logic_Trait {
 				$handle,
 				'my_script_vars_elementor',
 				array(
-					'pluginConstant' => CFL_VERSION,
-					'pluginUrl'      => CFL_PLUGIN_URL,
+					'pluginConstant' => CFL_PLUGIN_URL,
 					'no_input_step'  => __( 'No input is required on this step. Just click "%s" to proceed.', 'extensions-for-elementor-form' ),
-					'next_button'    => __( 'Next', 'extensions-for-elementor-form' ),
 				)
 			);
 		}
@@ -289,7 +285,7 @@ trait Conditional_Fields_Logic_Trait {
 				$handle,
 				'my_script_vars',
 				array(
-					'pluginConstant' => CFL_VERSION,
+					'pluginConstant' => CFL_PLUGIN_URL,
 				)
 			);
 		}
@@ -303,13 +299,24 @@ trait Conditional_Fields_Logic_Trait {
 	 * Js and css files loaded for elementor editor mode for add dynamic tags.
 	 */
 	public function add_editor_js() {
-		if ( function_exists( 'cfl_register_review_dismiss_script' ) ) {
-			cfl_register_review_dismiss_script();
+		$deps = array( 'jquery', 'cfkef-shared-conditional-editor' );
+		if ( $this->should_include_review_notice() ) {
+			if ( function_exists( 'cfl_register_review_dismiss_script' ) ) {
+				cfl_register_review_dismiss_script();
+			}
+			$deps[] = 'cfkef-review-dismiss';
 		}
+		wp_register_script(
+			'cfkef-shared-conditional-editor',
+			CFL_PLUGIN_URL . 'assets/js/shared/conditional-editor.js',
+			array( 'jquery' ),
+			CFL_VERSION,
+			true
+		);
 		wp_register_script(
 			$this->get_editor_script_handle(),
 			$this->get_editor_script_src(),
-			array( 'jquery', 'cfkef-review-dismiss' ),
+			$deps,
 			CFL_VERSION,
 			true
 		);
@@ -374,7 +381,7 @@ trait Conditional_Fields_Logic_Trait {
 	 *
 	 * @param object $widget use for add new fields to form.
 	 */
-	public function append_conditional_fields_controler( $widget ) {
+	public function append_conditional_fields_controller( $widget ) {
 		$elementor    = $this->get_elementor_plugin();
 		$control_data = $elementor->controls_manager->get_control_from_stack( $widget->get_unique_name(), 'form_fields' );
 		if ( is_wp_error( $control_data ) ) {
@@ -609,51 +616,13 @@ trait Conditional_Fields_Logic_Trait {
 	/**
 	 * Function for check all the values added in conditional fields.
 	 *
-	 * @param string $value_id      Field value that use for compare.
-	 * @param string $operator      Which type of comparision apply.
-	 * @param string $value         Use for comparison.
-	 * @param string $display_mode  Having value to either show or hide condition.
+	 * @param string $value_id Field value that use for compare.
+	 * @param string $operator Which type of comparision apply.
+	 * @param string $value    Use for comparison.
 	 * @return bool
 	 */
-	public function cfefp_check_field_logic( $value_id, $operator, $value, $display_mode ) {
-		// Sanitize and escape dynamic values.
-		$value_id = esc_html( $value_id );
-		$value    = trim( $value );
-		$value    = esc_html( $value );
-
-		$values = array_map( 'trim', explode( ',', $value_id ) );
-		// Check if any value matches the compare value.
-		$match_found = in_array( $value, $values );
-
-		switch ( $operator ) {
-			case '==':
-				return $match_found && '' !== $value_id;
-			case '!=':
-				return ! $match_found && '' !== $value_id;
-			case 'e':
-				return empty( $value_id );
-			case '!e':
-				return ! empty( $value_id );
-			case 'c':
-				return strpos( $value_id, $value ) !== false;
-			case '!c':
-				return ! empty( $value_id ) && strpos( $value_id, $value ) === false;
-			case '^':
-				return strpos( $value_id, $value ) === 0;
-			case '~':
-				$position = strrpos( $value_id, $value );
-				return false !== $position && strlen( $value_id ) - strlen( $value ) === $position;
-			case '>':
-				return (int) $value_id > (int) $value;
-			case '<':
-				return (int) $value_id < (int) $value;
-			case '>=':
-				return (int) $value_id >= (int) $value;
-			case '<=':
-				return (int) $value_id <= (int) $value;
-			default:
-				return false;
-		}
+	public function cfefp_check_field_logic( $value_id, $operator, $value ) {
+		return cfl_check_field_logic( $value_id, $operator, $value );
 	}
 
 	/**
@@ -792,21 +761,6 @@ trait Conditional_Fields_Logic_Trait {
 	 * @return array{status: string, value?: mixed} status is ok|skip|fail.
 	 */
 	protected function resolve_logic_field_value( $form_fields, $field_values ): array {
-		if ( $this->use_strict_logic_field_id_resolution() ) {
-			$logic_field_id = isset( $field_values['cfef_logic_field_id'] ) ? trim( (string) $field_values['cfef_logic_field_id'] ) : '';
-			if ( '' === $logic_field_id ) {
-				return array( 'status' => 'skip' );
-			}
-			if ( ! isset( $form_fields[ $logic_field_id ] ) ) {
-				// Unknown field IDs must fail the condition (do not compare against the ID string).
-				return array( 'status' => 'fail' );
-			}
-			return array(
-				'status' => 'ok',
-				'value'  => $form_fields[ $logic_field_id ]['value'],
-			);
-		}
-
 		$logic_field_id = isset( $field_values['cfef_logic_field_id'] ) ? $field_values['cfef_logic_field_id'] : '';
 		$value_id       = isset( $form_fields[ $logic_field_id ] )
 			? $form_fields[ $logic_field_id ]['value']
@@ -924,33 +878,16 @@ trait Conditional_Fields_Logic_Trait {
 						}
 						$operator              = $field_values['cfef_logic_field_is'];
 						$value                 = $field_values['cfef_logic_compare_value'];
-						$condition_pass_fail[] = $this->cfefp_check_field_logic( $value_id, $operator, $value, $display_mode );
+						$condition_pass_fail[] = $this->cfefp_check_field_logic( $value_id, $operator, $value );
 					}
-					$action_type = ( 'All' === $fire_action ) ? array_reduce(
+					$should_keep = cfl_evaluate_conditional_display(
 						$condition_pass_fail,
-						function ( $carry, $item ) {
-							return $carry && $item;
-						},
-						true
-					) : array_reduce(
-						$condition_pass_fail,
-						function ( $carry, $item ) {
-							return $carry || $item;
-						},
-						false
+						$fire_action,
+						$display_mode
 					);
 
-					if ( ( 'disable' === $display_mode && $action_type ) || ( 'enable' === $display_mode && ! $action_type ) ) {
-						$this->remove_hidden_conditional_field( $form_record, $ajax_handler, $field['custom_id'] );
-					}
-
-					if ( 'show' === $display_mode && ! $action_type ) {
-						if ( $this->should_prune_hidden_step_fields() ) {
-							$this->delete_fields_of_hidden_step( $form_fields, $field['custom_id'], array(), $form_record );
-						}
-						$this->remove_hidden_conditional_field( $form_record, $ajax_handler, $field['custom_id'] );
-					} elseif ( 'hide' == $display_mode && $action_type ) {
-						if ( $this->should_prune_hidden_step_fields() ) {
+					if ( ! $should_keep ) {
+						if ( $this->should_prune_hidden_step_fields() && ( 'show' === $display_mode || 'hide' === $display_mode ) ) {
 							$this->delete_fields_of_hidden_step( $form_fields, $field['custom_id'], array(), $form_record );
 						}
 						$this->remove_hidden_conditional_field( $form_record, $ajax_handler, $field['custom_id'] );

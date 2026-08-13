@@ -6,7 +6,6 @@ use Elementor\Core\Kits\Documents\Tabs\Global_Colors;
 use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use Elementor\Group_Control_Background;
 use Elementor\Group_Control_Typography;
-use Elementor\Modules\DynamicTags\Module as TagsModule;
 use Elementor\Repeater;
 use Cool_FormKit\Includes\Utils;
 use Cool_FormKit\Modules\Forms\Classes\Form_Base;

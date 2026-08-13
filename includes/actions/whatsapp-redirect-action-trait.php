@@ -172,9 +172,21 @@ trait Whatsapp_Redirect_Action_Trait {
 
 		$whatsapp_message = $record->get_form_settings( 'whatsapp_message' );
 
-		$whatsapp_to      = $record->replace_setting_shortcodes( $whatsapp_to, false );
-		$whatsapp_message = $record->replace_setting_shortcodes( $whatsapp_message, false );
-		$whatsapp_message = str_replace( '%break%', "\r\n", $whatsapp_message );
+		$fields = $record->get( 'fields' );
+		$form_data = array();
+		$field_metadata = array();
+		if ( is_array( $fields ) ) {
+			foreach ( $fields as $id => $field ) {
+				$form_data[ $id ] = $field['value'] ?? '';
+				$field_metadata[ $id ] = array(
+					'label' => $field['title'] ?? '',
+				);
+			}
+		}
+
+		$whatsapp_to      = cfl_replace_whatsapp_message_shortcodes( (string) $whatsapp_to, $form_data, $field_metadata );
+		$whatsapp_message = cfl_replace_whatsapp_message_shortcodes( (string) $whatsapp_message, $form_data, $field_metadata );
+		$whatsapp_message = cfl_replace_whatsapp_break_token( $whatsapp_message );
 
 		$whatsapp_to = add_query_arg(
 			array( 'text' => $whatsapp_message ),

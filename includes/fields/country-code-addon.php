@@ -40,7 +40,7 @@ class Country_Code_Addon {
 			'library_style_handle'   => 'coolform-country-code-library-style',
 			'style_handle'           => 'coolform-country-code-style',
 			'style_src'              => CFL_PLUGIN_URL . 'assets/addons/css/coolform-country-code-style.css',
-			'library_script_handle'  => 'coolform-country-code-library-script',
+			'library_script_handle'  => 'cfl-country-code-library-script',
 			'main_script_handle'     => 'coolform-country-code-script',
 			'main_script_src'        => CFL_PLUGIN_URL . 'assets/addons/js/coolform-country-code-script.js',
 			'editor_script_handle'   => 'coolform-country-code-editor-script',
@@ -62,7 +62,7 @@ class Country_Code_Addon {
 			'library_style_handle'   => 'helloplus-country-code-library-style',
 			'style_handle'           => 'helloplus-country-code-style',
 			'style_src'              => CFL_PLUGIN_URL . 'assets/helloplus-addons/css/helloplus-country-code-style.css',
-			'library_script_handle'  => 'helloplus-country-code-library-script',
+			'library_script_handle'  => 'cfl-country-code-library-script',
 			'main_script_handle'     => 'helloplus-country-code-script',
 			'main_script_src'        => CFL_PLUGIN_URL . 'assets/helloplus-addons/js/helloplus-country-code-script.js',
 			'editor_script_handle'   => 'helloplus-country-code-editor-script',
@@ -84,7 +84,7 @@ class Country_Code_Addon {
 			'library_style_handle'   => 'ccfef-country-code-library-style',
 			'style_handle'           => 'ccfef-country-code-style',
 			'style_src'              => CFL_PLUGIN_URL . 'assets/css/country-code-style.min.css',
-			'library_script_handle'  => 'ccfef-country-code-library-script',
+			'library_script_handle'  => 'cfl-country-code-library-script',
 			'main_script_handle'     => 'ccfef-country-code-script',
 			'main_script_src'        => CFL_PLUGIN_URL . 'assets/js/country-code-script.js',
 			'editor_script_handle'   => 'ccfef-country-code-editor-script',
@@ -147,15 +147,5 @@ class Country_Code_Addon {
 
 	protected function should_include_review_notice(): bool {
 		return (bool) $this->cfg( 'review_notice', false );
-	}
-
-	protected function get_main_script_version(): string {
-		return $this->version_from_src( $this->get_main_script_src() );
-	}
-
-	protected function get_shared_script_version(): string {
-		return function_exists( 'cfl_asset_version' )
-			? cfl_asset_version( 'assets/js/shared/country-code-script.js' )
-			: CFL_VERSION;
 	}
 }

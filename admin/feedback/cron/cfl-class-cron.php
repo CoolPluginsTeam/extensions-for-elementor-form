@@ -1,7 +1,6 @@
 <?php
 
 namespace Cool_FormKit\Includes\Cron;
-use Cool_FormKit\feedback\cfl_feedback;
 
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 

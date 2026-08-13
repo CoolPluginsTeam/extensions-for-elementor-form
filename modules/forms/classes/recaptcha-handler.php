@@ -27,6 +27,13 @@ class Recaptcha_Handler
 
 	const V2_CHECKBOX = 'v2_checkbox';
 
+	/**
+	 * Last siteverify error-code map used by resolve_recaptcha_error_message().
+	 *
+	 * @var array
+	 */
+	protected $last_recaptcha_error_map = [];
+
 	protected static function get_recaptcha_name()
 	{
 		return 'recaptcha';
@@ -55,11 +62,6 @@ class Recaptcha_Handler
 	public static function get_setup_message()
 	{
 		return esc_html__('To use reCAPTCHA, you need to add the API Key and complete the setup process in Dashboard > Elementor > Cool FormKit Lite > Settings > reCAPTCHA', 'extensions-for-elementor-form');
-	}
-
-	protected static function get_script_render_param()
-	{
-		return 'explicit';
 	}
 
 	protected static function get_script_name()
@@ -96,13 +98,45 @@ class Recaptcha_Handler
 		// PHPCS - response protected by recaptcha secret
 		$recaptcha_response = Utils::_unstable_get_super_global_value($_POST, 'g-recaptcha-response'); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
-
 		if (empty($recaptcha_response)) {
-			$ajax_handler->add_error($field['id'], esc_html__('The Captcha field cannot be blank.', 'extensions-for-elementor-form'));
-
+			$ajax_handler->add_error($field['id'], $this->get_empty_response_message());
 			return;
 		}
 
+		$result = $this->verify_recaptcha_response($recaptcha_response, $ajax_handler, $field);
+		if (null === $result) {
+			return;
+		}
+
+		if (!$this->validate_result($result, $field)) {
+			$message = $this->resolve_recaptcha_error_message($result);
+			$this->add_error($ajax_handler, $field, $message);
+		}
+
+		// If success - remove the field form list (don't send it in emails and etc )
+		$record->remove_field($field['id']);
+	}
+
+	/**
+	 * Message when g-recaptcha-response is missing.
+	 *
+	 * @return string
+	 */
+	protected function get_empty_response_message()
+	{
+		return esc_html__('The Captcha field cannot be blank.', 'extensions-for-elementor-form');
+	}
+
+	/**
+	 * Verify token with Google siteverify API.
+	 *
+	 * @param string       $recaptcha_response Token.
+	 * @param Ajax_Handler $ajax_handler Handler.
+	 * @param array        $field Field data.
+	 * @return array|null Decoded response or null when an error was already added.
+	 */
+	protected function verify_recaptcha_response($recaptcha_response, $ajax_handler, $field)
+	{
 		$recaptcha_errors = [
 			'missing-input-secret' => esc_html__('The secret parameter is missing.', 'extensions-for-elementor-form'),
 			'invalid-input-secret' => esc_html__('The secret parameter is invalid or malformed.', 'extensions-for-elementor-form'),
@@ -111,50 +145,59 @@ class Recaptcha_Handler
 		];
 
 		$recaptcha_secret = static::get_secret_key();
-		$client_ip = Utils::get_client_ip();
+		if (empty($recaptcha_secret)) {
+			$ajax_handler->add_error($field['id'], esc_html__('Missing reCAPTCHA secret key.', 'extensions-for-elementor-form'));
+			return null;
+		}
 
-		$request = [
+		$response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
 			'body' => [
 				'secret' => $recaptcha_secret,
 				'response' => $recaptcha_response,
-				'remoteip' => $client_ip,
+				'remoteip' => Utils::get_client_ip(),
 			],
-		];
+			'timeout' => 10,
+		]);
 
-		$response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', $request);
+		if (is_wp_error($response)) {
+			$ajax_handler->add_error($field['id'], esc_html__('Error verifying reCAPTCHA. Please try again.', 'extensions-for-elementor-form'));
+			return null;
+		}
 
 		$response_code = wp_remote_retrieve_response_code($response);
-
 		if (200 !== (int) $response_code) {
 			/* translators: %d: Response code. */
 			$ajax_handler->add_error($field['id'], sprintf(esc_html__('Can not connect to the reCAPTCHA server (%d).', 'extensions-for-elementor-form'), $response_code));
-
-			return;
+			return null;
 		}
 
-		$body = wp_remote_retrieve_body($response);
+		$result = json_decode(wp_remote_retrieve_body($response), true);
+		$this->last_recaptcha_error_map = $recaptcha_errors;
 
-		$result = json_decode($body, true);
+		return is_array($result) ? $result : [];
+	}
 
-		if (! $this->validate_result($result, $field)) {
-			$message = esc_html__('Invalid form, reCAPTCHA validation failed.', 'extensions-for-elementor-form');
+	/**
+	 * Map Google error-codes to a user message.
+	 *
+	 * @param array $result Siteverify response.
+	 * @return string
+	 */
+	protected function resolve_recaptcha_error_message($result)
+	{
+		$message = esc_html__('Invalid form, reCAPTCHA validation failed.', 'extensions-for-elementor-form');
+		$recaptcha_errors = $this->last_recaptcha_error_map ?? [];
 
-			if (isset($result['error-codes'])) {
-				$result_errors = array_flip($result['error-codes']);
-
-				foreach ($recaptcha_errors as $error_key => $error_desc) {
-					if (isset($result_errors[$error_key])) {
-						$message = $recaptcha_errors[$error_key];
-						break;
-					}
+		if (isset($result['error-codes']) && !empty($recaptcha_errors)) {
+			$result_errors = array_flip($result['error-codes']);
+			foreach ($recaptcha_errors as $error_key => $error_desc) {
+				if (isset($result_errors[$error_key])) {
+					return $recaptcha_errors[$error_key];
 				}
 			}
-
-			$this->add_error($ajax_handler, $field, $message);
 		}
 
-		// If success - remove the field form list (don't send it in emails and etc )
-		$record->remove_field($field['id']);
+		return $message;
 	}
 
 	/**
@@ -169,11 +212,28 @@ class Recaptcha_Handler
 
 	protected function validate_result($result, $field)
 	{
-		if (! $result['success']) {
+		if (empty($result['success'])) {
 			return false;
 		}
 
 		return true;
+	}
+
+	/**
+	 * Build render attributes for the captcha widget markup.
+	 *
+	 * @param array $item Field item.
+	 * @return array
+	 */
+	protected function get_render_attributes($item)
+	{
+		return [
+			'class' => 'cool-form-recaptcha',
+			'data-sitekey' => static::get_site_key(),
+			'data-theme' => esc_attr($item['recaptcha_style'] ?? 'light'),
+			'data-size' => esc_attr($item['recaptcha_size'] ?? 'normal'),
+			'data-recaptcha-version' => static::get_recaptcha_type(),
+		];
 	}
 
 	/**
@@ -183,26 +243,14 @@ class Recaptcha_Handler
 	 */
 	public function render_field($item, $item_index, $widget)
 	{
-		$recaptcha_html = '<div class="cool-form-field" id="form-field-' . esc_attr( $item['custom_id'] ?? '' ) . '">';
+		$custom_id = esc_attr($item['custom_id'] ?? '');
+		$recaptcha_html = '<div class="cool-form-field" id="form-field-' . $custom_id . '">';
 
 		if (static::is_enabled()) {
 			$this->enqueue_scripts();
 
 			$recaptcha_name = static::get_recaptcha_name();
-
-			// Get the widget settings for theme & size
-			$theme = $item['recaptcha_style'];
-			$size = $item['recaptcha_size'];
-
-			// Add attributes dynamically
-			$widget->add_render_attribute($recaptcha_name . $item_index, [
-				'class' => 'cool-form-recaptcha',
-				'data-sitekey' => static::get_site_key(),
-				'data-theme' => esc_attr($theme),
-				'data-size' => esc_attr($size),
-				'data-recaptcha-version' => static::get_recaptcha_type()
-			]);
-
+			$widget->add_render_attribute($recaptcha_name . $item_index, $this->get_render_attributes($item));
 			$recaptcha_html .= '<div ' . $widget->get_render_attribute_string($recaptcha_name . $item_index) . '></div>';
 		} else {
 			$recaptcha_html .= '<div class="elementor-alert elementor-alert-info">';
@@ -214,20 +262,6 @@ class Recaptcha_Handler
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $recaptcha_html;
-	}
-
-	/**
-	 * @param $item
-	 * @param $item_index
-	 * @param $widget Widget_Base
-	 */
-	protected function add_version_specific_render_attributes($item, $item_index, $widget)
-	{
-		$recaptcha_name = static::get_recaptcha_name();
-		$widget->add_render_attribute($recaptcha_name . $item_index, [
-			'data-theme' => $item['recaptcha_style'],
-			'data-size' => $item['recaptcha_size'],
-		]);
 	}
 
 	public function add_field_type($field_types)

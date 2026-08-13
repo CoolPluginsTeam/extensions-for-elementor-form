@@ -14,18 +14,18 @@ if (! defined('ABSPATH')) {
 class Review_notice
 {
 
-	private $plugin_url     = CFL_PLUGIN_URL;
 	private $plugin_name    = 'Cool Formkit Lite';
 
 	private $review_option = 'cfl_review_notice_dismiss';
 	private $plugin_slug    = 'cfl';
 
-	private $installation_date_option = 'eef-installDate';
+	private $installation_date_option = 'cfl-install-date';
+
+	/** @deprecated Kept only for one-time read fallback from older installs. */
+	private $legacy_installation_date_option = 'eef-installDate';
 
 	private $review_link = 'https://wordpress.org/support/plugin/extensions-for-elementor-form/reviews/#new-post';
-	// private $feedback_url   = 'http://feedback.coolplugins.net/wp-json/coolplugins-feedback/v1/feedback';
 
-	private $plugin_logo = 'assets/images/cool-formkit-lite-logo.gif';
 	public function __construct()
 	{
 
@@ -83,11 +83,15 @@ class Review_notice
 		}
 
 		// get installation dates and rated settings
-		$installation_date = get_option($this->installation_date_option);
+		$installation_date = $this->get_installation_date();
 		$alreadyRated      = get_option($this->review_option) != false ? get_option($this->review_option) : 'no';
 
 		// check user already rated
 		if ($alreadyRated == 'yes') {
+			return;
+		}
+
+		if (empty($installation_date)) {
 			return;
 		}
 
@@ -155,5 +159,26 @@ class Review_notice
 			echo json_encode(array('success' => 'true'));
 			exit;
 		}
+	}
+
+	/**
+	 * Prefer cfl-install-date; migrate once from legacy eef-installDate when needed.
+	 *
+	 * @return string|false
+	 */
+	private function get_installation_date()
+	{
+		$installation_date = get_option($this->installation_date_option);
+		if ($installation_date) {
+			return $installation_date;
+		}
+
+		$legacy_date = get_option($this->legacy_installation_date_option);
+		if ($legacy_date) {
+			add_option($this->installation_date_option, $legacy_date);
+			return $legacy_date;
+		}
+
+		return false;
 	}
 }

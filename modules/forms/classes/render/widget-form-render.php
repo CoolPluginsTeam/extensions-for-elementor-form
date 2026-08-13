@@ -8,7 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 use Cool_FormKit\Modules\Forms\Widgets\Cool_Form;
 use Cool_FormKit\Includes\Utils;
 use Elementor\Icons_Manager;
-use Elementor\Utils as Elementor_Utils;
 
 class Widget_Form_Render {
 	protected Cool_Form $widget;

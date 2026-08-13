@@ -4,6 +4,277 @@
  */
 window.CFKEF = window.CFKEF || {};
 
+/**
+ * Shared dial-code prefix updater used by Elementor / Cool Form / Hello Plus / Atomic.
+ *
+ * @param {HTMLInputElement} element
+ * @param {string} currentCode
+ * @param {string} previousCode
+ * @param {string} dialCodeVisibility
+ */
+CFKEF.updateCountryCodeHandler = function (element, currentCode, previousCode, dialCodeVisibility) {
+	var value = element.value;
+
+	if ((currentCode && '+undefined' === currentCode) || ['', '+'].includes(value)) {
+		return;
+	}
+
+	if (currentCode !== previousCode) {
+		value = value.replace(new RegExp('^\\' + previousCode), '');
+	}
+
+	if (!value.startsWith(currentCode)) {
+		value = value.replace(/\+/g, '');
+		element.value = dialCodeVisibility === 'separate' || dialCodeVisibility === 'hide' ? value : currentCode + value;
+	} else if (value.length > 12) {
+		var plainCode = currentCode.replace('+', '');
+		var doublePrefix = '+' + plainCode + plainCode;
+
+		if (value.startsWith(doublePrefix)) {
+			element.value = '+' + value.slice(currentCode.length);
+		}
+	}
+};
+
+/**
+ * Build intlTelInput options from wrapper data attributes.
+ *
+ * @param {Object} config
+ * @return {Object}
+ */
+CFKEF.buildItiOptions = function (config) {
+	config = config || {};
+
+	var includeArr = config.includeCountries;
+	var excludeArr = config.excludeCountries;
+
+	if (typeof includeArr === 'string') {
+		includeArr = includeArr ? includeArr.split(',') : [];
+	}
+	includeArr = includeArr || [];
+
+	if (typeof excludeArr === 'string') {
+		excludeArr = excludeArr ? excludeArr.split(',') : [];
+	}
+	excludeArr = excludeArr || [];
+
+	var dialCodeVisibility = config.dialCodeVisibility || 'show';
+	var defaultCountry = config.defaultCountry || '';
+	var strictMode = !!config.strictMode;
+	var utilsPath = config.utilsScript || (
+		window.CCFEFCustomData && CCFEFCustomData.pluginDir
+			? CCFEFCustomData.pluginDir + 'assets/js/utils.js'
+			: ''
+	);
+	var containerClass = config.containerClass || 'cfefp-intl-container';
+	var defaultCountriesArr = ['in', 'us', 'gb', 'ru', 'fr', 'de', 'br', 'cn', 'jp', 'it'];
+
+	if (excludeArr.length > 0 && includeArr.length > 0) {
+		includeArr = includeArr.filter(function (code) {
+			return excludeArr.indexOf(code) === -1;
+		});
+	}
+
+	if (!defaultCountry && includeArr.length > 0) {
+		defaultCountry = includeArr[0];
+	} else if (defaultCountry && includeArr.length > 0 && includeArr.indexOf(defaultCountry) === -1) {
+		defaultCountry = includeArr[0];
+	}
+
+	if (!defaultCountry && excludeArr.length > 0 && includeArr.length === 0) {
+		var uniqueValue = defaultCountriesArr.filter(function (code) {
+			return excludeArr.indexOf(code) === -1;
+		});
+		defaultCountry = uniqueValue[0] || 'in';
+	}
+
+	if (!defaultCountry || defaultCountry === 'NAN') {
+		defaultCountry = 'in';
+	}
+
+	var options = {
+		initialCountry: defaultCountry,
+		utilsScript: utilsPath,
+		strictMode: strictMode,
+		separateDialCode: dialCodeVisibility === 'separate',
+		formatOnDisplay: false,
+		formatAsYouType: true,
+		autoFormat: false,
+		containerClass: containerClass,
+		useFullscreenPopup: false,
+	};
+
+	if (includeArr.length) {
+		options.onlyCountries = includeArr;
+	}
+	if (excludeArr.length) {
+		options.excludeCountries = excludeArr;
+	}
+
+	return options;
+};
+
+/**
+ * Israeli landline numbers that intlTelInput rejects but should still pass.
+ *
+ * @param {Object} iti
+ * @param {string} inputVal
+ * @return {boolean}
+ */
+CFKEF.isIsraeliLandlineException = function (iti, inputVal) {
+	var currentCountryData = iti.getSelectedCountryData();
+	if (currentCountryData.dialCode !== '972' || currentCountryData.iso2 !== 'il') {
+		return false;
+	}
+
+	var fullNumber = inputVal.startsWith('+') ? inputVal : '+' + currentCountryData.dialCode + inputVal;
+	var numberAfterCountryCode = fullNumber.replace(/^\+972/, '').replace(/\D/g, '');
+	if (numberAfterCountryCode.charAt(0) === '0') {
+		numberAfterCountryCode = numberAfterCountryCode.substring(1);
+	}
+
+	var validLandlinePrefixes = ['2', '3', '4', '8', '9'];
+	if (numberAfterCountryCode.length !== 8) {
+		return false;
+	}
+	return validLandlinePrefixes.indexOf(numberAfterCountryCode.charAt(0)) !== -1;
+};
+
+/**
+ * Validate one intlTelInput instance for submit.
+ *
+ * @param {Object} iti
+ * @param {Object} [opts]
+ * @param {string} [opts.dialCodeVisibility]
+ * @param {Array|Object} [opts.errorMap]
+ * @param {Function} [opts.isHidden] (inputEl) => boolean
+ * @param {Function} [opts.onAfterSanitize] (inputEl) => void
+ * @return {{ valid: boolean, skipped: boolean, input: HTMLElement, errorMessage: string|null }}
+ */
+CFKEF.validateItiOnSubmit = function (iti, opts) {
+	opts = opts || {};
+	var dialCodeVisibility = opts.dialCodeVisibility || 'show';
+	var errorMap = opts.errorMap || (window.CCFEFCustomData && CCFEFCustomData.errorMap) || [];
+	var inputTelElement = iti.telInput;
+
+	if ('' !== inputTelElement.value) {
+		inputTelElement.value = inputTelElement.value.replace(/[^0-9+]/g, '');
+
+		var currentCountryData = iti.getSelectedCountryData();
+		var dialCode = '+' + currentCountryData.dialCode;
+
+		if (dialCodeVisibility === 'separate' || dialCodeVisibility === 'hide') {
+			if (!inputTelElement.value.startsWith('+')) {
+				inputTelElement.value = dialCode + inputTelElement.value;
+			}
+		}
+	}
+
+	if (typeof opts.onAfterSanitize === 'function') {
+		opts.onAfterSanitize(inputTelElement);
+	}
+
+	if ('' === inputTelElement.value) {
+		return { valid: true, skipped: true, input: inputTelElement, errorMessage: null };
+	}
+
+	if (typeof opts.isHidden === 'function' && opts.isHidden(inputTelElement)) {
+		return { valid: true, skipped: true, input: inputTelElement, errorMessage: null };
+	}
+
+	if (iti.isValidNumber()) {
+		return { valid: true, skipped: false, input: inputTelElement, errorMessage: null };
+	}
+
+	if (CFKEF.isIsraeliLandlineException(iti, inputTelElement.value)) {
+		return { valid: true, skipped: false, input: inputTelElement, errorMessage: null };
+	}
+
+	var errorType = iti.getValidationError();
+	var errorMessage =
+		errorType !== undefined && errorMap[errorType] ? errorMap[errorType] : null;
+
+	if (errorMessage && (dialCodeVisibility === 'separate' || dialCodeVisibility === 'hide')) {
+		var failCountryData = iti.getSelectedCountryData();
+		var failDialCode = '+' + failCountryData.dialCode;
+		if (inputTelElement.value.startsWith(failDialCode)) {
+			inputTelElement.value = inputTelElement.value.substring(failDialCode.length);
+		}
+	}
+
+	return {
+		valid: !errorMessage,
+		skipped: false,
+		input: inputTelElement,
+		errorMessage: errorMessage,
+	};
+};
+
+/**
+ * Create a dial-code / iso2 sync handler for an intlTelInput instance.
+ *
+ * @param {Object} iti intlTelInput instance
+ * @param {Object} [opts]
+ * @param {string} [opts.dialCodeVisibility]
+ * @param {boolean} [opts.enableCountryChangeGuard]
+ * @param {number} [opts.debounceMs]
+ * @param {Function} [opts.onBeforeUpdate]
+ * @param {Function} [opts.updateHandler]
+ * @return {Function}
+ */
+CFKEF.createItiCountryChangeHandler = function (iti, opts) {
+	opts = opts || {};
+	var previousCountryData = iti.getSelectedCountryData();
+	var previousCode = '+' + previousCountryData.dialCode;
+	var keyUpEvent = false;
+	var dialCodeVisibility = opts.dialCodeVisibility || 'show';
+	var enableGuard = !!opts.enableCountryChangeGuard;
+	var debounceMs = opts.debounceMs || 400;
+	var onBeforeUpdate = typeof opts.onBeforeUpdate === 'function' ? opts.onBeforeUpdate : function () {};
+	var updateHandler =
+		typeof opts.updateHandler === 'function' ? opts.updateHandler : CFKEF.updateCountryCodeHandler;
+
+	var resetKeyUpEventStatus = function () {
+		keyUpEvent = false;
+	};
+
+	return function handleCountryChange(e) {
+		onBeforeUpdate(e);
+
+		var currentCountryData = iti.getSelectedCountryData();
+		var currentCode = '+' + currentCountryData.dialCode;
+
+		if (e.type === 'keydown' || e.type === 'input') {
+			if (enableGuard) {
+				keyUpEvent = true;
+				clearTimeout(resetKeyUpEventStatus);
+				setTimeout(resetKeyUpEventStatus, debounceMs);
+			}
+
+			if (previousCountryData.dialCode !== currentCountryData.dialCode) {
+				previousCountryData = currentCountryData;
+			} else if (
+				previousCountryData.dialCode === currentCountryData.dialCode &&
+				previousCountryData.iso2 !== currentCountryData.iso2
+			) {
+				iti.setCountry(previousCountryData.iso2);
+			}
+		} else if (e.type === 'countrychange') {
+			if (enableGuard && keyUpEvent) {
+				return;
+			}
+			previousCountryData = currentCountryData;
+		}
+
+		if (e.currentTarget.value.startsWith(currentCode.replace('+', ''))) {
+			updateHandler(e.currentTarget, '+', previousCode, dialCodeVisibility);
+		} else {
+			updateHandler(e.currentTarget, currentCode, previousCode, dialCodeVisibility);
+			previousCode = currentCode;
+		}
+	};
+};
+
 CFKEF.initCountryCode = function (opts) {
   opts = opts || {};
   var readyHook = opts.readyHook || 'frontend/element_ready/form.default';
@@ -225,8 +496,6 @@ CFKEF.initCountryCode = function (opts) {
 
         this.customFlags() // custom load svg flags
 
-        this.removeInputTelSpanEle(); // Removes the telephone input span element from the DOM, typically used to clean up after modifications.
-
         this.intlInputValidation(); // Validates the international input fields to ensure they meet specific criteria.
 
         this.setCountryFieldsLabelTyprography();
@@ -286,45 +555,18 @@ CFKEF.initCountryCode = function (opts) {
             if (enableMdcHandling) { this.handleTelWithMdcFields(iti); }
 
             const inputElement = iti.telInput;
-
-            let previousCountryData = iti.getSelectedCountryData();
-            let previousCode = `+${previousCountryData.dialCode}`;
-            let keyUpEvent = false;
-
-            const resetKeyUpEventStatus = () => {
-                keyUpEvent = false;
-            };
-
-            const handleCountryChange = (e) => {
-                this.customFlags();
-                this.TelFieldInputEventHandler(inputElement)
-                const currentCountryData = iti.getSelectedCountryData();
-                const currentCode = `+${currentCountryData.dialCode}`;
-                if (e.type === 'keydown' || e.type=== 'input') {
-                    keyUpEvent = true;
-                    clearTimeout(resetKeyUpEventStatus);
-                    setTimeout(resetKeyUpEventStatus, 400);
-
-                    if (previousCountryData.dialCode !== currentCountryData.dialCode) {
-                        previousCountryData = currentCountryData;
-                    } else if (previousCountryData.dialCode === currentCountryData.dialCode && previousCountryData.iso2 !== currentCountryData.iso2) {
-                        iti.setCountry(previousCountryData.iso2);
-                    }
-                } else if (e.type === "countrychange") {
-                    if (keyUpEvent) {
-                        return;
-                    }
-
-                    previousCountryData = currentCountryData;
-                }
-
-                if(e.currentTarget.value.startsWith(currentCode.replace('+',''))){
-                    this.updateCountryCodeHandler(e.currentTarget, '+', previousCode, this.dialCodeVisibility[key]);
-                }else{
-                    this.updateCountryCodeHandler(e.currentTarget, currentCode, previousCode, this.dialCodeVisibility[key]);
-                    previousCode = currentCode;
-                }
-            };
+            const handleCountryChange = CFKEF.createItiCountryChangeHandler(iti, {
+                dialCodeVisibility: this.dialCodeVisibility[key],
+                enableCountryChangeGuard: true,
+                debounceMs: 400,
+                onBeforeUpdate: () => {
+                    this.customFlags();
+                    this.TelFieldInputEventHandler(inputElement);
+                },
+                updateHandler: (element, currentCode, previousCode, dialCodeVisibility) => {
+                    this.updateCountryCodeHandler(element, currentCode, previousCode, dialCodeVisibility);
+                },
+            });
 
             // Attach event listeners for both keyup and country change events
             this.TelFieldInputEventHandler(inputElement)
@@ -552,29 +794,7 @@ CFKEF.initCountryCode = function (opts) {
      * @param {string} previousCode - The previous country code.
      */
     updateCountryCodeHandler(element, currentCode, previousCode,dialCodeVisibility) {
-        let value = element.value;
-        
-        if(currentCode && '+undefined' === currentCode || ['','+'].includes(value)){
-            return;
-        }
-        
-        if (currentCode !== previousCode) {
-            value = value.replace(new RegExp(`^\\${previousCode}`), '');
-        }
-        
-        if (!value.startsWith(currentCode)) {
-            value = value.replace(/\+/g, '');
-            element.value = dialCodeVisibility === 'separate' || dialCodeVisibility === 'hide' ? value : currentCode + value;
-        }
-
-        else if (value.length > 12) {
-            const plainCode = currentCode.replace('+', '');
-            const doublePrefix = `+${plainCode}${plainCode}`;
-
-            if (value.startsWith(doublePrefix)) {
-                element.value = `+${value.slice(currentCode.length)}`;
-            }
-        }
+        CFKEF.updateCountryCodeHandler(element, currentCode, previousCode, dialCodeVisibility);
     }
 
     customFlags() {
@@ -596,12 +816,6 @@ CFKEF.initCountryCode = function (opts) {
         });
     }
         
-    /**
-     * Removes the span element with class 'ccfef-editor-intl-input' from the DOM.
-     */
-    removeInputTelSpanEle() {
-    }
-
     /**
      * Retrieves and stores unique telephone input IDs from the Elementor editor span elements.
      */
@@ -769,108 +983,49 @@ CFKEF.initCountryCode = function (opts) {
             if (Object.keys(itiArr).length > 0) {
                 Object.keys(itiArr).forEach(data => {
                     const iti = itiArr[data];
-              
-                    const inputTelElement = iti.telInput;                    
-
-                    if('' !== inputTelElement.value){
-                        inputTelElement.value=inputTelElement.value.replace(/[^0-9+]/g, '');
-                                                                        
-                        // Always ensure dial code is present in the value before validation
-                        const currentCountryData = iti.getSelectedCountryData();
-                        const dialCode = `+${currentCountryData.dialCode}`;
-                        
-                        // If using separate or hide mode, ensure dial code is in the value
-                        if (this.dialCodeVisibility[data] === 'separate' || this.dialCodeVisibility[data] === 'hide') {
-                            if (!inputTelElement.value.startsWith('+')) {
-                                inputTelElement.value = dialCode + inputTelElement.value;
+                    const result = CFKEF.validateItiOnSubmit(iti, {
+                        dialCodeVisibility: this.dialCodeVisibility[data],
+                        onAfterSanitize: (inputTelElement) => {
+                            const parentWrp = inputTelElement.closest(fieldGroupSelector);
+                            if (!parentWrp) {
+                                return;
                             }
-                        }
-                    }
+                            const telContainer = parentWrp.querySelector('.cfefp-intl-container');
+                            if (telContainer && inputTelElement.offsetHeight) {
+                                telContainer.style.setProperty('--cfefp-intl-tel-button-height', `${inputTelElement.offsetHeight}px`);
+                            }
+                        },
+                    });
 
-                    const parentWrp = inputTelElement.closest(fieldGroupSelector);
-                    const telContainer=parentWrp.querySelector('.cfefp-intl-container');
-
-                    if (telContainer && inputTelElement.offsetHeight) {
-                        telContainer.style.setProperty('--cfefp-intl-tel-button-height', `${inputTelElement.offsetHeight}px`);
-                    }
-
+                    const inputTelElement = result.input;
                     const errorContainer = jQuery(inputTelElement).parent();
                     errorContainer.find('span.elementor-message').remove();
 
-                    const errorMap = CCFEFCustomData.errorMap;
-                    let errorMsgHtml = '<span class="elementor-message elementor-message-danger elementor-help-inline elementor-form-help-inline" role="alert">';
-                    if('' === inputTelElement.value){
+                    if (result.skipped) {
                         return;
-                    };
-                    if (iti.isValidNumber()) {
+                    }
+
+                    if (result.valid) {
                         jQuery(inputTelElement).closest('.cfefp-intl-container').removeClass('elementor-error');
                         this.setMdcTelValidationState(inputTelElement, '');
-                    } else {
+                        return;
+                    }
 
+                    if (result.errorMessage) {
+                        jQuery(inputTelElement).closest('.cfefp-intl-container').addClass('elementor-error');
 
-                        const currentCountryData = iti.getSelectedCountryData();
-                        const inputVal = inputTelElement.value;
-
-                        // Special validation for Israeli landline numbers
-                        if(currentCountryData.dialCode === '972' && currentCountryData.iso2 === 'il'){
-
-                            // Get the full number (with country code)
-                            const fullNumber = inputVal.startsWith('+') ? inputVal : `+${currentCountryData.dialCode}${inputVal}`;
-
-                            // Extract number after +972 (remove country code and any non-digits)
-                            let numberAfterCountryCode = fullNumber.replace(/^\+972/, '').replace(/\D/g, '');
-
-                            if (numberAfterCountryCode.startsWith('0')) {
-                                numberAfterCountryCode = numberAfterCountryCode.substring(1);
-                            }
-
-                            // Valid landline area codes (without leading 0): 2, 3, 4, 8, 9
-                            const validLandlinePrefixes = ['2', '3', '4', '8', '9'];
-                            
-                            // Israeli landline format: exactly 8 digits after +972 (without leading 0)
-                            // Format: +972 + [2|3|4|8|9] + 7 more digits = 8 digits total
-                            // Handles both: +97221234567 (8 digits) and +972021234567 (9 digits, we remove the 0)
-                            if (numberAfterCountryCode.length === 8) {
-                                const firstDigit = numberAfterCountryCode.charAt(0);
-                                
-                                if (validLandlinePrefixes.includes(firstDigit)) {
-                                    // Valid Israeli landline number - allow it even if general validation failed
-                                    jQuery(inputTelElement).closest('.cfefp-intl-container').removeClass('elementor-error');
-                                    this.setMdcTelValidationState(inputTelElement, '');
-                                    
-                                    return; // Exit early, don't show error
-                                }
-                            }
-                            // If not a valid landline, continue with normal error handling below
+                        if (!this.setMdcTelValidationState(inputTelElement, result.errorMessage)) {
+                            const errorMsgHtml = '<span class="elementor-message elementor-message-danger elementor-help-inline elementor-form-help-inline" role="alert">' +
+                                result.errorMessage + '</span>';
+                            jQuery(inputTelElement).after(errorMsgHtml);
                         }
 
-                        const errorType = iti.getValidationError();
-                        if (errorType !== undefined && errorMap[errorType]) {
-                            // Remove dial code from input field if validation fails
-                            if (this.dialCodeVisibility[data] === 'separate' || this.dialCodeVisibility[data] === 'hide') {
-                                const currentCountryData = iti.getSelectedCountryData();
-                                const dialCode = `+${currentCountryData.dialCode}`;
-                                if (inputTelElement.value.startsWith(dialCode)) {
-                                    inputTelElement.value = inputTelElement.value.substring(dialCode.length);
-                                }
-                            }
-                            
-                            const errorMessage = errorMap[errorType];
-                            jQuery(inputTelElement).closest('.cfefp-intl-container').addClass('elementor-error');
-
-                            // Cool Form uses MDC helper text + trailing icon (not Elementor messages).
-                            if (!this.setMdcTelValidationState(inputTelElement, errorMessage)) {
-                                errorMsgHtml += errorMessage + '</span>';
-                                jQuery(inputTelElement).after(errorMsgHtml);
-                            }
-
-                            if (!firstInvalidInput) {
-                                firstInvalidInput = inputTelElement;
-                            }
-
-                            e.preventDefault();
-                            e.stopImmediatePropagation();
+                        if (!firstInvalidInput) {
+                            firstInvalidInput = inputTelElement;
                         }
+
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
                     }
                 });
             }

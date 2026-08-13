@@ -103,54 +103,10 @@ CFKEF.initLogicFrontend = function (opts) {
 
   $(document).ready(function () {
 
-
-        // function for compare conditional values 
         function checkFieldLogic(compareFieldValue, conditionOperation, compareValue) {
-                    
-            conditionOperation = decodeHTMLEntities(conditionOperation);
-            compareValue =
-          compareValue === null
-            ? decodeHTMLEntities(compareValue)
-            : decodeHTMLEntities(compareValue).trim();
-        compareFieldValue =
-          compareFieldValue === null
-            ? decodeHTMLEntities(compareFieldValue)
-            : compareFieldValue.trim();
-            var values = compareFieldValue.split(',');
-
-            var matchFound = values.some(function(value) {
-                return value.trim() === compareValue;
-            });
-
-            switch (conditionOperation) {
-                case "==":
-                    return matchFound && '' !== compareFieldValue;
-                case "!=":
-                    return !matchFound && compareFieldValue !== "";
-                case "e":
-                    return compareFieldValue == "";
-                case "!e":
-                    return compareFieldValue != "";
-                case "c":
-                    return compareFieldValue.includes(compareValue);
-                case "!c":
-                    return compareFieldValue != "" && !compareFieldValue.includes(compareValue);
-                case "^":
-                    return compareFieldValue.startsWith(compareValue);
-                case "~":
-                    return compareFieldValue.endsWith(compareValue);
-                case ">":
-                    return parseInt(compareFieldValue) > parseInt(compareValue);
-                case "<":
-                    return parseInt(compareFieldValue) < parseInt(compareValue);
-                case ">=":
-                    return parseInt(compareFieldValue) >= parseInt(compareValue);
-                case "<=":
-                    return parseInt(compareFieldValue) <= parseInt(compareValue);
-                default:
-                    return false;
-            }
+            return CFKEF.checkFieldLogic(compareFieldValue, conditionOperation, compareValue);
         }
+
         function decodeHTMLEntities(text) {
             return window.CFKEF.decodeHtml(text);
         }
@@ -626,7 +582,7 @@ CFKEF.initLogicFrontend = function (opts) {
             else if (formField.hasClass(typeClass("upload"))) {
                 const firstType = file_types.split(',')[0];
                 const inputField=formField.find('input');
-                const fileName = `${getScriptVars().pluginConstant}assets/images/placeholder.${firstType}`;
+                const fileName = `cool-formkit-placeholder.${firstType}`;
                 const inputValue=inputField.val();
                 if(inputValue.indexOf(fileName) !== -1){
                     inputField.val('');
@@ -824,7 +780,7 @@ CFKEF.initLogicFrontend = function (opts) {
             } 
             else if (formField.hasClass(typeClass("upload"))) {
                 const firstType = file_types.split(',')[0];
-                const fileName = `${getScriptVars().pluginConstant}assets/images/placeholder.${firstType}`; // Set the desired filename
+                const fileName = `cool-formkit-placeholder.${firstType}`;
                 const defaultImage = new File([], fileName, { type: 'image/png' });
                 const fileInput = formField.find('input[type="file"]');
                 

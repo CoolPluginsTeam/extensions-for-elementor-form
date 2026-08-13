@@ -14,34 +14,40 @@ class Utils {
 		return \Elementor\Plugin::$instance;
 	}
 
-	public static function has_pro(): bool {
-		return defined( 'ELEMENTOR_PRO_VERSION' );
-	}
-
-	private static function sanitize_file_name( $file ) {
-		$file['name'] = sanitize_file_name( $file['name'] );
-
-		return $file;
-	}
-
-	private static function sanitize_multi_upload( $fields ) {
-		return array_map( function( $field ) {
-			return array_map( [ __CLASS__, 'sanitize_file_name' ], $field );
-		}, $fields );
-	}
-
 	public static function _unstable_get_super_global_value( $super_global, $key ) {
 		if ( ! isset( $super_global[ $key ] ) ) {
 			return null;
 		}
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing
-		if ( $_FILES === $super_global ) {
-			return isset( $super_global[ $key ]['name'] ) ?
-				static::sanitize_file_name( $super_global[ $key ] ) :
-				static::sanitize_multi_upload( $super_global[ $key ] );
-		}
 
 		return wp_kses_post_deep( wp_unslash( $super_global[ $key ] ) );
+	}
+
+	/**
+	 * Insert controls into the form fields repeater before field_value (Advanced tab).
+	 *
+	 * @param object $element      Elementor element.
+	 * @param array  $control_data Existing form_fields control data.
+	 * @param array  $pattern_field Controls to insert (from a Repeater).
+	 * @return mixed
+	 */
+	public static function register_control_in_form_advanced_tab( $element, $control_data, $pattern_field ) {
+		foreach ( $pattern_field as $key => $control ) {
+			if ( '_id' === $key ) {
+				continue;
+			}
+
+			$new_order = array();
+			foreach ( $control_data['fields'] as $field_key => $field ) {
+				if ( 'field_value' === $field['name'] ) {
+					$new_order[ $key ] = $control;
+				}
+				$new_order[ $field_key ] = $field;
+			}
+
+			$control_data['fields'] = $new_order;
+		}
+
+		return $element->update_control( 'form_fields', $control_data );
 	}
 
 	public static function get_current_post_id(): int {

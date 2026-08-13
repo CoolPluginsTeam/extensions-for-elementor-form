@@ -124,10 +124,17 @@ trait FME_Plugin_Trait {
 	}
 
 	public function editor_inline_JS() {
+		wp_register_script(
+			'cfkef-shared-mask-editor-classes',
+			CFL_PLUGIN_URL . 'assets/js/shared/mask-editor-classes.js',
+			array(),
+			CFL_VERSION,
+			true
+		);
 		wp_enqueue_script(
 			$this->get_editor_template_script_handle(),
 			$this->get_editor_template_script_src(),
-			array(),
+			array( 'cfkef-shared-mask-editor-classes' ),
 			CFL_VERSION,
 			true
 		);

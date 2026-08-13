@@ -12,6 +12,7 @@ namespace Cool_FormKit\Includes\Fields;
 
 use Elementor\Controls_Manager as ElementorControls;
 use Elementor\Repeater as ElementorRepeater;
+use Cool_FormKit\Includes\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -78,7 +79,7 @@ trait Mask_Control_Trait {
 	 */
 	protected function init_mask_control(): void {
 		add_action( $this->get_form_fields_section_hook(), array( $this, 'add_mask_control' ), 100, 2 );
-		add_filter( $this->get_render_item_hook(), array( $this, 'add_mask_atributes' ), 10, 3 );
+		add_filter( $this->get_render_item_hook(), array( $this, 'add_mask_attributes' ), 10, 3 );
 	}
 
 	/**
@@ -358,42 +359,11 @@ trait Mask_Control_Trait {
 		 *
 		 * @since 1.5.2
 		 */
-		$this->register_control_in_form_advanced_tab( $element, $control_data, $pattern_field );
+		Utils::register_control_in_form_advanced_tab( $element, $control_data, $pattern_field );
 	}
 
 	/**
-	 * Register control in form advanced tab
-	 *
-	 * @param object $element
-	 * @param array  $control_data
-	 * @param array  $pattern_field
-	 * @return mixed
-	 *
-	 * @since 1.5.2
-	 */
-	public function register_control_in_form_advanced_tab( $element, $control_data, $pattern_field ) {
-		foreach ( $pattern_field as $key => $control ) {
-
-			if ( $key !== '_id' ) {
-
-				$new_order = array();
-				foreach ( $control_data['fields'] as $field_key => $field ) {
-
-					if ( 'field_value' === $field['name'] ) {
-						$new_order[ $key ] = $control;
-					}
-					$new_order[ $field_key ] = $field;
-				}
-
-				$control_data['fields'] = $new_order;
-			}
-		}
-
-		return $element->update_control( 'form_fields', $control_data );
-	}
-
-	/**
-	 * Render/add new mask atributes on input field.
+	 * Render/add new mask attributes on input field.
 	 *
 	 * @since 1.0
 	 * @param array  $field
@@ -401,7 +371,7 @@ trait Mask_Control_Trait {
 	 * @param mixed  $form_widget
 	 * @return array
 	 */
-	public function add_mask_atributes( $field, $field_index, $form_widget ) {
+	public function add_mask_attributes( $field, $field_index, $form_widget ) {
 		if (
 			! empty( $field['fme_mask_control'] ) &&
 			in_array( $field['field_type'], $this->allowed_fields, $this->use_strict_field_type_check() ) &&

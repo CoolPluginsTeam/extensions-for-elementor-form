@@ -1,8 +1,6 @@
 <?php
 namespace Cool_FormKit\feedback;
 
-use DateTime;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; }
 

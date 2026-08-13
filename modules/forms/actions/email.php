@@ -3,7 +3,6 @@ namespace Cool_FormKit\Modules\Forms\Actions;
 
 use Elementor\Controls_Manager;
 use Cool_FormKit\Modules\Forms\Classes\Action_Base;
-use Cool_FormKit\Modules\Forms\Classes\Form_Record;
 use Cool_FormKit\Modules\Forms\Components\Ajax_Handler;
 use Cool_FormKit\Modules\Forms\Module;
 use Cool_FormKit\Includes\Actions\Email_Header_Utils;
@@ -364,7 +363,7 @@ class Email extends Action_Base {
 
 	/**
 	 * @param string      $email_content
-	 * @param Form_Record $record
+	 * @param \Cool_FormKit\Modules\Forms\Classes\Form_Record $record
 	 *
 	 * @return string
 	 */

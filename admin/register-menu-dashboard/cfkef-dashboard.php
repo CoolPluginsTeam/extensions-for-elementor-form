@@ -19,20 +19,6 @@ class CFKEF_Dashboard
      * @var string
      */
     private $capability = 'manage_options';
-    
-    /**
-     * The plugin name.
-     *
-     * @var string
-     */
-    private $plugin_name;
-    
-    /**
-     * The version of the plugin.
-     *
-     * @var string
-     */
-    private $version;
 
     /**
      * The allowed pages.
@@ -54,27 +40,21 @@ class CFKEF_Dashboard
     /**
      * Get the instance of the class.
      *
-     * @param string $plugin_name The name of the plugin.
-     * @param string $version The version of the plugin.
      * @return object The instance of the class.
      */
-    public static function get_instance($plugin_name, $version)
+    public static function get_instance()
     {
         if (null === self::$instance) {
-            self::$instance = new self($plugin_name, $version);
+            self::$instance = new self();
         }
         return self::$instance;
     }
 
     /**
      * Constructor for the class.
-     * 
-     * @param callable $dashboard_callback The callback function for the dashboard page.
      */
-    public function __construct($plugin_name, $version)
+    public function __construct()
     {
-        $this->plugin_name = $plugin_name;
-        $this->version = $version;
         $dashboard_pages = array(
             'cfkef-entries' => array(
                 'title' => '↳ Entries',

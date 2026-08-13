@@ -24,7 +24,7 @@ class Atomic_Form extends Core_Atomic_Form {
 
 	protected static function define_props_schema(): array {
 		$schema = parent::define_props_schema();
-		if ( ! self::is_cfkef_element_enabled( 'whatsapp_redirect' ) ) {
+		if ( ! \CFL_Elements::is_enabled( 'whatsapp_redirect' ) ) {
 			return $schema;
 		}
 		return Atomic_Form_Whatsapp_Redirect_Controls::extend_props_schema( $schema );
@@ -74,12 +74,5 @@ class Atomic_Form extends Core_Atomic_Form {
 		}
 
 		return $result;
-	}
-
-	/**
-	 * @param string $field_key Option list entry from cfkef_enabled_elements.
-	 */
-	private static function is_cfkef_element_enabled( $field_key ): bool {
-		return \CFL_Elements::is_enabled( $field_key );
 	}
 }

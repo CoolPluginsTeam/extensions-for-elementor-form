@@ -1,6 +1,6 @@
 <?php
 /**
- * Singleton + version scaffolding for edition-specific addon loaders.
+ * Singleton scaffolding for edition-specific addon loaders.
  *
  * @package Cool_FormKit
  */
@@ -18,11 +18,6 @@ abstract class Base_Addons_Loader {
 	 */
 	private static $instances = [];
 
-	/**
-	 * @var string
-	 */
-	protected $version;
-
 	final public static function get_instance() {
 		$class = static::class;
 
@@ -34,7 +29,6 @@ abstract class Base_Addons_Loader {
 	}
 
 	final protected function __construct() {
-		$this->version = CFL_VERSION;
 		$this->init();
 	}
 
@@ -42,8 +36,4 @@ abstract class Base_Addons_Loader {
 	 * Register hooks and load edition-specific addons.
 	 */
 	abstract protected function init(): void;
-
-	public function get_version() {
-		return $this->version;
-	}
 }

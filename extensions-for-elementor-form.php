@@ -35,18 +35,21 @@ if (! defined('ABSPATH')) {
 
 define('CFL_VERSION', '2.7.6');
 define('PHP_MINIMUM_VERSION', '7.4');
-define('WP_MINIMUM_VERSION', '5.5');
+define('WP_MINIMUM_VERSION', '6.2');
 define('CFL_PLUGIN_MAIN_FILE', __FILE__);
 define('CFL_PLUGIN_PATH', plugin_dir_path(CFL_PLUGIN_MAIN_FILE));
 define('CFL_PLUGIN_URL', plugin_dir_url(CFL_PLUGIN_MAIN_FILE));
 define('CFL_ASSETS_URL', CFL_PLUGIN_URL . 'build/');
 define('CFL_SCRIPTS_URL', CFL_ASSETS_URL . 'js/');
 define('CFL_STYLE_URL', CFL_ASSETS_URL . 'css/');
-define('CFL__MIN_ELEMENTOR_VERSION', '3.26.4');
+define('CFL_MIN_ELEMENTOR_VERSION', '3.26.4');
 define('CFL_MIN_ELEMENTOR_ATOMIC_FORM_VERSION', '4.0');
 define('CFL_FEEDBACK_URL', 'https://feedback.coolplugins.net/');
 
 require_once CFL_PLUGIN_PATH . 'includes/helpers/cfl-asset-version.php';
+require_once CFL_PLUGIN_PATH . 'includes/helpers/cfl-field-logic.php';
+require_once CFL_PLUGIN_PATH . 'includes/helpers/cfl-country-code.php';
+require_once CFL_PLUGIN_PATH . 'includes/helpers/cfl-whatsapp.php';
 require_once CFL_PLUGIN_PATH . 'includes/class-cfl-elements.php';
 
 if (! function_exists('is_plugin_active')) {
@@ -293,7 +296,7 @@ class Cool_Formkit_Lite_For_Elementor_Form
 	{
 		if (plugin_basename(CFL_PLUGIN_MAIN_FILE) === $plugin_file) {
 			$row_meta = array(
-				'docs' => '<a href="' . esc_url('https://docs.coolplugins.net/plugin/cool-formkit-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins_list') . '" aria-label="' . esc_attr(esc_html__('View CoolFomkit Documentation', 'extensions-for-elementor-form')) . '" target="_blank">' . esc_html__('View Documentation', 'extensions-for-elementor-form') . '</a>',
+				'docs' => '<a href="' . esc_url('https://docs.coolplugins.net/plugin/cool-formkit-for-elementor-form/?utm_source=cfkl_plugin&utm_medium=inside&utm_campaign=docs&utm_content=plugins_list') . '" aria-label="' . esc_attr(esc_html__('View Cool FormKit Documentation', 'extensions-for-elementor-form')) . '" target="_blank">' . esc_html__('View Documentation', 'extensions-for-elementor-form') . '</a>',
 			);
 
 			$plugin_meta = array_merge($plugin_meta, $row_meta);
@@ -346,6 +349,19 @@ class Cool_Formkit_Lite_For_Elementor_Form
 			return false;
 		}
 
+		$elementor_version = defined('ELEMENTOR_VERSION') ? ELEMENTOR_VERSION : '';
+		if ('' === $elementor_version) {
+			$elementor_file = WP_PLUGIN_DIR . '/elementor/elementor.php';
+			if (file_exists($elementor_file)) {
+				$elementor_data    = get_file_data($elementor_file, array('Version' => 'Version'), 'plugin');
+				$elementor_version = isset($elementor_data['Version']) ? $elementor_data['Version'] : '';
+			}
+		}
+
+		if ('' === $elementor_version || ! version_compare($elementor_version, CFL_MIN_ELEMENTOR_VERSION, '>=')) {
+			add_action('admin_notices', array($this, 'admin_notice_elementor_version_fail'));
+			return false;
+		}
 
 		return true;
 	}
@@ -508,6 +524,21 @@ class Cool_Formkit_Lite_For_Elementor_Form
 		echo wp_kses_post(sprintf('<div class="notice notice-error"><p>%1$s</p></div>', $message));
 	}
 
+	/**
+	 * Display admin notice for Elementor version failure.
+	 */
+	public function admin_notice_elementor_version_fail()
+	{
+		$message = sprintf(
+			/* translators: 1: Plugin name, 2: Required Elementor version */
+			esc_html__('%1$s requires Elementor version %2$s or greater.', 'extensions-for-elementor-form'),
+			'<strong>Cool Formkit Lite</strong>',
+			CFL_MIN_ELEMENTOR_VERSION
+		);
+
+		echo wp_kses_post(sprintf('<div class="notice notice-error"><p>%1$s</p></div>', $message));
+	}
+
 	private function initialize_modules()
 	{
 		$modules_list = [
@@ -553,16 +584,13 @@ class Cool_Formkit_Lite_For_Elementor_Form
 
 	public static function eef_activate()
 	{
-		update_option('eef-v', CFL_VERSION);
-		update_option('eef-type', 'FREE');
-		update_option('eef-installDate', gmdate('Y-m-d h:i:s'));
+		$legacy_install_date = get_option('eef-installDate');
+		if (!get_option('cfl-install-date')) {
+			add_option('cfl-install-date', $legacy_install_date ? $legacy_install_date : gmdate('Y-m-d h:i:s'));
+		}
 
 		if (!get_option('CFL_initial_save_version')) {
 			add_option('CFL_initial_save_version', CFL_VERSION);
-		}
-
-		if (!get_option('cfl-install-date')) {
-			add_option('cfl-install-date', gmdate('Y-m-d h:i:s'));
 		}
 
 		$enabled = get_option( 'cfkef_enabled_elements', array() );

@@ -18,7 +18,6 @@ class Time extends Field_Base {
 
 	public $depended_styles = [
 		'flatpickr',
-		'handle-time-pickr',
 	];
 
 	public function get_type() {

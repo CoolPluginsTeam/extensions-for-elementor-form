@@ -27,7 +27,6 @@ if ( ! class_exists( AtomicFormRadioButton::class ) ) {
 class Radio_Button extends AtomicFormRadioButton {
 	use Has_Template;
 
-	protected $animation_duration = 200;
 	public static $widget_description = 'Display a radio button input with required, and attributes.';
 
 	public static function get_element_type(): string {

@@ -111,9 +111,7 @@ trait Country_Code_Addon_Trait {
 	 * @return string
 	 */
 	protected function get_main_script_version(): string {
-		return function_exists( 'cfl_asset_version' )
-			? cfl_asset_version( 'assets/js/country-code-script.js' )
-			: CFL_VERSION;
+		return $this->version_from_src( $this->get_main_script_src() );
 	}
 
 	/**
@@ -137,10 +135,10 @@ trait Country_Code_Addon_Trait {
 		add_action( $this->get_render_field_hook(), array( $this, 'elementor_form_tel_field_rendering' ), 9, 3 );
 		add_action( $this->get_form_fields_section_hook(), array( $this, 'update_controls' ), 100, 2 );
 		add_action( 'elementor/preview/init', array( $this, 'editor_inline_JS' ) );
-		add_action( 'elementor/editor/before_enqueue_styles', array( $this, 'editor_assets' ) );
 		add_action( $this->get_validation_hook(), array( $this, 'submit_validation' ), 9, 3 );
 
 		if ( $this->should_include_review_notice() ) {
+			add_action( 'elementor/editor/before_enqueue_styles', array( $this, 'editor_assets' ) );
 			add_action( 'wp_ajax_ccfef_elementor_review_notice', array( $this, 'ccfef_elementor_review_notice' ) );
 		}
 	}
@@ -176,35 +174,8 @@ trait Country_Code_Addon_Trait {
 		$main_handle    = $this->get_main_script_handle();
 		$dependency_array    = array( 'elementor-frontend', 'jquery', $library_handle );
 
-		$error_map = array(
-			__( 'The phone number you entered is not valid. Please check the format and try again.', 'extensions-for-elementor-form' ),
-			__( 'The country code you entered is not recognized. Please ensure it is correct and try again.', 'extensions-for-elementor-form' ),
-			__( 'The phone number you entered is too short. Please enter a complete phone number, including the country code.', 'extensions-for-elementor-form' ),
-			__( 'The phone number you entered is too long. Please ensure it is in the correct format and try again.', 'extensions-for-elementor-form' ),
-			__( 'The phone number you entered is not valid. Please check the format and try again.', 'extensions-for-elementor-form' ),
-		);
-
-		$intl_ver = function_exists( 'cfl_asset_version' )
-			? cfl_asset_version( 'assets/js/intlTelInput.min.js' )
-			: CFL_VERSION;
-
-		if ( ! wp_script_is( $library_handle, 'registered' ) ) {
-			wp_register_script(
-				$library_handle,
-				CFL_PLUGIN_URL . 'assets/js/intlTelInput.min.js',
-				array(),
-				$intl_ver,
-				true
-			);
-		}
-
-		wp_register_script(
-			'cfkef-shared-country-code-script',
-			CFL_PLUGIN_URL . 'assets/js/shared/country-code-script.js',
-			$dependency_array,
-			$this->get_shared_script_version(),
-			true
-		);
+		cfl_register_intl_tel_input_script();
+		cfl_register_shared_country_code_script( $this->get_shared_script_version() );
 
 		wp_register_script(
 			$main_handle,
@@ -219,7 +190,7 @@ trait Country_Code_Addon_Trait {
 			'CCFEFCustomData',
 			array(
 				'pluginDir' => CFL_PLUGIN_URL,
-				'errorMap'  => $error_map,
+				'errorMap'  => cfl_get_country_code_error_map(),
 			)
 		);
 	}
@@ -534,6 +505,7 @@ trait Country_Code_Addon_Trait {
 					esc_html__( 'The Specified countries will appear at the top of the list.', 'extensions-for-elementor-form' )
 				),
 				'ai'          => array( 'active' => false ),
+				'disabled'    => true,
 			),
 			$enabled_meta
 		);

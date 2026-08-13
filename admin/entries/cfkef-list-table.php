@@ -19,8 +19,6 @@ class CFKEF_List_Table extends WP_List_Table {
 
     private $cfkef_bulk_actions;
 
-    private $bulk_actions;
-
     public static function get_instance($post_type) {
         if (null === self::$instance) {
             self::$instance = new self($post_type);

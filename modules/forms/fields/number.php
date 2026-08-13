@@ -1,7 +1,6 @@
 <?php
 namespace Cool_FormKit\Modules\Forms\Fields;
 
-use Elementor\Widget_Base;
 use Cool_FormKit\Modules\Forms\Classes;
 use Elementor\Controls_Manager;
 use Cool_FormKit\Modules\Forms\Components\Ajax_Handler;
@@ -62,7 +61,7 @@ class Number extends Field_Base {
 	}
 
 	/**
-	 * @param Widget_Base $widget
+	 * @param \Elementor\Widget_Base $widget
 	 */
 	public function update_controls( $widget ) {
 		$elementor = parent::elementor();
@@ -106,16 +105,36 @@ class Number extends Field_Base {
 
 	}
 
-	public function validation( $field, Classes\Form_Record $record, Ajax_Handler $ajax_handler) {
-		
-		$search_id = $field['id'];
+	public function validation( $field, Classes\Form_Record $record, Ajax_Handler $ajax_handler ) {
+		if ( '' === $field['value'] ) {
+			return;
+		}
 
-		$form_fields = $record->form_settings['form_fields']; 
+		$min = null;
+		$max = null;
 
-		foreach ($form_fields as $field_data) {
-			if (isset($field_data['custom_id']) && $field_data['custom_id'] === $search_id) {
-
+		foreach ( $record->form_settings['form_fields'] as $field_data ) {
+			if ( isset( $field_data['custom_id'] ) && $field_data['custom_id'] === $field['id'] ) {
+				if ( isset( $field_data['num_field_min'] ) && '' !== $field_data['num_field_min'] ) {
+					$min = $field_data['num_field_min'];
+				}
+				if ( isset( $field_data['num_field_max'] ) && '' !== $field_data['num_field_max'] ) {
+					$max = $field_data['num_field_max'];
+				}
+				break;
 			}
+		}
+
+		$value = (float) $field['value'];
+
+		if ( null !== $min && $value < (float) $min ) {
+			/* translators: %s: Minimum allowed number. */
+			$ajax_handler->add_error( $field['id'], sprintf( esc_html__( 'Value must be greater than or equal to %s', 'extensions-for-elementor-form' ), $min ) );
+		}
+
+		if ( null !== $max && $value > (float) $max ) {
+			/* translators: %s: Maximum allowed number. */
+			$ajax_handler->add_error( $field['id'], sprintf( esc_html__( 'Value must be less than or equal to %s', 'extensions-for-elementor-form' ), $max ) );
 		}
 	}
 

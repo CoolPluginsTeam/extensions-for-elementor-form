@@ -1,6 +1,5 @@
 "use strict";
 let formRepeaterFields = [];
-let formRepeaterFieldsLast = null;
 let getTagStatus=false;
 
 // add repeater functionality to conditional field repeater

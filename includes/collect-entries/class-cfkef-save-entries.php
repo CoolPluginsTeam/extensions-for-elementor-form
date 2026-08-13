@@ -2,10 +2,7 @@
 
 namespace Cool_FormKit\Collect_Entries;
 
-use Cool_FormKit\Includes\Utils;
 use Elementor\Core\Utils\Collection;
-use Cool_FormKit\Modules\Forms\Classes\Form_Record;
-use Cool_FormKit\Modules\Forms\Components\Ajax_Handler;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

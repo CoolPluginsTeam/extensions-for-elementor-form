@@ -54,18 +54,20 @@ class Conditional_Fields_Addon {
 	 */
 	public static function helloplus_config(): array {
 		return array(
-			'elementor'                => 'helloplus',
-			'validation_hook'          => 'hello_plus/forms/validation',
-			'pre_render_hook'          => 'elementor/frontend/widget/before_render',
-			'form_widget_name'         => 'ehp-form',
-			'tel_field_type'           => 'ehp-tel',
-			'frontend_script_handle'   => 'helloplus_cfefp_logic',
-			'frontend_script_src'      => CFL_PLUGIN_URL . 'assets/helloplus-addons/js/helloplus-logic_frontend.js',
-			'editor_script_handle'     => 'helloplus_cfefp_logic_editor',
-			'editor_script_src'        => CFL_PLUGIN_URL . 'assets/helloplus-addons/js/helloplus-editor.js',
-			'editor_style_handle'      => 'helloplus_cfefp_logic_editor',
-			'editor_style_src'         => CFL_PLUGIN_URL . 'assets/addons/css/editor.min.css',
-			'pre_render_widget_guard'  => 'ehp-form',
+			'elementor'                         => 'helloplus',
+			'validation_hook'                   => 'hello_plus/forms/validation',
+			'pre_render_hook'                   => 'elementor/frontend/widget/before_render',
+			'form_widget_name'                  => 'ehp-form',
+			'tel_field_type'                    => 'ehp-tel',
+			'frontend_script_handle'            => 'helloplus_cfefp_logic',
+			'frontend_script_src'               => CFL_PLUGIN_URL . 'assets/helloplus-addons/js/helloplus-logic_frontend.js',
+			'editor_script_handle'              => 'helloplus_cfefp_logic_editor',
+			'editor_script_src'                 => CFL_PLUGIN_URL . 'assets/helloplus-addons/js/helloplus-editor.js',
+			'editor_style_handle'               => 'helloplus_cfefp_logic_editor',
+			'editor_style_src'                  => CFL_PLUGIN_URL . 'assets/addons/css/editor.min.css',
+			'localize_my_script_vars'           => true,
+			'localize_my_script_vars_elementor' => true,
+			'pre_render_widget_guard'           => 'ehp-form',
 		);
 	}
 

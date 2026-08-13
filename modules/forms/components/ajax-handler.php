@@ -2,6 +2,7 @@
 namespace Cool_FormKit\Modules\Forms\Components;
 
 use Cool_FormKit\Includes\Utils;
+use Cool_FormKit\Modules\Forms\Actions\Redirect;
 use Cool_FormKit\Modules\Forms\Classes\Form_Record;
 use Cool_FormKit\Modules\Forms\Module;
 
@@ -13,7 +14,6 @@ class Ajax_Handler {
 
 	public $is_success = true;
 	public $messages = [
-		'success' => [],
 		'error' => [],
 		'admin_error' => [],
 	];
@@ -27,7 +27,6 @@ class Ajax_Handler {
 	const FIELD_REQUIRED = 'required_field';
 	const INVALID_FORM = 'invalid_form';
 	const SERVER_ERROR = 'server_error';
-	const SUBSCRIBER_ALREADY_EXISTS = 'subscriber_already_exists';
 	const NONCE_ACTION = 'cool-form-submission';
 
 	public static function get_default_messages(): array {
@@ -37,7 +36,6 @@ class Ajax_Handler {
 			self::FIELD_REQUIRED => esc_html__( 'This field is required.', 'extensions-for-elementor-form' ),
 			self::INVALID_FORM => esc_html__( 'Your submission failed because the form is invalid.', 'extensions-for-elementor-form' ),
 			self::SERVER_ERROR => esc_html__( 'Your submission failed because of a server error.', 'extensions-for-elementor-form' ),
-			self::SUBSCRIBER_ALREADY_EXISTS => esc_html__( 'Subscriber already exists.', 'extensions-for-elementor-form' ),
 		];
 	}
 
@@ -111,7 +109,6 @@ class Ajax_Handler {
 			
 			if ( ! $record->validate( $this ) ) {
 				$this
-				->add_error( $record->get( 'errors' ) )
 				->add_error_message( self::get_default_message( self::ERROR, $form['settings'] ) )
 				->send();
 				return;
@@ -128,6 +125,10 @@ class Ajax_Handler {
 			
 			$actions = $module->actions_registrar->get();
 			$errors = array_merge( $this->messages['error'], $this->messages['admin_error'] );
+
+			$form['settings']['submit_actions'] = Redirect::normalize_submit_actions(
+				$form['settings']['submit_actions'] ?? []
+			);
 			
 			foreach ( $actions as $action ) {
 				if ( ! in_array( $action->get_name(), $form['settings']['submit_actions'], true ) ) {
@@ -156,12 +157,6 @@ class Ajax_Handler {
 		}
 		
 		$this->send();
-	}
-	
-	public function add_success_message( $message ) {
-		$this->messages['success'][] = $message;
-
-		return $this;
 	}
 
 	public function add_response_data( $key, $data ) {

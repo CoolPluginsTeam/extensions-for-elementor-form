@@ -44,8 +44,8 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
     }
 
     public static function get_threshold(){
-
-        return get_option(self::OPTION_NAME_RECAPTCHA_THRESHOLD);
+        $threshold = get_option(self::OPTION_NAME_RECAPTCHA_THRESHOLD);
+        return ( '' === $threshold || false === $threshold ) ? self::V3_DEFAULT_THRESHOLD : $threshold;
     }
 
     public static function is_enabled()
@@ -76,38 +76,24 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
         return esc_html__('To use reCAPTCHA V3, you need to add the API Key and complete the setup process in Dashboard > Elementor > Cool FormKit Lite > Settings > reCAPTCHA V3.', 'extensions-for-elementor-form');
     }
 
-    public function render_field($item, $item_index, $widget)
+    protected function get_empty_response_message()
     {
+        return esc_html__('Captcha validation failed. Please try again.', 'extensions-for-elementor-form');
+    }
 
+    protected function get_render_attributes($item)
+    {
+        $badge = isset($item['recaptcha_badge']) ? esc_attr($item['recaptcha_badge']) : 'inline';
 
-        $recaptcha_html = '<div class="cool-form-field" id="form-field-' . esc_attr($item['custom_id']) . '" >';
-
-        if (static::is_enabled()) {
-            $this->enqueue_scripts();
-
-            $recaptcha_name = static::get_recaptcha_name();
-            $badge = isset($item["recaptcha_badge"]) ? esc_attr($item["recaptcha_badge"]) : 'inline';
-
-            $widget->add_render_attribute($recaptcha_name . $item_index, [
-                'class' => 'cool-form-recaptcha',
-                'data-sitekey' => static::get_site_key(),
-                'data-action' => self::V3_DEFAULT_ACTION,
-                'data-badge' => $badge,
-                'data-recaptcha-version' => static::get_recaptcha_type(),
-                'data-theme' => 'light',
-                'data-size' => 'invisible',
-            ]);
-
-            $recaptcha_html .= '<div ' . $widget->get_render_attribute_string($recaptcha_name . $item_index) . '></div>';
-        } else {
-            $recaptcha_html .= '<div class="elementor-alert elementor-alert-info">';
-            $recaptcha_html .= static::get_setup_message();
-            $recaptcha_html .= '</div>';
-        }
-
-        $recaptcha_html .= '</div>';
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-        echo $recaptcha_html;
+        return [
+            'class' => 'cool-form-recaptcha',
+            'data-sitekey' => static::get_site_key(),
+            'data-action' => self::V3_DEFAULT_ACTION,
+            'data-badge' => $badge,
+            'data-recaptcha-version' => static::get_recaptcha_type(),
+            'data-theme' => 'light',
+            'data-size' => 'invisible',
+        ];
     }
 
     public function add_field_type($field_types)
@@ -117,91 +103,32 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
         return $field_types;
     }
 
-    public function filter_field_item($item)
+    protected function validate_result($result, $field)
     {
-        if (static::get_recaptcha_name() === $item['field_type']) {
-            $item['field_label'] = false;
+        if (!parent::validate_result($result, $field)) {
+            return false;
         }
 
-        return $item;
+        $threshold = (float) static::get_threshold();
+        if (isset($result['score']) && $result['score'] < $threshold) {
+            return false;
+        }
+
+        return true;
     }
 
-    public function validation($record, $ajax_handler) {
-        // Get reCAPTCHA fields from the form
-        $fields = $record->get_field([
-            'type' => static::get_recaptcha_name(),
-        ]);
-    
-        if (empty($fields)) {
-            return; // No reCAPTCHA field found, exit validation
+    protected function resolve_recaptcha_error_message($result)
+    {
+        $threshold = (float) static::get_threshold();
+        if (isset($result['success'], $result['score']) && $result['success'] && $result['score'] < $threshold) {
+            return esc_html__('Suspicious activity detected. Please try again.', 'extensions-for-elementor-form');
         }
-    
-        $field = current($fields);
-    
-        // Get the reCAPTCHA token from the submitted form data
-        // phpcs:ignore WordPress.Security.NonceVerification.Missing
-        $recaptcha_response = isset( $_POST['g-recaptcha-response'] )
-            ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) )
-            : '';
-    
-        if (empty($recaptcha_response)) {
-            $ajax_handler->add_error($field['id'], esc_html__('Captcha validation failed. Please try again.', 'extensions-for-elementor-form'));
-            return;
-        }
-    
-        // Get reCAPTCHA secret key
-        $recaptcha_secret = static::get_secret_key(); 
-        if (empty($recaptcha_secret)) {
-            $ajax_handler->add_error($field['id'], esc_html__('Missing reCAPTCHA secret key.', 'extensions-for-elementor-form'));
-            return;
-        }
-    
-        // Get client IP
-        $client_ip = Utils::get_client_ip();
-    
-        // Prepare API request to verify reCAPTCHA response
-        $request_args = [
-            'body' => [
-                'secret'   => $recaptcha_secret,
-                'response' => $recaptcha_response,
-                'remoteip' => $client_ip,
-            ],
-            'timeout' => 10, // Set timeout for the request
-        ];
-    
-        $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', $request_args);
-        
-        // Check for HTTP request errors
-        if (is_wp_error($response)) {
-            $ajax_handler->add_error($field['id'], esc_html__('Error verifying reCAPTCHA. Please try again.', 'extensions-for-elementor-form'));
-            return;
-        }
-    
-        $response_code = wp_remote_retrieve_response_code($response);
-        $response_body = wp_remote_retrieve_body($response);
-        $response_data = json_decode($response_body, true);
-    
-        if ($response_code !== 200 || empty($response_data['success'])) {
-            $ajax_handler->add_error($field['id'], esc_html__('Captcha verification failed. Please try again.', 'extensions-for-elementor-form'));
-            return;
-        }
-    
-        // Check reCAPTCHA score (for v3)
 
-        
-        if(!static::get_threshold())
-            $thres_hold = '0.5';
-        else
-            $thres_hold = (float) static::get_threshold();
-
-        
-        if (isset($response_data['score']) && $response_data['score'] < $thres_hold) {
-            $ajax_handler->add_error($field['id'], esc_html__('Suspicious activity detected. Please try again.', 'extensions-for-elementor-form'));
-            return;
+        $message = parent::resolve_recaptcha_error_message($result);
+        if (esc_html__('Invalid form, reCAPTCHA validation failed.', 'extensions-for-elementor-form') === $message) {
+            return esc_html__('Captcha verification failed. Please try again.', 'extensions-for-elementor-form');
         }
-    
-        // If validation passes, remove the field from processing
-        $record->remove_field($field['id']);
+
+        return $message;
     }
-
 }

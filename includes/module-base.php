@@ -19,26 +19,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 abstract class Module_Base {
 
 	/**
-	 * Module class reflection.
-	 *
-	 * Holds the information about a class.
-	 * @access private
-	 *
-	 * @var ?\ReflectionClass
-	 */
-	private ?\ReflectionClass $reflection = null;
-
-	/**
-	 * Module components.
-	 *
-	 * Holds the module components.
-	 * @access private
-	 *
-	 * @var array
-	 */
-	private array $components = [];
-
-	/**
 	 * Module instance.
 	 *
 	 * Holds the module instance.
@@ -58,14 +38,6 @@ abstract class Module_Base {
 	 * @return string Module name.
 	 */
 	abstract public static function get_name(): string;
-
-	/**
-	 * @abstract
-	 * @access protected
-	 *
-	 * @return string[]
-	 */
-	abstract protected function get_component_ids(): array;
 
 	/**
 	 * Singleton Instance.
@@ -117,66 +89,6 @@ abstract class Module_Base {
 	}
 
 	/**
-	 * @access public
-	 *
-	 * @return \ReflectionClass
-	 */
-	public function get_reflection(): \ReflectionClass {
-		if ( null === $this->reflection ) {
-			try {
-				$this->reflection = new \ReflectionClass( $this );
-			} catch ( \ReflectionException $e ) {
-				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					error_log( $e->getMessage() ); //phpcs:ignore
-				}
-			}
-		}
-
-		return $this->reflection;
-	}
-
-	/**
-	 * Add module component.
-	 *
-	 * Add new component to the current module.
-	 * @access public
-	 *
-	 * @param string $id       Component ID.
-	 * @param mixed  $instance An instance of the component.
-	 */
-	public function add_component( string $id, $instance ) {
-		$this->components[ $id ] = $instance;
-	}
-
-	/**
-	 * @access public
-	 *
-	 * @return array
-	 */
-	public function get_components(): array {
-		return $this->components;
-	}
-
-	/**
-	 * Get module component.
-	 *
-	 * Retrieve the module component.
-	 * @access public
-	 *
-	 * @param string $id Component ID.
-	 *
-	 * @return mixed An instance of the component, or `null` if the component
-	 *               doesn't exist.
-	 */
-	public function get_component( string $id ) {
-		if ( isset( $this->components[ $id ] ) ) {
-			return $this->components[ $id ];
-		}
-
-		return null;
-	}
-
-	/**
 	 * Retrieve the namespace of the class
 	 *
 	 * @static
@@ -187,24 +99,6 @@ abstract class Module_Base {
 	public static function namespace_name(): string {
 		$class_name = static::class_name();
 		return substr( $class_name, 0, strrpos( $class_name, '\\' ) );
-	}
-
-	/**
-	 * Adds an array of components.
-	 * Assumes namespace structure contains `\Components\`
-	 *
-	 * @access protected
-	 *
-	 * @param ?array $components_ids => component's class name.
-	 * @return void
-	 */	
-	protected function register_components( ?array $components_ids = null ): void {
-
-		if ( empty( $components_ids ) ) {
-			$components_ids = $this->get_component_ids();
-		}
-		$namespace = static::namespace_name();
-		
 	}
 
 	/**
@@ -274,11 +168,8 @@ abstract class Module_Base {
 	 * class constructor
 	 *
 	 * @access protected
-	 *
-	 * @param ?string[] $components_list
 	 */
-	protected function __construct( ?array $components_list = null ) {
-		$this->register_components( $components_list );
+	protected function __construct() {
 		$this->register_hooks();
 	}
 }
