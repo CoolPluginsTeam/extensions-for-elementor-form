@@ -196,7 +196,7 @@ You can report vulnerabilities through the [Patchstack Vulnerability Disclosure 
 
 == Changelog ==
 
-= 2.7.7 - 2026-08-17 =
+= 2.7.7 - 2026-08-18 =
 * Improved: Optimized codebase for better performance and maintainability.
 * Fixed: Issue with required select field issue and date field.
 
