@@ -199,7 +199,6 @@ You can report vulnerabilities through the [Patchstack Vulnerability Disclosure 
 = 2.7.7 - 2026-08-17 =
 * Improved: Optimized codebase for better performance and maintainability.
 * Fixed: Issue with required select field issue and date field.
-* Tested up to: Elementor 4.2.0 and Elementor Pro 4.2.0.
 
 = 2.7.6 - 2026-07-27 =
 * Fixed: Editor loading issue with  Elementor v4.2.0.
