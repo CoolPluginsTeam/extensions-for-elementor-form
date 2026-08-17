@@ -6,11 +6,6 @@ export default class coolFormsLite extends elementorModules.Module {
 			() => import( /* webpackChunkName: 'js/cool-form-lite' */ './handlers/form-sender' ),
 			() => import( /* webpackChunkName: 'js/cool-form-lite' */ './handlers/form-redirect' ),
 		] );
-
-		elementorFrontend.elementsHandler.attachHandler( 'subscribe', [
-			() => import( /* webpackChunkName: 'js/cool-form-lite' */ './handlers/form-sender' ),
-			() => import( /* webpackChunkName: 'js/cool-form-lite' */ './handlers/form-redirect' ),
-		] );
 	}
 }
 

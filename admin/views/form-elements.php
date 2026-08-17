@@ -11,15 +11,6 @@ if ( ! function_exists( 'get_plugins' ) ) {
 // Get the saved options
 $enabled_elements = get_option('cfkef_enabled_elements', array());
 
-// Check if the default plugin option is set to true
-$default_plugin_enabled = get_option('cfkef-defaultPlugin', false);
-
-// If the default plugin option is true and conditional_logic is not in enabled_elements, add it
-if ($default_plugin_enabled && !in_array('conditional_logic', $enabled_elements)) {
-    $enabled_elements[] = 'conditional_logic';
-    $enabled_elements[] = 'country_code';
-    update_option('cfkef-defaultPlugin',false);
-}
 $conditional_pro_install = is_plugin_active('conditional-fields-for-elementor-form-pro/class-conditional-fields-for-elementor-form-pro.php');
 
 $form_elements = array(

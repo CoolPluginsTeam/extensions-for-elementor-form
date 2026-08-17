@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 use \Elementor\Plugin as ElementorPlugin;
 use \Elementor\Controls_Manager as ElementorControls;
 use \Elementor\Repeater as ElementorRepeater;
+use Cool_FormKit\Includes\Utils;
 
 /**
  * Register post after form submit.
@@ -70,13 +71,6 @@ class Register_Post extends \ElementorPro\Modules\Forms\Classes\Action_Base {
 			]
 		);
 
-		/**
-		 * TODO:
-		 * 1. Add or edit existent post.
-		 * 2. Post terms (taxonomy).
-		 * 3. Redirect to post after submit/created?.
-		 * 4. Se post status === private add campo de senha.
-		 */
 		$widget->add_control(
 			'eef-register-post-post-type',
 			[
@@ -278,31 +272,6 @@ class Register_Post extends \ElementorPro\Modules\Forms\Classes\Action_Base {
 		/**
 		 * Register control in form advanced tab.
 		 */
-		$this->register_control_in_form_advanced_tab( $element, $control_data, $pattern_field );
-	}
-
-	/**
-	 * Register control in form advanced tab
-	 *
-	 * @param object $element
-	 * @param array $control_data
-	 * @param array $pattern_field
-	 */
-	public function register_control_in_form_advanced_tab( $element, $control_data, $pattern_field ) {
-		foreach( $pattern_field as $key => $control ) {
-			if( $key !== '_id' ) {
-				$new_order = [];
-				foreach ( $control_data['fields'] as $field_key => $field ) {
-					if ( 'field_value' === $field['name'] ) {
-						$new_order[$key] = $control;
-					}
-					$new_order[ $field_key ] = $field;
-				}
-
-				$control_data['fields'] = $new_order;
-			}
-		}
-
-		return $element->update_control( 'form_fields', $control_data );
+		Utils::register_control_in_form_advanced_tab( $element, $control_data, $pattern_field );
 	}
 }

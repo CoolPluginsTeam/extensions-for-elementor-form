@@ -1,0 +1,65 @@
+@import url(../../css/shared/country-common.css);
+
+.cool-form__field-group.is-field-type-tel .cfefp-intl-container {
+	--cfefp-intl-tel-button-height: 100%;
+	height: 100%;
+	width: 100%;
+}
+
+/* Size dropdown against the outer outlined field (includes MDC side padding) */
+.cool-form__field-group.is-field-type-tel .cool-form-text.mdc-text-field {
+	container-type: inline-size;
+	container-name: cool-tel-field;
+	overflow: visible !important;
+}
+
+.cool-form__field-group .cfefp-intl-container.iti {
+	width: 100%;
+	display: block;
+}
+
+.cool-form__field-group .cfefp-intl-container.iti.elementor-error .iti__country-container {
+	bottom: 23px;
+}
+
+/*
+ * Dropdown is nested in the flag button container.
+ * Width must match the MDC outline; left pulls back out of field padding.
+ * JS (open:countrydropdown) refines to exact pixels.
+ */
+.cool-form__field-group .cfefp-intl-container.iti .iti__dropdown-content {
+	position: absolute !important;
+	top: 100% !important;
+	left: calc(-1 * max(16px, calc(var(--mdc-shape-small, 4px) + 4px))) !important;
+	right: auto !important;
+	width: 100cqi !important;
+	max-width: 100cqi !important;
+	margin-left: 0 !important;
+	margin-top: 3px !important;
+	box-sizing: border-box;
+	background-color: #fff !important;
+	z-index: 1000;
+}
+
+.cool-form__field-group .cfefp-intl-container.iti--flexible-dropdown-width .iti__country-list {
+	white-space: normal;
+}
+
+.is-field-type-tel .cool-form-text {
+	overflow: visible !important;
+}
+
+.cool-form__field-group.is-field-type-tel {
+	overflow: visible;
+	position: relative;
+	z-index: 2;
+}
+
+.cool-form__field-group.is-field-type-tel:has(.iti__dropdown-content:not(.iti__hide)) {
+	z-index: 20;
+}
+
+.cool-form__field-group.is-field-type-tel .cool-form-text.mdc-text-field > .cfefp-intl-container.iti {
+	height: 100%;
+	align-self: stretch;
+}

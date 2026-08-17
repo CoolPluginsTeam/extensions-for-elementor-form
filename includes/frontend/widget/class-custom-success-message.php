@@ -16,10 +16,10 @@ class Custom_Success_Message {
 	public function set_hooks() : void {
 		add_action( 'elementor/widget/before_render_content', array( $this, 'add_message_class' ) );
 		add_action( 'elementor/element/form/section_integration/after_section_end', array( $this, 'add_message_control' ), 100, 2 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frondend_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_scripts' ) );
 	}
 
-	public function enqueue_frondend_scripts(){
+	public function enqueue_frontend_scripts(){
 		wp_register_style( 'eef-frontend-style',  CFL_PLUGIN_URL . 'assets/css/style.min.css', array(), CFL_VERSION );
 		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
 		wp_register_script( 'eef-frontend-script', CFL_PLUGIN_URL . 'assets/js/frontend-scripts.min.js', array( 'jquery' ), CFL_VERSION );

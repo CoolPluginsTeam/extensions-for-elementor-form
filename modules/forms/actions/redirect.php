@@ -12,12 +12,36 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Redirect extends Action_Base {
 
+	/**
+	 * Legacy Hello Plus–prefixed slug stored in older Cool Form submit_actions.
+	 */
+	const LEGACY_NAME = 'ehp-redirect';
+
 	public function get_name(): string {
-		return 'ehp-redirect';
+		return 'cool_redirect';
 	}
 
 	public function get_label(): string {
 		return esc_html__( 'Redirect', 'extensions-for-elementor-form' );
+	}
+
+	/**
+	 * Map legacy ehp-redirect entries to cool_redirect for runtime matching.
+	 *
+	 * @param array $submit_actions Stored submit action slugs.
+	 * @return array
+	 */
+	public static function normalize_submit_actions( $submit_actions ) {
+		if ( ! is_array( $submit_actions ) ) {
+			return [];
+		}
+
+		return array_map(
+			static function ( $name ) {
+				return self::LEGACY_NAME === $name ? 'cool_redirect' : $name;
+			},
+			$submit_actions
+		);
 	}
 
 	public function register_settings_section( $widget ) {
@@ -25,8 +49,20 @@ class Redirect extends Action_Base {
 			'section_redirect',
 			[
 				'label' => esc_html__( 'Redirect', 'extensions-for-elementor-form' ),
-				'condition' => [
-					'submit_actions' => $this->get_name(),
+				'conditions' => [
+					'relation' => 'or',
+					'terms' => [
+						[
+							'name' => 'submit_actions',
+							'operator' => 'contains',
+							'value' => $this->get_name(),
+						],
+						[
+							'name' => 'submit_actions',
+							'operator' => 'contains',
+							'value' => self::LEGACY_NAME,
+						],
+					],
 				],
 			]
 		);
@@ -80,6 +116,10 @@ class Redirect extends Action_Base {
 	}
 
 	public function run( $record, $ajax_handler ) {
+		if ( 'true' !== $record->get_form_settings( 'should_redirect' ) ) {
+			return;
+		}
+
 		$redirect_to = $record->get_form_settings( 'redirect_to' );
 
 		$redirect_to = $record->replace_setting_shortcodes( $redirect_to, true );

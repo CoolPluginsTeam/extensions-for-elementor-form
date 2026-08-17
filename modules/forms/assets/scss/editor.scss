@@ -29,21 +29,6 @@ $editor-background:#f0f0f0;
   
 .elementor-panel {
 
-	.elementor-control-type-fields_map {
-
-		.elementor-repeater-fields {
-			margin: 10px 0;
-
-			.elementor-control {
-				padding: 0;
-			}
-
-			&:last-child {
-				margin-block-end: 0;
-			}
-		}
-	}
-	
 	.elementor-control.forms-field-shortcode{
 		.elementor-control-content{
 			flex-flow: row;

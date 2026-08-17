@@ -132,7 +132,7 @@
             "Diners Club": fmeData.pluginUrl+ "assets/svg-icons/cc-logo.svg",
             "Maestro": fmeData.pluginUrl+ "assets/svg-icons/maestro-logo.svg",
             "UnionPay": fmeData.pluginUrl+ "assets/svg-icons/cc-logo.svg",
-            "RuPay": fmeData.pluginUrl+ "assets/svg-icons/repay-logo.svg",
+            "RuPay": fmeData.pluginUrl+ "assets/svg-icons/rupay-logo.svg",
             "Unknown": fmeData.pluginUrl+ "assets/svg-icons/cc-logo.svg"
         };
       
@@ -330,295 +330,9 @@
         });
         
         // ----------------- Error Validation -----------------
-        function validateInput(selector, errorClass, validationFunction, errorMessage) {
-          $(document).on("blur", selector, function () {
-              let input = $(this);
-              let val = input.val();
-              let errorElement;
-
-              if(input.hasClass("hide-fme-mask-input")){
-                return;
-              }
-
-              if(input.hasClass('cool-form__field')){
-                errorElement = input.closest('.cool-form__field-group').find("." + errorClass)
-              }else if(input.hasClass('ehp-form__field')){
-                errorElement = input.closest('.ehp-form__field-group').find("." + errorClass)
-              }else{
-                errorElement = input.closest('.elementor-field-group').find("." + errorClass);
-              }
-      
-              // Remove predefined symbol if it's the ONLY character left
-              if (val.length === 1 && !/\d/.test(val)) {
-                  input.val(""); 
-                  errorElement.hide().text(""); 
-                  return;
-              }
-      
-              // Show error message if validation fails
-              if (val !== "" && !validationFunction(val)) {
-                  errorElement.text(errorMessage).css("display", "flex").hide().fadeIn(200);
-              } else {
-                  errorElement.fadeOut(100, function () {
-                      $(this).css("display", "none"); 
-                  });
-              }
-          });
-      
-          $(document).on("input", selector, function () {
-              var input = $(this);
-              nextbtnVisibility(errorClass, input, validationFunction);
-              var errorElement = input.closest('.elementor-field-group').find("." + errorClass);
-      
-              if (errorElement.is(":visible")) { 
-                  var val = input.val();
-                  if (validationFunction(val)) {
-                      errorElement.fadeOut(100, function () {
-                          $(this).css("display", "none"); 
-                      });
-                  }
-              }
-          });
-        }
-          
-            
-        // Apply validation dynamically for all fields
-        const validations = {
-          ".mask-cnpj": { errorClass: "error-cnpj", validate: isValidCNPJ, msg: fmeData.errorMessages["mask-cnpj"] },
-          ".mask-cpf": { errorClass: "error-cpf", validate: isValidCPF, msg: fmeData.errorMessages["mask-cpf"] },
-          ".mask-cep": { errorClass: "error-cep", validate: isValidCEP, msg: fmeData.errorMessages["mask-cep"] },
-          ".mask-phus": { errorClass: "error-phus", validate: isValidPhoneUSA, msg: fmeData.errorMessages["mask-phus"] },
-          ".mask-ph8": { errorClass: "error-ph8", validate: isValidPhone8, msg: fmeData.errorMessages["mask-ph8"] },
-          ".mask-ddd8": { errorClass: "error-ddd8", validate: isValidPhoneDDD8, msg: fmeData.errorMessages["mask-ddd8"] },
-          ".mask-ddd9": { errorClass: "error-ddd9", validate: isValidPhoneDDD9, msg: fmeData.errorMessages["mask-ddd9"] },
-          ".mask-dmy": { errorClass: "error-dmy", validate: isValidDateDMY, msg: fmeData.errorMessages["mask-dmy"] },
-          ".mask-mdy": { errorClass: "error-mdy", validate: isValidDateMDY, msg: fmeData.errorMessages["mask-mdy"] },
-          ".mask-hms": { errorClass: "error-hms", validate: isValidTimeHMS, msg: fmeData.errorMessages["mask-hms"] },
-          ".mask-hm": { errorClass: "error-hm", validate: isValidTimeHM, msg: fmeData.errorMessages["mask-hm"] },
-          ".mask-dmyhm": { errorClass: "error-dmyhm", validate: isValidDateDMYHM, msg: fmeData.errorMessages["mask-dmyhm"] },
-          ".mask-mdyhm": { errorClass: "error-mdyhm", validate: isValidDateMDYHM, msg: fmeData.errorMessages["mask-mdyhm"] },
-          ".mask-my": { errorClass: "error-my", validate: isValidDateMY, msg: fmeData.errorMessages["mask-my"] },
-          ".mask-ccs": { errorClass: "error-ccs", validate: isValidCreditCard, msg: fmeData.errorMessages["mask-ccs"] },
-          ".mask-cch": { errorClass: "error-cch", validate: isValidCreditCard, msg: fmeData.errorMessages["mask-cch"] },
-          ".mask-ccmy": { errorClass: "error-ccmy", validate: isValidExpiryMMYY, msg: fmeData.errorMessages["mask-ccmy"] },
-          ".mask-ccmyy": { errorClass: "error-ccmyy", validate: isValidExpiryMMYYYY, msg: fmeData.errorMessages["mask-ccmyy"] },
-          ".mask-ipv4": { errorClass: "error-ipv4", validate: isValidIPv4, msg: fmeData.errorMessages["mask-ipv4"] }
-      };
-      
-      
-        for (const [selector, { errorClass, validate, msg }] of Object.entries(validations)) {
-            validateInput(selector, errorClass, validate, msg);
-        }
-      
-        // ----------------- Validation Functions -----------------
-        function isValidPhoneUSA(phoneStr) {
-          return /^\(\d{3}\) \d{3}-\d{4}$/.test(phoneStr);
-        }
-        function isValidPhone8(phoneStr) {
-          return /^\d{4}-\d{4}$/.test(phoneStr);
-        }
-        function isValidPhoneDDD8(phoneStr) {
-            return /^\(\d{2}\) \d{4}-\d{4}$/.test(phoneStr);
-          }
-        function isValidPhoneDDD9(phoneStr) {
-            return /^\(\d{2}\) 9\d{4}-\d{4}$/.test(phoneStr);
-        }
-      
-        // ----------------- Universal Date & Time Validation Function -----------------
-        function isValidDateTime(value, format) {
-          let regexPattern;
-          let expectedParts;
-      
-          switch (format) {
-              case "DMY": // dd/mm/yyyy
-                  regexPattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-                  expectedParts = ["day", "month", "year"];
-                  break;
-              case "MDY": // mm/dd/yyyy
-                  regexPattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-                  expectedParts = ["month", "day", "year"];
-                  break;
-              case "HMS": // hh:mm:ss
-                  regexPattern = /^(\d{2}):(\d{2}):(\d{2})$/;
-                  expectedParts = ["hour", "minute", "second"];
-                  break;
-              case "HM": // hh:mm
-                  regexPattern = /^(\d{2}):(\d{2})$/;
-                  expectedParts = ["hour", "minute"];
-                  break;
-              case "DMY-HM": // dd/mm/yyyy hh:mm
-                  regexPattern = /^(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})$/;
-                  expectedParts = ["day", "month", "year", "hour", "minute"];
-                  break;
-              case "MDY-HM": // mm/dd/yyyy hh:mm
-                  regexPattern = /^(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})$/;
-                  expectedParts = ["month", "day", "year", "hour", "minute"];
-                  break;
-              case "MY": // mm/yyyy
-                  regexPattern = /^(\d{2})\/(\d{4})$/;
-                  expectedParts = ["month", "year"];
-                  break;
-              default:
-                  return false; // Unsupported format
-          }
-      
-          // Match input with regex
-          let match = value.match(regexPattern);
-          if (!match) return false;
-      
-          // Extract values dynamically
-          let parts = {};
-          expectedParts.forEach((part, index) => {
-              parts[part] = parseInt(match[index + 1], 10);
-          });
-      
-          // Validate Date (Day, Month, Year)
-          if (parts.year && (parts.year < 1500 || parts.year > 3000)) return false;
-          if (parts.month && (parts.month < 1 || parts.month > 12)) return false;
-          if (parts.day) {
-              let daysInMonth = new Date(parts.year, parts.month, 0).getDate();
-              if (parts.day < 1 || parts.day > daysInMonth) return false;
-          }
-      
-          // Validate Time (Hour, Minute, Second)
-          if (parts.hour && (parts.hour < 0 || parts.hour >= 24)) return false;
-          if (parts.minute && (parts.minute < 0 || parts.minute >= 60)) return false;
-          if (parts.second && (parts.second < 0 || parts.second >= 60)) return false;
-      
-          return true;
-        }
-      
-        // ----------------- Expiry Date Validation -----------------
-        function isValidExpiryDate(value, format) {
-          let regexPattern = format === "MM/YY" ? /^(\d{2})\/(\d{2})$/ : /^(\d{2})\/(\d{4})$/;
-          let match = value.match(regexPattern);
-      
-          if (!match) return false; // Invalid format
-      
-          let month = parseInt(match[1], 10);
-          let year = parseInt(match[2], 10);
-      
-          let currentYear = new Date().getFullYear();
-          let currentMonth = new Date().getMonth() + 1; // JS months are 0-based
-      
-          // Adjust year format if MM/YY (Assume 20XX for past/future dates)
-          if (format === "MM/YY") {
-              year += 2000;
-          }
-      
-          // Validate month (01-12)
-          if (month < 1 || month > 12) return false;
-      
-          // Validate expiry date (must be in the future)
-          if (year < currentYear || (year === currentYear && month < currentMonth)) {
-              return false;
-          }
-      
-          return true;
-        }
-      
-        // ----------------- Exportable Functions Using Universal Validator -----------------
-        function isValidDateDMY(dateStr) { return isValidDateTime(dateStr, "DMY"); }
-        function isValidDateMDY(dateStr) { return isValidDateTime(dateStr, "MDY"); }
-        function isValidTimeHMS(timeStr) { return isValidDateTime(timeStr, "HMS"); }
-        function isValidTimeHM(timeStr) { return isValidDateTime(timeStr, "HM"); }
-        function isValidDateDMYHM(dateTimeStr) { return isValidDateTime(dateTimeStr, "DMY-HM"); }
-        function isValidDateMDYHM(dateTimeStr) { return isValidDateTime(dateTimeStr, "MDY-HM"); }
-        function isValidDateMY(dateStr) { return isValidDateTime(dateStr, "MY"); }
-        function isValidExpiryMMYY(dateStr) { return isValidExpiryDate(dateStr, "MM/YY"); }
-        function isValidExpiryMMYYYY(dateStr) { return isValidExpiryDate(dateStr, "MM/YYYY"); }
-      
-        // Apply validation for credit card fields
-        function isValidCreditCard(cardNumber) {
-          const cleaned = cardNumber.replace(/\D/g, ''); // Remove non-digits
-          if (cleaned.length < 15 || cleaned.length > 16) return false; // AMEX: 15, Others: 16
-          let sum = 0;
-          let shouldDouble = false;
-          // Luhn Algorithm to validate card number
-          for (let i = cleaned.length - 1; i >= 0; i--) {
-              let digit = parseInt(cleaned.charAt(i), 10);
-      
-              if (shouldDouble) {
-                  digit *= 2;
-                  if (digit > 9) digit -= 9;
-              }
-      
-              sum += digit;
-              shouldDouble = !shouldDouble;
-          }
-          return sum % 10 === 0;
-        }
-      
-        // Validate CNPJ (Brazilian Business ID - 14 chars, numeric or alphanumeric)
-        function isValidCNPJ(cnpj) {
-          cnpj = cnpj.toUpperCase().replace(/[.\-\/]/g, '');
-          if (!/^[A-Z0-9]{12}\d{2}$/.test(cnpj)) return false;
-      
-          // Eliminate obvious invalid CNPJs (repeated characters)
-          if (/^(.)\1{13}$/.test(cnpj)) return false;
-      
-          let calcCheckDigit = (cnpj, length) => {
-              let weights = length === 12 ? [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2] : [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-              let sum = 0;
-      
-              for (let i = 0; i < weights.length; i++) {
-                  sum += (cnpj.charCodeAt(i) - 48) * weights[i];
-              }
-      
-              let remainder = sum % 11;
-              return remainder < 2 ? 0 : 11 - remainder;
-          };
-      
-          // Validate both check digits
-          let firstCheck = calcCheckDigit(cnpj, 12);
-          let secondCheck = calcCheckDigit(cnpj.slice(0, 12) + firstCheck, 13);
-      
-          return firstCheck === parseInt(cnpj.charAt(12), 10) && secondCheck === parseInt(cnpj.charAt(13), 10);
-        }
-      
-        // Validate CPF (Brazilian Individual ID - 11 digits)
-        function isValidCPF(cpf) {
-          cpf = cpf.replace(/\D/g, ''); // Remove non-numeric characters
-          if (cpf.length !== 11) return false;
-      
-          // Eliminate obvious invalid CPFs (repeated digits)
-          if (/^(\d)\1+$/.test(cpf)) return false;
-      
-          let validateCPF = (cpf, length) => {
-              let sum = 0;
-              for (let i = 0; i < length; i++) {
-                  sum += parseInt(cpf.charAt(i)) * (length + 1 - i);
-              }
-              let result = (sum * 10) % 11;
-              return result === 10 ? 0 : result === parseInt(cpf.charAt(length));
-          };
-      
-          return validateCPF(cpf, 9) && validateCPF(cpf, 10);
-        }
-      
-        // Validate CEP (Brazilian Postal Code - XXXXX-XXX)
-        function isValidCEP(cep) {
-          return /^\d{5}-\d{3}$/.test(cep); // Matches format XXXXX-XXX
-        }
-      
-        // Validate IPv4 (Format: 192.168.001.001)
-        function isValidIPv4(ip) {
-          // Ensure correct format (###.###.###.###)
-          const ipv4Pattern = /^(?:\d{1,3}\.){3}\d{1,3}$/;
-      
-          if (!ipv4Pattern.test(ip)) return false; // Check general format
-      
-          // Split by dots and validate each octet (0-255)
-          const octets = ip.split(".");
-          return octets.every(octet => {
-              let num = parseInt(octet, 10); // Convert to number
-              return num >= 0 && num <= 255; // Each octet must be between 0-255
-          });
-        }
-
-
-        // start - step field mask error handling
-
+        // Apply validation dynamically for all fields (shared CFKEF.MaskValidators)
+        // Bound after nextbtnVisibility is defined below so step handling can hook onInput.
+        
         let maskErrorArr = {};
         let nextBtnOriginalClicks = {};
         let clickStatus={};
@@ -940,212 +654,60 @@
 
         // end - step field mask error handling
 
+        CFKEF.bindAllMaskValidations($, {
+          onInput: function (input, errorClass, validationFunction) {
+            nextbtnVisibility(errorClass, input, validationFunction);
+          },
+        });
+
       
         // ----------------- Form Submit -----------------
         
-        $(document).on("click", ".cool-form__submit-group button", function (e) {
-            e.preventDefault();
-            const $submitBtn = $(this);
-            const $form = $submitBtn.closest("form");
+        CFKEF.bindMaskSubmitGuard($, '.cool-form__submit-group button', {
+          preventDefaultAlways: true,
+          delay: 400,
+          scrollDuration: 400,
+        });
 
-            // Prevent multiple rapid clicks
-            if ($submitBtn.data("clicked")) {
-                e.preventDefault();
-                return;
+        CFKEF.bindMaskSubmitGuard($, '.ehp-form__submit-group button', {
+          delay: 500,
+          scrollDuration: 300,
+          addWaitingClass: true,
+          checkRequiredEmpty: true,
+          checkHtml5Validity: true,
+        });
+
+        CFKEF.bindMaskSubmitGuard($, '.elementor-field-type-submit', {
+          delay: 500,
+          scrollDuration: 300,
+          addWaitingClass: true,
+          checkRequiredEmpty: true,
+          errorDisplayFlex: true,
+          shouldHandle: function ($submitBtn) {
+            return !$submitBtn.find('button').hasClass('cfkef-prevent-submit');
+          },
+          onAfterValid: function ($submitBtn, $form) {
+            const closesWidget = $form.closest('.elementor-widget-form');
+            const widgetId = closesWidget.data('id');
+            const submtBtnTag = $form.find("button[type='submit']");
+
+            if (recaptchaEvent[widgetId]) {
+              submtBtnTag.on('click', recaptchaEvent[widgetId]);
+              submtBtnTag.trigger('click');
             }
-            $submitBtn.data("clicked", true);
 
-            // Trigger blur so masks run their validation
-            $form.find("input").trigger("blur");
+            if (submitBtnEvent[widgetId]) {
+              $form.on('submit', submitBtnEvent[widgetId]);
+              submtBtnTag.trigger('click');
+            }
 
-            // Wait for possible async error display (like from masks)
-            setTimeout(() => {
-                const $visibleErrors = $form.find(".mask-error").filter(function () {
-                    return $(this).text().trim() !== "" && $(this).is(":visible");
-                });
-
-                if ($visibleErrors.length > 0) {
-                    const $firstError = $visibleErrors.first();
-                    $("html, body").animate({
-                        scrollTop: $firstError.offset().top - 200
-                    }, 400);
-                    
-                    e.preventDefault();
-                    $submitBtn.data("clicked", false);
-                    return;
-                }
-
-                // No visible errors? Submit the form
+            if (!recaptchaEvent[widgetId]) {
+              const error_messages = $form.find('.elementor-form-fields-wrapper').find('.elementor-message');
+              if (error_messages && error_messages.length === 0) {
                 $form[0].requestSubmit();
-                $submitBtn.data("clicked", false);
-            }, 400); // Wait a bit after blur to allow errors to appear
-        });
-
-
-        $(document).on("click", ".ehp-form__submit-group button", function (e) {
-          const $submitBtn = $(this);
-          const $form = $submitBtn.closest("form");
-
-          if ($submitBtn.data("clicked")) {
-            e.preventDefault();
-            return;
-          }
-          $submitBtn.data("clicked", true);
-
-          $form.find("input").trigger("blur");
-          $form[0].classList.add("elementor-form-waiting");
-
-          setTimeout(() => {
-            let hasVisibleMaskError = false;
-
-            const $errors = $form.find(".mask-error").filter(function () {
-              return $(this).text().trim() !== "" && $(this).is(":visible");
-            });
-
-            if ($errors.length > 0) {
-              hasVisibleMaskError = true;
-              $("html, body").animate({
-                scrollTop: $errors.first().offset().top - 200
-              }, 300);
-            }
-
-            const $emptyRequiredMasked = $form.find("input[required]").filter(function () {
-              const val = $(this).val().trim();
-              const isVisible = $(this).is(":visible");
-              return isVisible && (val === "" || /^[\s_\-\(\)\.:/]+$/.test(val));
-            });
-
-            if ($emptyRequiredMasked.length > 0) {
-              hasVisibleMaskError = true;
-              $("html, body").animate({
-                scrollTop: $emptyRequiredMasked.first().offset().top - 200
-              }, 300);
-              $emptyRequiredMasked.first().focus();
-            }
-
-            if (hasVisibleMaskError || !$form[0].checkValidity()) {
-              $form[0].classList.remove("elementor-form-waiting");
-              $submitBtn.data("clicked", false);
-              e.preventDefault();
-              return;
-            }
-
-            $form[0].classList.remove("elementor-form-waiting");
-            $form[0].requestSubmit();
-            $submitBtn.data("clicked", false);
-          }, 500);
-        });
-
-
-
-        $(document).on("click", ".elementor-field-type-submit", function (e) {
-          var $submitBtn = $(this);
-
-
-          if($submitBtn.find('button').hasClass('cfkef-prevent-submit') ){
-            return
-          }
-          
-          var $form = $submitBtn.closest("form");
-
-          const closesWidget = $form.closest(".elementor-widget-form");
-          const widgetId = closesWidget.data('id');
-          const submtBtnTag = $form.find("button[type='submit']");
-
-          // Prevent double-clicks
-          if ($submitBtn.data("clicked")) {
-            e.preventDefault();
-            return;
-          }
-          $submitBtn.data("clicked", true); // Mark as clicked
-
-          // Trigger blur on inputs to ensure validation runs
-          $form.find("input").trigger("blur");
-
-          // Add Elementor waiting class
-          $form[0].classList.add("elementor-form-waiting");
-
-          // Wait for mask errors or blur logic to complete
-          setTimeout(() => {
-            let hasVisibleMaskError = false;
-
-            // Check for visible mask error messages
-            const $errors = $form.find(".mask-error").filter(function () {
-              return $(this).text().trim() !== "" && $(this).css("display") == "flex";
-            });
-
-            if ($errors.length > 0) {
-              hasVisibleMaskError = true;
-              const $firstError = $errors.first();
-              $("html, body").animate({
-                scrollTop: $firstError.offset().top - 200
-              }, 300);
-            }
-
-            // ✅ Check for empty required masked fields
-            const $emptyRequiredMasked = $form.find("input[required]").filter(function () {
-              if(!$(this).hasClass('hide-fme-mask-input')){
-                const val = $(this).val().trim();
-                const isVisible = $(this).css("display") == "flex";
-                return (val === "" || /^[\s_\-\(\)\.:/]+$/.test(val));
-              }
-            });
-
-            if ($emptyRequiredMasked.length > 0) {
-              hasVisibleMaskError = true;
-              const $firstEmpty = $emptyRequiredMasked.first();
-              $("html, body").animate({
-                scrollTop: $firstEmpty.offset().top - 200
-              }, 300);
-              $firstEmpty.focus();
-            }
-
-            // ❌ Validation failed
-            if (hasVisibleMaskError) {
-              // $form[0].classList.remove("elementor-form-waiting");
-              $submitBtn.data("clicked", false);
-              e.preventDefault();
-              return;
-            }
-
-            // ❌ Validation failed
-            if (hasVisibleMaskError) {
-              // $form[0].classList.remove("elementor-form-waiting");
-              $submitBtn.data("clicked", false);
-              e.preventDefault();
-              return;
-            }
-
-            if (!hasVisibleMaskError) { 
-              // ✅ All good — submit the form
-
-
-              if(recaptchaEvent[widgetId]){
-                submtBtnTag.on("click", recaptchaEvent[widgetId]);
-                submtBtnTag.trigger("click");
-              }
-
-              if(submitBtnEvent[widgetId]){
-                $form.on("submit", submitBtnEvent[widgetId]);
-                submtBtnTag.trigger("click");
-
-              }
-
-              $form[0].classList.remove("elementor-form-waiting");
-              $submitBtn.data("clicked", false);
-              if(!recaptchaEvent[widgetId]){
-
-                let error_messages = $form.find('.elementor-form-fields-wrapper').find('.elementor-message');
-
-                if(error_messages && error_messages.length == 0){
-
-                  $form[0].requestSubmit();
-                }
-
-
               }
             }
-          }, 500);
+          },
         });
 
       

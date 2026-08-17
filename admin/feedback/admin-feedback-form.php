@@ -1,8 +1,6 @@
 <?php
 namespace Cool_FormKit\feedback;
 
-use DateTime;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; }
 
@@ -24,7 +22,6 @@ class cfl_feedback {
 	|-----------------------------------------------------------------|
 	*/
 	public function __construct() {
-		// $this->plugin_url = plugin_dir_url( $this->plugin_url );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_feedback_scripts' ) );
 		add_action( 'admin_head', array( $this, 'show_deactivate_feedback_popup' ) );
 		add_action( 'wp_ajax_' . $this->plugin_slug . '_submit_deactivation_response', array( $this, 'submit_deactivation_response' ) );

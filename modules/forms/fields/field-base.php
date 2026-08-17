@@ -19,8 +19,6 @@ abstract class Field_Base {
 	/**
 	 * Get the field ID.
 	 *
-	 * TODO: Make it an abstract function that will replace `get_type()`.
-	 *
 	 * @since 3.5.0
 	 *
 	 * @return string

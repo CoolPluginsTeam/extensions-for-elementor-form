@@ -11,30 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Form_Record {
 	protected $sent_data;
 	protected $fields;
-	protected $form_type;
 	public $form_settings;
-	protected $files = [];
 	protected $meta = [];
-
-	public function get_formatted_data( $with_meta = false ): array {
-		$formatted = [];
-		$no_label = esc_html__( 'No Label', 'extensions-for-elementor-form' );
-		$fields = $this->fields;
-
-		if ( $with_meta ) {
-			$fields = array_merge( $fields, $this->meta );
-		}
-
-		foreach ( $fields as $key => $field ) {
-			if ( empty( $field['title'] ) ) {
-				$formatted[ $no_label . ' ' . $key ] = $field['value'];
-			} else {
-				$formatted[ $field['title'] ] = $field['value'];
-			}
-		}
-
-		return $formatted;
-	}
 
 	/**
 	 * @param Ajax_Handler $ajax_handler An instance of the ajax handler.
@@ -128,10 +106,6 @@ class Form_Record {
 		return null;
 	}
 
-	public function set( $property, $value ) {
-		$this->{$property} = $value;
-	}
-
 	public function get_form_settings( $setting ) {
 		if ( isset( $this->form_settings[ $setting ] ) ) {
 			return $this->form_settings[ $setting ];
@@ -146,13 +120,6 @@ class Form_Record {
 
 	public function remove_field( $id ) {
 		unset( $this->fields[ $id ] );
-	}
-
-	public function update_field( $field_id, $property, $value ) {
-		if ( ! isset( $this->fields[ $field_id ] ) || ! isset( $this->fields[ $field_id ][ $property ] ) ) {
-			return;
-		}
-		$this->fields[ $field_id ][ $property ] = $value;
 	}
 
 	public function get_form_meta( $meta_keys = [] ) {
@@ -322,19 +289,7 @@ class Form_Record {
 		}, $setting );
 	}
 
-
-	public function has_field_type( $type ) {
-		foreach ( $this->fields as $id => $field ) {
-			if ( $type === $field['field_type'] ) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	public function __construct( $sent_data, $form ) {
-		$this->form_type = $form['widgetType'];
 		$this->form_settings = $form['settings'];
 		$this->sent_data = stripslashes_deep( $sent_data );
 

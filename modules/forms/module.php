@@ -5,7 +5,6 @@ namespace Cool_FormKit\Modules\Forms;
 use Elementor\Controls_Manager;
 use Cool_FormKit\Includes\Module_Base;
 use Cool_FormKit\Modules\Forms\components\Ajax_Handler;
-use Cool_FormKit\Modules\Forms\Controls\Fields_Map;
 use Cool_FormKit\Modules\Forms\Controls\Fields_Repeater;
 use Cool_FormKit\Modules\Forms\Registrars\Form_Actions_Registrar;
 use Cool_FormKit\Modules\Forms\Registrars\Form_Fields_Registrar;
@@ -40,19 +39,9 @@ class Module extends Module_Base {
 	}
 
 	/**
-	 * Get the base URL for assets.
-	 *
-	 * @return string
-	 */
-	public function get_assets_base_url(): string {
-		return CFL_PLUGIN_URL;
-	}
-
-	/**
 	 * Register styles.
 	 *
-	 * At build time, Elementor compiles `/modules/forms/assets/scss/frontend.scss`
-	 * to `/assets/css/widget-forms.min.css`.
+	 * Webpack compiles cool-formkit-forms.scss to build/css/Cool_FormKit-forms.css.
 	 *
 	 * @return void
 	 */
@@ -99,7 +88,6 @@ class Module extends Module_Base {
 
 	public function register_controls( Controls_Manager $controls_manager ) {
 		$controls_manager->register( new Fields_Repeater() );
-		$controls_manager->register( new Fields_Map() );
 	}
 
 	public function enqueue_editor_styles(){
@@ -172,10 +160,6 @@ class Module extends Module_Base {
 		);
 	}
 
-	protected function get_component_ids(): array {
-		return [ 'Ajax_Handler' ];
-	}
-
 	public static function get_site_domain() {
 		return str_ireplace( 'www.', '', wp_parse_url( home_url(), PHP_URL_HOST ) );
 	}
@@ -197,22 +181,17 @@ class Module extends Module_Base {
 	public function __construct() {
 		parent::__construct();
 
-		if (class_exists(Recaptcha_Handler::class)) {
-			
-			$this->add_component( 'recaptcha', new Classes\Recaptcha_Handler() );
+		if ( class_exists( Recaptcha_Handler::class ) ) {
+			new Recaptcha_Handler();
+		}
 
-        }
+		if ( class_exists( Recaptcha_V3_Handler::class ) ) {
+			new Recaptcha_V3_Handler();
+		}
 
-		if (class_exists(Recaptcha_V3_Handler::class)) {
-
-			$this->add_component( 'recaptcha_v3', new Classes\Recaptcha_V3_Handler() );
-
-        }
-
-		
 		// Initialize registrars.
 		$this->actions_registrar = new Form_Actions_Registrar();
 		$this->fields_registrar = new Form_Fields_Registrar();
-		 new Ajax_Handler();
+		new Ajax_Handler();
 	}
 }
