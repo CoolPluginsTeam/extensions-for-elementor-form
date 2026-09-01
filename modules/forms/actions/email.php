@@ -3,13 +3,15 @@ namespace Cool_FormKit\Modules\Forms\Actions;
 
 use Elementor\Controls_Manager;
 use Cool_FormKit\Modules\Forms\Classes\Action_Base;
-use Cool_FormKit\Modules\Forms\Classes\Form_Record;
 use Cool_FormKit\Modules\Forms\Components\Ajax_Handler;
 use Cool_FormKit\Modules\Forms\Module;
+use Cool_FormKit\Includes\Actions\Email_Header_Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+
+require_once CFL_PLUGIN_PATH . 'includes/actions/email-header-utils.php';
 
 class Email extends Action_Base {
 
@@ -282,6 +284,16 @@ class Email extends Action_Base {
 			$fields['email_content'] .= $line_break . '---' . $line_break . $line_break . $email_meta;
 		}
 
+		$fields['email_from_name'] = Email_Header_Utils::strip_header_breaks( $fields['email_from_name'] );
+		$fields['email_from']      = Email_Header_Utils::sanitize_from_email( $fields['email_from'], get_bloginfo( 'admin_email' ) );
+		$email_reply_to            = Email_Header_Utils::sanitize_from_email( $email_reply_to, 'noreply@' . Module::get_site_domain() );
+
+		$to_emails = Email_Header_Utils::sanitize_email_list( $fields['email_to'] );
+		if ( empty( $to_emails ) ) {
+			$admin_email = (string) get_option( 'admin_email' );
+			$to_emails   = is_email( $admin_email ) ? array( $admin_email ) : array();
+		}
+
 		$headers = sprintf( 'From: %s <%s>' . "\r\n", $fields['email_from_name'], $fields['email_from'] );
 		$headers .= sprintf( 'Reply-To: %s' . "\r\n", $email_reply_to );
 
@@ -289,28 +301,23 @@ class Email extends Action_Base {
 			$headers .= 'Content-Type: text/html; charset=UTF-8' . "\r\n";
 		}
 
-		$cc_header = '';
-		if ( ! empty( $fields['email_to_cc'] ) ) {
-			$cc_header = 'Cc: ' . $fields['email_to_cc'] . "\r\n";
-		}
+		$cc_header = Email_Header_Utils::build_cc_header( $fields['email_to_cc'] );
 
 		$email_sent = wp_mail(
-			$fields['email_to'],
+			$to_emails,
 			$fields['email_subject'],
 			$fields['email_content'],
 			$headers . $cc_header,
 		);
 
-		if ( ! empty( $fields['email_to_bcc'] ) ) {
-			$bcc_emails = explode( ',', $fields['email_to_bcc'] );
-			foreach ( $bcc_emails as $bcc_email ) {
-				wp_mail(
-					trim( $bcc_email ),
-					$fields['email_subject'],
-					$fields['email_content'],
-					$headers,
-				);
-			}
+		$bcc_emails = Email_Header_Utils::sanitize_email_list( $fields['email_to_bcc'] );
+		foreach ( $bcc_emails as $bcc_email ) {
+			wp_mail(
+				$bcc_email,
+				$fields['email_subject'],
+				$fields['email_content'],
+				$headers,
+			);
 		}
 
 		if ( ! $email_sent ) {
@@ -356,7 +363,7 @@ class Email extends Action_Base {
 
 	/**
 	 * @param string      $email_content
-	 * @param Form_Record $record
+	 * @param \Cool_FormKit\Modules\Forms\Classes\Form_Record $record
 	 *
 	 * @return string
 	 */

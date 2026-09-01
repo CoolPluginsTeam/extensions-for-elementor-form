@@ -108,6 +108,7 @@
                         const newOption = document.createElement('option');
                         newOption.value = select.value; 
                         newOption.textContent = select.selectedText.textContent;
+                        newOption.selected = true;
                         hiddenSelect.appendChild(newOption);
                     }
                 }
@@ -115,14 +116,11 @@
                     const hiddenSelect = selectEl.querySelector('select');
                     if (hiddenSelect) {
                         hiddenSelect.innerHTML = '';
-                        // Create a new option.
-
                         const newOption = document.createElement('option');
                         newOption.value = select.value; 
                         newOption.textContent = select.selectedText.textContent; 
-
+                        newOption.selected = true;
                         hiddenSelect.appendChild(newOption);
-                        
                     }
                 });
             });

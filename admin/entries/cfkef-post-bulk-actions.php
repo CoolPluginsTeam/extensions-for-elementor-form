@@ -2,7 +2,6 @@
 
 namespace Cool_FormKit\Admin\Entries;
 
-use WPForms\Admin\Notice;
 use Cool_FormKit\Admin\Entries\CFKEF_Entries_Posts;
 use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
 
@@ -294,41 +293,15 @@ class CFKEF_Post_Bulk_Actions {
 	 * @return bool
 	 */
 	private function process_action_empty_trash( $id ) {
-		$posts = get_posts([
-			'post_type' => $this->posts_type,
-			'post_status' => 'trash',
-			'posts_per_page' => -1,
-		]);
-
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended
         $search= isset($_GET['cfkef-entries-search']) ? sanitize_text_field(wp_unslash($_GET['cfkef-entries-search'])) : '';
         // phpcs:enable WordPress.Security.NonceVerification.Recommended
 
-		$args = [
-			'post_type' => $this->posts_type,
-			'post_status' => array('trash'),
-			's' => $search,
-		];
-
-
-		global $wpdb;
-        $post_status_placeholders = implode( ', ', array_fill( 0, count( $args['post_status'] ), '%s' ) );
-
-        $query = $wpdb->prepare(
-            "SELECT * FROM {$wpdb->posts} WHERE post_type = %s AND post_status IN ($post_status_placeholders)", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Placeholders are dynamically generated for IN clause.
-            array_merge( array( $this->posts_type ), $args['post_status'] )
-        );
-
-        if(!empty($search)){
-            $query .= $wpdb->prepare(
-				" AND post_title LIKE %s",
-				'%' . $wpdb->esc_like( $search ) . '%'
-			);
-
-        }
-
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
-		$posts=$wpdb->get_results($query);
+		$posts = CFKEF_Entries_Posts::query_entries(
+			array( 'trash' ),
+			$search,
+			array( 'post_type' => $this->posts_type )
+		);
 		
 		foreach($posts as $post){
 			if ( ! current_user_can( 'delete_post', $post->ID ) ) {

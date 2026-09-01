@@ -132,6 +132,73 @@ class CFKEF_Entries_Posts {
         return isset($_GET['view']) && in_array($_GET['view'], ['all', 'trash']) ? sanitize_text_field(wp_unslash($_GET['view'])) : 'all';
     }
 
+    /**
+     * Query entry posts by status and optional title search.
+     *
+     * @param array  $statuses Post statuses.
+     * @param string $search   Optional title search.
+     * @param array  $args     Optional: post_type, orderby, order, posts_per_page, paged, date_filter.
+     * @return array
+     */
+    public static function query_entries( $statuses, $search = '', $args = array() ) {
+        global $wpdb;
+
+        $statuses  = array_values( (array) $statuses );
+        $post_type = isset( $args['post_type'] ) ? $args['post_type'] : self::$post_type;
+
+        if ( empty( $statuses ) ) {
+            return array();
+        }
+
+        $post_status_placeholders = implode( ', ', array_fill( 0, count( $statuses ), '%s' ) );
+
+        $query = $wpdb->prepare(
+            "SELECT * FROM {$wpdb->posts} WHERE post_type = %s AND post_status IN ($post_status_placeholders)", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Placeholders are dynamically generated for IN clause.
+            array_merge( array( $post_type ), $statuses )
+        );
+
+        if ( '' !== (string) $search ) {
+            $query .= $wpdb->prepare(
+                ' AND post_title LIKE %s',
+                '%' . $wpdb->esc_like( $search ) . '%'
+            );
+        }
+
+        if ( ! empty( $args['date_filter'] ) && preg_match( '/^(\d{4})(\d{2})$/', $args['date_filter'], $matches ) ) {
+            $query .= $wpdb->prepare(
+                ' AND MONTH(post_date) = %d AND YEAR(post_date) = %d',
+                $matches[2],
+                $matches[1]
+            );
+        }
+
+        if ( ! empty( $args['orderby'] ) && ! empty( $args['order'] ) ) {
+            $allowed_orderby = array( 'ID', 'post_title', 'post_date', 'post_modified', 'post_status' );
+            $allowed_order   = array( 'ASC', 'DESC' );
+
+            $orderby = sanitize_key( (string) $args['orderby'] );
+            $order   = strtoupper( sanitize_key( (string) $args['order'] ) );
+
+            $orderby = in_array( $orderby, $allowed_orderby, true ) ? $orderby : 'ID';
+            $order   = in_array( $order, $allowed_order, true ) ? $order : 'DESC';
+
+            $query .= ' ORDER BY ' . $orderby . ' ' . $order . ' ';
+        }
+
+        $per_page = isset( $args['posts_per_page'] ) ? (int) $args['posts_per_page'] : 0;
+        if ( $per_page > 0 ) {
+            $paged = isset( $args['paged'] ) ? max( 1, (int) $args['paged'] ) : 1;
+            $query .= $wpdb->prepare(
+                ' LIMIT %d OFFSET %d',
+                $per_page,
+                ( $paged - 1 ) * $per_page
+            );
+        }
+
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        return $wpdb->get_results( $query );
+    }
+
     public function output_entries_list(CFKEF_Dashboard $dashboard) {
         if($dashboard->current_screen(self::$post_type)){
             echo "<div class='wrap'>";

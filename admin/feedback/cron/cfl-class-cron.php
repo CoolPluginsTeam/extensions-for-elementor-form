@@ -1,7 +1,6 @@
 <?php
 
 namespace Cool_FormKit\Includes\Cron;
-use Cool_FormKit\feedback\cfl_feedback;
 
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
@@ -39,7 +38,7 @@ if (!class_exists('CFL_cronjob')) {
             
             $settings       = get_option('cfef_usage_share_data');
            
-            if (!empty($settings) || $settings === 'on'){
+            if ('on' === $settings){
 
                 CFL_cronjob::cfl_send_data();
             }

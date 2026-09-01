@@ -67,11 +67,11 @@ class Input extends AtomicFormInput
 			'attributes' => Attributes_Prop_Type::make()->meta( Overridable_Prop_Type::ignore() ),
 		];
 
-		if ( self::is_cfkef_element_enabled( 'country_code' ) ) {
+		if ( \CFL_Elements::is_enabled( 'country_code' ) ) {
 			$schema = array_merge( $schema, Country_Code_Input_Definition::props_schema() );
 		}
 
-		if ( self::is_cfkef_element_enabled( 'form_input_mask' ) ) {
+		if ( \CFL_Elements::is_enabled( 'form_input_mask' ) ) {
 			$schema = array_merge( $schema, Mask_Input_Definition::props_schema() );
 		}
 
@@ -118,8 +118,8 @@ class Input extends AtomicFormInput
 				Switch_Control::bind_to( 'readonly' )
 					->set_label( __( 'Read only', 'extensions-for-elementor-form' ) ),
 			],
-			self::is_cfkef_element_enabled( 'country_code' ) ? Country_Code_Input_Definition::content_controls() : [],
-			self::is_cfkef_element_enabled( 'form_input_mask' ) ? Mask_Input_Definition::content_controls() : []
+			\CFL_Elements::is_enabled( 'country_code' ) ? Country_Code_Input_Definition::content_controls() : [],
+			\CFL_Elements::is_enabled( 'form_input_mask' ) ? Mask_Input_Definition::content_controls() : []
 		);
 
 		$sections = [
@@ -138,14 +138,6 @@ class Input extends AtomicFormInput
 
 		return $sections;
     }
-
-	/**
-	 * @param string $field_key Option list entry from cfkef_enabled_elements.
-	 */
-	private static function is_cfkef_element_enabled( $field_key ): bool {
-		$enabled_elements = get_option( 'cfkef_enabled_elements', array() );
-		return in_array( sanitize_key( $field_key ), array_map( 'sanitize_key', (array) $enabled_elements ), true );
-	}
 
     protected function get_templates(): array
     {

@@ -3,7 +3,6 @@ namespace Cool_FormKit\Modules\Forms\Classes;
 
 use Elementor\Utils;
 use Elementor\Widget_Base;
-use Elementor\Icons_Manager;
 
 use Cool_FormKit\Modules\Forms\Module;
 
@@ -25,16 +24,6 @@ abstract class Form_Base extends Widget_Base {
 		}
 
 		return $element;
-	}
-
-	public static function get_button_sizes(): array {
-		return [
-			'xs' => esc_html__( 'Extra Small', 'extensions-for-elementor-form' ),
-			'sm' => esc_html__( 'Small', 'extensions-for-elementor-form' ),
-			'md' => esc_html__( 'Medium', 'extensions-for-elementor-form' ),
-			'lg' => esc_html__( 'Large', 'extensions-for-elementor-form' ),
-			'xl' => esc_html__( 'Extra Large', 'extensions-for-elementor-form' ),
-		];
 	}
 
 	public function make_textarea_field_md( $item, $item_index, $instance ): string {
@@ -265,157 +254,6 @@ abstract class Form_Base extends Widget_Base {
 		</div>
 		<?php
 		return ob_get_clean();
-	}
-	
-	public function make_textarea_field( $item, $item_index, $instance ): string {
-		$this->add_render_attribute( 'textarea' . $item_index, [
-			'class' => [
-				'elementor-field-textual',
-				'cool-form__field',
-				'cool-form__textarea',
-				esc_attr( $item['css_classes'] ),
-			],
-			'name' => $this->get_attribute_name( $item ),
-			'id' => $this->get_attribute_id( $item ),
-			'rows' => $item['rows'],
-		] );
-
-		if ( $item['placeholder'] ) {
-			$this->add_render_attribute( 'textarea' . $item_index, 'placeholder', $item['placeholder'] );
-		}
-
-		if ( $item['required'] ) {
-			$this->add_required_attribute( 'textarea' . $item_index );
-		}
-
-		$value = empty( $item['field_value'] ) ? '' : $item['field_value'];
-
-		return '<textarea ' . $this->get_render_attribute_string( 'textarea' . $item_index ) . '>' . esc_textarea( $value ) . '</textarea>';
-	}
-
-	public function make_select_field( $item, $i ,$instance) {
-		$this->add_render_attribute(
-			[
-				'select-wrapper' . $i => [
-					'class' => [
-						'cool-form__field',
-						'cool-form__select',
-						'remove-before',
-						esc_attr( $item['css_classes'] ),
-					],
-				],
-				'select' . $i => [
-					'name' => $this->get_attribute_name( $item ) . ( ! empty( $item['allow_multiple'] ) ? '[]' : '' ),
-					'id' => $this->get_attribute_id( $item ),
-					'class' => [
-						'cool-form-field-textual',
-						'cool-form__field',
-					],
-				],
-			]
-		);
-
-		if ( $item['required'] ) {
-			$this->add_required_attribute( 'select' . $i );
-		}
-
-		if ( $item['allow_multiple'] ) {
-			$this->add_render_attribute( 'select' . $i, 'multiple' );
-			if ( ! empty( $item['select_size'] ) ) {
-				$this->add_render_attribute( 'select' . $i, 'size', $item['select_size'] );
-			}
-		}
-
-		$options = preg_split( "/\\r\\n|\\r|\\n/", $item['field_options'] );
-
-		if ( ! $options ) {
-			return '';
-		}
-
-		ob_start();
-		?>
-		<div <?php $this->print_render_attribute_string( 'select-wrapper' . $i ); ?>>
-			<div class="select-caret-down-wrapper">
-				<?php
-				if ( ! $item['allow_multiple'] ) {
-					$icon = [
-						'library' => 'eicons',
-						'value' => 'eicon-caret-down',
-						'position' => 'right',
-					];
-					Icons_Manager::render_icon( $icon, [ 'aria-hidden' => 'true' ] );
-				}
-				?>
-			</div>
-			<select <?php $this->print_render_attribute_string( 'select' . $i ); ?>>
-				<?php
-				foreach ( $options as $key => $option ) {
-					$option_id = esc_attr( $item['custom_id'] . $key );
-					$option_value = esc_attr( $option );
-					$option_label = $option;
-
-					if ( false !== strpos( $option, '|' ) ) {
-						list( $label, $value ) = explode( '|', $option );
-						$option_value = esc_attr( $value );
-						$option_label = $label;
-					}
-
-					$this->add_render_attribute( $option_id, 'value', $option_value );
-
-					// Support multiple selected values
-					if ( ! empty( $item['field_value'] ) && in_array( $option_value, explode( ',', $item['field_value'] ), true ) ) {
-						$this->add_render_attribute( $option_id, 'selected', 'selected' );
-					} ?>
-					<option <?php $this->print_render_attribute_string( $option_id ); ?>><?php
-						// PHPCS - $option_label is already escaped
-						echo esc_html( $option_label ); ?></option>
-				<?php } ?>
-			</select>
-		</div>
-		<?php
-
-		$select = ob_get_clean();
-		return $select;
-	}
-
-	public function make_radio_checkbox_field( $item, $item_index, $type ): string {
-		$options = preg_split( "/\\r\\n|\\r|\\n/", $item['field_options'] );
-		$html = '';
-		if ( $options ) {
-			$html .= '<div class="elementor-field-subgroup ' . esc_attr( $item['css_classes'] ) . ' ' . esc_attr( $item['inline_list'] ) . '">';
-			foreach ( $options as $key => $option ) {
-				$element_id = esc_attr( $item['custom_id'] ) . $key;
-				$html_id = $this->get_attribute_id( $item ) . '-' . $key;
-				$option_label = $option;
-				$option_value = $option;
-				if ( false !== strpos( $option, '|' ) ) {
-					list( $option_label, $option_value ) = explode( '|', $option );
-				}
-
-				$this->add_render_attribute(
-					$element_id,
-					[
-						'type' => $type,
-						'value' => $option_value,
-						'id' => $html_id,
-						'name' => $this->get_attribute_name( $item ) . ( ( 'checkbox' === $type && count( $options ) > 1 ) ? '[]' : '' ),
-					]
-				);
-
-				if ( ! empty( $item['field_value'] ) && $option_value === $item['field_value'] ) {
-					$this->add_render_attribute( $element_id, 'checked', 'checked' );
-				}
-
-				if ( $item['required'] && 'radio' === $type ) {
-					$this->add_required_attribute( $element_id );
-				}
-
-				$html .= '<span class="elementor-field-option"><input ' . $this->get_render_attribute_string( $element_id ) . '> <label for="' . $html_id . '">' . $option_label . '</label></span>';
-			}
-			$html .= '</div>';
-		}
-
-		return $html;
 	}
 
 	public function form_fields_render_attributes( $i, $instance, $item ) {

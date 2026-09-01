@@ -1,46 +1,15 @@
-module.exports = elementorModules.editor.utils.Module.extend( {
+const createRecaptchaEditorModule = require('./recaptcha-editor-factory');
 
-
-    enqueueRecaptchaJs(url, type) {
-        if (!elementorFrontend.elements.$body.find('[src="' + url + '"]').length) {
-          elementorFrontend.elements.$body.append('<scr' + 'ipt src="' + url + '" id="recaptcha-' + type + '"></scri' + 'pt>');
-        }
-      },
-      renderField(inputField, item) {
-    
-    
-        inputField += '<div class="cool-form-field ' + item.field_type + '">';
-        inputField += this.getDataSettings(item);
-        inputField += '</div>';
-        return inputField;
-      },
-      getDataSettings(item) {
-    
-    
-        const config = elementor.config.forms.recaptcha;
-        const srcURL = 'https://www.google.com/recaptcha/api.js?onload=recaptchaLoaded&render=explicit';
-        if (!config.enabled) {
-          return '<div class="elementor-alert elementor-alert-info"> To use reCAPTCHA, you need to add the API Key and complete the setup process in Dashboard > Elementor > Cool FormKit Lite > Settings > reCAPTCHA. </div>';
-        }
-        let recaptchaData;
-        if (item.field_type == "recaptcha") {
-          recaptchaData = 'data-sitekey="' + config.site_key + '" data-type="' + config.type + '"';
-          recaptchaData += ' data-theme="' + item.recaptcha_style + '"';
-          recaptchaData += ' data-size="' + item.recaptcha_size + '"';
-        }
-        this.enqueueRecaptchaJs(srcURL, config.type);
-        return '<div class="cool-form-recaptcha" ' + recaptchaData + '></div>';
-      },
-      filterItem(item) {
-        if ('recaptcha' === item.field_type) {
-          item.field_label = false;
-        }
-        return item;
-      },
-      onInit() {
-        elementor.hooks.addFilter('cool_formkit/forms/content_template/item', this.filterItem);
-        elementor.hooks.addFilter("cool_formkit/forms/content_template/field/recaptcha", this.renderField, 10, 4);
-      }
-
-
-})
+module.exports = createRecaptchaEditorModule({
+	configKey: 'recaptcha',
+	fieldType: 'recaptcha',
+	filterHook: 'cool_formkit/forms/content_template/field/recaptcha',
+	setupMessage:
+		'To use reCAPTCHA, you need to add the API Key and complete the setup process in Dashboard > Elementor > Cool FormKit Lite > Settings > reCAPTCHA.',
+	buildDataAttrs: function (item, formConfig) {
+		let recaptchaData = 'data-sitekey="' + formConfig.site_key + '" data-type="' + formConfig.type + '"';
+		recaptchaData += ' data-theme="' + item.recaptcha_style + '"';
+		recaptchaData += ' data-size="' + item.recaptcha_size + '"';
+		return recaptchaData;
+	},
+});

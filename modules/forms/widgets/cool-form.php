@@ -6,7 +6,6 @@ use Elementor\Core\Kits\Documents\Tabs\Global_Colors;
 use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use Elementor\Group_Control_Background;
 use Elementor\Group_Control_Typography;
-use Elementor\Modules\DynamicTags\Module as TagsModule;
 use Elementor\Repeater;
 use Cool_FormKit\Includes\Utils;
 use Cool_FormKit\Modules\Forms\Classes\Form_Base;
@@ -64,6 +63,18 @@ class Cool_Form extends Form_Base {
 	}
 
 	protected function render(): void {
+		$instance = $this->get_settings_for_display();
+
+		if ( ! Utils::elementor()->editor->is_edit_mode() ) {
+			/**
+			 * Cool Form pre render.
+			 *
+			 * @param array     $instance Current form settings.
+			 * @param Cool_Form $this     An instance of the form.
+			 */
+			do_action( 'cool_formkit/forms/pre_render', $instance, $this );
+		}
+
 		$render_strategy = new Widget_Form_Render( $this );
 
 		$render_strategy->render();
@@ -105,7 +116,7 @@ class Cool_Form extends Form_Base {
 							inputField = '',
 							multiple = '',
 							fieldGroupClasses = 'cool-form__field-group has-border elementor-column is-field-type-' + item.field_type,
-							printLabel = settings.show_labels && ! [ 'hidden', 'html', 'step' ].includes( item.field_type );
+							printLabel = settings.show_labels && ! [ 'hidden', 'html' ].includes( item.field_type );
 
 						fieldGroupClasses += ' has-width-' + ( ( '' !== item.width ) ? item.width : '100' );
 
@@ -477,7 +488,6 @@ class Cool_Form extends Form_Base {
 								'recaptcha_v3',
 								'hidden',
 								'html',
-								'step',
 							],
 						],
 					],

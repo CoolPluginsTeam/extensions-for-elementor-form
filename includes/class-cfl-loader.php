@@ -2,13 +2,11 @@
 
 namespace Cool_FormKit\Includes;
 
-use Cool_Formkit\admin\CFKEF_Admin;
+use Cool_FormKit\Admin\CFKEF_Admin;
 
 use Cool_FormKit\Admin\Register_Menu_Dashboard\CFKEF_Dashboard;
 use Cool_FormKit\Admin\Entries\CFKEF_Entries_Posts;
 use Cool_FormKit\Includes\Frontend\CFKEF_Frontend;
-
-use Cool_FormKit\Includes\Frontend\Widget\Custom_Success_Message;
 
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
@@ -108,12 +106,6 @@ class CFL_Loader {
         return self::$instance;
     }
 
-    private function is_field_enabled($field_key) {
-        $enabled_elements = get_option('cfkef_enabled_elements', array());
-        return in_array(sanitize_key($field_key), array_map('sanitize_key', $enabled_elements));
-
-    }
-
     /**
      * Load the required dependencies for this plugin.
      *
@@ -128,12 +120,12 @@ class CFL_Loader {
      */
     private function load_dependencies() {
         require_once CFL_PLUGIN_PATH . 'admin/class-cfkef-admin.php';
-        $plugin_admin = CFKEF_Admin::get_instance($this->get_plugin_name(), $this->get_version());
+        $plugin_admin = CFKEF_Admin::get_instance($this->get_version());
         if(get_option('cfkef_enable_elementor_pro_form', true)){
             if(is_plugin_active( 'elementor-pro/elementor-pro.php') || is_plugin_active('pro-elements/pro-elements.php')){
 
                 require_once CFL_PLUGIN_PATH . 'includes/frontend/class-cfl-frontend.php';
-                $plugin_public = new CFKEF_Frontend($this->get_plugin_name(), $this->get_version());
+                $plugin_public = new CFKEF_Frontend();
             }
         }
     }
@@ -141,7 +133,7 @@ class CFL_Loader {
 
     private function admin_menu_dashboard() {
         if(class_exists(CFKEF_Dashboard::class)){
-            $menu_pages = CFKEF_Dashboard::get_instance($this->get_plugin_name(), $this->get_version());
+            $menu_pages = CFKEF_Dashboard::get_instance();
         }
 
         if(class_exists(CFKEF_Entries_Posts::class)){

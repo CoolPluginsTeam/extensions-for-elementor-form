@@ -19,7 +19,7 @@ jQuery(document).ready(function () {
 
         if($submenu.find('a[href="admin.php?page=elementor-one-upgrade"]').length > 0){
 
-            if(localStorage.getItem('cfkef_enable_hello_plus') == 1 || localStorage.getItem('cfkef_enable_formkit_builder') == 1){
+            if(localStorage.getItem('cfkef_enable_hello_plus') == 1 || localStorage.getItem('cfkef_enable_formkit_builder') == 1 || localStorage.getItem('cfkef_enable_atomic_form') == 1){
                 $elementorEditorPage.after($coolFormEntriesItem)            
             }
 
@@ -28,7 +28,7 @@ jQuery(document).ready(function () {
 
             $submenu.append($coolFormkitItem);
 
-            if(localStorage.getItem('cfkef_enable_hello_plus') == 1 || localStorage.getItem('cfkef_enable_formkit_builder') == 1){
+            if(localStorage.getItem('cfkef_enable_hello_plus') == 1 || localStorage.getItem('cfkef_enable_formkit_builder') == 1 || localStorage.getItem('cfkef_enable_atomic_form') == 1){
                 $submenu.append($coolFormEntriesItem);
             }
         }
@@ -40,102 +40,29 @@ jQuery(document).ready(function () {
     document.addEventListener('cfkef_dashboard_toggle:settings:changed', function (e) {
         addCoolformAdmingPageToElementor()
     });
-    
-    // recaptcha js
-    jQuery(".site-key-show-hide-icon-recaptcha img").on("click", function () {
 
-        if (jQuery("#cfl_site_key_v2").attr("type") == 'text') {
-            jQuery("#cfl_site_key_v2").attr("type", "password");
+    function bindSecretToggle(triggerSelector, inputSelector) {
+        jQuery(triggerSelector).on('click', function () {
+            var $input = jQuery(inputSelector);
+            var $icon = jQuery(triggerSelector);
+            var srcVal = $icon.attr('src');
+            var match = srcVal && srcVal.match(/\/images\/(.*)$/);
+            if (!match) {
+                return;
+            }
 
-            let src_val = jQuery(".site-key-show-hide-icon-recaptcha img").attr("src");
-            let regex = /\/images\/(.*)$/;
-            let match = src_val.match(regex);
+            if ($input.attr('type') === 'text') {
+                $input.attr('type', 'password');
+                $icon.attr('src', srcVal.replace(match[0], '/images/hide.svg'));
+            } else {
+                $input.attr('type', 'text');
+                $icon.attr('src', srcVal.replace(match[0], '/images/show.svg'));
+            }
+        });
+    }
 
-            let new_src = src_val.replace(match[0], "/images/hide.svg");
-            jQuery(".site-key-show-hide-icon-recaptcha img").attr("src", new_src);
-
-        } else {
-            jQuery("#cfl_site_key_v2").attr("type", "text");
-
-            let src_val = jQuery(".site-key-show-hide-icon-recaptcha img").attr("src");
-            let regex = /\/images\/(.*)$/;
-            let match = src_val.match(regex);
-
-            let new_src = src_val.replace(match[0], "/images/show.svg");
-            jQuery(".site-key-show-hide-icon-recaptcha img").attr("src", new_src);
-        }
-    });
-
-    jQuery(".secret-key-show-hide-icon-recaptcha img").on("click", function () {
-
-        if (jQuery("#cfl_secret_key_v2").attr("type") == 'text') {
-            jQuery("#cfl_secret_key_v2").attr("type", "password");
-
-            let src_val = jQuery(".secret-key-show-hide-icon-recaptcha img").attr("src");
-            let regex = /\/images\/(.*)$/;
-            let match = src_val.match(regex);
-
-            let new_src = src_val.replace(match[0], "/images/hide.svg");
-            jQuery(".secret-key-show-hide-icon-recaptcha img").attr("src", new_src);
-
-        } else {
-            jQuery("#cfl_secret_key_v2").attr("type", "text");
-
-            let src_val = jQuery(".secret-key-show-hide-icon-recaptcha img").attr("src");
-            let regex = /\/images\/(.*)$/;
-            let match = src_val.match(regex);
-
-            let new_src = src_val.replace(match[0], "/images/show.svg");
-            jQuery(".secret-key-show-hide-icon-recaptcha img").attr("src", new_src);
-        }
-    });
-
-    // recaptcha v3 js
-    jQuery(".site-key-show-hide-icon-recaptcha_v3 img").on("click", function () {
-
-        if (jQuery("#cfl_site_key_v3").attr("type") == 'text') {
-            jQuery("#cfl_site_key_v3").attr("type", "password");
-
-            let src_val = jQuery(".site-key-show-hide-icon-recaptcha_v3 img").attr("src");
-            let regex = /\/images\/(.*)$/;
-            let match = src_val.match(regex);
-
-            let new_src = src_val.replace(match[0], "/images/hide.svg");
-            jQuery(".site-key-show-hide-icon-recaptcha_v3 img").attr("src", new_src);
-
-        } else {
-            jQuery("#cfl_site_key_v3").attr("type", "text");
-
-            let src_val = jQuery(".site-key-show-hide-icon-recaptcha_v3 img").attr("src");
-            let regex = /\/images\/(.*)$/;
-            let match = src_val.match(regex);
-
-            let new_src = src_val.replace(match[0], "/images/show.svg");
-            jQuery(".site-key-show-hide-icon-recaptcha_v3 img").attr("src", new_src);
-        }
-    });
-
-    jQuery(".secret-key-show-hide-icon-recaptcha_v3 img").on("click", function () {
-
-        if (jQuery("#cfl_secret_key_v3").attr("type") == 'text') {
-            jQuery("#cfl_secret_key_v3").attr("type", "password");
-
-            let src_val = jQuery(".secret-key-show-hide-icon-recaptcha_v3 img").attr("src");
-            let regex = /\/images\/(.*)$/;
-            let match = src_val.match(regex);
-
-            let new_src = src_val.replace(match[0], "/images/hide.svg");
-            jQuery(".secret-key-show-hide-icon-recaptcha_v3 img").attr("src", new_src);
-
-        } else {
-            jQuery("#cfl_secret_key_v3").attr("type", "text");
-
-            let src_val = jQuery(".secret-key-show-hide-icon-recaptcha_v3 img").attr("src");
-            let regex = /\/images\/(.*)$/;
-            let match = src_val.match(regex);
-
-            let new_src = src_val.replace(match[0], "/images/show.svg");
-            jQuery(".secret-key-show-hide-icon-recaptcha_v3 img").attr("src", new_src);
-        }
-    });
+    bindSecretToggle('.site-key-show-hide-icon-recaptcha img', '#cfl_site_key_v2');
+    bindSecretToggle('.secret-key-show-hide-icon-recaptcha img', '#cfl_secret_key_v2');
+    bindSecretToggle('.site-key-show-hide-icon-recaptcha_v3 img', '#cfl_site_key_v3');
+    bindSecretToggle('.secret-key-show-hide-icon-recaptcha_v3 img', '#cfl_secret_key_v3');
 });

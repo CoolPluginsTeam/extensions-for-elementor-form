@@ -31,37 +31,8 @@ class Handle_Atomic_Form_Submission {
     private function check_condition_rule( $field_value, string $operator, string $compare_value ): bool {
 		$value_a = trim( html_entity_decode( $this->normalize_field_value_for_condition_check( $field_value ), ENT_QUOTES, 'UTF-8' ) );
 		$value_b = trim( html_entity_decode( $compare_value, ENT_QUOTES, 'UTF-8' ) );
-		$values = array_map( 'trim', explode( ',', $value_a ) );
-		$match_found = in_array( $value_b, $values, true );
 
-		switch ( $operator ) {
-			case '==':
-				return $match_found && '' !== $value_a;
-			case '!=':
-				return ! $match_found && '' !== $value_a;
-			case 'e':
-				return '' === $value_a;
-			case '!e':
-				return '' !== $value_a;
-			case 'c':
-				return false !== strpos( $value_a, $value_b );
-			case '!c':
-				return '' !== $value_a && false === strpos( $value_a, $value_b );
-			case '^':
-				return '' !== $value_b && 0 === strpos( $value_a, $value_b );
-			case '~':
-				return '' !== $value_b && str_ends_with( $value_a, $value_b );
-			case '>':
-				return intval( $value_a ) > intval( $value_b );
-			case '<':
-				return intval( $value_a ) < intval( $value_b );
-			case '>=':
-				return intval( $value_a ) >= intval( $value_b );
-			case '<=':
-				return intval( $value_a ) <= intval( $value_b );
-			default:
-				return false;
-		}
+		return cfl_check_field_logic( $value_a, $operator, $value_b );
 	}
 
     private function normalize_field_value_for_condition_check( $field_value ): string {
@@ -222,17 +193,37 @@ class Handle_Atomic_Form_Submission {
 		return $mapped_values;
 	}
 
-    private function get_condition_rules( int $post_id, string $form_id, array $form_fields ) {
+	/**
+	 * Resolve the atomic form element from the document once per submit.
+	 *
+	 * @param int    $post_id Post ID.
+	 * @param string $form_id Form element ID.
+	 * @return array|\WP_Error Form element array, WP_Error when document is missing, or empty array when form is not found.
+	 */
+	private function resolve_atomic_form_element( int $post_id, string $form_id ) {
 		$document = Plugin::elementor()->documents->get( $post_id );
-        if ( ! $document ) {
+
+		if ( ! $document ) {
 			return new \WP_Error(
 				'document_not_found',
 				__( 'Document not found', 'extensions-for-elementor-form' )
 			);
 		}
+
 		$element_data = $document->get_elements_data();
-        
-        $form_element = Elementor_Utils::find_element_recursive( $element_data, $form_id );
+		$form_element = Elementor_Utils::find_element_recursive( $element_data, $form_id );
+
+		return is_array( $form_element ) ? $form_element : [];
+	}
+
+    private function get_condition_rules( int $post_id, string $form_id, array $form_fields, $form_element = null ) {
+		if ( null === $form_element ) {
+			$form_element = $this->resolve_atomic_form_element( $post_id, $form_id );
+		}
+
+		if ( is_wp_error( $form_element ) ) {
+			return $form_element;
+		}
 
 		if ( empty( $form_element ) || empty( $form_element['elements'] ) || ! is_array( $form_element['elements'] ) ) {
 			return [];
@@ -281,11 +272,7 @@ class Handle_Atomic_Form_Submission {
 			$fire_action = (string) $this->resolve_atomic_setting_value( $settings, 'cfef_logic_meet', 'All' );
 			$display_mode = (string) $this->resolve_atomic_setting_value( $settings, 'cfef_logic_mode', 'show' );
 
-			$logic_result = ( 'All' === $fire_action )
-				? ! in_array( false, $checks, true )
-				: in_array( true, $checks, true );
-
-			$should_show = ( 'show' === $display_mode ) ? $logic_result : ! $logic_result;
+			$should_show = cfl_evaluate_conditional_display( $checks, $fire_action, $display_mode );
 
 			if ( ! $should_show ) {
 				$hidden_fields[] = [
@@ -299,19 +286,14 @@ class Handle_Atomic_Form_Submission {
 
 	}
 
-    private function get_widget_settings( int $post_id, string $form_id ) {
-		$document = Plugin::elementor()->documents->get( $post_id );
-
-		if ( ! $document ) {
-			return new \WP_Error(
-				'document_not_found',
-				__( 'Document not found', 'extensions-for-elementor-form' )
-			);
+    private function get_widget_settings( int $post_id, string $form_id, $form_element = null ) {
+		if ( null === $form_element ) {
+			$form_element = $this->resolve_atomic_form_element( $post_id, $form_id );
 		}
 
-		$element_data = $document->get_elements_data();
-
-		$form_element = Elementor_Utils::find_element_recursive( $element_data, $form_id );
+		if ( is_wp_error( $form_element ) ) {
+			return $form_element;
+		}
 
 		if ( empty( $form_element ) ) {
 			return new \WP_Error(
@@ -511,6 +493,7 @@ class Handle_Atomic_Form_Submission {
 
 		if ( ! $this->is_nonce_valid( $post_data ) ) {
 			$this->send_invalid_form_response();
+			return;
 		}
 
 		$post_id = absint( $post_data['post_id'] ?? 0 );
@@ -519,26 +502,34 @@ class Handle_Atomic_Form_Submission {
 
 		if ( ! $post_id || ! $form_id || empty( $form_fields ) ) {
 			$this->send_invalid_form_response();
+			return;
 		}
 
-        $widget_settings = $this->get_widget_settings( $post_id, $form_id );
+        $form_element = $this->resolve_atomic_form_element( $post_id, $form_id );
+        $widget_settings = $this->get_widget_settings( $post_id, $form_id, $form_element );
 
-        
-        $hidden_fields = $this->get_condition_rules( $post_id, $form_id, $form_fields );
+		if ( is_wp_error( $widget_settings ) ) {
+			$this->send_error_response( $widget_settings->get_error_message() );
+			return;
+		}
+
+        $hidden_fields = $this->get_condition_rules( $post_id, $form_id, $form_fields, $form_element );
+
+		if ( is_wp_error( $hidden_fields ) ) {
+			$this->send_error_response( $hidden_fields->get_error_message() );
+			return;
+		}
+
         $form_fields = $this->validate_form_fields( $form_fields, $hidden_fields );
 
 		$form_data = $this->convert_form_fields_to_data( $form_fields );
 
 		if ( empty( $form_data ) ) {
 			$this->send_invalid_form_response();
+			return;
 		}
 
 		$field_metadata = $this->extract_field_metadata( $form_fields );
-
-
-		if ( is_wp_error( $widget_settings ) ) {
-			$this->send_error_response( $widget_settings->get_error_message() );
-		}
 
 		$posted_form_name = sanitize_text_field( $post_data['form_name'] ?? '' );
 		$form_name = $this->resolve_form_name( $posted_form_name, $form_id );
@@ -556,12 +547,14 @@ class Handle_Atomic_Form_Submission {
 			$this->send_error_response(
 				__( 'Your submission was flagged as spam. Please try again or contact the site administrator.', 'extensions-for-elementor-form' )
 			);
+			return;
 		}
 
 		$actions = $widget_settings['actions-after-submit'] ?? [];
 
 		if ( empty( $actions ) ) {
 			$this->send_error_response( __( 'No actions configured for this form', 'extensions-for-elementor-form' ) );
+			return;
 		}
 
 		$results = $this->execute_registered_actions(
@@ -655,4 +648,3 @@ class Handle_Atomic_Form_Submission {
     }
 }
 
-new Handle_Atomic_Form_Submission();

@@ -1,5 +1,5 @@
 <?php
-namespace Cool_formkit\admin;
+namespace Cool_FormKit\Admin;
 use Cool_FormKit\Includes\Cron\CFL_cronjob;
 
 // phpcs:disable PluginCheck.CodeAnalysis.SettingSanitization.register_settingMissing
@@ -38,15 +38,6 @@ class CFKEF_Admin {
     private static $instance = null;
 
     /**
-     * The ID of this plugin.
-     *
-     * @since    1.0.0
-     * @access   private
-     * @var      string    $plugin_name    The ID of this plugin.
-     */
-    private $plugin_name;
-
-    /**
      * The version of this plugin.
      *
      * @since    1.0.0
@@ -59,11 +50,9 @@ class CFKEF_Admin {
      * Constructor to initialize the class and set its properties.
      *
      * @since    1.0.0
-     * @param    string    $plugin_name       The name of this plugin.
      * @param    string    $version    The version of this plugin.
      */
-    private function __construct($plugin_name, $version) {
-        $this->plugin_name = $plugin_name;
+    private function __construct($version) {
         $this->version = $version;
         add_action('admin_menu', array($this, 'add_plugin_admin_menu'),998);
         add_action('admin_init', array($this, 'register_form_elements_settings'));
@@ -106,6 +95,23 @@ class CFKEF_Admin {
         add_action( 'wp_ajax_cfkef_plugin_activate', array($this,'cfkef_plugin_activate') );
     }
 
+    /**
+     * Companion plugins the dashboard may install or activate.
+     *
+     * @return array{slugs: string[], inits: string[]}
+     */
+    private function cfkef_allowed_companion_plugins() {
+        return array(
+            // Install from wordpress.org is only used for Hello Plus; Elementor Pro install redirects.
+            'slugs' => array( 'hello-plus' ),
+            // Activate must cover every companion the dashboard offers.
+            'inits' => array(
+                'hello-plus/hello-plus.php',
+                'elementor-pro/elementor-pro.php',
+            ),
+        );
+    }
+
     public function cfkef_plugin_activate(){
         check_ajax_referer( 'cfkef_plugin_nonce', 'security' );
         if ( ! current_user_can( 'activate_plugins' ) ) {
@@ -119,6 +125,15 @@ class CFKEF_Admin {
         include_once ABSPATH . 'wp-admin/includes/plugin.php';
 
         $init_file = sanitize_text_field( wp_unslash($_POST['init']) );
+        $allowed   = $this->cfkef_allowed_companion_plugins();
+
+        if ( ! in_array( $init_file, $allowed['inits'], true ) ) {
+            wp_send_json_error( [ 'message' => 'Plugin not allowed' ] );
+        }
+
+        if ( ! current_user_can( 'activate_plugin', $init_file ) ) {
+            wp_send_json_error( [ 'message' => 'Permission denied' ] );
+        }
 
         $activate = activate_plugin( $init_file );
 
@@ -132,13 +147,12 @@ class CFKEF_Admin {
      * Get the instance of this class.
      *
      * @since    1.0.0
-     * @param    string    $plugin_name       The name of this plugin.
      * @param    string    $version    The version of this plugin.
      * @return   CFKEF_Admin    The instance of this class.
      */
-    public static function get_instance($plugin_name, $version) {
+    public static function get_instance($version) {
         if (null == self::$instance) {
-            self::$instance = new self($plugin_name, $version);
+            self::$instance = new self($version);
         }
         return self::$instance;
     }
@@ -245,6 +259,9 @@ class CFKEF_Admin {
                 );
 
                 update_option('cfkef_enabled_elements', $default_elements);
+                if ( class_exists( '\CFL_Elements' ) ) {
+                    \CFL_Elements::flush_cache();
+                }
             }
             // Set initialization flag to avoid repeating
             update_option('cfl_plugin_initialized', true);
@@ -268,7 +285,12 @@ class CFKEF_Admin {
                     $valid[] = $element;
                 }
             }
-        } 
+        }
+
+        if ( class_exists( '\CFL_Elements' ) ) {
+            \CFL_Elements::flush_cache();
+        }
+
         return $valid;
     }
 

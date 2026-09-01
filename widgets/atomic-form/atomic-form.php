@@ -22,13 +22,9 @@ if ( ! class_exists( Core_Atomic_Form::class ) ) {
  */
 class Atomic_Form extends Core_Atomic_Form {
 
-	private function is_field_enabled( $field_key ) {
-		return self::is_cfkef_element_enabled( $field_key );
-	}
-
 	protected static function define_props_schema(): array {
 		$schema = parent::define_props_schema();
-		if ( ! self::is_cfkef_element_enabled( 'whatsapp_redirect' ) ) {
+		if ( ! \CFL_Elements::is_enabled( 'whatsapp_redirect' ) ) {
 			return $schema;
 		}
 		return Atomic_Form_Whatsapp_Redirect_Controls::extend_props_schema( $schema );
@@ -38,7 +34,7 @@ class Atomic_Form extends Core_Atomic_Form {
 		$sections                  = parent::define_atomic_controls();
 		$result                    = [];
 		$whatsapp_section_inserted = false;
-		$whatsapp_enabled          = $this->is_field_enabled( 'whatsapp_redirect' );
+		$whatsapp_enabled          = \CFL_Elements::is_enabled( 'whatsapp_redirect' );
 
 		foreach ( $sections as $section ) {
 			if ( ! ( $section instanceof Section ) ) {
@@ -78,13 +74,5 @@ class Atomic_Form extends Core_Atomic_Form {
 		}
 
 		return $result;
-	}
-
-	/**
-	 * @param string $field_key Option list entry from cfkef_enabled_elements.
-	 */
-	private static function is_cfkef_element_enabled( $field_key ): bool {
-		$enabled_elements = get_option( 'cfkef_enabled_elements', array() );
-		return in_array( sanitize_key( $field_key ), array_map( 'sanitize_key', (array) $enabled_elements ), true );
 	}
 }

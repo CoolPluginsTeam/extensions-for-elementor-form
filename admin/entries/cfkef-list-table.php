@@ -19,8 +19,6 @@ class CFKEF_List_Table extends WP_List_Table {
 
     private $cfkef_bulk_actions;
 
-    private $bulk_actions;
-
     public static function get_instance($post_type) {
         if (null === self::$instance) {
             self::$instance = new self($post_type);
@@ -169,10 +167,6 @@ class CFKEF_List_Table extends WP_List_Table {
 
         return esc_html($value);
     }
-    
-    public function column_actions($item) {
-        return sprintf('<a href="%s" class="button button-primary">View</a>', esc_url($item->ID));
-    }
 
     protected function handle_row_actions( $item, $column_name, $primary ) {
         if($column_name !== $primary) {
@@ -182,14 +176,52 @@ class CFKEF_List_Table extends WP_List_Table {
         $view = CFKEF_Entries_Posts::get_view();
 
         $actions           = array();
+        $entry_id          = (int) $item->ID;
+        $row_action_nonce  = wp_create_nonce( 'bulk-entries' );
         if($view === 'all'){
-            $edit_url = admin_url('post.php?post='.intval($item->ID).'&action=edit');
-            $actions['View']   = sprintf('<a href="%s" class="row-title">View</a>', $edit_url);
-            $actions['Trash'] = sprintf('<a href="?page=cfkef-entries&action=trash&entry_id=%s&_wpnonce=%s" class="row-title submitdelete">Trash</a>', $item->ID, wp_create_nonce('bulk-entries'));
+            $edit_url = admin_url( 'post.php?post=' . $entry_id . '&action=edit' );
+            $actions['View']   = sprintf( '<a href="%s" class="row-title">View</a>', esc_url( $edit_url ) );
+            $actions['Trash']  = sprintf(
+                '<a href="%s" class="row-title submitdelete">Trash</a>',
+                esc_url(
+                    add_query_arg(
+                        array(
+                            'page'     => 'cfkef-entries',
+                            'action'   => 'trash',
+                            'entry_id' => $entry_id,
+                            '_wpnonce' => $row_action_nonce,
+                        )
+                    )
+                )
+            );
         }
         if($view === 'trash'){
-            $actions['Restore'] = sprintf('<a href="?page=cfkef-entries&action=restore&entry_id=%s&_wpnonce=%s" class="row-title">Restore</a>', $item->ID, wp_create_nonce('bulk-entries'));
-            $actions['Delete'] = sprintf('<a href="?page=cfkef-entries&action=delete&entry_id=%s&_wpnonce=%s" class="row-title submitdelete">Delete</a>', $item->ID, wp_create_nonce('bulk-entries'));
+            $actions['Restore'] = sprintf(
+                '<a href="%s" class="row-title">Restore</a>',
+                esc_url(
+                    add_query_arg(
+                        array(
+                            'page'     => 'cfkef-entries',
+                            'action'   => 'restore',
+                            'entry_id' => $entry_id,
+                            '_wpnonce' => $row_action_nonce,
+                        )
+                    )
+                )
+            );
+            $actions['Delete'] = sprintf(
+                '<a href="%s" class="row-title submitdelete">Delete</a>',
+                esc_url(
+                    add_query_arg(
+                        array(
+                            'page'     => 'cfkef-entries',
+                            'action'   => 'delete',
+                            'entry_id' => $entry_id,
+                            '_wpnonce' => $row_action_nonce,
+                        )
+                    )
+                )
+            );
         }
 
         return $this->row_actions($actions);
@@ -263,10 +295,6 @@ class CFKEF_List_Table extends WP_List_Table {
         $view = CFKEF_Entries_Posts::get_view();
         // phpcs:enable WordPress.Security.NonceVerification.Recommended
 
-        $page = esc_sql($page);
-        $view = esc_sql($view);
-        $search = esc_sql($search);
-
         $args = [
             'post_type'      => $this->post_type,
             'orderby'        => $orderby,
@@ -278,46 +306,18 @@ class CFKEF_List_Table extends WP_List_Table {
             's'              => $search,
         ];
 
-
-        global $wpdb;
-        $post_status_placeholders = implode( ', ', array_fill( 0, count( $args['post_status'] ), '%s' ) );
-
-        $query = $wpdb->prepare(
-            "SELECT * FROM {$wpdb->posts} WHERE post_type = %s AND post_status IN ($post_status_placeholders)", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Placeholders are dynamically generated for IN clause.
-            array_merge( array( $this->post_type ), $args['post_status'] )
+        $this->items = CFKEF_Entries_Posts::query_entries(
+            $args['post_status'],
+            $search,
+            array(
+                'post_type'      => $this->post_type,
+                'orderby'        => $orderby,
+                'order'          => $order,
+                'posts_per_page' => $per_page,
+                'paged'          => $page,
+                'date_filter'    => $date_filter,
+            )
         );
-
-        if(!empty($search)){
-            $query .= $wpdb->prepare(
-                " AND post_title LIKE %s",
-                '%' . $wpdb->esc_like( $search ) . '%'
-            );
-
-        }
-
-        
-        if(!empty($date_filter)){
-           if (!empty($date_filter) && preg_match('/^(\d{4})(\d{2})$/', $date_filter, $matches)) {
-               $year = $matches[1];
-               $month = $matches[2];
-               
-               $query .= $wpdb->prepare(" AND MONTH(post_date) = %d AND YEAR(post_date) = %d", $month, $year);
-           }
-
-        }
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
-        $order_by_clause = ' ORDER BY ' . esc_sql( $orderby ) . ' ' . esc_sql( $order ) . ' ';
-        $query .= $order_by_clause . $wpdb->prepare(
-            "LIMIT %d OFFSET %d",
-            $args['posts_per_page'],
-            ( $args['paged'] - 1 ) * $args['posts_per_page']
-        );
-
-        // $query .= $wpdb->prepare(" ORDER BY {$args['orderby']} {$args['order']} LIMIT %d OFFSET %d", $args['posts_per_page'], ($args['paged'] - 1) * $args['posts_per_page']);
-
-        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-        $this->items = $wpdb->get_results($query);
 
         $total_posts=wp_count_posts($this->post_type);
         $post_count=0;

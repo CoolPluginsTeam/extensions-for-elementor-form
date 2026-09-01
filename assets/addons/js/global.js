@@ -1,19 +1,10 @@
 "use strict";
 let formRepeaterFields = [];
-let formRepeaterFieldsLast = null;
 let getTagStatus=false;
 
 // add repeater functionality to conditional field repeater
 const addDynamicTags = (element) => {
 
-  jQuery('.elementor-control-tag-area[data-setting="cfef_logic_field_id"]').on("click", function (e) {
-    if (jQuery(this).data("check") != "ok") {
-      jQuery(this).after('<div class="elementor-control-dynamic-switcher elementor-control-unit-1 cfef-add-tag" data-tooltip="add Tags" original-title=""><i class="eicon-database" aria-hidden="true"></i><span class="elementor-screen-only">Dynamic Tags</span></div>');
-      jQuery(this).data("check", "ok");
-    }
-  })
-
-  // add repeater functionality to conditional field repeater for button section
   jQuery('.elementor-control-tag-area[data-setting="cfef_logic_field_id"]').on("click", function (e) {
     if (jQuery(this).data("check") != "ok") {
       jQuery(this).after('<div class="elementor-control-dynamic-switcher elementor-control-unit-1 cfef-add-tag" data-tooltip="add Tags" original-title=""><i class="eicon-database" aria-hidden="true"></i><span class="elementor-screen-only">Dynamic Tags</span></div>');
@@ -75,7 +66,7 @@ window.addEventListener('elementor/init', function () {
       if (this.$el.hasClass('elementor-control-cfef_repeater_data') || this.$el.hasClass('elementor-control-choices')) {
         customRepeaterField(this.$el);
       }
-      if (this.$el.hasClass('elementor-control-cfef_repeater_data_cfefp_submit' || this.$el.hasClass('elementor-control-choices'))) {
+      if (this.$el.hasClass('elementor-control-cfef_repeater_data_cfefp_submit') || this.$el.hasClass('elementor-control-choices')) {
         customRepeaterField(this.$el);
       }
       if (this.$el.hasClass('elementor-control-cfef_repeater_data') || this.$el.hasClass('elementor-control-cfef_repeater_data_cfefp_submit')) {
@@ -109,30 +100,5 @@ window.addEventListener('elementor/init', function () {
 });
 
 (function ($) {
-  jQuery(document).on('click', '#cfef_elementor_review_dismiss', (event) => {
-    jQuery(".cfef_elementor_review_notice").hide()
-    const btn = jQuery(event.target);
-    const nonce = btn.data('nonce');
-    const url = btn.data('url');
-
-    jQuery.ajax({
-      type: 'POST',
-      // eslint-disable-next-line no-undef
-      url: url, // Set this using wp_localize_script
-      data: {
-        action: 'cfef_elementor_review_notice',
-        cfef_notice_dismiss: true,
-        nonce: nonce,
-      },
-      success: (response) => {
-        btn.closest('.elementor-control').remove();
-      },
-      error: (xhr, status, error) => {
-        console.log(xhr.responseText);
-        console.log(error);
-        console.log(status);
-      },
-    });
-  });
-
+  CFKEF.bindReviewDismiss('#cfef_elementor_review_dismiss', 'cfef_elementor_review_notice', 'cfef_notice_dismiss');
 })(jQuery);

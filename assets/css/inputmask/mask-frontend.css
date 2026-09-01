@@ -27,12 +27,6 @@
     left: 12px;
     background-image: linear-gradient(135deg, #ffffff 50%, transparent 50%);
 }
-.mccard1-container, .mccard2-container {
-    position: relative;
-    display: inline-flex;
-    width: fit-content;
-    flex-direction: column;
-}
 .card-logo {
     position: absolute;
     right: 10px;
@@ -42,12 +36,22 @@
     bottom: 5px;
 }
 
-/* ❗ Form Lite Mask CSS❗ */
-.ehp-form__field-group.is-field-type-text .mask-error{
-    bottom: unset;
-    left: unset;    
+/* Cool Form + Hello Plus field-group positioning (shared mask stylesheet). */
+.cool-form__field-group {
+    position: relative;
 }
-.ehp-form__field-group.is-field-type-text .mask-error:after{
-    transform: rotate(220deg);
-    top: 16px;
+
+.cool-form__field-group .cool-form-text {
+    position: relative;
+    overflow: visible;
+}
+
+.cool-form__field-group .mask-error {
+    top: 100%;
+    bottom: auto;
+}
+
+/* Hello Plus flat fields */
+.ehp-form__field-group.is-field-type-text {
+    position: relative;
 } 

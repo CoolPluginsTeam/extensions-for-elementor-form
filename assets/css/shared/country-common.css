@@ -1,0 +1,43 @@
+/* Shared intl-tel-input reset rules */
+.cfefp-intl-container .iti__country-container {
+	height: var(--cfefp-intl-tel-button-height);
+}
+
+.cfefp-intl-container button.iti__selected-country {
+	background: transparent !important;
+	box-shadow: unset !important;
+	padding: 0 6px 0 8px;
+	border: none;
+	border-radius: unset;
+}
+
+.cfefp-intl-container .iti__country-container .iti__selected-country .iti__flag:not(.iti__globe),
+.cfefp-intl-container .iti__country-container .iti__selected-flag .iti__flag:not(.iti__globe) {
+	height: 13px;
+	background-position: center;
+	background-size: cover;
+}
+
+.cfefp-intl-container .iti__dropdown-content input.iti__search-input:focus {
+	background-color: transparent;
+}
+
+:is(.elementor-field-type-country, .is-field-type-country) .cfefp-intl-container .iti__country.iti__highlight {
+	background-color: unset;
+}
+
+:is(.elementor-field-type-tel, .is-field-type-tel, .elementor-field-type-ehp-tel) .iti.iti--hide-flags .iti__flag {
+	background-image: var(--iti-path-globe-1x) !important;
+	background-size: contain;
+	background-position: right;
+	box-shadow: none;
+	height: 19px;
+}
+
+:is(.elementor-field-type-tel, .is-field-type-tel, .elementor-field-type-ehp-tel) .iti.iti--hide-flags .iti__country-list .iti__flag-box {
+	display: none !important;
+}
+
+:is(.elementor-field-type-tel, .is-field-type-tel, .elementor-field-type-ehp-tel) .iti.iti--hide-code .iti__country-list .iti__dial-code {
+	display: none !important;
+}

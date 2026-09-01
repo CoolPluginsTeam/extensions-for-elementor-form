@@ -25,8 +25,7 @@ final class Conditional_Input_Definition {
 	 * Admin toggle: Form Elements → Conditional Logic (cfkef_enabled_elements).
 	 */
 	public static function is_conditional_logic_enabled(): bool {
-		$enabled_elements = get_option( 'cfkef_enabled_elements', array() );
-		return in_array( sanitize_key( 'conditional_logic' ), array_map( 'sanitize_key', (array) $enabled_elements ), true );
+		return \CFL_Elements::is_enabled( 'conditional_logic' );
 	}
 
 	/**

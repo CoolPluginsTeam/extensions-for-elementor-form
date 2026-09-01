@@ -46,12 +46,16 @@ document.addEventListener('DOMContentLoaded', function () {
 function handleEntriesPage() {
 	const helloPlusToggle = document.querySelector('input[name="cfkef_enable_hello_plus"]');
 	const formKitToggle = document.querySelector('input[name="cfkef_enable_formkit_builder"]');
+	const atomicFormToggle = document.querySelector('input[name="cfkef_enable_atomic_form"]');
 	const entriesTab = document.querySelector('.nav-tab[href="?page=cfkef-entries"]');
 
 	if (helloPlusToggle && formKitToggle) {
 		function storeStateToLocal() {
 			localStorage.setItem('cfkef_enable_hello_plus', helloPlusToggle.checked ? '1' : '0');
 			localStorage.setItem('cfkef_enable_formkit_builder', formKitToggle.checked ? '1' : '0');
+			if (atomicFormToggle) {
+				localStorage.setItem('cfkef_enable_atomic_form', atomicFormToggle.checked ? '1' : '0');
+			}
 		}
 
 		helloPlusToggle.addEventListener('change', () => {
@@ -66,11 +70,20 @@ function handleEntriesPage() {
 			dispatchSettingsEvent();
 		});
 
+		if (atomicFormToggle) {
+			atomicFormToggle.addEventListener('change', () => {
+				storeStateToLocal();
+				updateEntriesVisibility();
+				dispatchSettingsEvent();
+			});
+		}
+
 		function dispatchSettingsEvent() {
 			document.dispatchEvent(new CustomEvent('cfkef_dashboard_toggle:settings:changed', {
 				detail: {
 					helloPlus: helloPlusToggle.checked,
-					formKit: formKitToggle.checked
+					formKit: formKitToggle.checked,
+					atomicForm: atomicFormToggle ? atomicFormToggle.checked : localStorage.getItem('cfkef_enable_atomic_form') === '1'
 				}
 			}));
 		}
@@ -81,11 +94,12 @@ function handleEntriesPage() {
 	function updateEntriesVisibility() {
 		const helloPlusEnabled = helloPlusToggle ? helloPlusToggle.checked : localStorage.getItem('cfkef_enable_hello_plus') === '1';
 		const formKitEnabled = formKitToggle ? formKitToggle.checked : localStorage.getItem('cfkef_enable_formkit_builder') === '1';
+		const atomicFormEnabled = atomicFormToggle ? atomicFormToggle.checked : localStorage.getItem('cfkef_enable_atomic_form') === '1';
 
-		const bothDisabled = !helloPlusEnabled && !formKitEnabled;
+		const entriesDisabled = !helloPlusEnabled && !formKitEnabled && !atomicFormEnabled;
 
 		if (entriesTab) {
-			entriesTab.style.display = bothDisabled ? 'none' : '';
+			entriesTab.style.display = entriesDisabled ? 'none' : '';
 		}
 
         const sidebarLink = document.querySelector('.wp-submenu li a[href="admin.php?page=cfkef-entries"]');
@@ -93,7 +107,7 @@ function handleEntriesPage() {
 		if (sidebarLink) {
 			const menuItem = sidebarLink.closest('li');
 			if (menuItem) {
-				menuItem.style.display = bothDisabled ? 'none' : '';
+				menuItem.style.display = entriesDisabled ? 'none' : '';
 			}
 		}
 	}

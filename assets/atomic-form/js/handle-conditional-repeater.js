@@ -18,9 +18,6 @@
         let conditionsJson = JSON.stringify(conditions);
 
         $('.cfef-conditional-popup').attr('data-conditions-json', conditionsJson).removeClass('is-open');
-        window.cfefConditionalConditions = conditions;
-
-        $(document).trigger('cfef:conditions:saved', [conditions, conditionsJson]);
 
         let textarea_logic_repeater_field = textarea_logic_repeater[0];
 

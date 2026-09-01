@@ -3,7 +3,6 @@ namespace Cool_FormKit\Modules\Forms\Fields;
 
 use Elementor\Controls_Manager;
 use Cool_FormKit\Includes\Utils;
-use Cool_FormKit\Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly

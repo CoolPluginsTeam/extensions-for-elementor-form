@@ -112,23 +112,7 @@ if (isset($_POST['cfl_site_key_v2']) || isset($_POST['cfl_secret_key_v2']) || is
 
     }else{
 
-    $redirect_conditionally = isset($_POST['cfefp_redirect_conditionally']) ?  sanitize_text_field(wp_unslash($_POST['cfefp_redirect_conditionally'])) : '';
-    
-    $email_conditionally = isset($_POST['cfefp_email_conditionally']) ? sanitize_text_field(wp_unslash($_POST['cfefp_email_conditionally'])) : '';
-
-    // Mailchimp conditionally
-    $cfefp_mailchimp_conditionally = isset($_POST['cfefp_mailchimp_conditionally']) ? sanitize_text_field(wp_unslash($_POST['cfefp_mailchimp_conditionally'])) : '';
-
-    // GetResponse conditionally
-    $cfefp_getresponse_conditionally = isset($_POST['cfefp_getresponse_conditionally']) ? sanitize_text_field(wp_unslash($_POST['cfefp_getresponse_conditionally'])) : '';
-
-    // Webhook conditionally
-    $cfefp_webhook_conditionally = isset($_POST['cfefp_webhook_conditionally']) ? sanitize_text_field(wp_unslash($_POST['cfefp_webhook_conditionally'])) : '';
-
-    // WhatsApp redirect conditionally
-    $cfefp_whatsapp_conditionally = isset($_POST['cfefp_whatsapp_conditionally']) ? sanitize_text_field(wp_unslash($_POST['cfefp_whatsapp_conditionally'])) : '';
-
-
+    $conditional_pro_install = is_plugin_active('conditional-fields-for-elementor-form-pro/class-conditional-fields-for-elementor-form-pro.php');
 
     $recaptcha_site_key  = isset($_POST['cfl_site_key_v2']) ? sanitize_text_field(wp_unslash($_POST['cfl_site_key_v2'])) : '';
     $recaptcha_secret_key = isset($_POST['cfl_secret_key_v2']) ? sanitize_text_field(wp_unslash($_POST['cfl_secret_key_v2'])) : '';
@@ -145,12 +129,22 @@ if (isset($_POST['cfl_site_key_v2']) || isset($_POST['cfl_secret_key_v2']) || is
     update_option('cfl_secret_key_v3', $recaptcha_v3_secret_key);
     update_option('cfl_threshold_v3', $recaptcha_v3_threshold);
     update_option( "cfef_usage_share_data",  $cfef_usage_share_data);
-    update_option('cfefp_redirect_conditionally', $redirect_conditionally);
-    update_option('cfefp_email_conditionally', $email_conditionally);
-    update_option( "cfefp_mailchimp_conditionally",  $cfefp_mailchimp_conditionally);
-    update_option( "cfefp_getresponse_conditionally",  $cfefp_getresponse_conditionally);
-    update_option( "cfefp_webhook_conditionally",  $cfefp_webhook_conditionally);
-    update_option( "cfefp_whatsapp_conditionally",  $cfefp_whatsapp_conditionally);
+
+    if ( $conditional_pro_install ) {
+        $redirect_conditionally = isset($_POST['cfefp_redirect_conditionally']) ?  sanitize_text_field(wp_unslash($_POST['cfefp_redirect_conditionally'])) : '';
+        $email_conditionally = isset($_POST['cfefp_email_conditionally']) ? sanitize_text_field(wp_unslash($_POST['cfefp_email_conditionally'])) : '';
+        $cfefp_mailchimp_conditionally = isset($_POST['cfefp_mailchimp_conditionally']) ? sanitize_text_field(wp_unslash($_POST['cfefp_mailchimp_conditionally'])) : '';
+        $cfefp_getresponse_conditionally = isset($_POST['cfefp_getresponse_conditionally']) ? sanitize_text_field(wp_unslash($_POST['cfefp_getresponse_conditionally'])) : '';
+        $cfefp_webhook_conditionally = isset($_POST['cfefp_webhook_conditionally']) ? sanitize_text_field(wp_unslash($_POST['cfefp_webhook_conditionally'])) : '';
+        $cfefp_whatsapp_conditionally = isset($_POST['cfefp_whatsapp_conditionally']) ? sanitize_text_field(wp_unslash($_POST['cfefp_whatsapp_conditionally'])) : '';
+
+        update_option('cfefp_redirect_conditionally', $redirect_conditionally);
+        update_option('cfefp_email_conditionally', $email_conditionally);
+        update_option( "cfefp_mailchimp_conditionally",  $cfefp_mailchimp_conditionally);
+        update_option( "cfefp_getresponse_conditionally",  $cfefp_getresponse_conditionally);
+        update_option( "cfefp_webhook_conditionally",  $cfefp_webhook_conditionally);
+        update_option( "cfefp_whatsapp_conditionally",  $cfefp_whatsapp_conditionally);
+    }
 
 
     cfkef_handle_unchecked_checkbox();

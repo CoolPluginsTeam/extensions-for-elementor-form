@@ -14,18 +14,18 @@ if (! defined('ABSPATH')) {
 class Review_notice
 {
 
-	private $plugin_url     = CFL_PLUGIN_URL;
 	private $plugin_name    = 'Cool Formkit Lite';
 
 	private $review_option = 'cfl_review_notice_dismiss';
 	private $plugin_slug    = 'cfl';
 
-	private $installation_date_option = 'eef-installDate';
+	private $installation_date_option = 'cfl-install-date';
+
+	/** @deprecated Kept only for one-time read fallback from older installs. */
+	private $legacy_installation_date_option = 'eef-installDate';
 
 	private $review_link = 'https://wordpress.org/support/plugin/extensions-for-elementor-form/reviews/#new-post';
-	// private $feedback_url   = 'http://feedback.coolplugins.net/wp-json/coolplugins-feedback/v1/feedback';
 
-	private $plugin_logo = 'assets/images/cool-formkit-lite-logo.gif';
 	public function __construct()
 	{
 
@@ -83,11 +83,15 @@ class Review_notice
 		}
 
 		// get installation dates and rated settings
-		$installation_date = get_option($this->installation_date_option);
+		$installation_date = $this->get_installation_date();
 		$alreadyRated      = get_option($this->review_option) != false ? get_option($this->review_option) : 'no';
 
 		// check user already rated
 		if ($alreadyRated == 'yes') {
+			return;
+		}
+
+		if (empty($installation_date)) {
 			return;
 		}
 
@@ -131,16 +135,18 @@ class Review_notice
 
 	public function editor_assets()
 	{
-		wp_register_script('cfl_reivew_notice', CFL_PLUGIN_URL . 'assets/js/cfl_editor.min.js', array('jquery'), CFL_VERSION, true);
-		wp_enqueue_style('cfl_reivew_notice', CFL_PLUGIN_URL . 'assets/css/cfl_editor.min.css', null, CFL_VERSION);
-		wp_enqueue_script('cfl_reivew_notice');
+		if ( function_exists( 'cfl_register_review_dismiss_script' ) ) {
+			cfl_register_review_dismiss_script();
+		}
+		wp_register_script('cfl_review_notice', CFL_PLUGIN_URL . 'assets/js/cfl_editor.min.js', array('jquery', 'cfkef-review-dismiss'), CFL_VERSION, true);
+		wp_enqueue_style('cfl_review_notice', CFL_PLUGIN_URL . 'assets/css/cfl_editor.min.css', null, CFL_VERSION);
+		wp_enqueue_script('cfl_review_notice');
 	}
 
 	public function cfl_review_notice()
 	{
 		if (! check_ajax_referer('cfl_elementor_review', 'nonce', false)) {
 			wp_send_json_error(__('Invalid security token sent.', 'extensions-for-elementor-form'));
-			wp_die('0', 400);
 		}
 
 		if (! current_user_can('update_plugins') && ! current_user_can('manage_options')) {
@@ -153,5 +159,26 @@ class Review_notice
 			echo json_encode(array('success' => 'true'));
 			exit;
 		}
+	}
+
+	/**
+	 * Prefer cfl-install-date; migrate once from legacy eef-installDate when needed.
+	 *
+	 * @return string|false
+	 */
+	private function get_installation_date()
+	{
+		$installation_date = get_option($this->installation_date_option);
+		if ($installation_date) {
+			return $installation_date;
+		}
+
+		$legacy_date = get_option($this->legacy_installation_date_option);
+		if ($legacy_date) {
+			add_option($this->installation_date_option, $legacy_date);
+			return $legacy_date;
+		}
+
+		return false;
 	}
 }

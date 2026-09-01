@@ -2,10 +2,7 @@
 
 namespace Cool_FormKit\Collect_Entries;
 
-use Cool_FormKit\Includes\Utils;
 use Elementor\Core\Utils\Collection;
-use Cool_FormKit\Modules\Forms\Classes\Form_Record;
-use Cool_FormKit\Modules\Forms\Components\Ajax_Handler;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -16,17 +13,15 @@ class CFKEF_Save_Entries {
 
     private $last_entry_key = 'cfkef_last_entry_serial_no';
     private $entry_key = 'cfkef_entry_serial_no';
-    private $id = 0;
 
     public function __construct() {
         add_action('cfkef/form/entries', [ $this, 'save_entries' ], 10, 3);
     }
 
     public function save_entries($record, $ajax_handler, $collect_entries) {
-        $meta_keys = array_merge(['page_url', 'page_title'], $record->get_form_settings('collect_entries_meta_data'));
+        $meta_keys = array_merge( array( 'page_url', 'page_title' ), (array) $record->get_form_settings( 'collect_entries_meta_data' ) );
         $meta = $record->get_form_meta($meta_keys);
-        $form_fields = $record->get_form_settings( 'form_fields' );;
-        
+
         $actions_count = (new Collection($record->get_form_settings('submit_actions')))
         ->filter(function ($value) use ($collect_entries) {
             return $value !== $collect_entries->get_name();
@@ -101,47 +96,38 @@ class CFKEF_Save_Entries {
      */
     private function auto_increment_entries_number() {
 
-        // If the last entry key is empty, then get all the post ids
-        if (empty(get_option($this->last_entry_key))) {
+        if ( '' === (string) get_option( $this->last_entry_key, '' ) ) {
+            global $wpdb;
 
-            // Get all the post ids
-            $all_post_ids = get_posts(array(
-                'fields'          => 'ids',
-                'posts_per_page'  => -1,
-                'orderby' => 'ID',
-                'order' => 'ASC',
-                'post_type' => 'cfkef-entries'
-            ));
-        
-            // If there are any post ids, then get the last post id and last entry serial no
-            if(count($all_post_ids) > 0) {
+            // Prefer the highest existing serial meta without loading every post.
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            $max_serial = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT MAX(CAST(pm.meta_value AS UNSIGNED))
+					FROM {$wpdb->postmeta} pm
+					INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+					WHERE p.post_type = %s AND pm.meta_key = %s",
+                    'cfkef-entries',
+                    $this->entry_key
+                )
+            );
 
-                $last_post_id = $all_post_ids[count($all_post_ids) - 1];
-                $last_entry_serial_no = get_post_meta($last_post_id, $this->entry_key, true);
-
-                // If there is a last entry serial no, then update the last entry key with the last entry serial no
-                if($last_entry_serial_no) {
-                    update_option($this->last_entry_key, $last_entry_serial_no);
-                }else{
-                    // If there is no last entry serial no, then increment the last entry key with the last entry serial no
-                    foreach ($all_post_ids as $key => $id) {
-
-                        // Update the entry key with the entry serial no
-                        update_post_meta($id, $this->entry_key, ++$key);
-                        $this->id = $key;
-                    }
-
-                    // Update the last entry key with the last entry serial no
-                    update_option($this->last_entry_key, $this->id);
-                }
-
+            if ( $max_serial ) {
+                update_option( $this->last_entry_key, (int) $max_serial );
+            } else {
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+                $count = (int) $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT COUNT(ID) FROM {$wpdb->posts} WHERE post_type = %s AND post_status != 'auto-draft'",
+                        'cfkef-entries'
+                    )
+                );
+                update_option( $this->last_entry_key, $count );
             }
         }
 
-        // Get the last entry key
-        $id=get_option($this->last_entry_key, 0);
+        $id = (int) get_option( $this->last_entry_key, 0 );
 
-        // Increment the last entry key
         return ++$id;
     }
 }           
