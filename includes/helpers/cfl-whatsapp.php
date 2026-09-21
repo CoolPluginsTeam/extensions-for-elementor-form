@@ -30,6 +30,12 @@ function cfl_replace_whatsapp_break_token( $message ) {
 function cfl_replace_whatsapp_message_shortcodes( $message, array $form_data, array $field_metadata = array() ) {
 	$message = (string) $message;
 
+	// When %break% is used, ignore Enter/soft wraps in the template so they
+	// do not stack with token breaks. Field values are inserted after this.
+	if ( false !== strpos( $message, '%break%' ) ) {
+		$message = str_replace( array( "\r\n", "\r", "\n" ), '', $message );
+	}
+
 	if ( false !== strpos( $message, '[all-fields]' ) ) {
 		$all_fields_text = '';
 

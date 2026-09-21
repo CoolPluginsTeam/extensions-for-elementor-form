@@ -189,7 +189,7 @@ trait Whatsapp_Redirect_Action_Trait {
 		$whatsapp_message = cfl_replace_whatsapp_break_token( $whatsapp_message );
 
 		$whatsapp_to = add_query_arg(
-			array( 'text' => $whatsapp_message ),
+			array( 'text' => rawurlencode( $whatsapp_message ) ),
 			'https://wa.me/' . rawurlencode( $whatsapp_to )
 		);
 
