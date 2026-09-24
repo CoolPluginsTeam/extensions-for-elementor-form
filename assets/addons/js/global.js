@@ -42,12 +42,13 @@ const addDynamicTags = (element) => {
     var selectedValue = this.innerHTML;
     jQuery(this).parent().siblings().val(selectedValue);
     jQuery(this).parent().siblings().trigger('input');
-    if (jQuery('#elementor-panel-saver-button-publish')[0].classList.contains('elementor-disabled')) {
-      jQuery('#elementor-panel-saver-button-publish')[0].classList.remove('elementor-disabled')
-    }
-    setTimeout(function () {
-      jQuery(".cfef-dynamic-tag").remove();
-    }, 500);
+    var publishButton = jQuery('#elementor-panel-saver-button-publish')[0];
+      if (publishButton && publishButton.classList.contains('elementor-disabled')) {
+        publishButton.classList.remove('elementor-disabled');
+      }
+      setTimeout(function () {
+        jQuery(".cfef-dynamic-tag").remove();
+      }, 500);
   });
 };
 
