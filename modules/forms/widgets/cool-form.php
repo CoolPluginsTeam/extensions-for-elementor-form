@@ -181,7 +181,9 @@ class Cool_Form extends Form_Base {
 										if (attr === 'class') {
 											// Append additional classes to input field
 											fieldClasses += ' ' + value;
-										} else {
+										} else if ( /^data-[a-z0-9_-]+$/i.test( attr ) ) {
+											// Only allow well-formed data-* attribute names, so an
+											// attacker-controlled key cannot inject event handlers.
 											customAttrs += ' ' + attr + '="' + _.escape(value) + '"';
 										}
 									});
