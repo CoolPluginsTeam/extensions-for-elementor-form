@@ -98,12 +98,19 @@ abstract class Form_Base extends Widget_Base {
 				<?php endif; ?>
 
 				<?php
-				// Inject custom data-* or other attributes (except class, already handled)
+				// Inject custom data-* attributes (except class, already handled above).
+				// Only allow well-formed data-* attribute names. This blocks attribute-name
+				// breakout (spaces / '=') and event-handler injection (onfocus, onclick, ...),
+				// while preserving the plugin's legitimate data-mask attribute.
 				if ( ! empty( $item['custom_mask_attributes'] ) && is_array( $item['custom_mask_attributes'] ) ) {
 					foreach ( $item['custom_mask_attributes'] as $attr => $value ) {
-						if ( $attr !== 'class' ) {
-							echo esc_attr( $attr ) . '="' . esc_attr( $value ) . '" ';
+						if ( 'class' === $attr ) {
+							continue;
 						}
+						if ( ! is_string( $attr ) || ! preg_match( '/^data-[a-z0-9_-]+$/i', $attr ) ) {
+							continue;
+						}
+						echo esc_attr( $attr ) . '="' . esc_attr( $value ) . '" ';
 					}
 				}
 				?>
