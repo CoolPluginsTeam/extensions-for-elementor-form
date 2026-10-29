@@ -700,8 +700,12 @@ trait Conditional_Fields_Logic_Trait {
 					$this->add_assets_files();
 				}
 				wp_enqueue_script( $this->get_frontend_script_handle() );
+				$custom_id = isset( $field['custom_id'] ) ? preg_replace( '/[^a-zA-Z0-9_\-]/', '', (string) $field['custom_id'] ) : '';
+				if ( empty( $custom_id ) ) {
+					continue;
+				}
 				$repeater_data                       = $field['cfef_repeater_data'];
-				$logic_object[ $field['custom_id'] ] = array(
+				$logic_object[ $custom_id ] = array(
 					'display_mode' => esc_html( $field['cfef_logic_mode'] ),
 					'fire_action'  => esc_html( $field['cfef_logic_meet'] ),
 					'file_types'   => ! empty( $field['file_types'] ) ? esc_html( $field['file_types'] ) : 'png',
@@ -711,20 +715,20 @@ trait Conditional_Fields_Logic_Trait {
 						foreach ( $data as $keys => $value ) {
 							if ( is_array( $value ) ) {
 								foreach ( $value as $nested_key => $nested_value ) {
-									$logic_object[ $field['custom_id'] ]['logic_data'][ $key ][ $keys ][ $nested_key ] = esc_html( $nested_value );
+									$logic_object[ $custom_id ]['logic_data'][ $key ][ $keys ][ $nested_key ] = esc_html( $nested_value );
 								}
 							} else {
-								$logic_object[ $field['custom_id'] ]['logic_data'][ $key ][ $keys ] = esc_html( $value );
+								$logic_object[ $custom_id ]['logic_data'][ $key ][ $keys ] = esc_html( $value );
 							}
 						}
 					} else {
-						$logic_object[ $field['custom_id'] ]['logic_data'][ $key ] = is_array( $data ) ? array_map( 'esc_html', $data ) : esc_html( $data );
+						$logic_object[ $custom_id ]['logic_data'][ $key ] = is_array( $data ) ? array_map( 'esc_html', $data ) : esc_html( $data );
 					}
 				}
 			}
 		}
 
-		$condition = count( $logic_object ) > 0 ? wp_json_encode( $logic_object ) : '';
+		$condition = count( $logic_object ) > 0 ? wp_json_encode( $logic_object, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) : '';
 		if ( empty( $condition ) ) {
 			return;
 		}
@@ -750,7 +754,7 @@ trait Conditional_Fields_Logic_Trait {
 			$attrs .= ' data-form-id="' . esc_attr( $form_id ) . '"';
 		}
 
-		echo '<template ' . $attrs . '>' . esc_html( $condition ) . '</template>';
+		echo '<template ' . $attrs . '>' . _wp_specialchars( $condition, ENT_QUOTES ) . '</template>';
 	}
 
 	/**

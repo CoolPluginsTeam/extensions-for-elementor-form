@@ -712,6 +712,9 @@ class Cool_Form extends Form_Base {
 			'custom_id',
 			[
 				'label' => esc_html__( 'ID', 'extensions-for-elementor-form' ),
+				'sanitize_callback' => function( $value ) {
+					return preg_replace( '/[^a-zA-Z0-9_\-]/', '', (string) $value );
+				},
 				'type' => Controls_Manager::TEXT,
 				'description' => sprintf(
 					/* translators: %1$s: Opening code tag, %2$s: Closing code tag. */
