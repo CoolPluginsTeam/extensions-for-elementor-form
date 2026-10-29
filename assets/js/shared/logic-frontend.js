@@ -706,20 +706,25 @@ CFKEF.initLogicFrontend = function (opts) {
 
                 if (field2.length > 0) {
                     if (field2.find('input[value="^newOptionTest"]').length === 0) {
+                        const radioInput = document.createElement('input');
+                        radioInput.type = 'radio';
+                        radioInput.value = '^newOptionTest';
+                        radioInput.id = 'form-field-newOption';
+                        radioInput.setAttribute('name', 'form_fields[' + logic_key + ']');
+                        radioInput.required = true;
+                        radioInput.setAttribute('aria-required', 'true');
+                        radioInput.checked = true;
+
                         if (flags.requiredFieldMarkup === 'elementor') {
-                            const newOption = $(`
-                            <span class="elementor-field-option">
-                                <input type="radio" value="^newOptionTest" id="form-field-newOption" name="form_fields[${logic_key}]" required="required" aria-required="true" checked="checked">
-                            </span>
-                        `);
-                            field2.find('.elementor-field-subgroup').append(newOption);
+                            const span = document.createElement('span');
+                            span.className = 'elementor-field-option';
+                            span.appendChild(radioInput);
+                            field2.find('.elementor-field-subgroup').append(span);
                         } else {
-                            const newOption = $(`
-                            <div class="mdc-radio">
-                                <input type="radio" value="^newOptionTest" id="form-field-newOption" name="form_fields[${logic_key}]" required="required" aria-required="true" checked="checked">
-                            </div>
-                        `);
-                            field2.find('.mdc-form-field').append(newOption);
+                            const div = document.createElement('div');
+                            div.className = 'mdc-radio';
+                            div.appendChild(radioInput);
+                            field2.find('.mdc-form-field').append(div);
                         }
                     }
                 }
@@ -739,11 +744,17 @@ CFKEF.initLogicFrontend = function (opts) {
 
                 if (field2.length > 0) {
                     if (field2.find('input[value="newchkTest"]').length === 0) {
-                        const newOption = $(`
-<span class="elementor-field-option"><input type="checkbox" value="newchkTest" id="form-field-newchkTest" name="form_fields[${logic_key}][]" checked="checked"> </span>
-            }
-            `);
-                        field2.find('.elementor-field-subgroup').append(newOption);
+                        const chkInput = document.createElement('input');
+                        chkInput.type = 'checkbox';
+                        chkInput.value = 'newchkTest';
+                        chkInput.id = 'form-field-newchkTest';
+                        chkInput.setAttribute('name', 'form_fields[' + logic_key + '][]');
+                        chkInput.checked = true;
+
+                        const span = document.createElement('span');
+                        span.className = 'elementor-field-option';
+                        span.appendChild(chkInput);
+                        field2.find('.elementor-field-subgroup').append(span);
                     }
                 }
             }
