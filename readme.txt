@@ -197,6 +197,7 @@ You can report vulnerabilities through the [Patchstack Vulnerability Disclosure 
 == Changelog ==
 
 = 2.7.10 - 2026-10-29 =
+* Improved: Frontend DOM element rendering for conditional fields.
 * Tested up to: Elementor 4.3.5 and Elementor Pro 4.3.2.
 
 = 2.7.9 - 2026-09-28 =
