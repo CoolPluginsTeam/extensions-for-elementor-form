@@ -120,14 +120,59 @@ class Redirect extends Action_Base {
 			return;
 		}
 
-		$redirect_to = $record->get_form_settings( 'redirect_to' );
+		// Keep the admin-authored template (with its [field] placeholders) so we
+		// can tell the admin-intended host apart from any submitted field value.
+		$configured_template = $record->get_form_settings( 'redirect_to' );
 
-		$redirect_to = $record->replace_setting_shortcodes( $redirect_to, true );
+		$redirect_to = $record->replace_setting_shortcodes( $configured_template, true );
 
 		$redirect_to = esc_url_raw( $redirect_to );
 
-		if ( ! empty( $redirect_to ) && filter_var( $redirect_to, FILTER_VALIDATE_URL ) ) {
-			$ajax_handler->add_response_data( 'redirect_url', $redirect_to );
+		if ( empty( $redirect_to ) || ! filter_var( $redirect_to, FILTER_VALIDATE_URL ) ) {
+			return;
 		}
+
+		// Defense-in-depth: a submitted field value must not be able to change
+		// the redirect host. We only block when the final host differs from both
+		// the site and the admin-configured host; the URL itself is never
+		// rewritten, so every legitimately configured redirect is preserved
+		// byte-for-byte (important across site/domain migrations).
+		if ( ! $this->is_redirect_target_allowed( $redirect_to, $configured_template ) ) {
+			return;
+		}
+
+		$ajax_handler->add_response_data( 'redirect_url', $redirect_to );
+	}
+
+	/**
+	 * Whether the final redirect host is one the admin intended.
+	 *
+	 * Allows same-site and host-less (relative) targets, plus the exact host the
+	 * admin typed into the redirect setting. Returns false only when the host
+	 * could have come from submitted data.
+	 *
+	 * @param string $redirect_to         Final, escaped redirect URL.
+	 * @param string $configured_template Raw admin setting before field substitution.
+	 * @return bool
+	 */
+	private function is_redirect_target_allowed( $redirect_to, $configured_template ) {
+		$target_host = wp_parse_url( $redirect_to, PHP_URL_HOST );
+
+		// Relative / host-less target: same-site, always allowed.
+		if ( empty( $target_host ) ) {
+			return true;
+		}
+
+		$site_host = wp_parse_url( home_url(), PHP_URL_HOST );
+		if ( ! empty( $site_host ) && strtolower( $target_host ) === strtolower( $site_host ) ) {
+			return true;
+		}
+
+		$configured_host = wp_parse_url( (string) $configured_template, PHP_URL_HOST );
+		if ( ! empty( $configured_host ) && strtolower( $target_host ) === strtolower( $configured_host ) ) {
+			return true;
+		}
+
+		return false;
 	}
 }
