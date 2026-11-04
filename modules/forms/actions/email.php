@@ -250,13 +250,13 @@ class Email extends Action_Base {
 			'email_to' => get_option( 'admin_email' ),
 			/* translators: %s: Site title. */
 			'email_subject' => sprintf( esc_html__( 'New message from [%s]', 'extensions-for-elementor-form' ), get_bloginfo( 'name' ) ),
-			'email_content' => '[all-fields]',
 			'email_from_name' => get_bloginfo( 'name' ),
 			'email_from' => get_bloginfo( 'admin_email' ),
 			'email_reply_to' => 'noreply@' . Module::get_site_domain(),
 			'email_to_cc' => '',
 			'email_to_bcc' => '',
 		];
+		// 'email_content' is handled separately below, in a safe order.
 
 		foreach ( $fields as $key => $default ) {
 			$setting = trim( $settings[ $this->get_control_id( $key ) ] );
@@ -268,7 +268,13 @@ class Email extends Action_Base {
 
 		$email_reply_to = $this->get_reply_to( $record, $fields );
 
-		$fields['email_content'] = $this->replace_content_shortcodes( $fields['email_content'], $record, $line_break );
+		$raw_email_content = trim( $settings[ $this->get_control_id( 'email_content' ) ] );
+
+		
+		if ( empty( $raw_email_content ) ) {
+			$raw_email_content = '[all-fields]';
+		}
+		$fields['email_content'] = $this->replace_content_shortcodes( $raw_email_content, $record, $line_break );
 
 		$email_meta = '';
 
@@ -368,6 +374,9 @@ class Email extends Action_Base {
 	 * @return string
 	 */
 	private function replace_content_shortcodes( $email_content, $record, $line_break ) {
+		// Run do_shortcode() on the admin-authored template first, before any
+		// submitted field value is substituted into it, so a submitted value
+		// can never be interpreted and executed as a shortcode.
 		$email_content = do_shortcode( $email_content );
 		$all_fields_shortcode = '[all-fields]';
 
@@ -386,6 +395,11 @@ class Email extends Action_Base {
 			$email_content = str_replace( $all_fields_shortcode, $text, $email_content );
 
 		}
+
+		// Substitute [field id="..."] placeholders with the submitted value
+		// AFTER do_shortcode() has already run, so the value lands as literal
+		// text and cannot be executed as a shortcode.
+		$email_content = $record->replace_setting_shortcodes( $email_content );
 
 		return $email_content;
 	}
