@@ -232,7 +232,7 @@ class Widget_Form_Render {
 				<?php endif; ?>
 
 				<?php if ( ! empty( $button_text ) ) : ?>
-					<span <?php $this->widget->print_render_attribute_string( 'button-text' ); ?>><?php $this->widget->print_unescaped_setting( 'button_text' ); ?></span>
+					<span <?php $this->widget->print_render_attribute_string( 'button-text' ); ?>><?php echo esc_html( $button_text ); ?></span>
 				<?php endif; ?>
 			</button>
 		</div>

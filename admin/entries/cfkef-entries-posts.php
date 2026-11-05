@@ -120,7 +120,11 @@ class CFKEF_Entries_Posts {
             'rewrite'               => false,
             'query_var'             => true,
             'exclude_from_search'   => true,
-            'show_in_rest'          => true,
+            // Entries hold private form submissions, so they must never be
+            // exposed through the public REST API. Leaving this true let an
+            // unauthenticated visitor enumerate entry count, dates, slugs and
+            // links at /wp-json/wp/v2/cfkef-entries.
+            'show_in_rest'          => false,
         );
 
         register_post_type( self::$post_type, $args );

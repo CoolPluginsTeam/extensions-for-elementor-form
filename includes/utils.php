@@ -58,16 +58,34 @@ class Utils {
 		return get_the_ID();
 	}
 
+	/**
+	 * Get the client IP address.
+	 *
+	 * Uses REMOTE_ADDR, which is set by the web server and cannot be spoofed by
+	 * the client. Proxy/forwarded headers (X-Forwarded-For, Client-IP, etc.) are
+	 * attacker-controlled on a default install, so they are only trusted when the
+	 * site owner opts in via the `cfkef_trusted_proxy_ip_headers` filter — for a
+	 * site that genuinely sits behind a known reverse proxy/load balancer.
+	 *
+	 * @since 2.7.11
+	 *
+	 * @return string Validated client IP, or '127.0.0.1' when none is available.
+	 */
 	public static function get_client_ip(): string {
-		$server_ip_keys = [
-			'HTTP_CLIENT_IP',
-			'HTTP_X_FORWARDED_FOR',
-			'HTTP_X_FORWARDED',
-			'HTTP_X_CLUSTER_CLIENT_IP',
-			'HTTP_FORWARDED_FOR',
-			'HTTP_FORWARDED',
-			'REMOTE_ADDR',
-		];
+		/**
+		 * Filter the request headers trusted for the client IP.
+		 *
+		 * Default is empty: only REMOTE_ADDR is used. Add proxy headers (e.g.
+		 * 'HTTP_X_FORWARDED_FOR') only if the site is behind a trusted proxy that
+		 * sets them, otherwise clients can spoof the recorded IP.
+		 *
+		 * @since 2.7.11
+		 *
+		 * @param array $headers Ordered list of INPUT_SERVER keys to check first.
+		 */
+		$trusted_headers = (array) apply_filters( 'cfkef_trusted_proxy_ip_headers', [] );
+
+		$server_ip_keys = array_merge( $trusted_headers, [ 'REMOTE_ADDR' ] );
 
 		foreach ( $server_ip_keys as $key ) {
 			$value = filter_input( INPUT_SERVER, $key, FILTER_VALIDATE_IP );

@@ -295,6 +295,15 @@ class Email extends Action_Base {
 		$email_reply_to            = Email_Header_Utils::sanitize_from_email( $email_reply_to, 'noreply@' . Module::get_site_domain() );
 
 		$to_emails = Email_Header_Utils::sanitize_email_list( $fields['email_to'] );
+
+		// Allow only a single "To" recipient. A submitted field value embedded
+		// via [field id="..."] could otherwise expand into a comma-separated
+		// list and turn the form into a mass-mail relay, so we keep just the
+		// first valid address.
+		if ( count( $to_emails ) > 1 ) {
+			$to_emails = array( $to_emails[0] );
+		}
+
 		if ( empty( $to_emails ) ) {
 			$admin_email = (string) get_option( 'admin_email' );
 			$to_emails   = is_email( $admin_email ) ? array( $admin_email ) : array();
@@ -374,10 +383,13 @@ class Email extends Action_Base {
 	 * @return string
 	 */
 	private function replace_content_shortcodes( $email_content, $record, $line_break ) {
-		// Run do_shortcode() on the admin-authored template first, before any
-		// submitted field value is substituted into it, so a submitted value
-		// can never be interpreted and executed as a shortcode.
-		$email_content = do_shortcode( $email_content );
+		// Intentionally do NOT run do_shortcode() on the email body. The body
+		// can carry dynamic-tag output (for example a Request Parameter tag)
+		// that is resolved into the template before this point, so executing
+		// the Shortcode API here would let an unauthenticated submitter run any
+		// registered shortcode with attacker-chosen attributes. The plugin's
+		// own [all-fields] and [field id="..."] placeholders are expanded
+		// explicitly below, not through the Shortcode API, so they keep working.
 		$all_fields_shortcode = '[all-fields]';
 
 		if ( false !== strpos( $email_content, $all_fields_shortcode ) ) {

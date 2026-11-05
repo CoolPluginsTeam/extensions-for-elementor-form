@@ -297,11 +297,11 @@ CFKEF.initLogicFrontend = function (opts) {
                             __nextText = __stepContainer.find('button[id^="form-field-"]').text().trim();
                           }
                           if (__stepContainer.prev(".cfef-step-field-text").length === 0) {
-                            __stepContainer.before(
-                              '<p class="cfef-step-field-text">No input is required on this step. Just click "' +
-                                __nextText +
-                                '" to proceed.</p>'
-                            );
+                            // Build with .text() so the button label (__nextText) is escaped,
+                            // preventing HTML/script injection via a crafted step button label.
+                            var __stepMsg = jQuery('<p class="cfef-step-field-text"></p>');
+                            __stepMsg.text('No input is required on this step. Just click "' + __nextText + '" to proceed.');
+                            __stepContainer.before(__stepMsg);
                           }
                         }
                       

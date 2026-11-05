@@ -66,6 +66,18 @@ class Ajax_Handler {
 			$queried_id = $post_id;
 		}
 
+		// Only process submissions for a post the visitor is actually allowed to
+		// see. Without this, a form living on a draft/private/pending/trashed page
+		// (or a private $queried_id used to resolve dynamic values) could be
+		// submitted by an unauthenticated request, since the nonce is shared by
+		// every public page.
+		if ( ! $this->is_submittable_post( $post_id ) || ! $this->is_submittable_post( $queried_id ) ) {
+			$this
+				->add_error_message( self::get_default_message( self::INVALID_FORM, [] ) )
+				->send();
+			return;
+		}
+
 		// Make the post as global post for dynamic values.
 		Utils::elementor()->db->switch_to_post( $queried_id );
 
@@ -227,6 +239,37 @@ class Ajax_Handler {
 
 	public function get_current_form() {
 		return $this->current_form;
+	}
+
+	/**
+	 * Whether a submission is allowed to target the given post.
+	 *
+	 * Published posts are open to everyone; anything else (draft, pending,
+	 * private, trashed, …) is only reachable by a user who can read that
+	 * specific post, so an admin previewing a draft still works while an
+	 * anonymous visitor is turned away.
+	 *
+	 * @param int|string $post_id Post ID from the request.
+	 * @return bool
+	 */
+	private function is_submittable_post( $post_id ) {
+		$post_id = (int) $post_id;
+
+		if ( $post_id <= 0 ) {
+			return false;
+		}
+
+		$status = get_post_status( $post_id );
+
+		if ( false === $status ) {
+			return false;
+		}
+
+		if ( 'publish' === $status ) {
+			return true;
+		}
+
+		return current_user_can( 'read_post', $post_id );
 	}
 
 	/**

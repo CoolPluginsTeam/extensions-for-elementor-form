@@ -150,13 +150,27 @@ class Register_Post extends \ElementorPro\Modules\Forms\Classes\Action_Base {
 			$formated_fields[ $key ]['custom-field-to-register'] = $field['eef-register-post-custom-field'];
 		}
 
+		$post_type        = isset( $new_post_data['post_type'] ) ? $new_post_data['post_type'] : 'post';
+		$post_type_object = get_post_type_object( $post_type );
+
 		$custom_fields_to_register = array();
 		foreach ( $formated_fields as $field ) {
-			if ( $field['field-to-register'] !== 'custom_field' ) {
-				$new_post_data[ $field['field-to-register'] ] = $field['value'];
-			} else {
+			if ( 'custom_field' === $field['field-to-register'] ) {
 				$custom_fields_to_register[ $field['custom-field-to-register'] ] = $field['value'];
+				continue;
 			}
+
+			// Only users who can edit others' posts may set an arbitrary post author.
+			// Otherwise the submitted value is ignored and WordPress defaults the
+			// author to the current user, preventing authorship spoofing.
+			if (
+				'post_author' === $field['field-to-register']
+				&& ( ! $post_type_object || ! current_user_can( $post_type_object->cap->edit_others_posts ) )
+			) {
+				continue;
+			}
+
+			$new_post_data[ $field['field-to-register'] ] = $field['value'];
 		}
 
 		$is_restrict_to_loggedin_users = $record->get_form_settings( 'eef-register-post-user-permission' );
