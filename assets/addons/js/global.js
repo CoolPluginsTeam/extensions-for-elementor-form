@@ -60,6 +60,49 @@ const customRepeaterField = (element) => {
   element[0].addEventListener('click', stopBubbling);
 };
 
+/**
+ * Keep nested repeater rows (form_fields -> cfef_repeater_data) from mutating the document config.
+ *
+ * Elementor's BaseSettings.handleRepeaterData() writes a Backbone.Collection back into the attrs
+ * object it receives. For a repeater row that holds another repeater, that object is the raw row
+ * from elementor.documents.getCurrent().config.elements, so the config ends up holding a circular
+ * Backbone.Collection. Elementor Pro's editor-templates-extended package then walks the config
+ * recursively (collectShortcodeTemplateIdsFromValue) and throws "Maximum call stack size exceeded".
+ * Cloning the rows first means the Collection is written onto a copy, not onto the config.
+ *
+ * Runs once on load and again on elementor/init, in case elementorModules is not ready yet.
+ */
+const cfefPatchNestedRepeaterSettings = () => {
+  const models = window.elementorModules && elementorModules.editor && elementorModules.editor.elements && elementorModules.editor.elements.models;
+  const proto = models && models.BaseSettings && models.BaseSettings.prototype;
+
+  if (!proto || typeof proto.convertRepeaterValueToCollection !== 'function' || proto.cfefNestedRepeaterPatched) {
+    return;
+  }
+
+  const originalConvert = proto.convertRepeaterValueToCollection;
+  const hasNestedRepeater = (control) => Object.values(control.fields || {}).some(
+    (field) => field && ('repeater' === field.type || field.is_repeater)
+  );
+
+  proto.convertRepeaterValueToCollection = function (attrs, repeaterControl) {
+    const rows = attrs ? attrs[repeaterControl.name] : null;
+
+    if (Array.isArray(rows) && hasNestedRepeater(repeaterControl)) {
+      const clonedRows = rows.map((row) => (
+        row && 'object' === typeof row && !(row instanceof Backbone.Model) ? Object.assign({}, row) : row
+      ));
+      attrs = Object.assign({}, attrs, { [repeaterControl.name]: clonedRows });
+    }
+
+    return originalConvert.call(this, attrs, repeaterControl);
+  };
+  proto.cfefNestedRepeaterPatched = true;
+};
+
+cfefPatchNestedRepeaterSettings();
+window.addEventListener('elementor/init', cfefPatchNestedRepeaterSettings);
+
 window.addEventListener('elementor/init', function () {
   var RepeaterControlItemView = elementor.modules.controls.Repeater.extend({
     onBeforeRender: function () {
