@@ -4,12 +4,12 @@ Donate link: https://donate.stripe.com/5kQdR92iBevO75WbPm6c00i
 Tags: form builder, contact form, elementor form, elementor, elementor form builder
 Requires at least: 6.2
 Tested up to: 7.1
-Stable tag: 2.7.11
+Stable tag: 2.7.12 
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Elementor tested up to: 4.3.5
-Elementor Pro tested up to: 4.3.2
+Elementor tested up to: 4.4.0
+Elementor Pro tested up to: 4.4.0
 
 Contact form addon for Elementor. Create forms in Elementor Free or extend Elementor Pro forms with conditional logic, country code and extra fields.
 
@@ -195,6 +195,9 @@ You can open a support ticket on the [WordPress.org support forum](https://wordp
 You can report vulnerabilities through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/extensions-for-elementor-form). The Patchstack team helps validate, triage, and handle reported issues responsibly.  
 
 == Changelog ==
+
+= 2.7.12 - 2026-11-10 =
+* Fixed: Unstyled Theme Builder Header/Footer in the Elementor editor.
 
 = 2.7.11 - 2026-11-04 =
 * Improved: Processing order of field values and shortcodes in the Email action.
