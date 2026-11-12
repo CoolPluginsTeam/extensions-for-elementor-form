@@ -326,6 +326,10 @@ class Email extends Action_Base {
 		);
 
 		$bcc_emails = Email_Header_Utils::sanitize_email_list( $fields['email_to_bcc'] );
+		// Allow only a single Bcc recipient to prevent mass-mail relay abuse.
+		if ( count( $bcc_emails ) > 1 ) {
+			$bcc_emails = array( $bcc_emails[0] );
+		}
 		foreach ( $bcc_emails as $bcc_email ) {
 			wp_mail(
 				$bcc_email,

@@ -479,6 +479,39 @@ class Handle_Atomic_Form_Submission {
 		return wp_verify_nonce( $nonce, self::NONCE_ACTION );
 	}
 
+	/**
+	 * Whether a submission is allowed to target the given post.
+	 *
+	 * Published posts are open to everyone; anything else (draft, pending,
+	 * private, trashed, ...) is only reachable by a user who can read that
+	 * specific post, so an admin previewing a draft still works while an
+	 * anonymous visitor is turned away. Also respects password protection.
+	 *
+	 * @param int $post_id Post ID from request.
+	 * @return bool
+	 */
+	private function is_submittable_post( int $post_id ): bool {
+		if ( $post_id <= 0 ) {
+			return false;
+		}
+
+		$status = get_post_status( $post_id );
+
+		if ( false === $status ) {
+			return false;
+		}
+
+		if ( 'publish' !== $status && ! current_user_can( 'read_post', $post_id ) ) {
+			return false;
+		}
+
+		if ( post_password_required( $post_id ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
     public function ajax_send_form(): void {
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing -- Nonce is validated below.
@@ -502,6 +535,26 @@ class Handle_Atomic_Form_Submission {
 
 		if ( ! $post_id || ! $form_id || empty( $form_fields ) ) {
 			$this->send_invalid_form_response();
+			return;
+		}
+
+		if ( ! $this->is_submittable_post( $post_id ) ) {
+			$this->send_invalid_form_response();
+			return;
+		}
+
+		// Rate limit submissions: max 10 submissions per minute per IP for this form.
+		$client_ip      = ! empty( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '127.0.0.1';
+		$rate_limit_key = 'cfkef_af_rl_' . md5( $client_ip . '|' . (int) $post_id . '|' . (string) $form_id );
+		$hits           = (int) get_transient( $rate_limit_key );
+		if ( $hits >= 10 ) {
+			$this->send_error_response( esc_html__( 'Too many requests. Please try again later.', 'extensions-for-elementor-form' ) );
+			return;
+		}
+		set_transient( $rate_limit_key, $hits + 1, MINUTE_IN_SECONDS );
+
+		if ( ! is_array( $form_fields ) || count( $form_fields ) > 200 ) {
+			$this->send_error_response( esc_html__( 'Too many form fields submitted.', 'extensions-for-elementor-form' ) );
 			return;
 		}
 

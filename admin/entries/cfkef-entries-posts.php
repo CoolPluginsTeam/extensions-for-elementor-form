@@ -106,8 +106,20 @@ class CFKEF_Entries_Posts {
             'description'           => esc_html__( 'cool-formkit-entry', 'extensions-for-elementor-form' ),
             'labels'                => $labels,
             'supports'              => false,
-            'capabilities'          => ['create_posts' => 'do_not_allow'],
-            'map_meta_cap'          => true,
+            'capability_type'       => array( 'cfkef_entry', 'cfkef_entries' ),
+            'capabilities'          => array(
+                'edit_post'           => 'manage_options',
+                'read_post'           => 'manage_options',
+                'delete_post'         => 'manage_options',
+                'edit_posts'          => 'manage_options',
+                'edit_others_posts'   => 'manage_options',
+                'delete_posts'        => 'manage_options',
+                'delete_others_posts' => 'manage_options',
+                'publish_posts'       => 'manage_options',
+                'read_private_posts'  => 'manage_options',
+                'create_posts'        => 'do_not_allow',
+            ),
+            'map_meta_cap'          => false,
             'hierarchical'          => false,
             'public'                => false,
             'show_ui'               => true, // Hide from dashboard
@@ -250,6 +262,10 @@ class CFKEF_Entries_Posts {
      * Render submission meta box
      */
     public function render_submission_meta_box() {
+        if ( ! current_user_can( 'manage_options' ) ) {
+            return;
+        }
+
         $form_data = get_post_meta(get_the_ID(), '_cfkef_form_data', true);
         
         $this->render_field_html("cfkef-entries-form-data", $form_data);
@@ -259,6 +275,10 @@ class CFKEF_Entries_Posts {
      * Render form info meta box
      */
     public function render_form_info_meta_box() {
+        if ( ! current_user_can( 'manage_options' ) ) {
+            return;
+        }
+
         $meta = get_post_meta(get_the_ID(), '_cfkef_form_meta', true);
 
           // Update the form entry id in post meta

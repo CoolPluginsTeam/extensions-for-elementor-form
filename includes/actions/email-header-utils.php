@@ -81,6 +81,11 @@ class Email_Header_Utils {
 			return '';
 		}
 
+		// Allow only a single Cc recipient to prevent mass-mail relay abuse.
+		if ( count( $emails ) > 1 ) {
+			$emails = array( $emails[0] );
+		}
+
 		return 'Cc: ' . implode( ',', $emails ) . "\r\n";
 	}
 }

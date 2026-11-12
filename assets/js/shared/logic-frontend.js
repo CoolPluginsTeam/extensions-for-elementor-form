@@ -1177,7 +1177,8 @@ CFKEF.initLogicFrontend = function (opts) {
             let button_con = conditionalStepfield.find(S.buttonsContainer);
             if (button_con.prev(".cfef-step-field-text").length === 0) {
                     var message = getScriptVarsElementor().no_input_step.replace('%s', nextButtonText);
-                    button_con.before('<p class="cfef-step-field-text">' + message + '</p>');
+                    var __msg = jQuery('<p class="cfef-step-field-text"></p>').text(message);
+                    button_con.before(__msg);
             }
                 
 

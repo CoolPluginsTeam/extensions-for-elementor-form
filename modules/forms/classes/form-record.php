@@ -196,6 +196,10 @@ class Form_Record {
 
 	private function set_fields() {
 		foreach ( $this->form_settings['form_fields'] as $form_field ) {
+			if ( in_array( $form_field['field_type'], [ 'recaptcha', 'recaptcha_v3', 'step', 'html' ], true ) ) {
+				continue;
+			}
+
 			$field = [
 				'id' => $form_field['custom_id'],
 				'type' => $form_field['field_type'],
@@ -263,6 +267,7 @@ class Form_Record {
 				 * @param array  $field The field array.
 				 */
 				$value = apply_filters( "cool_formkit/forms/sanitize/{$field_type}", $value, $field );
+				$value = is_scalar( $value ) ? sanitize_textarea_field( (string) $value ) : '';
 		}
 
 		return $value;

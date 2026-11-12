@@ -154,8 +154,14 @@ class Register_Post extends \ElementorPro\Modules\Forms\Classes\Action_Base {
 		$post_type_object = get_post_type_object( $post_type );
 
 		$custom_fields_to_register = array();
+		$allowed_fields            = array( 'post_title', 'post_content', 'post_excerpt', 'post_author', 'custom_field' );
 		foreach ( $formated_fields as $field ) {
-			if ( 'custom_field' === $field['field-to-register'] ) {
+			$target = isset( $field['field-to-register'] ) ? (string) $field['field-to-register'] : '';
+			if ( ! in_array( $target, $allowed_fields, true ) ) {
+				continue;
+			}
+
+			if ( 'custom_field' === $target ) {
 				$custom_fields_to_register[ $field['custom-field-to-register'] ] = $field['value'];
 				continue;
 			}
@@ -164,13 +170,13 @@ class Register_Post extends \ElementorPro\Modules\Forms\Classes\Action_Base {
 			// Otherwise the submitted value is ignored and WordPress defaults the
 			// author to the current user, preventing authorship spoofing.
 			if (
-				'post_author' === $field['field-to-register']
+				'post_author' === $target
 				&& ( ! $post_type_object || ! current_user_can( $post_type_object->cap->edit_others_posts ) )
 			) {
 				continue;
 			}
 
-			$new_post_data[ $field['field-to-register'] ] = $field['value'];
+			$new_post_data[ $target ] = $field['value'];
 		}
 
 		$is_restrict_to_loggedin_users = $record->get_form_settings( 'eef-register-post-user-permission' );
@@ -185,9 +191,17 @@ class Register_Post extends \ElementorPro\Modules\Forms\Classes\Action_Base {
 
 		$new_post_data = $this->maybe_adjust_post_status( $new_post_data );
 
+		// Ensure this action strictly inserts new posts and cannot overwrite or update existing posts.
+		unset( $new_post_data['ID'], $new_post_data['import_id'] );
+
 		$post_id = wp_insert_post( $new_post_data, true );
 		if ( ! is_wp_error( $post_id ) ) {
 			foreach ( $custom_fields_to_register as $meta_key => $meta_value ) {
+				$meta_key = sanitize_key( (string) $meta_key );
+				if ( '' === $meta_key || is_protected_meta( $meta_key, 'post' ) || ! current_user_can( 'add_post_meta', $post_id, $meta_key ) ) {
+					continue;
+				}
+
 				add_post_meta( $post_id, $meta_key, $meta_value );
 			}
 		}
@@ -220,14 +234,16 @@ class Register_Post extends \ElementorPro\Modules\Forms\Classes\Action_Base {
 		$post_type        = isset( $new_post_data['post_type'] ) ? $new_post_data['post_type'] : 'post';
 		$post_type_object = get_post_type_object( $post_type );
 
-		if (
-			isset( $new_post_data['post_status'] )
-			&& 'publish' === $new_post_data['post_status']
-			&& $post_type_object
-			&& ! current_user_can( $post_type_object->cap->publish_posts )
-		) {
-			$new_post_data['post_status'] = 'pending';
+		$allowed_status = array( 'draft', 'pending', 'publish' );
+		$status         = isset( $new_post_data['post_status'] ) ? (string) $new_post_data['post_status'] : 'draft';
+		if ( ! in_array( $status, $allowed_status, true ) ) {
+			$status = 'draft';
 		}
+		if ( 'publish' === $status && $post_type_object && ! current_user_can( $post_type_object->cap->publish_posts ) ) {
+			$status = 'pending';
+		}
+		$new_post_data['post_status'] = $status;
+		unset( $new_post_data['post_date'], $new_post_data['post_date_gmt'] );
 
 		return $new_post_data;
 	}

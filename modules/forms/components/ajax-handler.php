@@ -83,6 +83,17 @@ class Ajax_Handler {
 
 		$form_id = filter_input( INPUT_POST, 'form_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
+		// Rate limit submissions: max 10 submissions per minute per IP for this form.
+		$rate_limit_key = 'cfkef_rl_' . md5( Utils::get_client_ip() . '|' . (int) $post_id . '|' . (string) $form_id );
+		$hits           = (int) get_transient( $rate_limit_key );
+		if ( $hits >= 10 ) {
+			$this
+				->add_error_message( self::get_default_message( self::ERROR, [] ) )
+				->send();
+			return;
+		}
+		set_transient( $rate_limit_key, $hits + 1, MINUTE_IN_SECONDS );
+
 		$elementor = Utils::elementor();
 		$document = $elementor->documents->get( $post_id );
 		$form = null;

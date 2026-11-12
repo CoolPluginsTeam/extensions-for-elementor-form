@@ -135,8 +135,9 @@ export default elementorModules.frontend.handlers.Base.extend( {
 		$form.find('.elementor-message-danger').text(desc)
 
 		this.elements.$submitButton
-			.html( this.elements.$submitButton.text() )
-			.removeAttr( 'disabled' );
+			.removeAttr( 'disabled' )
+			.find( '.elementor-form-spinner' )
+			.remove();
 
 		$form
 			.animate( {
