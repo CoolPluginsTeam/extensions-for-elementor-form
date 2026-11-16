@@ -102,7 +102,7 @@ class Ajax_Handler {
 			$form = Module::find_element_recursive( $document->get_elements_data(), (string) $form_id );
 		}
 
-		if ( empty( $form ) ) {
+		if ( empty( $form ) || 'cool-form' !== ( $form['widgetType'] ?? '' ) ) {
 			$this
 				->add_error_message( self::get_default_message( self::INVALID_FORM, [] ) )
 				->send();
@@ -273,6 +273,10 @@ class Ajax_Handler {
 		$status = get_post_status( $post_id );
 
 		if ( false === $status ) {
+			return false;
+		}
+
+		if ( post_password_required( $post_id ) ) {
 			return false;
 		}
 

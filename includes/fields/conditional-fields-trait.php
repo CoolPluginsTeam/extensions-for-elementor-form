@@ -365,8 +365,6 @@ trait Conditional_Fields_Logic_Trait {
 			'time',
 			'html',
 			'upload',
-			'recaptcha',
-			'recaptcha_v3',
 			'password',
 			'acceptance',
 			'country',

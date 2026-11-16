@@ -110,7 +110,16 @@ class Recaptcha_V3_Handler extends Recaptcha_Handler
         }
 
         $threshold = (float) static::get_threshold();
-        if (isset($result['score']) && $result['score'] < $threshold) {
+        if ( ! isset( $result['score'] ) || (float) $result['score'] < $threshold ) {
+            return false;
+        }
+
+        if ( ( $result['action'] ?? '' ) !== self::V3_DEFAULT_ACTION ) {
+            return false;
+        }
+
+        $expected_host = wp_parse_url( home_url(), PHP_URL_HOST );
+        if ( ! empty( $expected_host ) && ( $result['hostname'] ?? '' ) !== $expected_host ) {
             return false;
         }
 

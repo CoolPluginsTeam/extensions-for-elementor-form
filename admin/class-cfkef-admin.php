@@ -91,7 +91,7 @@ class CFKEF_Admin {
             } 
         });
 
-        add_action( 'wp_ajax_cfkef_plugin_install', 'wp_ajax_install_plugin' );
+        add_action( 'wp_ajax_cfkef_plugin_install', array( $this, 'cfkef_plugin_install' ) );
         add_action( 'wp_ajax_cfkef_plugin_activate', array($this,'cfkef_plugin_activate') );
     }
 
@@ -110,6 +110,28 @@ class CFKEF_Admin {
                 'elementor-pro/elementor-pro.php',
             ),
         );
+    }
+
+    /**
+     * Install an allow-listed companion plugin from wordpress.org.
+     *
+     * @return void
+     */
+    public function cfkef_plugin_install() {
+        check_ajax_referer( 'updates' );
+
+        if ( ! current_user_can( 'install_plugins' ) ) {
+            wp_send_json_error( array( 'message' => 'Permission denied' ) );
+        }
+
+        $slug    = isset( $_POST['slug'] ) ? sanitize_key( wp_unslash( $_POST['slug'] ) ) : '';
+        $allowed = $this->cfkef_allowed_companion_plugins();
+        if ( '' === $slug || ! in_array( $slug, $allowed['slugs'], true ) ) {
+            wp_send_json_error( array( 'message' => 'Plugin not allowed' ) );
+        }
+
+        // Core installer expects the same request shape as wp_ajax_install_plugin.
+        wp_ajax_install_plugin();
     }
 
     public function cfkef_plugin_activate(){

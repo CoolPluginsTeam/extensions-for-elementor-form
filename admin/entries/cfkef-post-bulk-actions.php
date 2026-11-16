@@ -215,6 +215,10 @@ class CFKEF_Post_Bulk_Actions {
 	 * @return bool
 	 */
 	private function process_action_trash( $id ) {
+		if ( 'cfkef-entries' !== get_post_type( $id ) ) {
+			return false;
+		}
+
 		if ( ! current_user_can( 'delete_post', $id ) ) {
 			return false; // User does not have permission to move this post to trash
 		}
@@ -239,6 +243,9 @@ class CFKEF_Post_Bulk_Actions {
 	 * @return bool
 	 */
 	private function process_action_restore( $id ) {
+		if ( 'cfkef-entries' !== get_post_type( $id ) ) {
+			return false;
+		}
 
 		if ( ! current_user_can( 'edit_post', $id ) ) {
 			return false; // User does not have permission to restore this post
@@ -267,6 +274,10 @@ class CFKEF_Post_Bulk_Actions {
 	 * @return bool
 	 */
 	private function process_action_delete( $id ) {
+		if ( 'cfkef-entries' !== get_post_type( $id ) ) {
+			return false;
+		}
+
 		if ( ! current_user_can( 'delete_post', $id ) ) {
 			return false; // User does not have permission to delete the post
 		}

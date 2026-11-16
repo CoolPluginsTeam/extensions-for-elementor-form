@@ -146,7 +146,7 @@
 			});
 
 			$('body').on('click', '.cfef-add-tag', function () {
-				var idList = '<ul class="cfef-dynamic-tag">';
+				var $list = $('<ul/>', { 'class': 'cfef-dynamic-tag' });
 				var formWrapper = $(this).closest('.elementor-repeater-fields-wrapper').parents('.elementor-repeater-fields-wrapper');
 				$('.elementor-form-field-shortcode', formWrapper).each(function () {
 					var regexPattern = /\".*?\"/gm;
@@ -161,10 +161,12 @@
 						});
 					}
 					$(this).data('actual-id', fieldName);
-					idList += '<li title="Field ID" data-field-id="' + fieldName + '">' + fieldName + '</li>';
+					$('<li/>', {
+						title: 'Field ID',
+						'data-field-id': fieldName
+					}).text(fieldName).appendTo($list);
 				});
-				idList += '</ul>';
-				$(this).closest('.elementor-control-input-wrapper').append(idList);
+				$(this).closest('.elementor-control-input-wrapper').append($list);
 			});
 
 			$(document).mouseup(function (event) {

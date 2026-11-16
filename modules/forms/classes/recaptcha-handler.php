@@ -85,15 +85,18 @@ class Recaptcha_Handler
 	 */
 	public function validation($record, $ajax_handler)
 	{
+		$form_fields = $record->get_form_settings('form_fields') ?? [];
+		$has_captcha = wp_list_filter($form_fields, ['field_type' => static::get_recaptcha_name()]);
+
+		if (empty($has_captcha)) {
+			return;
+		}
+
 		$fields = $record->get_field([
 			'type' => static::get_recaptcha_name(),
 		]);
 
-		if (empty($fields)) {
-			return;
-		}
-
-		$field = current($fields);
+		$field = !empty($fields) ? current($fields) : current($has_captcha);
 
 		// PHPCS - response protected by recaptcha secret
 		$recaptcha_response = Utils::_unstable_get_super_global_value($_POST, 'g-recaptcha-response'); // phpcs:ignore WordPress.Security.NonceVerification.Missing

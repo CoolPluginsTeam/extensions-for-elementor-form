@@ -370,8 +370,9 @@ class Email extends Action_Base {
 		if ( ! empty( $fields['email_reply_to'] ) ) {
 			$sent_data = $record->get( 'sent_data' );
 			foreach ( $record->get( 'fields' ) as $field_index => $field ) {
-				if ( $field_index === $fields['email_reply_to'] && ! empty( $sent_data[ $field_index ] ) && is_email( $sent_data[ $field_index ] ) ) {
-					$email_reply_to = $sent_data[ $field_index ];
+				$candidate = $sent_data[ $field_index ] ?? '';
+				if ( $field_index === $fields['email_reply_to'] && is_string( $candidate ) && is_email( $candidate ) ) {
+					$email_reply_to = $candidate;
 					break;
 				}
 			}
@@ -394,6 +395,10 @@ class Email extends Action_Base {
 		// registered shortcode with attacker-chosen attributes. The plugin's
 		// own [all-fields] and [field id="..."] placeholders are expanded
 		// explicitly below, not through the Shortcode API, so they keep working.
+		// Substitute [field id="..."] placeholders in the admin-authored template first,
+		// BEFORE expanding [all-fields], so submitted field values are never re-scanned.
+		$email_content = $record->replace_setting_shortcodes( $email_content );
+
 		$all_fields_shortcode = '[all-fields]';
 
 		if ( false !== strpos( $email_content, $all_fields_shortcode ) ) {
@@ -411,11 +416,6 @@ class Email extends Action_Base {
 			$email_content = str_replace( $all_fields_shortcode, $text, $email_content );
 
 		}
-
-		// Substitute [field id="..."] placeholders with the submitted value
-		// AFTER do_shortcode() has already run, so the value lands as literal
-		// text and cannot be executed as a shortcode.
-		$email_content = $record->replace_setting_shortcodes( $email_content );
 
 		return $email_content;
 	}

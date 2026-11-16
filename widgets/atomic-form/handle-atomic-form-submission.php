@@ -521,6 +521,8 @@ class Handle_Atomic_Form_Submission {
 			'form_id' => Elementor_Utils::get_super_global_value( $_POST, 'form_id' ),
 			'form_name' => Elementor_Utils::get_super_global_value( $_POST, 'form_name' ),
 			'form_fields' => Elementor_Utils::get_super_global_value( $_POST, 'form_fields' ) ?? [],
+			'referer_title' => Elementor_Utils::get_super_global_value( $_POST, 'referer_title' ),
+			'referrer' => Elementor_Utils::get_super_global_value( $_POST, 'referrer' ),
 		];
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
@@ -533,10 +535,16 @@ class Handle_Atomic_Form_Submission {
 		$form_id = sanitize_text_field( $post_data['form_id'] ?? '' );
 		$form_fields = $post_data['form_fields'] ?? [];
 
-		if ( ! $post_id || ! $form_id || empty( $form_fields ) ) {
+		if ( ! $post_id || ! $form_id || empty( $form_fields ) || ! is_array( $form_fields ) ) {
 			$this->send_invalid_form_response();
 			return;
 		}
+
+		$referer_title = $post_data['referer_title'] ?? '';
+		$referer_title = is_string( $referer_title ) ? sanitize_text_field( $referer_title ) : '';
+
+		$referrer = $post_data['referrer'] ?? '';
+		$referrer = is_string( $referrer ) ? esc_url_raw( $referrer ) : '';
 
 		if ( ! $this->is_submittable_post( $post_id ) ) {
 			$this->send_invalid_form_response();
@@ -553,7 +561,7 @@ class Handle_Atomic_Form_Submission {
 		}
 		set_transient( $rate_limit_key, $hits + 1, MINUTE_IN_SECONDS );
 
-		if ( ! is_array( $form_fields ) || count( $form_fields ) > 200 ) {
+		if ( count( $form_fields ) > 200 ) {
 			$this->send_error_response( esc_html__( 'Too many form fields submitted.', 'extensions-for-elementor-form' ) );
 			return;
 		}
@@ -580,6 +588,19 @@ class Handle_Atomic_Form_Submission {
 		if ( empty( $form_data ) ) {
 			$this->send_invalid_form_response();
 			return;
+		}
+
+		$context_files       = [];
+		$file_field_settings = [];
+		if ( class_exists( '\ElementorPro\Modules\AtomicForm\File_Upload\File_Upload_Handler' ) && is_array( $form_element ) ) {
+			$file_upload_result = ( new \ElementorPro\Modules\AtomicForm\File_Upload\File_Upload_Handler() )->process( $form_element, $form_fields );
+			if ( ! $file_upload_result->is_success() ) {
+				$this->send_error_response( $file_upload_result->get_error() );
+				return;
+			}
+			$form_data           = array_merge( $form_data, $file_upload_result->get_form_data_overrides() );
+			$context_files       = $file_upload_result->get_files();
+			$file_field_settings = $file_upload_result->get_file_field_settings();
 		}
 
 		$field_metadata = $this->extract_field_metadata( $form_fields );
@@ -615,10 +636,14 @@ class Handle_Atomic_Form_Submission {
 			$form_data,
 			$widget_settings,
 			[
-				'post_id' => $post_id,
-				'form_id' => $form_id,
-				'form_name' => $form_name,
-				'field_metadata' => $field_metadata,
+				'post_id'             => $post_id,
+				'form_id'             => $form_id,
+				'form_name'           => $form_name,
+				'field_metadata'      => $field_metadata,
+				'referer_title'       => $referer_title,
+				'referrer'            => $referrer,
+				'files'               => $context_files,
+				'file_field_settings' => $file_field_settings,
 			]
 		);
 
@@ -657,9 +682,11 @@ class Handle_Atomic_Form_Submission {
 				continue;
 			}
 
-			$hidden_id = sanitize_text_field( $hidden_field['id'] ?? '' );
-			if ( '' !== $hidden_id ) {
-				$hidden_ids[] = $hidden_id;
+			foreach ( [ 'id', 'cssid' ] as $key ) {
+				$hidden_id = sanitize_text_field( $hidden_field[ $key ] ?? '' );
+				if ( '' !== $hidden_id ) {
+					$hidden_ids[] = $hidden_id;
+				}
 			}
 		}
 
