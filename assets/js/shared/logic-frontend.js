@@ -297,11 +297,12 @@ CFKEF.initLogicFrontend = function (opts) {
                             __nextText = __stepContainer.find('button[id^="form-field-"]').text().trim();
                           }
                           if (__stepContainer.prev(".cfef-step-field-text").length === 0) {
-                            __stepContainer.before(
-                              '<p class="cfef-step-field-text">No input is required on this step. Just click "' +
-                                __nextText +
-                                '" to proceed.</p>'
-                            );
+                            var __stepMsg = 'No input is required on this step. Just click "' + __nextText + '" to proceed.';
+                            var __hintParagraph = $('<p>', {
+                              'class': 'cfef-step-field-text',
+                              'text': __stepMsg
+                            });
+                            __stepContainer.before(__hintParagraph);
                           }
                         }
                       
@@ -1177,7 +1178,11 @@ CFKEF.initLogicFrontend = function (opts) {
             let button_con = conditionalStepfield.find(S.buttonsContainer);
             if (button_con.prev(".cfef-step-field-text").length === 0) {
                     var message = getScriptVarsElementor().no_input_step.replace('%s', nextButtonText);
-                    button_con.before('<p class="cfef-step-field-text">' + message + '</p>');
+                    var hintParagraph = $('<p>', {
+                        'class': 'cfef-step-field-text',
+                        'text': message
+                    });
+                    button_con.before(hintParagraph);
             }
                 
 
