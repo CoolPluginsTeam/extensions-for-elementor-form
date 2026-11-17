@@ -14,12 +14,12 @@
 				return inputField;
 			}
 
-			const fieldId = items._id;
+			const fieldId = _.escape(items._id);
 			let includeCountries = '';
 			let excludeCountries = '';
 			let defaultCountry = '';
-			const dialCodeVisibility = items['ccfef-dial-code-visibility'];
-			const countryStrictMode = items['ccfef-strict-mode'];
+			const dialCodeVisibility = _.escape(items['ccfef-dial-code-visibility']);
+			const countryStrictMode = _.escape(items['ccfef-strict-mode']);
 
 			if (items.hasOwnProperty('ccfef-country-code-exclude')) {
 				excludeCountries = items['ccfef-country-code-exclude'].replace(/[^0-9a-zA-Z,\- ]/g, '');

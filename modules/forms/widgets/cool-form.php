@@ -162,7 +162,7 @@ class Cool_Form extends Form_Base {
 										inputField += '<span class="mdc-notched-outline__trailing"></span>';
 									inputField += '</span>';
 									inputField += '<span class="mdc-text-field__resizer">';
-										inputField += '<textarea class="mdc-text-field__input cool-form__field" name="form_field_' + i + '" id="form_field_' + i + '" rows="' + item.rows + '" ' + required + ' ' + placeholder + '>' + item.field_value + '</textarea>';
+										inputField += '<textarea class="mdc-text-field__input cool-form__field" name="form_field_' + i + '" id="form_field_' + i + '" rows="' + _.escape( item.rows ) + '" ' + required + ' ' + placeholder + '>' + _.escape( item.field_value ) + '</textarea>';
 									inputField += '</span>';
 								inputField += '</label>';
 								break;
@@ -173,14 +173,14 @@ class Cool_Form extends Form_Base {
 							case 'number':
 							case 'password':
 							case 'search':
-								let fieldClasses = 'mdc-text-field__input cool-form__field cool-field-size-' + settings.input_size;
+								let fieldClasses = 'mdc-text-field__input cool-form__field cool-field-size-' + _.escape( settings.input_size );
 
 								let customAttrs = '';
 								if ( item.custom_mask_attributes ) {
 									_.each( item.custom_mask_attributes, function (value, attr) {
 										if (attr === 'class') {
 											// Append additional classes to input field
-											fieldClasses += ' ' + value;
+											fieldClasses += ' ' + _.escape( value );
 										} else if ( /^data-[a-z0-9_-]+$/i.test( attr ) ) {
 											// Only allow well-formed data-* attribute names, so an
 											// attacker-controlled key cannot inject event handlers.
@@ -190,7 +190,7 @@ class Cool_Form extends Form_Base {
 								}
 
 								inputField  = '<label class="cool-form-text mdc-text-field mdc-text-field--outlined ';
-								inputField += ((item.field_label === '' || !settings.show_labels) ? 'mdc-text-field--no-label' : '') + ' cool-field-size-' + settings.input_size + '">';
+								inputField += ((item.field_label === '' || !settings.show_labels) ? 'mdc-text-field--no-label' : '') + ' cool-field-size-' + _.escape( settings.input_size ) + '">';
 								inputField += '<span class="mdc-notched-outline">';
 								inputField += '<span class="mdc-notched-outline__leading"></span>';
 								inputField += '<span class="mdc-notched-outline__notch">';
@@ -215,8 +215,8 @@ class Cool_Form extends Form_Base {
 
 							case 'select':
 								if ( options.length ) {
-									inputField = '<div class="mdc-select mdc-select--outlined cool-field-size-'+settings.input_size+'">';
-										inputField += '<div class="mdc-select__anchor cool-field-size-'+settings.input_size+'" aria-labelledby="select-label-' + i + '">';
+									inputField = '<div class="mdc-select mdc-select--outlined cool-field-size-' + _.escape( settings.input_size ) + '">';
+										inputField += '<div class="mdc-select__anchor cool-field-size-' + _.escape( settings.input_size ) + '" aria-labelledby="select-label-' + i + '">';
 											inputField += '<span class="mdc-notched-outline">';
 												inputField += '<span class="mdc-notched-outline__leading"></span>';
 												inputField += '<span class="mdc-notched-outline__notch">';

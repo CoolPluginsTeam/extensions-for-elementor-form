@@ -17,6 +17,26 @@ use Cool_FormKit\Includes\Utils;
 class Register_Post extends \ElementorPro\Modules\Forms\Classes\Action_Base {
 	public function __construct() {
 		\add_action( 'elementor/element/form/section_form_fields/before_section_end', array( $this, 'add_control_fields' ), 100, 2 );
+		\add_filter( 'elementor_pro/forms/render/item', array( $this, 'render_nonce_field' ), 10, 3 );
+	}
+
+	/**
+	 * Output CSRF nonce field for forms using this action when a user is logged in.
+	 *
+	 * @param array $item Form field item.
+	 * @param int $item_index Form field index.
+	 * @param \Elementor\Widget_Base $widget Form widget instance.
+	 * @return array
+	 */
+	public function render_nonce_field( $item, $item_index, $widget ) {
+		if ( 0 === $item_index && is_user_logged_in() ) {
+			$submit_actions = $widget->get_settings( 'submit_actions' );
+			if ( is_array( $submit_actions ) && in_array( $this->get_name(), $submit_actions, true ) ) {
+				wp_nonce_field( 'cfkef_register_post', 'cfkef_rp_nonce', false, true );
+			}
+		}
+
+		return $item;
 	}
 	/**
 	 * Get Name
@@ -165,11 +185,27 @@ class Register_Post extends \ElementorPro\Modules\Forms\Classes\Action_Base {
 			return;
 		}
 
+		if ( is_user_logged_in() ) {
+			$nonce = isset( $_POST['cfkef_rp_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['cfkef_rp_nonce'] ) ) : '';
+			if ( ! wp_verify_nonce( $nonce, 'cfkef_register_post' ) ) {
+				$ajax_handler->add_error_message( esc_html__( 'Security check failed. Please refresh the page and try again.', 'extensions-for-elementor-form' ) );
+				return;
+			}
+		}
+
 		if ( ! $this->user_can_insert_post( $new_post_data ) ) {
 			return;
 		}
 
 		$new_post_data = $this->maybe_adjust_post_status( $new_post_data );
+
+		if ( isset( $new_post_data['post_author'] ) ) {
+			$post_type        = isset( $new_post_data['post_type'] ) ? $new_post_data['post_type'] : 'post';
+			$post_type_object = get_post_type_object( $post_type );
+			if ( ! $post_type_object || ! current_user_can( $post_type_object->cap->edit_others_posts ) ) {
+				unset( $new_post_data['post_author'] );
+			}
+		}
 
 		$post_id = wp_insert_post( $new_post_data, true );
 		if ( ! is_wp_error( $post_id ) ) {
