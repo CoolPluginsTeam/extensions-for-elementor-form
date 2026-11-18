@@ -59,6 +59,7 @@ final class Conditional_Input_Definition {
 				->default( 'All' )
 				->enum( [ 'All', 'Any' ] ),
 			'cfef_logic_repeater' => String_Prop_Type::make()
+				->regex( '/^(?:(?!\\\\u)[^<>])*$/i' )
 				->set_dependencies( self::conditions_enabled_dependencies() )
 				->default( '' ),
 		];

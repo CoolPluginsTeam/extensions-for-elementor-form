@@ -43,7 +43,14 @@ class CFKEF_Save_Entries {
             'post_status' => 'publish'
         ];
 
-        $post_id = wp_insert_post($post_data);
+        $post_id = wp_insert_post($post_data, true);
+
+        if ( is_wp_error( $post_id ) || ! $post_id ) {
+            if ( is_object( $ajax_handler ) && method_exists( $ajax_handler, 'add_admin_error_message' ) ) {
+                $ajax_handler->add_admin_error_message( esc_html__( 'Could not save entry.', 'extensions-for-elementor-form' ) );
+            }
+            return;
+        }
 
         // Update the form action count in post meta
         update_post_meta($post_id, '_cfkef_form_action_count', $actions_count);

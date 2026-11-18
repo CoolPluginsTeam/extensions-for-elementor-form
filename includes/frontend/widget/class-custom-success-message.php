@@ -17,6 +17,7 @@ class Custom_Success_Message {
 		add_action( 'elementor/widget/before_render_content', array( $this, 'add_message_class' ) );
 		add_action( 'elementor/element/form/section_integration/after_section_end', array( $this, 'add_message_control' ), 100, 2 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_scripts' ) );
+		add_action( 'elementor-pro/forms/pre_render', array( $this, 'template_message' ) );
 	}
 
 	public function enqueue_frontend_scripts(){
@@ -78,8 +79,6 @@ class Custom_Success_Message {
 		if( 'form' === $form->get_name() ) {
 			$settings = $form->get_settings();
 
-			add_action( 'elementor-pro/forms/pre_render', [ $this, 'template_message' ] );
-
 			if(isset($settings['hide_form_after_submit'])  &&'yes' == $settings['hide_form_after_submit'] ) {
 				wp_enqueue_style( 'eef-frontend-style' );
 				wp_enqueue_script( 'eef-frontend-script' );
@@ -94,7 +93,7 @@ class Custom_Success_Message {
 	 * @param [type] $instance
 	 */
 	public function template_message ( $instance ) {
-		if ( ! $instance['template-custom-sucess-message'] == '' ) {
+		if ( isset( $instance['template-custom-sucess-message'] ) && '' !== $instance['template-custom-sucess-message'] ) {
 			echo '<div class="extensions-for-elementor-form custom-sucess-message">' . wp_kses_post( do_shortcode( $instance['template-custom-sucess-message'] ) ) . '</div>';
 		}
 	}

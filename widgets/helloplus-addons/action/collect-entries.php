@@ -19,6 +19,11 @@ class HelloPlus_Collect_Entries extends Action_Base {
 	}
 
 	public function run( $record, $ajax_handler ): void {
+		$form_post_id = (int) $record->get_form_settings( 'form_post_id' );
+		if ( $form_post_id && 'publish' !== get_post_status( $form_post_id ) && ! current_user_can( 'read_post', $form_post_id ) ) {
+			return;
+		}
+
 		require_once CFL_PLUGIN_PATH . 'includes/collect-entries/class-cfkef-save-entries.php';
 		$settings = $record->get_form_settings( 'save_form_data' );
 		if ( 'yes' === $settings ) {

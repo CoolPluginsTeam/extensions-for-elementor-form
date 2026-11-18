@@ -9,7 +9,7 @@ module.exports = createRecaptchaEditorModule({
 	buildDataAttrs: function (item, formConfig) {
 		let recaptchaData = 'data-sitekey="' + formConfig.site_key + '" data-type="' + formConfig.type + '"';
 		recaptchaData += ' data-action="Form"';
-		recaptchaData += ' data-badge="' + item.recaptcha_badge + '"';
+		recaptchaData += ' data-badge="' + _.escape(item.recaptcha_badge) + '"';
 		recaptchaData += ' data-size="invisible"';
 		return recaptchaData;
 	},

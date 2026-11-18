@@ -26,6 +26,20 @@ class Form_Record {
 				$ajax_handler->add_error( $id, Ajax_Handler::get_default_message( Ajax_Handler::FIELD_REQUIRED, $this->form_settings ) );
 			}
 
+			if ( in_array( $field_type, [ 'select', 'radio', 'checkbox' ], true ) && '' !== $field['value'] ) {
+				$allowed = $this->get_allowed_option_values( $id );
+				if ( ! empty( $allowed ) ) {
+					$submitted_values = is_array( $field['raw_value'] ) ? $field['raw_value'] : [ $field['raw_value'] ];
+					foreach ( $submitted_values as $submitted ) {
+						$submitted_val = sanitize_text_field( (string) $submitted );
+						if ( '' !== $submitted_val && ! in_array( $submitted_val, $allowed, true ) ) {
+							$ajax_handler->add_error( $id, Ajax_Handler::get_default_message( Ajax_Handler::INVALID_FORM, $this->form_settings ) );
+							break;
+						}
+					}
+				}
+			}
+
 			/**
 			 * Cool form field validation.
 			 *
@@ -287,6 +301,45 @@ class Form_Record {
 			}
 			return $value;
 		}, $setting );
+	}
+
+	/**
+	 * Get allowed option values for choice-based fields (select, radio, checkbox).
+	 *
+	 * @param string $field_id Custom ID of the form field.
+	 * @return array
+	 */
+	private function get_allowed_option_values( string $field_id ): array {
+		if ( empty( $this->form_settings['form_fields'] ) || ! is_array( $this->form_settings['form_fields'] ) ) {
+			return [];
+		}
+
+		foreach ( $this->form_settings['form_fields'] as $form_field ) {
+			if ( isset( $form_field['custom_id'] ) && $form_field['custom_id'] === $field_id ) {
+				$raw_options = (string) ( $form_field['field_options'] ?? '' );
+				if ( '' === trim( $raw_options ) ) {
+					return [];
+				}
+				$lines = preg_split( "/\r\n|\n|\r/", $raw_options );
+				$allowed = [];
+				foreach ( $lines as $line ) {
+					$line = trim( $line );
+					if ( '' === $line ) {
+						continue;
+					}
+					if ( false !== strpos( $line, '|' ) ) {
+						$parts = explode( '|', $line, 2 );
+						$allowed[] = trim( $parts[0] );
+						$allowed[] = trim( $parts[1] );
+					} else {
+						$allowed[] = $line;
+					}
+				}
+				return array_unique( $allowed );
+			}
+		}
+
+		return [];
 	}
 
 	public function __construct( $sent_data, $form ) {

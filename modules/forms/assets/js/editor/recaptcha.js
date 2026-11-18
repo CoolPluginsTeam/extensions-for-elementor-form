@@ -8,8 +8,8 @@ module.exports = createRecaptchaEditorModule({
 		'To use reCAPTCHA, you need to add the API Key and complete the setup process in Dashboard > Elementor > Cool FormKit Lite > Settings > reCAPTCHA.',
 	buildDataAttrs: function (item, formConfig) {
 		let recaptchaData = 'data-sitekey="' + formConfig.site_key + '" data-type="' + formConfig.type + '"';
-		recaptchaData += ' data-theme="' + item.recaptcha_style + '"';
-		recaptchaData += ' data-size="' + item.recaptcha_size + '"';
+		recaptchaData += ' data-theme="' + _.escape(item.recaptcha_style) + '"';
+		recaptchaData += ' data-size="' + _.escape(item.recaptcha_size) + '"';
 		return recaptchaData;
 	},
 });

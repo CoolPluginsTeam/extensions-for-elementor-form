@@ -37,6 +37,11 @@ class Collect_Entries extends Action_Base {
 	 * @param \Cool_FormKit\Modules\Forms\Components\Ajax_Handler $ajax_handler Ajax handler.
 	 */
 	public function run( $record, $ajax_handler ) {
+		$form_post_id = (int) $record->get_form_settings( 'form_post_id' );
+		if ( $form_post_id && 'publish' !== get_post_status( $form_post_id ) && ! current_user_can( 'read_post', $form_post_id ) ) {
+			return;
+		}
+
 		require_once CFL_PLUGIN_PATH . 'includes/collect-entries/class-cfkef-save-entries.php';
 		new CFKEF_Save_Entries();
 

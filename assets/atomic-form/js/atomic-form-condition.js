@@ -101,10 +101,23 @@
         }
     }
 
+    function getTemplateContent(template) {
+        var el = template[0] || template;
+        if (el && el.content && typeof el.content.textContent === "string") {
+            return el.content.textContent;
+        }
+        return template.text() || template.html() || "";
+    }
+
     function readAtomicLogic(form) {
+        var storedLogic = $(form).data("cfefAtomicLogic");
+        if (typeof storedLogic !== "undefined") {
+            return $.extend(true, {}, storedLogic);
+        }
+
         var merged = {};
         $(form).find(".cfef-atomic-field-logic").each(function () {
-            var raw = $(this).html();
+            var raw = getTemplateContent($(this));
             if (!raw) {
                 return;
             }
@@ -157,7 +170,10 @@
 
             if (template.length) {
                 try {
-                    all_fields_logic.push(JSON.parse(template.html()));
+                    var content = getTemplateContent(template);
+                    if (content) {
+                        all_fields_logic.push(JSON.parse(content));
+                    }
                 } catch (e) {
                     // Ignore malformed template payloads.
                 }
@@ -185,12 +201,8 @@
             }
         });
 
-        var template_tag_logic = $("<template>", {
-            class: "cfef_logic_data_js cfef-atomic-field-logic cfef-hidden",
-            html: JSON.stringify(all_fields_logic)
-        });
+        $form.data("cfefAtomicLogic", all_fields_logic);
         $form.find("template.cfef_logic_data_js").remove();
-        $form.append(template_tag_logic);
         $form.attr("template-extracted", "true");
     }
 
